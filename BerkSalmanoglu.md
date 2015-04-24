@@ -1,0 +1,1 @@
+I am a computer engineering student in Boğaziçi University. I am interested in Hearthstone and playing the guitar.
