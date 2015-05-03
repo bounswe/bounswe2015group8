@@ -70,4 +70,21 @@ public class TestMathematicalOperations{
 		assertEquals("Sum of -3.0 with 0.0 is -3.0" , -3.0, adder.add(-3.0, 0.0), 0.00000001);
 		assertEquals("Sum of 5.0 with 8.0 is 13.0" , 13.0, adder.add(8.0, 5.0), 0.00000001);
 	}
+
+    /* Unit Test for power operation in MathematicalOperations class */
+    @Test
+    public void powerTest() {
+            MathematicalOperations op = new MathematicalOperations();
+            // Test for infinities
+            assertEquals("Power of positive infinity is positive infinity", Double.POSITIVE_INFINITY, op.power(5,Double.POSITIVE_INFINITY), 0.00000001);
+            assertEquals("Power of negative infinity is zero", Double.NEGATIVE_INFINITY, op.power(5,Double.NEGATIVE_INFINITY), 0.00000001);
+            // Test for 0
+            assertEquals("0 to the power of any number is 0", 0, op.power(0,5), 0.00000001);
+            // Test for 1
+            assertEquals("1 to the power of any number is 1", 1, op.power(1,5), 0.00000001);
+            // Test for power of 0
+            assertEquals("Any number to the power of 0 is 1", 1, op.power(5,0), 0.00000001);
+            
+    }
+}
 }
