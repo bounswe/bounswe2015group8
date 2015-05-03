@@ -82,4 +82,13 @@ public class TestMathematicalOperations{
             // Test for power of 0
             assertEquals("Any number to the power of 0 is 1", 1, op.power(5,0), 0.00000001);       
     }
+
+    /* Unit Test for bitwise and operation in MathematicalOperations class */
+    @Test
+    public void bitwiseAndTest() {
+            MathematicalOperations bitwiseAndOperation = new MathematicalOperations();
+			assertEquals("Bitwise and of 60 with 13 is 12.", 12, bitwiseAndOperation.bitwiseAnd(60,13,0.00000001));      
+			assertEquals("Bitwise and of 72 with 184 is 8.", 8, bitwiseAndOperation.bitwiseAnd(72,184,0.00000001));      
+		
+    }
 }
