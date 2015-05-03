@@ -31,4 +31,17 @@ public class TestMathematicalOperations{
 		assertEquals("Multiplication of 5 with 6 is 30", 30, multiplier.multiply(5, 6), 0.00000001);
 		assertEquals("Multiplication of 27 with 16 is 432", 432, multiplier.multiply(27, 16), 0.00000001);
 	}
+
+	// Unit Test for remainder in MathematicalOperations
+	@Test
+	public void remainderByZero (){
+
+		MathematicalOperations remainder = new MathematicalOperations();
+
+		//Test cases
+		assertEquals("Remainder of -5 with 4 must be -1", -1, remainder.remainder(-5, 4), 0.00000001);
+		assertEquals("Remainder of 10 with 0 must be positive infinity" , Double.POSITIVE_INFINITY, remainder.remainder(10, 0), 0.00000001);
+		assertEquals("Remainder of 0 with 0 must be undefined", Double.NaN, remainder.remainder(0,0), 0.00000001);
+		assertEquals("Remainder of -3 with 0 must be negative infinity", Double.NEGATIVE_INFINITY, remainder.remainder(-3, 0), 0.00000001);
+	}
 }

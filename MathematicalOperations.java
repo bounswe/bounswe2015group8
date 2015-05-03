@@ -14,4 +14,9 @@ public class MathematicalOperations {
 	public double square(double num) {
 		return num * num;
 	}
+
+	//The remainder function for number withh int type
+	public int remainder (int x, int y){
+		return x % y;
+	}
 }
