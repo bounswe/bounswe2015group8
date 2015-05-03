@@ -24,6 +24,7 @@ public class MathematicalOperations {
 	public double add(double x, double y){
 		return x+y;		
 	}
+
     //The power function for numbers with duoble type
     public double power(double x, double y){
         double result = 1;
@@ -31,5 +32,10 @@ public class MathematicalOperations {
             result = result*x;
         }
         return result;
+    }
+
+    // The bitwise and operation
+    public int bitwiseAnd(int x, int y){
+        return x & y;
     }
 }
