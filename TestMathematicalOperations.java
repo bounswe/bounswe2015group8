@@ -91,6 +91,15 @@ public class TestMathematicalOperations{
 			assertEquals("Bitwise and of 72 with 184 is 8.", 8, bitwiseAndOperation.bitwiseAnd(72,184),0.00000001);      
 		
     }
+    
+    /* Unit Test for bitwise or operation in MathematicalOperations class */
+    @Test
+    public void bitwiseOrTest() {
+            MathematicalOperations bitwiseOrOperation = new MathematicalOperations();
+			assertEquals("Bitwise or of 10 with 15 is 15.", 15, bitwiseOrOperation.bitwiseOr(10, 15), 0.00000001);      
+			assertEquals("Bitwise or of 0 with 100 is 100.", 100, bitwiseOrOperation.bitwiseOr(0, 100), 0.00000001);      
+		
+    }
 
     /* Unit test for subtract function in MathematicalOperations.java */
     @Test
