@@ -26,8 +26,8 @@ public class MathematicalOperations {
 	}
     //The power function for numbers with duoble type
     public double power(double x, double y){
-        result = x;
-        for (int i=1; i<y; i++){
+        double result = 1;
+        for (int i=0; i<y; i++){
             result = result*x;
         }
         return result;
