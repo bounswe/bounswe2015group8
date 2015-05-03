@@ -19,4 +19,12 @@ public class MathematicalOperations {
 	public int remainder (int x, int y){
 		return x % y;
 	}
+    //The power function for numbers with duoble type
+    public double power(double x, double y){
+        result = x;
+        for (int i=1; i<y; i++){
+            result = result*x;
+        }
+        return result;
+    }
 }
