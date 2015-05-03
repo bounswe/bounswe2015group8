@@ -45,4 +45,10 @@ public class MathematicalOperations {
     public int bitwiseAnd(int x, int y){
         return x & y;
     }
+
+     
+	// This function performs the subtract operation. It returns x minus y.
+    public double subtract(double x, double y){
+    	return x - y;
+    }
 }

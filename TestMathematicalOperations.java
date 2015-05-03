@@ -91,4 +91,14 @@ public class TestMathematicalOperations{
 			assertEquals("Bitwise and of 72 with 184 is 8.", 8, bitwiseAndOperation.bitwiseAnd(72,184),0.00000001);      
 		
     }
+
+    /* Unit test for subtract function in MathematicalOperations.java */
+    @Test
+    public void subtractTest(){
+    	MathematicalOperations mo = new MathematicalOperations();
+    	assertEquals("", -Double.MAX_VALUE, mo.subtract(Double.MIN_VALUE, Double.MAX_VALUE), 0.00000001);
+    	assertEquals("", 0.0, mo.subtract(5.000000001, 5.000000000), 0.00000001);
+    	assertEquals("", 5.0, mo.subtract(12, 7), 0.00000001);
+    	assertEquals("", -12.0, mo.subtract(24, 36), 0.00000001);
+    }
 }
