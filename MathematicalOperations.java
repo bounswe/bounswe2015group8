@@ -46,6 +46,10 @@ public class MathematicalOperations {
         return x & y;
     }
 
+	/* The bitwise or operation */
+	public int bitwiseOr(int x, int y) {
+		return x | y;
+	}
      
 	// This function performs the subtract operation. It returns x minus y.
     public double subtract(double x, double y){
