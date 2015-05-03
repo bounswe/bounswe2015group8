@@ -34,7 +34,7 @@ public class TestMathematicalOperations{
 
 	/* Unit Test for double sum in MathematicalOperations class */
 	@Test
-	public void addedWithZero(){
+	public void addTest(){
 		MathematicalOperations adder = new MathematicalOperations();
 		
 		// Test cases
