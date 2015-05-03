@@ -31,6 +31,7 @@ public class TestMathematicalOperations{
 		assertEquals("Multiplication of 5 with 6 is 30", 30, multiplier.multiply(5, 6), 0.00000001);
 		assertEquals("Multiplication of 27 with 16 is 432", 432, multiplier.multiply(27, 16), 0.00000001);
 	}
+<<<<<<< HEAD
 
 	// Unit Test for remainder in MathematicalOperations
 	@Test
@@ -43,5 +44,18 @@ public class TestMathematicalOperations{
 		assertEquals("Remainder of 10 with 0 must be positive infinity" , Double.POSITIVE_INFINITY, remainder.remainder(10, 0), 0.00000001);
 		assertEquals("Remainder of 0 with 0 must be undefined", Double.NaN, remainder.remainder(0,0), 0.00000001);
 		assertEquals("Remainder of -3 with 0 must be negative infinity", Double.NEGATIVE_INFINITY, remainder.remainder(-3, 0), 0.00000001);
+=======
+	/* Unit Test for square function in MathematicalOperations class */
+	@Test
+	public void squareTest() {
+		MathematicalOperations op = new MathematicalOperations();
+		// Test for infinities
+		assertEquals("Square of negative infinity is positive infinity", Double.POSITIVE_INFINITY, op.square(Double.NEGATIVE_INFINITY), 0.00000001);
+		assertEquals("Square of positive infinity is positive infinity", Double.POSITIVE_INFINITY, op.square(Double.POSITIVE_INFINITY), 0.00000001);
+		// Test for 0
+		assertEquals("Square of 0 is 0", 0, op.square(0), 0.00000001);
+		// Test for negative numbers
+		assertEquals("Square of -1 is 1", 1, op.square(-1), 0.00000001);
+>>>>>>> 5fed39874cb9c63d4e5afed19c17344e8e5150af
 	}
 }
