@@ -25,11 +25,18 @@ public class MathematicalOperations {
 		return x+y;		
 	}
     //The power function for numbers with duoble type
-    public double power(double x, double y){
-        double result = 1;
-        for (int i=0; i<y; i++){
-            result = result*x;
+    public double power(double x, int n){
+        if(n==0)
+            return 1;
+        
+        if(n<0){
+            x = 1.0/x;
+            n = -n;
         }
+        double result = power(x,n/2);
+        result = result * result;
+        if(n%2!=0)
+            result = result * x;
         return result;
     }
 }
