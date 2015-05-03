@@ -9,4 +9,9 @@ public class MathematicalOperations {
 	public double multiply(double x, double y) {
 		return x * y;
 	}
+	
+	/* The square function for numbers with double type */
+	public double square(double num) {
+		return num * num;
+	}
 }
