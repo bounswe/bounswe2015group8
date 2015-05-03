@@ -15,9 +15,11 @@ public class MathematicalOperations {
 		return num * num;
 	}
 
-	//The remainder function for number withh int type
-	public int remainder (int x, int y){
-		return x % y;
+	/* The add function for numbers with double type */
+
+	public double add(double x, double y){
+		return x+y;
+		
 	}
     //The power function for numbers with duoble type
     public double power(double x, double y){

@@ -32,33 +32,19 @@ public class TestMathematicalOperations{
 		assertEquals("Multiplication of 27 with 16 is 432", 432, multiplier.multiply(27, 16), 0.00000001);
 	}
 
-
-	// Unit Test for remainder in MathematicalOperations
+	/* Unit Test for double sum in MathematicalOperations class */
 	@Test
-	public void remainderByZero (){
-
-		MathematicalOperations remainder = new MathematicalOperations();
-
-		//Test cases
-		assertEquals("Remainder of -5 with 4 must be -1", -1, remainder.remainder(-5, 4), 0.00000001);
-		assertEquals("Remainder of 10 with 0 must be positive infinity" , Double.POSITIVE_INFINITY, remainder.remainder(10, 0), 0.00000001);
-		assertEquals("Remainder of 0 with 0 must be undefined", Double.NaN, remainder.remainder(0,0), 0.00000001);
-		assertEquals("Remainder of -3 with 0 must be negative infinity", Double.NEGATIVE_INFINITY, remainder.remainder(-3, 0), 0.00000001);
-
-	/* Unit Test for square function in MathematicalOperations class */
-	@Test
-	public void squareTest() {
-		MathematicalOperations op = new MathematicalOperations();
-		// Test for infinities
-		assertEquals("Square of negative infinity is positive infinity", Double.POSITIVE_INFINITY, op.square(Double.NEGATIVE_INFINITY), 0.00000001);
-		assertEquals("Square of positive infinity is positive infinity", Double.POSITIVE_INFINITY, op.square(Double.POSITIVE_INFINITY), 0.00000001);
-		// Test for 0
-		assertEquals("Square of 0 is 0", 0, op.square(0), 0.00000001);
-		// Test for negative numbers
-		assertEquals("Square of -1 is 1", 1, op.square(-1), 0.00000001);
+	public void addTest(){
+		MathematicalOperations adder = new MathematicalOperations();
+		
+		// Test cases
+		assertEquals("Sum of 5 with 0 is 5" , 0, adder.add(5, 0), 0.00000001);
+		assertEquals("Sum of -3 with 0 is -3" , 0, adder.add(-3, 0), 0.00000001);
+		assertEquals("Sum of 5 with 8 is 13" , 0, adder.add(8, 13), 0.00000001);
 
 	}
-        
+
+    /* Unit Test for power operation in MathematicalOperations class */
     @Test
     public void powerTest() {
             MathematicalOperations op = new MathematicalOperations();
@@ -73,4 +59,5 @@ public class TestMathematicalOperations{
             assertEquals("Any number to the power of 0 is 1", 1, op.power(5,0), 0.00000001);
             
     }
+}
 }
