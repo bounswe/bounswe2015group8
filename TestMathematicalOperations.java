@@ -31,4 +31,16 @@ public class TestMathematicalOperations{
 		assertEquals("Multiplication of 5 with 6 is 30", 30, multiplier.multiply(5, 6), 0.00000001);
 		assertEquals("Multiplication of 27 with 16 is 432", 432, multiplier.multiply(27, 16), 0.00000001);
 	}
+
+
+	/* Unit Test for double sum in MathematicalOperations class */
+	@Test
+	public void addedWithZero(){
+		MathematicalOperations adder = new MathematicalOperations();
+		
+		// Test cases
+		assertEquals("Sum of 5 with 0 is 5" , 0, adder.add(5, 0), 0.00000001);
+		assertEquals("Sum of -3 with 0 is -3" , 0, adder.add(-3, 0), 0.00000001);
+		assertEquals("Sum of 5 with 8 is 13" , 0, adder.add(8, 13), 0.00000001);
+	}
 }
