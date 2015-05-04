@@ -110,4 +110,15 @@ public class TestMathematicalOperations{
     	assertEquals("", 5.0, mo.subtract(12, 7), 0.00000001);
     	assertEquals("", -12.0, mo.subtract(24, 36), 0.00000001);
     }
+    
+    /* Unit Test for inverse division in MathematicalOperations class */
+	@Test
+	public void divideByInverseZero(){
+		MathematicalOperations inv = new MathematicalOperations();
+		
+		// Test cases
+		assertEquals("7.0 divided by 0.0 must be positively infinite", Double.POSITIVE_INFINITY, inv.invDiv(0.0, 7.0), 0.00000001);
+		assertEquals("-4.0 divided by 0.0 must be negatively infinite", Double.NEGATIVE_INFINITY, inv.invDiv(0.0, -4.0), 0.00000001);
+		assertEquals("0.0 divided by 0.0 must be undefined (NAN)", Double.NaN, inv.invDiv(0.0, 0.0), 0.00000001);
+	}
 }
