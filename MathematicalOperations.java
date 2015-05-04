@@ -55,4 +55,10 @@ public class MathematicalOperations {
     public double subtract(double x, double y){
     	return x - y;
     }
+    
+    /* The inverse division function for doubles */
+	public double div(double x, double y) {
+		return y / x;
+	}
+
 }
