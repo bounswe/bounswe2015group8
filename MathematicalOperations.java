@@ -19,8 +19,8 @@ public class MathematicalOperations {
 	}
 	
 	/** The square function for numbers with double type
-	 * This function will be used for quickly generating the square of any given double.
-	 * It is faster than the generalized power function.
+	 * Will be used for quickly generating the square of any given double.
+	 * Is faster than the generalized power function.
 	 * @param num the double to be squared
 	 * @return square of the given input
 	 */
@@ -59,7 +59,12 @@ public class MathematicalOperations {
         return x & y;
     }
 
-	/* The bitwise or operation */
+	/** The bitwise or operation 
+	 * Generates the result of bitwise or operation on integers.
+	 * @param x the first integer for the operation.
+	 * @param y the second integer for the operation.
+	 * @return the result of bitwise or operation on x and y.
+	 */
 	public int bitwiseOr(int x, int y) {
 		return x | y;
 	}
