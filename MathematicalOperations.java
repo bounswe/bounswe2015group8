@@ -72,8 +72,12 @@ public class MathematicalOperations {
 	public int bitwiseOr(int x, int y) {
 		return x | y;
 	}
-     
-	// The bitwise xor operation
+	/** The bitwise xor operation 
+	 * Generates the result of bitwise xor operation on integers.
+	 * @param x the first integer for the operation.
+	 * @param y the second integer for the operation.
+	 * @return the result of bitwise xor operation on x and y.
+	 */
 	public int bitwiseXor(int x, int y){
 		return x ^ y;
 	}
