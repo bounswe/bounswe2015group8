@@ -54,8 +54,12 @@ public class MathematicalOperations {
 		return result;
 	}
 
-	// The bitwise and operation
-	public int bitwiseAnd(int x, int y){
+	/** The bitwise and operation 
+	 * Generates the result of bitwise and operation on integers.
+	 * @param x the first integer for the operation.
+	 * @param y the second integer for the operation.
+	 * @return the result of bitwise and operation on x and y.
+	 */	public int bitwiseAnd(int x, int y){
     		return x & y;
    	}
 
