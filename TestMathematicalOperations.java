@@ -92,7 +92,9 @@ public class TestMathematicalOperations{
 		
     }
     
-    /* Unit Test for bitwise or operation in MathematicalOperations class */
+    /** Unit Test for bitwise or operation in MathematicalOperations class 
+     * Contains two JUnit test cases for bitwiseOr function in MathematicalOperations.java
+     */
     @Test
     public void bitwiseOrTest() {
             MathematicalOperations bitwiseOrOperation = new MathematicalOperations();
