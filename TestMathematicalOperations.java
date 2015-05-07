@@ -86,7 +86,11 @@ public class TestMathematicalOperations{
 		assertEquals("Sum of 5.0 with 8.0 is 13.0" , 13.0, adder.add(8.0, 5.0), 0.00000001);
 	}
 
-	/* Unit Test for power operation in MathematicalOperations class */
+    /* Unit Test for power operation in MathematicalOperations class
+	 * This functions tests, any number to the power of zero,
+     * 1 to the power of any number, 0 to the power of any number.
+	 * No overflow errors should occur with doubles.
+	 */
 	@Test
 	public void powerTest() {
 		MathematicalOperations op = new MathematicalOperations();
@@ -118,7 +122,9 @@ public class TestMathematicalOperations{
 		assertEquals("Bitwise or of 0 with 100 is 100.", 100, bitwiseOrOperation.bitwiseOr(0, 100), 0.00000001);      
     	}
     	
-     	/* Unit Test for bitwise xor operation in MathematicalOperations class */
+     	/** Unit Test for bitwise xor operation in MathematicalOperations class
+     	* Contains two JUnit test cases for bitwiseXor function in MathematicalOperations.java
+	*/
     	@Test
     	public void bitwiseXorTest() {
             	MathematicalOperations bitwiseXorOperation = new MathematicalOperations();
