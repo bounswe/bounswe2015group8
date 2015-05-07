@@ -13,7 +13,15 @@ public class MathematicalOperations {
 		return x / y;
 	}
 
-	/* The multiplication function for numbers with double type */
+	/*! \brief The multiplication operation for double-typed numbers
+	 * 
+	 * 
+	 * Takes two doubles and returns the multiplication of the first number by the second number.
+	 * If the second number is between -1 and 1, it can also be used as division.
+	 * @param x: the first number (multiplicand)
+	 * @param y: the second number (multiplier)
+	 * @return the multiplication of the given inputs
+	 */
 	public double multiply(double x, double y) {
 		return x * y;
 	}
