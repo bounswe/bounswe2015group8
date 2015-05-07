@@ -122,7 +122,9 @@ public class TestMathematicalOperations{
 		assertEquals("Bitwise or of 0 with 100 is 100.", 100, bitwiseOrOperation.bitwiseOr(0, 100), 0.00000001);      
     	}
     	
-     	/* Unit Test for bitwise xor operation in MathematicalOperations class */
+     	/** Unit Test for bitwise xor operation in MathematicalOperations class
+     	* Contains two JUnit test cases for bitwiseXor function in MathematicalOperations.java
+	*/
     	@Test
     	public void bitwiseXorTest() {
             	MathematicalOperations bitwiseXorOperation = new MathematicalOperations();
