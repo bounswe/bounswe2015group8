@@ -100,7 +100,14 @@ public class TestMathematicalOperations{
 			assertEquals("Bitwise or of 0 with 100 is 100.", 100, bitwiseOrOperation.bitwiseOr(0, 100), 0.00000001);      
 		
     }
-
+     /* Unit Test for bitwise xor operation in MathematicalOperations class */
+    @Test
+    public void bitwiseXorTest() {
+            MathematicalOperations bitwiseXorOperation = new MathematicalOperations();
+			assertEquals("Bitwise or of 20 with 15 is 27.", 15, bitwiseXorOperation.bitwiseXor(20, 15), 0.00000001);      
+			assertEquals("Bitwise or of 64 with 49 is 113.", 100, bitwiseXorOperation.bitwiseXor(64, 113), 0.00000001);      
+		
+    }
     /* Unit test for subtract function in MathematicalOperations.java */
     @Test
     public void subtractTest(){
