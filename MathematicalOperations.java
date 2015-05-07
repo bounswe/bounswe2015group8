@@ -37,8 +37,13 @@ public class MathematicalOperations {
 	public double add(double x, double y){
 		return x+y;		
 	}
-
-	//The power function for numbers with duoble type
+    
+	/** The power function for numbers with double type
+	 * It is used for generating x to the power of n.
+	 * @param x the base number with double type.
+     * @param n the exponenet number with integer type.
+	 * @return result is the x to power the n.
+	 */
 	public double power(double x, int n){
 		if(n==0)
 			return 1;
