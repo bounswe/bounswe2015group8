@@ -25,12 +25,20 @@ public class TestMathematicalOperations{
 		assertEquals("0.0 divided by 0.0 must be undefined (NAN)", Double.NaN, mOp.div(0.0, 0.0), 0.00000001);
 	}
 	
-	/* Unit Test for double multiplication in MathematicalOperations class */
+	/*! \brief Unit Test function for double multiplication in MathematicalOperations class
+	 * 
+	 * Tests the edge cases where the multiplier is zero and where the multiplier is infinity.
+	 * In Java, multiplying by infinity for doubles does not throw an exception unlike it does for integers.
+	 * Instead, it returns positive infinity if the multiplier is positive.
+	 * If the multiplier is negative, then the result is negative infinity.
+	 * Multiplying positive infinity by negative infinity does not throw an exception either, for the double types. It returns negative infinity.
+	 * Hence, there should not be any exception for those cases.  
+	 *  */
 	@Test
-	public void multiplyByZero() {
+	public void multiplicationTest() {
 		MathematicalOperations multiplier = new MathematicalOperations();
 		
-		// Test cases for multiplying by zero
+		// Test cases for multiplying by zero and infinity
 		assertEquals("Multiplication of -5 with 0 is 0", 0, multiplier.multiply(-5, 0), 0.00000001);
 		assertEquals("Multiplication of 0 with -0 is 0", 0, multiplier.multiply(0, -0), 0.00000001);
 		assertEquals("Multiplication of 2147483647 with 0 is 0", 0, multiplier.multiply(2147483647, 0), 0.00000001);
