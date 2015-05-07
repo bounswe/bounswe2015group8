@@ -107,7 +107,13 @@ public class MathematicalOperations {
     		return x - y;
     	}
     
-	/* The inverse division function for doubles */
+	/** The inverse division function for doubles 
+	 * Takes two doubles and returns the division of the second number by the first number.
+	 * If the first number is between -1 and 1, it can also be used as multiplication.
+	 * @param x: the first number (divider)
+	 * @param y: the second number (dividend)
+	 * @return the division of the given inputs
+	 */
 	public double invDiv(double x, double y) {
 		return y / x;
 	}
