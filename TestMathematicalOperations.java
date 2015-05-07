@@ -69,8 +69,9 @@ public class TestMathematicalOperations{
 	}
 		
 	/** Unit Test for testing the square function in MathematicalOperations class
+	 * 
 	 * This functions tests the edge cases of positive and negative infinities,
-	 * the square of zero, and the square of negative numbers (making sure they turn out positive.
+	 * the square of zero, and the square of negative numbers, making sure they turn out positive.
 	 * No overflow errors should occur with doubles.
 	 */
 	@Test
@@ -86,7 +87,11 @@ public class TestMathematicalOperations{
 
 	}
 
-	/* Unit Test for double sum in MathematicalOperations class */
+	/* Unit Test for double sum in MathematicalOperations class 
+	 * Tests sum operation with zero value and a positive value
+	 * Tests sum operation with zero value and a negative value
+	 * Tests some regular cases with positive and negative results.
+	 *  */
 	@Test
 	public void addTest(){
 		MathematicalOperations adder = new MathematicalOperations();
@@ -158,7 +163,15 @@ public class TestMathematicalOperations{
 		assertEquals("24 minus 36 must be -12.0", -12.0, mo.subtract(24, 36), 0.00000001);
 	}
     
-	/* Unit Test for inverse division in MathematicalOperations class */
+	/** Unit Test for inverse division in MathematicalOperations class
+	 * 
+	 * Tests the edge cases where the divider is zero.
+	 * In Java, dividing by zero for doubles does not throw an exception unlike it does for integers.
+	 * Instead, it returns positive infinity if the dividend is positive.
+	 * If the dividend is negative, then the result is negative infinity.
+	 * Dividing zero by zero does not throw an exception either, for the double types. It returns NaN.
+	 * Hence, there should not be any exception for those cases. 
+	 */
 	@Test
 	public void divideByInverseZero(){
 		MathematicalOperations inv = new MathematicalOperations();
