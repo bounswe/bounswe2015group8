@@ -1,6 +1,14 @@
 public class MathematicalOperations {
 
-	/* The division function for numbers with double type */
+	/*! \brief The division operation for double-typed numbers
+	 * 
+	 * 
+	 * Takes two doubles and returns the division of the first number by the second number.
+	 * If the second number is between -1 and 1, it can also be used as multiplication.
+	 * @param x: the first number (dividend)
+	 * @param y: the second number (divider)
+	 * @return the division of the given inputs
+	 */
 	public double div(double x, double y) {
 		return x / y;
 	}
