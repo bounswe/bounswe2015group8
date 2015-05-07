@@ -38,26 +38,26 @@ public class MathematicalOperations {
 		return x+y;		
 	}
 
-    //The power function for numbers with duoble type
-    public double power(double x, int n){
-        if(n==0)
-            return 1;
-        
-        if(n<0){
-            x = 1.0/x;
-            n = -n;
-        }
-        double result = power(x,n/2);
-        result = result * result;
-        if(n%2!=0)
-            result = result * x;
-        return result;
-    }
+	//The power function for numbers with duoble type
+	public double power(double x, int n){
+		if(n==0)
+			return 1;
+		
+		if(n<0){
+			x = 1.0/x;
+			n = -n;
+		}
+		double result = power(x,n/2);
+		result = result * result;
+		if(n%2!=0)
+			result = result * x;
+		return result;
+	}
 
-    // The bitwise and operation
-    public int bitwiseAnd(int x, int y){
-        return x & y;
-    }
+	// The bitwise and operation
+	public int bitwiseAnd(int x, int y){
+    		return x & y;
+   	}
 
 	/** The bitwise or operation 
 	 * Generates the result of bitwise or operation on integers.
@@ -69,17 +69,24 @@ public class MathematicalOperations {
 		return x | y;
 	}
      
-    // The bitwise xor operation
-    public int bitwiseXor(int x, int y){
-        return x ^ y;
-    }
+	// The bitwise xor operation
+	public int bitwiseXor(int x, int y){
+		return x ^ y;
+	}
      
-	// This function performs the subtract operation. It returns x minus y.
-    public double subtract(double x, double y){
-    	return x - y;
-    }
+	/*! \brief The subtraction operation for double-typed numbers
+	 * 
+	 * 
+	 * Takes two doubles and returns the subtraction of the first number by the second number.
+	 * @param x: the first number
+	 * @param y: the second number
+	 * @return the difference of the given inputs
+	 */
+	public double subtract(double x, double y){
+    		return x - y;
+    	}
     
-    /* The inverse division function for doubles */
+	/* The inverse division function for doubles */
 	public double invDiv(double x, double y) {
 		return y / x;
 	}
