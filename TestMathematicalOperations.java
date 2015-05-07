@@ -51,7 +51,10 @@ public class TestMathematicalOperations{
 		assertEquals("Multiplication of 27 with 16 is 432", 432, multiplier.multiply(27, 16), 0.00000001);
 	}
 	
-	// Unit Test for remainder in MathematicalOperations
+	/** Unit Test for testing the remainder function in MathematicalOperations class
+	 * This functions tests the edge cases where the second number is zero,
+	 * For integers, division by zero throws exception so this case should throw Arithmetic Exception
+	 */
 	@Test(expected=ArithmeticException.class)
 	public void remainderByZero (){
 

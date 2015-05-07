@@ -36,7 +36,12 @@ public class MathematicalOperations {
 		return num * num;
 	}
 
-	//The remainder function for number withh int type
+	/** The remainder function for numbers with integer type
+	 * Calculates the remainder of two integers.
+	 * @param x: the first number (dividend)
+	 * @param y: the second number (divisor)
+	 * @return the remainder of the division
+	 */
 	public int remainder (int x, int y){
 		return x % y;
 	}
