@@ -120,8 +120,8 @@ public class TestMathematicalOperations{
     	@Test
     	public void bitwiseXorTest() {
             	MathematicalOperations bitwiseXorOperation = new MathematicalOperations();
-		assertEquals("Bitwise or of 20 with 15 is 27.", 15, bitwiseXorOperation.bitwiseXor(20, 15), 0.00000001);      
-		assertEquals("Bitwise or of 64 with 49 is 113.", 100, bitwiseXorOperation.bitwiseXor(64, 113), 0.00000001);      
+		assertEquals("Bitwise or of 20 with 15 is 27.", 27, bitwiseXorOperation.bitwiseXor(20, 15), 0.00000001);      
+		assertEquals("Bitwise or of 64 with 49 is 113.", 113, bitwiseXorOperation.bitwiseXor(64, 49), 0.00000001);      
 	}
     
 	/*! \brief Unit Test function for double subtraction in MathematicalOperations class
