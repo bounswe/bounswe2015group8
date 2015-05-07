@@ -1,11 +1,22 @@
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
+
+/*! The JUnit Testing class for the operations in MathematicalOperations.java */
 public class TestMathematicalOperations{
 	
-	/* Unit Test for double division in MathematicalOperations class */
+	/*! \brief Unit Test function for double division in MathematicalOperations class
+	 * 
+	 * Tests the edge cases where the divider is zero.
+	 * In Java, dividing by zero for doubles does not throw an exception unlike it does for integers.
+	 * Instead, it returns positive infinity if the dividend is positive.
+	 * If the dividend is negative, then the result is negative infinity.
+	 * Dividing zero by zero does not throw an exception either, for the double types. It returns NaN.
+	 * Hence, there should not be any exception for those cases.  
+	 *  */
 	@Test
 	public void divideByZeroShouldBeHandled(){
+		
 		MathematicalOperations mOp = new MathematicalOperations();
 		
 		// Test cases
