@@ -10,7 +10,12 @@ public class MathematicalOperations {
 		return x * y;
 	}
 	
-	/* The square function for numbers with double type */
+	/** The square function for numbers with double type
+	 * This function will be used for quickly generating the square of any given double.
+	 * It is faster than the generalized power function.
+	 * @param num the double to be squared
+	 * @return square of the given input
+	 */
 	public double square(double num) {
 		return num * num;
 	}
