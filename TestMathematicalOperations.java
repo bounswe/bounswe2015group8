@@ -98,7 +98,9 @@ public class TestMathematicalOperations{
 		assertEquals("Any number to the power of 0 is 1", 1, op.power(5,0), 0.00000001);       
 	}
 
-	/* Unit Test for bitwise and operation in MathematicalOperations class */
+	/** Unit Test for bitwise and operation in MathematicalOperations class 
+	* Contains two JUnit test cases for bitwiseAnd function in MathematicalOperations.java
+	*/
 	@Test
 	public void bitwiseAndTest() {
 		MathematicalOperations bitwiseAndOperation = new MathematicalOperations();
