@@ -52,7 +52,7 @@ public class TestMathematicalOperations{
 	}
 	
 	/** Unit Test for testing the remainder function in MathematicalOperations class
-	 * This functions tests the edge cases where the second number is zero,
+	 * This functions tests the edge cases where the second number is zero or first number is negative
 	 * For integers, division by zero throws exception so this case should throw Arithmetic Exception
 	 */
 	@Test(expected=ArithmeticException.class)
