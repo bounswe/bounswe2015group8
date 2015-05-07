@@ -46,7 +46,11 @@ public class TestMathematicalOperations{
 
 	}
 		
-	/* Unit Test for square function in MathematicalOperations class */
+	/** Unit Test for testing the square function in MathematicalOperations class
+	 * This functions tests the edge cases of positive and negative infinities,
+	 * the square of zero, and the square of negative numbers (making sure they turn out positive.
+	 * No overflow errors should occur with doubles.
+	 */
 	@Test
 	public void squareTest() {
 		MathematicalOperations op = new MathematicalOperations();
