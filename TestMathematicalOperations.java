@@ -83,7 +83,11 @@ public class TestMathematicalOperations{
 
 	}
 
-	/* Unit Test for double sum in MathematicalOperations class */
+	/* Unit Test for double sum in MathematicalOperations class 
+	 * Tests sum operation with zero value and a positive value
+	 * Tests sum operation with zero value and a negative value
+	 * Tests some regular cases with positive and negative results.
+	 *  */
 	@Test
 	public void addTest(){
 		MathematicalOperations adder = new MathematicalOperations();

@@ -41,7 +41,12 @@ public class MathematicalOperations {
 		return x % y;
 	}
 
-	/* The add function for numbers with double type */
+    /** The add function for numbers with double type
+	 * It calculate the sum of x and y.
+	 * @param x is the first number.
+     * @param y is the second number.
+	 * @return sum of x and y.
+	 */
 	public double add(double x, double y){
 		return x+y;		
 	}
