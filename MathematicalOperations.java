@@ -41,8 +41,8 @@ public class MathematicalOperations {
 	/** The power function for numbers with double type
 	 * It is used for generating x to the power of n.
 	 * @param x the base number with double type.
-     * @param n the exponenet number with integer type.
-	 * @return result is the x to power the n.
+     * @param n the exponent number with integer type.
+	 * @return result is x to the power of n.
 	 */
 	public double power(double x, int n){
 		if(n==0)
