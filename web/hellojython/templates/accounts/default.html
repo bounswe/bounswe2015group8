@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<title> WELCOME </title>
+		<style>
+			body{
+				background-color: #fdfdfd;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h1 style="align-horizontal:center;">{{welcome}}</h1>
+		<form action="{% url 'add_user' %}" method="POST">
+			{% csrf_token %}
+			Username: <input type="text" name="username" />
+		    &nbsp;
+		    Password: <input type="text" name="password" />
+		    &nbsp;
+		  	<input type="submit" value="Submit">
+		</form>
+
+		<table border="1">
+			<tr>
+				<th>Username</th>
+				<th>Password</th>
+			</tr>
+			{% for user in users %}
+			<tr>
+				<td>{{user.username}}</td>
+				<td>{{user.password}}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</body>
+
+</html>
