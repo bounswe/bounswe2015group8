@@ -8,6 +8,12 @@
         <id name="id">
             <column name="ID" sql-type="bigint" not-null="true"/>
         </id>
+        <many-to-one name="owner" class="model.Member" fetch="select">
+            <column name="OWNER_ID" sql-type="bigint" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="post" class="model.Post" fetch="select">
+            <column name="POST_ID" sql-type="bigint" not-null="true"/>
+        </many-to-one>
         <property name="content">
             <column name="CONTENT" sql-type="text" length="65535" not-null="true"/>
         </property>
@@ -17,5 +23,9 @@
         <property name="lastEditedDate">
             <column name="LAST_EDITED_DATE" sql-type="timestamp"/>
         </property>
+        <set name="votes" table="COMMENT_VOTE" inverse="true" lazy="true" fetch="select" cascade="save-update">
+            <key column="COMMENT_ID"/>
+            <one-to-many class="model.CommentVote" />
+        </set>
     </class>
 </hibernate-mapping>

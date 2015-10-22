@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.Heritage" table="HERITAGE" schema="" catalog="test">
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+        </id>
+        <property name="name">
+            <column name="NAME" sql-type="varchar" length="64" not-null="true"/>
+        </property>
+        <property name="place">
+            <column name="PLACE" sql-type="varchar" length="64"/>
+        </property>
+        <property name="postDate">
+            <column name="POST_DATE" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="description">
+            <column name="DESCRIPTION" sql-type="varchar" length="1024" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

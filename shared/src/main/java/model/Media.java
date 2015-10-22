@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Created by xyllan on 21.10.2015.
+ * Created by xyllan on 22.10.2015.
  */
 public class Media {
     private long id;

@@ -4,24 +4,24 @@ package model;
  * Created by xyllan on 22.10.2015.
  */
 public class CommentVote {
-    private long memberId;
-    private long commentId;
+    private Member member;
+    private Comment comment;
     private byte voteType;
 
-    public long getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(long memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
-    public long getCommentId() {
-        return commentId;
+    public Comment getComment() {
+        return comment;
     }
 
-    public void setCommentId(long commentId) {
-        this.commentId = commentId;
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
 
     public byte getVoteType() {
@@ -39,8 +39,8 @@ public class CommentVote {
 
         CommentVote that = (CommentVote) o;
 
-        if (memberId != that.memberId) return false;
-        if (commentId != that.commentId) return false;
+        if (member != null ? !member.equals(that.member) : that.member != null) return false;
+        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
         if (voteType != that.voteType) return false;
 
         return true;
@@ -48,8 +48,8 @@ public class CommentVote {
 
     @Override
     public int hashCode() {
-        int result = (int) (memberId ^ (memberId >>> 32));
-        result = 31 * result + (int) (commentId ^ (commentId >>> 32));
+        int result =  (member != null ? member.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
         result = 31 * result + (int) voteType;
         return result;
     }

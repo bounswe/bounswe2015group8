@@ -1,11 +1,9 @@
 package model;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
- * Created by xyllan on 21.10.2015.
+ * Created by xyllan on 22.10.2015.
  */
 public class Heritage {
     private long id;
@@ -13,18 +11,6 @@ public class Heritage {
     private String place;
     private Timestamp postDate;
     private String description;
-    private Set<Post> posts;
-    public Heritage() {
-        posts = new HashSet<Post>();
-    }
-
-    public Heritage(String name, String place, Timestamp postDate, String description, Set<Post> posts) {
-        this.name = name;
-        this.place = place;
-        this.postDate = postDate;
-        this.description = description;
-        this.posts = posts;
-    }
 
     public long getId() {
         return id;
@@ -65,10 +51,6 @@ public class Heritage {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Set<Post> getPosts() { return posts; }
-
-    public void setPosts(Set<Post> posts) { this.posts = posts; }
 
     @Override
     public boolean equals(Object o) {

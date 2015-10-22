@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.Post" table="POST" schema="" catalog="test">
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+        </id>
+        <many-to-one name="owner" class="model.Member" fetch="select">
+            <column name="OWNER" sql-type="bigint" not-null="true"/>
+        </many-to-one>
+        <property name="type">
+            <column name="TYPE" sql-type="int" not-null="true"/>
+        </property>
+        <property name="postDate">
+            <column name="POST_DATE" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="lastEditedDate">
+            <column name="LAST_EDITED_DATE" sql-type="timestamp"/>
+        </property>
+        <property name="title">
+            <column name="TITLE" sql-type="varchar" length="128"/>
+        </property>
+        <property name="content">
+            <column name="CONTENT" sql-type="text" length="65535" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

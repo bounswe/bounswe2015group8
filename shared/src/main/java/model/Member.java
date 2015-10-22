@@ -1,7 +1,10 @@
 package model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- * Created by xyllan on 21.10.2015.
+ * Created by xyllan on 22.10.2015.
  */
 public class Member {
     private long id;
@@ -9,14 +12,32 @@ public class Member {
     private String password;
     private String email;
     private String profilePicture;
-    public Member() {
+    private Set<Member> followedMembers;
+    private Set<Member> followers;
+    private Set<Post> posts;
 
+    public Member() {
+        followedMembers = new HashSet<Member>();
+        followers = new HashSet<Member>();
+        posts = new HashSet<Post>();
     }
+
     public Member(String username, String password, String email, String profilePicture) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.profilePicture = profilePicture;
+        followedMembers = new HashSet<Member>();
+        followers = new HashSet<Member>();
+        posts = new HashSet<Post>();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -51,12 +72,20 @@ public class Member {
         this.profilePicture = profilePicture;
     }
 
-    public long getId() {
-        return id;
+    public Set<Member> getFollowedMembers() { return followedMembers; }
+
+    public void setFollowedMembers(Set<Member> followedMembers) { this.followedMembers = followedMembers;}
+
+    public Set<Member> getFollowers() { return followers; }
+
+    public void setFollowers(Set<Member> followers) { this.followers = followers;}
+
+    public Set<Post> getPosts() {
+        return posts;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
     }
 
     @Override

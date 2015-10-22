@@ -1,36 +1,29 @@
 package model;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
-enum PostType {}
 /**
- * Created by xyllan on 21.10.2015.
+ * Created by xyllan on 22.10.2015.
  */
 public class Post {
     private long id;
     private Member owner;
-    private PostType type;
+    private int type;
     private Timestamp postDate;
     private Timestamp lastEditedDate;
     private String title;
     private String content;
-    private Set<Heritage> heritages;
+    //private Set
 
     public Post() {
-        heritages = new HashSet<Heritage>();
     }
 
-    public Post(Member owner, PostType type, Timestamp postDate, Timestamp lastEditedDate,
-                String title, String content, Set<Heritage> heritages) {
+    public Post(Member owner, int type, Timestamp postDate, String title, String content) {
         this.owner = owner;
         this.type = type;
         this.postDate = postDate;
-        this.lastEditedDate = lastEditedDate;
         this.title = title;
         this.content = content;
-        this.heritages = heritages;
     }
 
     public long getId() {
@@ -41,11 +34,21 @@ public class Post {
         this.id = id;
     }
 
-    public int getType() {
-        return type.ordinal();
+    public Member getOwner() {
+        return owner;
     }
 
-    public void setType(int type) { this.type = PostType.values()[type]; }
+    public void setOwner(Member owner) {
+        this.owner = owner;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public Timestamp getPostDate() {
         return postDate;
@@ -79,10 +82,6 @@ public class Post {
         this.content = content;
     }
 
-    public Set<Heritage> getHeritages() { return heritages; }
-
-    public void setHeritages(Set<Heritage> heritages) { this.heritages = heritages; }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,6 +90,7 @@ public class Post {
         Post post = (Post) o;
 
         if (id != post.id) return false;
+        if (owner != post.owner) return false;
         if (type != post.type) return false;
         if (postDate != null ? !postDate.equals(post.postDate) : post.postDate != null) return false;
         if (lastEditedDate != null ? !lastEditedDate.equals(post.lastEditedDate) : post.lastEditedDate != null)
@@ -104,7 +104,8 @@ public class Post {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        result = 31 * result + type;
         result = 31 * result + (postDate != null ? postDate.hashCode() : 0);
         result = 31 * result + (lastEditedDate != null ? lastEditedDate.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
