@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class FollowPK implements Serializable {
     private long followerId;
     private long followeeId;
+    private Member follower;
+    private Member followee;
 
     public long getFollowerId() {
         return followerId;
@@ -43,5 +45,21 @@ public class FollowPK implements Serializable {
         int result = (int) (followerId ^ (followerId >>> 32));
         result = 31 * result + (int) (followeeId ^ (followeeId >>> 32));
         return result;
+    }
+
+    public Member getFollower() {
+        return follower;
+    }
+
+    public void setFollower(Member follower) {
+        this.follower = follower;
+    }
+
+    public Member getFollowee() {
+        return followee;
+    }
+
+    public void setFollowee(Member followee) {
+        this.followee = followee;
     }
 }

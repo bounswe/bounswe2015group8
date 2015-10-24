@@ -3,18 +3,20 @@ package model;
 import java.io.Serializable;
 
 /**
- * Created by xyllan on 22.10.2015.
+ * Created by xyllan on 23.10.2015.
  */
 public class PostVotePK implements Serializable {
-    private long memberId;
+    private long ownerId;
     private long postId;
+    private Member owner;
+    private Post post;
 
-    public long getMemberId() {
-        return memberId;
+    public long getOwnerId() {
+        return ownerId;
     }
 
-    public void setMemberId(long memberId) {
-        this.memberId = memberId;
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public long getPostId() {
@@ -32,7 +34,7 @@ public class PostVotePK implements Serializable {
 
         PostVotePK that = (PostVotePK) o;
 
-        if (memberId != that.memberId) return false;
+        if (ownerId != that.ownerId) return false;
         if (postId != that.postId) return false;
 
         return true;
@@ -40,8 +42,24 @@ public class PostVotePK implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = (int) (memberId ^ (memberId >>> 32));
+        int result = (int) (ownerId ^ (ownerId >>> 32));
         result = 31 * result + (int) (postId ^ (postId >>> 32));
         return result;
+    }
+
+    public Member getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Member owner) {
+        this.owner = owner;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }

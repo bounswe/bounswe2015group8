@@ -6,6 +6,8 @@ package model;
 public class HeritagePost {
     private long heritageId;
     private long postId;
+    private Heritage heritage;
+    private Post post;
 
     public long getHeritageId() {
         return heritageId;
@@ -41,5 +43,21 @@ public class HeritagePost {
         int result = (int) (heritageId ^ (heritageId >>> 32));
         result = 31 * result + (int) (postId ^ (postId >>> 32));
         return result;
+    }
+
+    public Heritage getHeritage() {
+        return heritage;
+    }
+
+    public void setHeritage(Heritage heritage) {
+        this.heritage = heritage;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }

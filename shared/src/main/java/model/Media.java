@@ -1,14 +1,14 @@
 package model;
 
 /**
- * Created by xyllan on 22.10.2015.
+ * Created by xyllan on 23.10.2015.
  */
 public class Media {
     private long id;
     private long postOrHeritageId;
     private String mediaLink;
     private int mediaType;
-    private byte postOrHeritage;
+    private boolean postOrHeritage;
 
     public long getId() {
         return id;
@@ -42,11 +42,11 @@ public class Media {
         this.mediaType = mediaType;
     }
 
-    public byte getPostOrHeritage() {
+    public boolean getPostOrHeritage() {
         return postOrHeritage;
     }
 
-    public void setPostOrHeritage(byte postOrHeritage) {
+    public void setPostOrHeritage(boolean postOrHeritage) {
         this.postOrHeritage = postOrHeritage;
     }
 
@@ -72,7 +72,7 @@ public class Media {
         result = 31 * result + (int) (postOrHeritageId ^ (postOrHeritageId >>> 32));
         result = 31 * result + (mediaLink != null ? mediaLink.hashCode() : 0);
         result = 31 * result + mediaType;
-        result = 31 * result + (int) postOrHeritage;
+        result = 31 * result + (postOrHeritage ? 1 : 0);
         return result;
     }
 }

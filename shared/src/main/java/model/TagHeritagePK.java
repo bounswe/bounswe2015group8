@@ -3,11 +3,13 @@ package model;
 import java.io.Serializable;
 
 /**
- * Created by xyllan on 22.10.2015.
+ * Created by xyllan on 23.10.2015.
  */
 public class TagHeritagePK implements Serializable {
     private long tagId;
     private long heritageId;
+    private Tag tag;
+    private Heritage heritage;
 
     public long getTagId() {
         return tagId;
@@ -43,5 +45,21 @@ public class TagHeritagePK implements Serializable {
         int result = (int) (tagId ^ (tagId >>> 32));
         result = 31 * result + (int) (heritageId ^ (heritageId >>> 32));
         return result;
+    }
+
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+
+    public Heritage getHeritage() {
+        return heritage;
+    }
+
+    public void setHeritage(Heritage heritage) {
+        this.heritage = heritage;
     }
 }

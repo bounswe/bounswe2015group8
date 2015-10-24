@@ -1,11 +1,13 @@
 package model;
 
 /**
- * Created by xyllan on 22.10.2015.
+ * Created by xyllan on 23.10.2015.
  */
 public class TagPost {
     private long tagId;
     private long postId;
+    private Tag tag;
+    private Post post;
 
     public long getTagId() {
         return tagId;
@@ -41,5 +43,21 @@ public class TagPost {
         int result = (int) (tagId ^ (tagId >>> 32));
         result = 31 * result + (int) (postId ^ (postId >>> 32));
         return result;
+    }
+
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }

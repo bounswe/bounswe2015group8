@@ -1,10 +1,10 @@
 package model;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
- * Created by xyllan on 22.10.2015.
+ * Created by xyllan on 23.10.2015.
  */
 public class Member {
     private long id;
@@ -12,14 +12,19 @@ public class Member {
     private String password;
     private String email;
     private String profilePicture;
-    private Set<Member> followedMembers;
-    private Set<Member> followers;
-    private Set<Post> posts;
-
+    private Collection<Comment> comments;
+    private Collection<CommentVote> commentVotes;
+    private Collection<Member> followedMembers;
+    private Collection<Member> followers;
+    private Collection<Post> posts;
+    private Collection<PostVote> postVotes;
     public Member() {
+        comments = new HashSet<Comment>();
+        commentVotes = new HashSet<CommentVote>();
         followedMembers = new HashSet<Member>();
         followers = new HashSet<Member>();
         posts = new HashSet<Post>();
+        postVotes = new HashSet<PostVote>();
     }
 
     public Member(String username, String password, String email, String profilePicture) {
@@ -27,11 +32,13 @@ public class Member {
         this.password = password;
         this.email = email;
         this.profilePicture = profilePicture;
+        comments = new HashSet<Comment>();
+        commentVotes = new HashSet<CommentVote>();
         followedMembers = new HashSet<Member>();
         followers = new HashSet<Member>();
         posts = new HashSet<Post>();
+        postVotes = new HashSet<PostVote>();
     }
-
     public long getId() {
         return id;
     }
@@ -72,22 +79,6 @@ public class Member {
         this.profilePicture = profilePicture;
     }
 
-    public Set<Member> getFollowedMembers() { return followedMembers; }
-
-    public void setFollowedMembers(Set<Member> followedMembers) { this.followedMembers = followedMembers;}
-
-    public Set<Member> getFollowers() { return followers; }
-
-    public void setFollowers(Set<Member> followers) { this.followers = followers;}
-
-    public Set<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,5 +104,81 @@ public class Member {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (profilePicture != null ? profilePicture.hashCode() : 0);
         return result;
+    }
+
+    public Collection<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Collection<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Collection<CommentVote> getCommentVotes() {
+        return commentVotes;
+    }
+
+    public void setCommentVotes(Collection<CommentVote> commentVotes) {
+        this.commentVotes = commentVotes;
+    }
+
+    public Collection<Member> getFollowedMembers() {
+        return followedMembers;
+    }
+
+    public void setFollowedMembers(Collection<Member> followedMembers) {
+        this.followedMembers = followedMembers;
+    }
+
+    public Collection<Member> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Collection<Member> followers) {
+        this.followers = followers;
+    }
+
+    public Collection<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Collection<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Collection<PostVote> getPostVotes() {
+        return postVotes;
+    }
+
+    public void setPostVotes(Collection<PostVote> postVotes) {
+        this.postVotes = postVotes;
+    }
+    public void postPost(Post p, Heritage... heritages) {
+        p.setOwner(this);
+        posts.add(p);
+        for(Heritage h : heritages) {
+            p.getHeritages().add(h);
+            h.getPosts().add(p);
+        }
+    }
+    public void postComment(Post p, Comment c) {
+        c.setOwner(this);
+        comments.add(c);
+        c.setPost(p);
+        p.getComments().add(c);
+    }
+    public void voteComment(Comment c, boolean type) {
+        CommentVote cv = new CommentVote(this,c,type);
+        commentVotes.add(cv);
+        c.getVotes().add(cv);
+    }
+    public void votePost(Post p, boolean type) {
+        PostVote pv = new PostVote(this,p,type);
+        postVotes.add(pv);
+        p.getVotes().add(pv);
+    }
+    public void follow(Member other) {
+        followedMembers.add(other);
+        other.followers.add(this);
     }
 }

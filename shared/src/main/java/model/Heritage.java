@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Created by xyllan on 22.10.2015.
@@ -11,6 +13,21 @@ public class Heritage {
     private String place;
     private Timestamp postDate;
     private String description;
+    private Collection<Post> posts;
+    private Collection<Tag> tags;
+    public Heritage() {
+        this.posts = new HashSet<Post>();
+        this.tags = new HashSet<Tag>();
+    }
+
+    public Heritage(String name, String place, String description, Timestamp postDate) {
+        this.name = name;
+        this.place = place;
+        this.description = description;
+        this.postDate = postDate;
+        this.posts = new HashSet<Post>();
+        this.tags = new HashSet<Tag>();
+    }
 
     public long getId() {
         return id;
@@ -77,5 +94,28 @@ public class Heritage {
         result = 31 * result + (postDate != null ? postDate.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
+    }
+
+    public Collection<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Collection<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Collection<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Collection<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public void addTags(Tag... tags) {
+        for(Tag t : tags) {
+            this.tags.add(t);
+            t.getHeritages().add(this);
+        }
     }
 }

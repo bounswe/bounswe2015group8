@@ -4,31 +4,40 @@ package model;
  * Created by xyllan on 22.10.2015.
  */
 public class CommentVote {
-    private Member member;
+    private long ownerId;
+    private long commentId;
+    private boolean voteType;
+    private Member owner;
     private Comment comment;
-    private byte voteType;
+    public CommentVote() {
 
-    public Member getMember() {
-        return member;
     }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public Comment getComment() {
-        return comment;
-    }
-
-    public void setComment(Comment comment) {
+    public CommentVote(Member owner, Comment comment, boolean type) {
+        this.owner = owner;
         this.comment = comment;
+        this.voteType = type;
+    }
+    public long getOwnerId() {
+        return ownerId;
     }
 
-    public byte getVoteType() {
+    public void setOwnerId(long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public long getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(long commentId) {
+        this.commentId = commentId;
+    }
+
+    public boolean getVoteType() {
         return voteType;
     }
 
-    public void setVoteType(byte voteType) {
+    public void setVoteType(boolean voteType) {
         this.voteType = voteType;
     }
 
@@ -39,8 +48,8 @@ public class CommentVote {
 
         CommentVote that = (CommentVote) o;
 
-        if (member != null ? !member.equals(that.member) : that.member != null) return false;
-        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
+        if (ownerId != that.ownerId) return false;
+        if (commentId != that.commentId) return false;
         if (voteType != that.voteType) return false;
 
         return true;
@@ -48,9 +57,25 @@ public class CommentVote {
 
     @Override
     public int hashCode() {
-        int result =  (member != null ? member.hashCode() : 0);
-        result = 31 * result + (comment != null ? comment.hashCode() : 0);
-        result = 31 * result + (int) voteType;
+        int result = (int) (ownerId ^ (ownerId >>> 32));
+        result = 31 * result + (int) (commentId ^ (commentId >>> 32));
+        result = 31 * result + (voteType ? 1 : 0);
         return result;
+    }
+
+    public Member getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Member owner) {
+        this.owner = owner;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
 }
