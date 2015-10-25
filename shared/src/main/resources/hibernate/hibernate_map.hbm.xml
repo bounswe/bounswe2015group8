@@ -1,0 +1,271 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="model.Comment" table="COMMENT" schema="cmpe451_db" >
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+        <property name="content">
+            <column name="CONTENT" sql-type="text" length="65535" not-null="true"/>
+        </property>
+        <property name="postDate">
+            <column name="POST_DATE" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="lastEditedDate">
+            <column name="LAST_EDITED_DATE" sql-type="timestamp"/>
+        </property>
+        <many-to-one name="owner" class="model.Member" cascade="save-update">
+            <column name="OWNER_ID" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="post" class="model.Post" cascade="save-update">
+            <column name="POST_ID" not-null="true"/>
+        </many-to-one>
+        <set name="votes" inverse="true" cascade="save-update">
+            <key>
+                <column name="COMMENT_ID" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="model.CommentVote"/>
+        </set>
+    </class>
+    <class name="model.CommentVote" table="COMMENT_VOTE" schema="cmpe451_db" >
+        <composite-id mapped="true" class="model.CommentVotePK">
+            <key-many-to-one name="owner" class="model.Member">
+                <column name="MEMBER_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+            <key-many-to-one name="comment" class="model.Comment">
+                <column name="COMMENT_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+        </composite-id>
+        <property name="voteType">
+            <column name="VOTE_TYPE" sql-type="bit" not-null="true"/>
+        </property>
+    </class>
+    <class name="model.Follow" table="FOLLOW" schema="cmpe451_db" >
+        <composite-id mapped="true" class="model.FollowPK">
+            <key-many-to-one name="follower" class="model.Member">
+                <column name="FOLLOWER_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+            <key-many-to-one name="followee" class="model.Member">
+                <column name="FOLLOWEE_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+        </composite-id>
+    </class>
+    <class name="model.Heritage" table="HERITAGE" schema="cmpe451_db" >
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+        <property name="name">
+            <column name="NAME" sql-type="varchar" length="64" not-null="true"/>
+        </property>
+        <property name="place">
+            <column name="PLACE" sql-type="varchar" length="64"/>
+        </property>
+        <property name="postDate">
+            <column name="POST_DATE" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="description">
+            <column name="DESCRIPTION" sql-type="varchar" length="1024" not-null="true"/>
+        </property>
+        <set name="posts" table="HERITAGE_POST" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="HERITAGE_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Post" column="POST_ID"/>
+        </set>
+        <set name="tags" table="TAG_HERITAGE" inverse="true" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="HERITAGE_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Tag" column="TAG_ID"/>
+        </set>
+    </class>
+    <class name="model.HeritagePost" table="HERITAGE_POST" schema="cmpe451_db" >
+        <composite-id mapped="true" class="model.HeritagePostPK">
+            <key-many-to-one name="heritage" class="model.Heritage">
+                <column name="HERITAGE_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+            <key-many-to-one name="post" class="model.Post">
+                <column name="POST_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+        </composite-id>
+    </class>
+    <class name="model.Media" table="MEDIA" schema="cmpe451_db" >
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+        <property name="postOrHeritageId">
+            <column name="POST_OR_HERITAGE_ID" sql-type="bigint" not-null="true"/>
+        </property>
+        <property name="mediaLink">
+            <column name="MEDIA_LINK" sql-type="varchar" length="256" not-null="true"/>
+        </property>
+        <property name="mediaType">
+            <column name="MEDIA_TYPE" sql-type="int" not-null="true"/>
+        </property>
+        <property name="postOrHeritage">
+            <column name="POST_OR_HERITAGE" sql-type="bit" not-null="true"/>
+        </property>
+    </class>
+    <class name="model.Member" table="MEMBER" schema="cmpe451_db" >
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+        <property name="username">
+            <column name="USERNAME" sql-type="varchar" length="64" not-null="true"/>
+        </property>
+        <property name="password">
+            <column name="PASSWORD" sql-type="varchar" length="128" not-null="true"/>
+        </property>
+        <property name="email">
+            <column name="EMAIL" sql-type="varchar" length="64" not-null="true"/>
+        </property>
+        <property name="profilePicture">
+            <column name="PROFILE_PICTURE" sql-type="varchar" length="256"/>
+        </property>
+        <set name="comments" inverse="true" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="OWNER_ID" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="model.Comment"/>
+        </set>
+        <set name="commentVotes" inverse="true" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="MEMBER_ID" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="model.CommentVote"/>
+        </set>
+        <set name="followedMembers" table="FOLLOW" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="FOLLOWER_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Member" column="FOLLOWEE_ID"/>
+        </set>
+        <set name="followers" table="FOLLOW" inverse="true" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="FOLLOWEE_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Member" column="FOLLOWER_ID"/>
+        </set>
+        <set name="posts" inverse="true" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="OWNER" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="model.Post"/>
+        </set>
+        <set name="postVotes" inverse="true" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="MEMBER_ID" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="model.PostVote"/>
+        </set>
+    </class>
+    <class name="model.Post" table="POST" schema="cmpe451_db" >
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+        <property name="type">
+            <column name="TYPE" sql-type="int" not-null="true"/>
+        </property>
+        <property name="postDate">
+            <column name="POST_DATE" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="lastEditedDate">
+            <column name="LAST_EDITED_DATE" sql-type="timestamp"/>
+        </property>
+        <property name="title">
+            <column name="TITLE" sql-type="varchar" length="128"/>
+        </property>
+        <property name="content">
+            <column name="CONTENT" sql-type="text" length="65535" not-null="true"/>
+        </property>
+        <many-to-one name="owner" class="model.Member" cascade="save-update">
+            <column name="OWNER" not-null="true"/>
+        </many-to-one>
+        <set name="comments" inverse="true">
+            <key>
+                <column name="POST_ID" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="model.Comment"/>
+        </set>
+        <set name="heritages" table="HERITAGE_POST" inverse="true">
+            <key>
+                <column name="POST_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Heritage"/>
+        </set>
+        <set name="votes" inverse="true">
+            <key>
+                <column name="POST_ID" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="model.PostVote"/>
+        </set>
+        <set name="tags" table="TAG_POST" inverse="true">
+            <key>
+                <column name="POST_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Tag"/>
+        </set>
+    </class>
+    <class name="model.PostVote" table="POST_VOTE" schema="cmpe451_db" >
+        <composite-id mapped="true" class="model.PostVotePK">
+            <key-many-to-one name="owner" class="model.Member">
+                <column name="MEMBER_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+            <key-many-to-one name="post" class="model.Post">
+                <column name="POST_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+        </composite-id>
+        <property name="voteType">
+            <column name="VOTE_TYPE" sql-type="bit" not-null="true"/>
+        </property>
+    </class>
+    <class name="model.Tag" table="TAG" schema="cmpe451_db" >
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+        <property name="tagText">
+            <column name="TAG_TEXT" sql-type="varchar" length="1024" not-null="true"/>
+        </property>
+        <set name="heritages" table="TAG_HERITAGE" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="TAG_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Heritage" column="HERITAGE_ID"/>
+        </set>
+        <set name="posts" table="TAG_POST" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="TAG_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Post" column="POST_ID"/>
+        </set>
+    </class>
+    <class name="model.TagHeritage" table="TAG_HERITAGE" schema="cmpe451_db" >
+        <composite-id mapped="true" class="model.TagHeritagePK">
+            <key-many-to-one name="tag" class="model.Tag">
+                <column name="TAG_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+            <key-many-to-one name="heritage" class="model.Heritage">
+                <column name="HERITAGE_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+        </composite-id>
+    </class>
+    <class name="model.TagPost" table="TAG_POST" schema="cmpe451_db" >
+        <composite-id mapped="true" class="model.TagPostPK">
+            <key-many-to-one name="tag" class="model.Tag">
+                <column name="TAG_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+            <key-many-to-one name="post" class="model.Post">
+                <column name="POST_ID" sql-type="bigint" not-null="true"/>
+            </key-many-to-one>
+        </composite-id>
+    </class>
+</hibernate-mapping>

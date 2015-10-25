@@ -24,11 +24,10 @@ public class MainController {
         String member_id = "-1";
         String username = "";
         final Session session = Main.getSession();
-            session.get
-            session.getTransaction().begin();
-            Member m = new Member("root","1234","link","lonk");
+        session.getTransaction().begin();
+        Member m = new Member("root","1234","link","lonk");
             /*
-            Heritage h = new Heritage("türbe","somewhere","something",Timestamp.valueOf(LocalDateTime.now()));
+            Heritage h = new Heritage("tï¿½rbe","somewhere","something",Timestamp.valueOf(LocalDateTime.now()));
             //Member m = session.get(Member.class,8l);
             //Heritage h = session.get(Heritage.class,4l);
             Tag t = new Tag("smt");
@@ -58,8 +57,8 @@ public class MainController {
             session.getTransaction().commit();
             session.close();
             Map<String, String> templateVars = new HashMap<String, String>();
-            templateVars.put("member_id", member_id);
-            templateVars.put("username", username);
+            templateVars.put("member_id", ""+m.getId());
+            templateVars.put("username", m.getUsername());
             return new ModelAndView("list", templateVars);
 
 

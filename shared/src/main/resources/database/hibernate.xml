@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="
+   http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/tx
+   http://www.springframework.org/schema/tx/spring-tx.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd">
+
+       <context:property-placeholder location="classpath:properties/database.properties" />
+
+       <!-- Enable annotation style of managing transactions -->
+       <tx:annotation-driven transaction-manager="transactionManager" />
+
+       <!-- Declare the Hibernate SessionFactory for retrieving Hibernate sessions -->
+       <!-- See http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/orm/hibernate4/annotation/AnnotationSessionFactoryBean.html -->
+       <!-- See http://docs.jboss.org/hibernate/stable/core/api/index.html?org/hibernate/SessionFactory.html -->
+       <!-- See http://docs.jboss.org/hibernate/stable/core/api/index.html?org/hibernate/Session.html -->
+       <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+             p:dataSource-ref="dataSource"
+             p:mappingResources="hibernate/hibernate_map.hbm.xml"
+             p:packagesToScan="model">
+             <property name="hibernateProperties">
+                <props>
+                    <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                   <prop key="hibernate.show_sql">true</prop>
+               </props>
+           </property>
+       </bean>
+
+       <!-- Declare a datasource that has pooling capabilities-->
+       <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+
+              <property name="driverClassName" value="${driver_class}" />
+              <property name="url" value="${connection_url}" />
+              <property name="username" value="${username}" />
+              <property name="password" value="${password}" />
+       </bean>
+
+       <!-- Declare a transaction manager-->
+       <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager"
+             p:sessionFactory-ref="sessionFactory" />
+
+</beans>

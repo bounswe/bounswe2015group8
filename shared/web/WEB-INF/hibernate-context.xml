@@ -27,17 +27,11 @@
           p:packagesToScan="model"/>
 
     <!-- Declare a datasource that has pooling capabilities-->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          destroy-method="close"
-          p:driverClass="com.mysql.jdbc.Driver"
-          p:jdbcUrl="jdbc:mysql://localhost:3306/cmpe451_db"
-          p:user="group8"
-          p:password="cmpe451"
-          p:acquireIncrement="5"
-          p:idleConnectionTestPeriod="60"
-          p:maxPoolSize="100"
-          p:maxStatements="50"
-          p:minPoolSize="10" >
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="com.mysql.jdbc.Driver"
+          p:url="jdbc:mysql://localhost:3306/cmpe451_db"
+          p:username="group8"
+          p:password="cmpe451">
     </bean>
 
     <!-- Declare a transaction manager-->
