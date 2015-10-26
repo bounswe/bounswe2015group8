@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/bugrahan/AndroidStudioProjects/CulturalHeritage/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/Users/bugrahan/AndroidStudioProjects/CulturalHeritage/app/build/intermediates/pre-dexed/debug/classes-7cf29e7c70ad15b4216c63dbad9b17293f2a9b72.jar" />
+    </item>
+    <item
+        jar="/Users/bugrahan/AndroidStudioProjects/CulturalHeritage/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/jars/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/bugrahan/AndroidStudioProjects/CulturalHeritage/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-ba52550b074aeecbbda0808d3b6be240c9995510.jar" />
+    </item>
+    <item
+        jar="/Users/bugrahan/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/Users/bugrahan/AndroidStudioProjects/CulturalHeritage/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-79f102af854675c6b2fe59e03fcee2dd71254b8f.jar" />
+    </item>
+    <item
+        jar="/Users/bugrahan/AndroidStudioProjects/CulturalHeritage/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/Users/bugrahan/AndroidStudioProjects/CulturalHeritage/app/build/intermediates/pre-dexed/debug/classes-00d81e4bed727a06d225f3c6d44e58dfa18e96d6.jar" />
+    </item>
+
+</items>
