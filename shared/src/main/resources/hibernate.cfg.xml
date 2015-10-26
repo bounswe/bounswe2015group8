@@ -4,13 +4,13 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:mysql://localhost:3306/test</property>
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.username">username</property>
-        <property name="connection.password">password</property>
-        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cmpe451_db</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.username">group8</property>
+        <property name="hibernate.connection.password">cmpe451</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="show_sql">true</property>
-        <mapping resource="hibernate_map.xml"/>
+        <mapping resource="hibernate/hibernate_map.hbm.xml"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
     </session-factory>

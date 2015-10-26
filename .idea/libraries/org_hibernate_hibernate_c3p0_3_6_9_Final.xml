@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="org.hibernate:hibernate-c3p0:3.6.9.Final" type="repository">
+    <properties maven-id="org.hibernate:hibernate-c3p0:3.6.9.Final" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/hibernate-c3p0-3.6.9.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-collections-3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/dom4j-1.6.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.6.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/hibernate-jpa-2.0-api-1.0.1.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jta-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/c3p0-0.9.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

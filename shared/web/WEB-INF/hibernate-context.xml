@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation="
+   http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+   http://www.springframework.org/schema/tx
+   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <context:property-placeholder location="/WEB-INF/properties/spring.properties" />
+
+    <!-- Enable annotation style of managing transactions -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <!-- Declare the Hibernate SessionFactory for retrieving Hibernate sessions -->
+    <!-- See http://static.springsource.org/spring/docs/3.0.x/javadoc-api/org/springframework/orm/hibernate4/annotation/AnnotationSessionFactoryBean.html -->
+    <!-- See http://docs.jboss.org/hibernate/stable/core/api/index.html?org/hibernate/SessionFactory.html -->
+    <!-- See http://docs.jboss.org/hibernate/stable/core/api/index.html?org/hibernate/Session.html -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+          p:dataSource-ref="dataSource"
+          p:configLocation="classpath:hibernate.cfg.xml"
+          p:packagesToScan="model"/>
+
+    <!-- Declare a datasource that has pooling capabilities-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="com.mysql.jdbc.Driver"
+          p:url="jdbc:mysql://localhost:3306/cmpe451_db"
+          p:username="group8"
+          p:password="cmpe451">
+    </bean>
+
+    <!-- Declare a transaction manager-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

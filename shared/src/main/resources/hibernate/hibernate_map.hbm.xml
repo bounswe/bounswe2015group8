@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="model.Comment" table="COMMENT" schema="" catalog="test">
+    <class name="model.Comment" table="COMMENT" schema="cmpe451_db" >
         <id name="id">
             <column name="ID" sql-type="bigint" not-null="true"/>
             <generator class="identity"/>
@@ -31,7 +31,7 @@
             <one-to-many not-found="ignore" class="model.CommentVote"/>
         </set>
     </class>
-    <class name="model.CommentVote" table="COMMENT_VOTE" schema="" catalog="test">
+    <class name="model.CommentVote" table="COMMENT_VOTE" schema="cmpe451_db" >
         <composite-id mapped="true" class="model.CommentVotePK">
             <key-many-to-one name="owner" class="model.Member">
                 <column name="MEMBER_ID" sql-type="bigint" not-null="true"/>
@@ -44,7 +44,7 @@
             <column name="VOTE_TYPE" sql-type="bit" not-null="true"/>
         </property>
     </class>
-    <class name="model.Follow" table="FOLLOW" schema="" catalog="test">
+    <class name="model.Follow" table="FOLLOW" schema="cmpe451_db" >
         <composite-id mapped="true" class="model.FollowPK">
             <key-many-to-one name="follower" class="model.Member">
                 <column name="FOLLOWER_ID" sql-type="bigint" not-null="true"/>
@@ -54,7 +54,7 @@
             </key-many-to-one>
         </composite-id>
     </class>
-    <class name="model.Heritage" table="HERITAGE" schema="" catalog="test">
+    <class name="model.Heritage" table="HERITAGE" schema="cmpe451_db" >
         <id name="id">
             <column name="ID" sql-type="bigint" not-null="true"/>
             <generator class="identity"/>
@@ -84,7 +84,7 @@
             <many-to-many not-found="ignore" class="model.Tag" column="TAG_ID"/>
         </set>
     </class>
-    <class name="model.HeritagePost" table="HERITAGE_POST" schema="" catalog="test">
+    <class name="model.HeritagePost" table="HERITAGE_POST" schema="cmpe451_db" >
         <composite-id mapped="true" class="model.HeritagePostPK">
             <key-many-to-one name="heritage" class="model.Heritage">
                 <column name="HERITAGE_ID" sql-type="bigint" not-null="true"/>
@@ -94,7 +94,7 @@
             </key-many-to-one>
         </composite-id>
     </class>
-    <class name="model.Media" table="MEDIA" schema="" catalog="test">
+    <class name="model.Media" table="MEDIA" schema="cmpe451_db" >
         <id name="id">
             <column name="ID" sql-type="bigint" not-null="true"/>
             <generator class="identity"/>
@@ -112,7 +112,7 @@
             <column name="POST_OR_HERITAGE" sql-type="bit" not-null="true"/>
         </property>
     </class>
-    <class name="model.Member" table="MEMBER" schema="" catalog="test">
+    <class name="model.Member" table="MEMBER" schema="cmpe451_db" >
         <id name="id">
             <column name="ID" sql-type="bigint" not-null="true"/>
             <generator class="identity"/>
@@ -166,7 +166,7 @@
             <one-to-many not-found="ignore" class="model.PostVote"/>
         </set>
     </class>
-    <class name="model.Post" table="POST" schema="" catalog="test">
+    <class name="model.Post" table="POST" schema="cmpe451_db" >
         <id name="id">
             <column name="ID" sql-type="bigint" not-null="true"/>
             <generator class="identity"/>
@@ -214,7 +214,7 @@
             <many-to-many not-found="ignore" class="model.Tag"/>
         </set>
     </class>
-    <class name="model.PostVote" table="POST_VOTE" schema="" catalog="test">
+    <class name="model.PostVote" table="POST_VOTE" schema="cmpe451_db" >
         <composite-id mapped="true" class="model.PostVotePK">
             <key-many-to-one name="owner" class="model.Member">
                 <column name="MEMBER_ID" sql-type="bigint" not-null="true"/>
@@ -227,7 +227,7 @@
             <column name="VOTE_TYPE" sql-type="bit" not-null="true"/>
         </property>
     </class>
-    <class name="model.Tag" table="TAG" schema="" catalog="test">
+    <class name="model.Tag" table="TAG" schema="cmpe451_db" >
         <id name="id">
             <column name="ID" sql-type="bigint" not-null="true"/>
             <generator class="identity"/>
@@ -248,7 +248,7 @@
             <many-to-many not-found="ignore" class="model.Post" column="POST_ID"/>
         </set>
     </class>
-    <class name="model.TagHeritage" table="TAG_HERITAGE" schema="" catalog="test">
+    <class name="model.TagHeritage" table="TAG_HERITAGE" schema="cmpe451_db" >
         <composite-id mapped="true" class="model.TagHeritagePK">
             <key-many-to-one name="tag" class="model.Tag">
                 <column name="TAG_ID" sql-type="bigint" not-null="true"/>
@@ -258,7 +258,7 @@
             </key-many-to-one>
         </composite-id>
     </class>
-    <class name="model.TagPost" table="TAG_POST" schema="" catalog="test">
+    <class name="model.TagPost" table="TAG_POST" schema="cmpe451_db" >
         <composite-id mapped="true" class="model.TagPostPK">
             <key-many-to-one name="tag" class="model.Tag">
                 <column name="TAG_ID" sql-type="bigint" not-null="true"/>
