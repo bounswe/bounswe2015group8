@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
     <title>Login</title>
@@ -48,12 +50,15 @@
 
     <div id="section">
         <div class="roundbox">
-            <form action="" method="post" class="form-inline" id="form">
+            <form action="${contextPath}/login" method="post" class="form-inline" id="form">
                 <label for="username"><b>Username: </b></label>
                 <input type="text" name="username" id="username" class="form-control"> <br>
                 <label for="password"><b>Password: </b></label>
                 <input type="password" name="password" id="password" class="form-control"> <br>
                 <button type="submit" class="btn btn-default">Log In</button><br>
+                <c:if test="${doesUserExist == false}">
+                    <span style="color:red;">Your username or password is wrong!</span>
+                </c:if>
             </form>
         </div>
     </div>

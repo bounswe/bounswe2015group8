@@ -49,8 +49,8 @@
     <div id="section">
         <div class="roundbox">
             <form action="" method="post" class="form-inline" id="form">
-                <a href="">Log In</a> <br>
-                <a href="">Join!</a>
+                <a href="/login">Log In</a> <br>
+                <a href="/signup">Join Us!</a>
             </form>
         </div>
     </div>
