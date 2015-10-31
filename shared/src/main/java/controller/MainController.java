@@ -1,14 +1,20 @@
 package controller;
 
+import dao.MemberDao;
+import dao.MemberDaoImpl;
 import model.*;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import service.MemberDetailsService;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -22,6 +28,13 @@ import java.util.Map;
 
 @Controller
 public class MainController {
+    MemberDetailsService memberService;
+    public MainController() {
+        memberService = new MemberDetailsService();
+        MemberDaoImpl mdao = new MemberDaoImpl();
+        mdao.setSessionFactory(Main.getSessionFactory());
+        memberService.setMemberDao(mdao);
+    }
     @RequestMapping(value = "/")
     public ModelAndView home(){
         return new ModelAndView("home");
@@ -56,27 +69,22 @@ public class MainController {
     public ModelAndView login(){
         return new ModelAndView("login");
     }
+    @RequestMapping(value = "/login_success", method = RequestMethod.GET)
+    public ModelAndView login_success() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        return new ModelAndView("login_success","username",name);
+    }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ModelAndView signup(@RequestParam(value="username") String username,
                                @RequestParam(value="password") String password,
                                @RequestParam(value="email") String email){
-        final Session session = Main.getSession();
-        try{
-            session.getTransaction().begin();
-            Member m = new Member(username,password, email,"");
-            session.save(m);
-            session.getTransaction().commit();
-            Map<String, String> templateVars = new HashMap<String, String>();
-            templateVars.put("member_id", ""+m.getId());
-            templateVars.put("username", m.getUsername());
-
-        } finally{
-            session.close();
-            //return new ModelAndView("list", templateVars);
-            return new ModelAndView("login_success", "username", username); // login_success.jsp will be created soon.
-        }
-
+        Member m = memberService.createMember(username,password,email,"");
+        Map<String, String> templateVars = new HashMap<String, String>();
+        templateVars.put("member_id", ""+m.getId());
+        templateVars.put("username", m.getUsername());
+        return new ModelAndView("login_success", "username", username);
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)

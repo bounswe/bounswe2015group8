@@ -8,7 +8,6 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.cfg.Configuration;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -24,8 +23,6 @@ public class Main {
 
     static {
         try {
-            //Configuration configuration = new Configuration();
-            //configuration.configure("hibernate.cfg.xml");
             serviceRegistry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
             metadata = new MetadataSources(serviceRegistry).getMetadataBuilder().build();
             ourSessionFactory = metadata.buildSessionFactory();
@@ -36,6 +33,9 @@ public class Main {
 
     public static Session getSession() throws HibernateException {
         return ourSessionFactory.openSession();
+    }
+    public static SessionFactory getSessionFactory() {
+        return ourSessionFactory;
     }
 
     public static void main(final String[] args) throws Exception {

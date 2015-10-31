@@ -33,7 +33,12 @@
           p:username="group8"
           p:password="cmpe451">
     </bean>
-
+    <bean id="memberDao" class="dao.MemberDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="myUserDetailsService" class="service.MemberDetailsService">
+        <property name="memberDao" ref="memberDao" />
+    </bean>
     <!-- Declare a transaction manager-->
     <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager"
           p:sessionFactory-ref="sessionFactory" />
