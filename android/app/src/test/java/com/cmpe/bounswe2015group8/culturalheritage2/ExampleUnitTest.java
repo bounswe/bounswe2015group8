@@ -1,4 +1,4 @@
-package com.cmpe.bounswe2015group8.culturalheritage;
+package com.cmpe.bounswe2015group8.culturalheritage2;
 
 import org.junit.Test;
 
