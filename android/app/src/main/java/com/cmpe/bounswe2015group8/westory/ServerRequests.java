@@ -1,4 +1,4 @@
-package com.cmpe.bounswe2015group8.culturalheritage2;
+package com.cmpe.bounswe2015group8.westory;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -28,7 +28,7 @@ public class ServerRequests {
     ProgressDialog progressDialog;
     public static final int CONNECTION_TIMEOUT = 1000 * 15;
     public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com/";       // FIXME server address
-
+    //public static final String SERVER_ADDRESS = "http://localhost:12122";
     public ServerRequests(Context context){
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
@@ -62,15 +62,16 @@ public class ServerRequests {
         protected Void doInBackground(Void... params) {
             ArrayList<NameValuePair> dataToSend = new ArrayList<>();
             dataToSend.add(new BasicNameValuePair("username", user.username));
-            dataToSend.add(new BasicNameValuePair("mail", user.mail));
             dataToSend.add(new BasicNameValuePair("password", user.password));
+            dataToSend.add(new BasicNameValuePair("mail", user.mail));
+
 
             HttpParams httpRequestParams = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
             HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost(SERVER_ADDRESS + "Register.php");
+            HttpPost post = new HttpPost(SERVER_ADDRESS + "/api/signup");
 
             try {
                 post.setEntity(new UrlEncodedFormEntity(dataToSend));
@@ -110,7 +111,7 @@ public class ServerRequests {
             HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
 
             HttpClient client = new DefaultHttpClient(httpRequestParams);
-            HttpPost post = new HttpPost(SERVER_ADDRESS + "FetchUserData.php");
+            HttpPost post = new HttpPost(SERVER_ADDRESS + "/api/login");
 
             User returnedUser = null;
             try {
