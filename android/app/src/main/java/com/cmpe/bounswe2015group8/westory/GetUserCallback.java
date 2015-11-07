@@ -1,4 +1,4 @@
-package com.cmpe.bounswe2015group8.culturalheritage2;
+package com.cmpe.bounswe2015group8.westory;
 
 /**
  * Created by bugrahan on 31/10/15.

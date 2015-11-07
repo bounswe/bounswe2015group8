@@ -1,35 +1,37 @@
-package com.cmpe.bounswe2015group8.culturalheritage2;
+package com.cmpe.bounswe2015group8.westory;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class Login extends ActionBarActivity implements View.OnClickListener {
-
+public class LoginFragment extends NamedFragment implements View.OnClickListener {
+    public static final String NAME = "LOGIN";
     Button btnLogin;
     EditText etUsername, etPassword;
     TextView tvLinkToRegisterScreen;
     UserLocalStore userLocalStore;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        View v = inflater.inflate(R.layout.fragment_login,container,false);
 
-        userLocalStore = new UserLocalStore(this);
+        userLocalStore = new UserLocalStore(getActivity());
 
-        etUsername = (EditText) findViewById(R.id.etUsername);
-        etPassword = (EditText) findViewById(R.id.etPassword);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        tvLinkToRegisterScreen = (TextView) findViewById(R.id.tvLinkToRegisterScreen);
+        etUsername = (EditText) v.findViewById(R.id.etUsername);
+        etPassword = (EditText) v.findViewById(R.id.etPassword);
+        btnLogin = (Button) v.findViewById(R.id.btnLogin);
+        tvLinkToRegisterScreen = (TextView) v.findViewById(R.id.tvLinkToRegisterScreen);
 
         btnLogin.setOnClickListener(this);
         tvLinkToRegisterScreen.setOnClickListener(this);
+        return v;
 
     }
 
@@ -45,13 +47,13 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
 
                 break;
             case R.id.tvLinkToRegisterScreen:
-                startActivity(new Intent(this, Register.class));
+                MainActivity.beginFragment(getActivity(), new RegisterFragment());
                 break;
         }
     }
 
     private void authenticate(User user){
-        ServerRequests serverRequests = new ServerRequests(this);
+        ServerRequests serverRequests = new ServerRequests(getActivity());
         serverRequests.fetchUserDataInBackground(user, new GetUserCallback() {
             @Override
             public void done(User returnedUser) {
@@ -66,7 +68,7 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
     }
 
     private void showErrorMessage() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Login.this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         dialogBuilder.setMessage("Incorrect user details.");
         dialogBuilder.setPositiveButton("OK", null);
         dialogBuilder.show();
@@ -76,6 +78,10 @@ public class Login extends ActionBarActivity implements View.OnClickListener {
         userLocalStore.storeUserData(returnedUser);
         userLocalStore.setUserLoggedIn(true);
 
-        startActivity(new Intent(this, MainActivity.class));
+        MainActivity.beginFragment(getActivity(), new HomeFragment());
+    }
+    @Override
+    public String getName() {
+        return NAME;
     }
 }

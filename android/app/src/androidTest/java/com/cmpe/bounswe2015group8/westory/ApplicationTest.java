@@ -1,4 +1,4 @@
-package com.cmpe.bounswe2015group8.culturalheritage2;
+package com.cmpe.bounswe2015group8.westory;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

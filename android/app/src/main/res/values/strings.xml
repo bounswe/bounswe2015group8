@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cultural Heritage 2</string>
+    <string name="app_name">WeStory</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
