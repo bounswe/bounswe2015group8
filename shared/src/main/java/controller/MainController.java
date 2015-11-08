@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
 import service.MemberDetailsService;
+import service.PostService;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -39,11 +40,13 @@ public class MainController {
     private Logger logger = Logger.getLogger(MainController.class);
 
     MemberDetailsService memberService;
+    PostService postService;
     public MainController() {
         memberService = new MemberDetailsService();
         MemberDaoImpl mdao = new MemberDaoImpl();
         mdao.setSessionFactory(Main.getSessionFactory());
         memberService.setMemberDao(mdao);
+        postService = new PostService(Main.getSessionFactory());
     }
     @RequestMapping(value = "/")
     public ModelAndView home(){ return new ModelAndView("home"); }
@@ -89,7 +92,7 @@ public class MainController {
     public ModelAndView signup(@RequestParam(value="username") String username,
                                @RequestParam(value="password") String password,
                                @RequestParam(value="email") String email){
-        Member m = memberService.createMember(username,password,email,"");
+        Member m = memberService.createMember(username, password, email, "");
         Map<String, String> templateVars = new HashMap<String, String>();
         templateVars.put("member_id", ""+m.getId());
         templateVars.put("username", m.getUsername());
@@ -115,6 +118,7 @@ public class MainController {
                                     @RequestParam("media") MultipartFile media){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
+        /*
         final Session session = Main.getSession();
         session.getTransaction().begin();
         Member m = memberService.getMemberByUsername(username);
@@ -123,42 +127,50 @@ public class MainController {
 
         Post post = new Post(m, 0, new Timestamp(now.getTime()), title, content);
         session.save(post);
-
-        String loc = "loc";
+        */
+        java.util.Date now = new java.util.Date();
+        Member m = memberService.getMemberByUsername(username);
+        Post post = postService.savePost(m, 0, new Timestamp(now.getTime()), title, content);
 
         if(!media.isEmpty()){
             try {
                 // Creating the directory to store file
                 String mediaName = media.getOriginalFilename();
                 String filePath = "/media/" + mediaName;
+                final Session session = Main.getSession();
+                session.getTransaction().begin();
                 Media mediaObject = new Media(post.getId(), filePath, 0, false);
 
                 String rootPath = System.getProperty("catalina.home");
                 File dir = new File(rootPath + File.separator + "webapps"
                         + File.separator + appContext.getApplicationName().substring(1)
                         + File.separator + "static");
-                if (!dir.exists())                    dir.mkdirs();
+                if (!dir.exists())
+                    dir.mkdirs();
 
                 File serverFile = new File(dir.getAbsolutePath() + File.separator + mediaName);
 
                 try {
                     media.transferTo(serverFile);
-                    loc = serverFile.getAbsolutePath();
                 } catch (IllegalStateException e) {
                     e.printStackTrace();
                     return new ModelAndView("list_post", "error", "File uploaded failed:" + mediaName);
                 }
                 session.save(mediaObject);
-
+                session.getTransaction().commit();
             } catch (Exception e) {
                 return new ModelAndView("list_post", "error", "You failed to upload the file" + e.getMessage());
             }
         }
-        session.getTransaction().commit();
+
+        /*
         Criteria criteria = session.createCriteria(Post.class)
                 .add(Restrictions.eq("owner", m));
         List posts = criteria.list();
         session.close();
+        */
+
+        List<Post> posts = postService.getPostsByMember(m);
         return new ModelAndView("list_post","posts", posts);
     }
 

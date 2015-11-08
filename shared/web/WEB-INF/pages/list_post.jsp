@@ -46,7 +46,7 @@
 </head>
 <body>
 <div id="header">
-    WELCOME TO OUR SIGNUP PAGE
+    YOUR POSTS
 </div>
 <script type="text/javascript">
     console.log("${posts}");
