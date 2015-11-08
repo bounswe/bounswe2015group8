@@ -40,6 +40,7 @@
             width: 100% ;
             margin-left: auto ;
             margin-right: auto ;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -52,7 +53,10 @@
 </script>
 <c:forEach items="${posts}" var="post">
     <div class="roundbox">
+        <span>Title: ${post.title}</span>
+        <br>
         <span>Content: ${post.content}</span>
+        <br>
         <span>Date posted: ${post.postDate}</span>
     </div>
 </c:forEach>

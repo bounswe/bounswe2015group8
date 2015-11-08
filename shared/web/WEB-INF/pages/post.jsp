@@ -51,7 +51,8 @@
 <div id="section">
   <div class="roundbox">
     <form class="form-inline" id="form" action="${contextPath}/upload_post" method="POST" enctype="multipart/form-data">
-      <input type="text" name="content" id="content" class="form-control"> <br>
+      Title: <input type="text" name="title" id="title" class="form-control"> <br>
+      Content: <input valign="top" style="height:50%; width:80%;" type="text" name="content" id="content" class="form-control"> <br>
       <input type="file" name="media" id="media" class="form-control"> <br>
       <button type="submit" class="btn btn-default">POST!</button><br>
     </form>
