@@ -2,6 +2,7 @@ package service;
 
 import dao.PostDao;
 import dao.PostDaoImpl;
+import model.Heritage;
 import model.Post;
 import model.Member;
 import org.hibernate.SessionFactory;
@@ -27,8 +28,8 @@ public class PostService {
         return postDao.getPostsByOwner(member);
     }
 
-    public Post savePost(Member member, int type, Timestamp timestamp, String title, String content){
+    public Post savePost(Member member, int type, Timestamp timestamp, String title, String content, Heritage heritage){
         Post post = new Post(member, type, timestamp, title, content);
-        return postDao.savePost(post);
+        return postDao.savePost(post, heritage);
     }
 }

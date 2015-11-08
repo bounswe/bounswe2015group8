@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: gokcan
-  Date: 03.11.2015
-  Time: 01:43
+  Date: 08.11.2015
+  Time: 17:28
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -45,16 +45,16 @@
 </head>
 <body>
 <div id="header">
-  WELCOME TO OUR SIGNUP PAGE
+  ADD SOME CULTURAL HERITAGE!
 </div>
 
 <div id="section">
   <div class="roundbox">
-    <form class="form-inline" id="form" action="${contextPath}/upload_post" method="POST" enctype="multipart/form-data">
-      Title: <input type="text" name="title" id="title" class="form-control"> <br>
-      Content: <input valign="top" style="height:50%; width:80%;" type="text" name="content" id="content" class="form-control"> <br>
+    <form class="form-inline" id="form" action="${contextPath}/upload_heritage" method="POST" enctype="multipart/form-data">
+      Name: <input type="text" name="name" id="name" class="form-control"> <br>
+      Place: <input type="text" name="place" id="place" class="form-control"> <br>
+      Description: <input valign="top" style="height:50%; width:80%;" type="text" name="description" id="description" class="form-control"> <br>
       <input type="file" name="media" id="media" class="form-control"> <br>
-      <input type="text" name="heritageId" style="display:none;" value="${heritageId}"/>
       <button type="submit" class="btn btn-default">POST!</button><br>
     </form>
   </div>
