@@ -13,6 +13,7 @@ import java.util.List;
 public interface PostDao {
     public Post getPostById(long id);
     public List<Post> getPostsByOwner(Member owner);
+    public List<Post> getPostsByHeritage(Heritage heritage);
     public Post savePost(Post post, Heritage heritage);
     public SessionFactory getSessionFactory();
     public void setSessionFactory(SessionFactory sessionFactory);

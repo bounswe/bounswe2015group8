@@ -65,6 +65,7 @@
             <span>Place: ${heritage.place}</span>
             <br>
             <span>Description: ${heritage.description}</span>
+            <button style="float:right; margin-right:5%;" onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">See Posts</button>
             <br>
             <span>Date posted: ${heritage.postDate}</span>
             <button style="float:right; margin-right:5%;" onclick="window.location.href='${contextPath}/post/${heritage.id}'">Add Post</button>

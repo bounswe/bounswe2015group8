@@ -28,6 +28,8 @@ public class PostService {
         return postDao.getPostsByOwner(member);
     }
 
+    public List<Post> getPostsByHeritage(Heritage heritage){ return postDao.getPostsByHeritage(heritage); }
+
     public Post savePost(Member member, int type, Timestamp timestamp, String title, String content, Heritage heritage){
         Post post = new Post(member, type, timestamp, title, content);
         return postDao.savePost(post, heritage);

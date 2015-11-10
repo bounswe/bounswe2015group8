@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,7 +146,7 @@ public class MainController {
             try {
                 // Creating the directory to store file
                 String mediaName = media.getOriginalFilename();
-                String filePath = "/media/" + mediaName;
+                String filePath =  mediaName;
                 final Session session = Main.getSession();
                 session.getTransaction().begin();
                 Media mediaObject = new Media(post.getId(), filePath, 0, false);
@@ -194,9 +195,34 @@ public class MainController {
         Criteria criteria = session.createCriteria(Post.class)
                 .add(Restrictions.eq("owner", m));
         List posts = criteria.list();
+
+
+        List medias = session.createCriteria(Media.class).list();
+        Map<String, List> allContent = new HashMap<String, List>();
+        allContent.put("posts", posts);
+        allContent.put("medias", medias);
         session.close();
 
-        return new ModelAndView("list_post","posts", posts);
+        return new ModelAndView("list_post","allContent", allContent);
+    }
+
+    @RequestMapping(value = "/show_posts/{heritageId}")
+    public ModelAndView show_posts_of_heritage(@PathVariable long heritageId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        final Session session = Main.getSession();
+
+        logger.info("The current user is: " + username);
+        Member m = memberService.getMemberByUsername(username);
+        Heritage heritage = heritageService.getHeritageById(heritageId);
+        List posts = postService.getPostsByHeritage(heritage);
+        List medias = session.createCriteria(Media.class).list();
+        Map<String, List> allContent = new HashMap<String, List>();
+        allContent.put("posts", posts);
+        allContent.put("medias", medias);
+        session.close();
+
+        return new ModelAndView("list_post","allContent", allContent);
     }
 
     @RequestMapping(value = "/heritage")

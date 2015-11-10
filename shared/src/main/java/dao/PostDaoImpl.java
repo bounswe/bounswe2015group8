@@ -7,6 +7,7 @@ import model.HeritagePost;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +48,18 @@ public class PostDaoImpl implements PostDao {
         s.getTransaction().commit();
         s.close();
         return post;
+    }
+
+    public List<Post> getPostsByHeritage(Heritage heritage){
+        Session s = getSessionFactory().openSession();
+        List<HeritagePost> heritageposts = s
+                .createQuery("from HeritagePost where heritage=?")
+                .setParameter(0, heritage).list();
+        List<Post> posts = new ArrayList<Post>();
+        for(int i=0; i < heritageposts.size(); i++){
+            posts.add(heritageposts.get(i).getPost());
+        }
+        return posts;
     }
 
     public SessionFactory getSessionFactory() {
