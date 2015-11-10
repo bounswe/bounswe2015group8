@@ -27,7 +27,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/etUsername"
+            android:id="@+id/tvHomeUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -35,13 +35,13 @@
             android:textSize="24dp" />
 
         <TextView
-            android:id="@+id/etMail"
+            android:id="@+id/tvHomeEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="13dp" />
 
         <Button
-            android:id="@+id/btnLogout"
+            android:id="@+id/btnHomeLogout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dip"

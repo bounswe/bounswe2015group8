@@ -1,4 +1,4 @@
-package com.cmpe.bounswe2015group8.westory;
+package com.cmpe.bounswe2015group8.westory.front;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -9,12 +9,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.GetCallback;
+import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
+import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
+import com.cmpe.bounswe2015group8.westory.model.Member;
+import com.cmpe.bounswe2015group8.westory.model.Requestable;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class LoginFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "LOGIN";
     Button btnLogin;
     EditText etUsername, etPassword;
     TextView tvLinkToRegisterScreen;
-    UserLocalStore userLocalStore;
+    MemberLocalStore memberLocalStore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -22,7 +35,7 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
         super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_login,container,false);
 
-        userLocalStore = new UserLocalStore(getActivity());
+        memberLocalStore = new MemberLocalStore(getActivity());
 
         etUsername = (EditText) v.findViewById(R.id.etUsername);
         etPassword = (EditText) v.findViewById(R.id.etPassword);
@@ -41,9 +54,9 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
             case R.id.btnLogin:
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
-                User user = new User(username, password);   //TODO (HALFDONE) take the real values. and then, in the same way, add them to main activity.
+                Member member = new Member(username, password,"","");   //TODO (HALFDONE) take the real values. and then, in the same way, add them to main activity.
 
-                authenticate(user);
+                authenticate(member);
 
                 break;
             case R.id.tvLinkToRegisterScreen:
@@ -51,19 +64,19 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
                 break;
         }
     }
-
-    private void authenticate(User user){
-        ServerRequests serverRequests = new ServerRequests(getActivity());
-        serverRequests.fetchUserDataInBackground(user, new GetUserCallback() {
-            @Override
-            public void done(User returnedUser) {
-                if (returnedUser == null) {
-                    showErrorMessage();
-                } else {
-                    logUserIn(returnedUser );
-                }
-            }
-        });
+    private void authenticate(Member member){
+        ServerRequests serverRequests = new ServerRequests(getActivity(), ServerRequests.HTTP_Method.POST);
+//        LoginRequestable r = new LoginRequestable(member);
+//        serverRequests.fetchDataInBackground(r, r, new GetCallback<LoginRequestable>() {
+//            @Override
+//            public void done(LoginRequestable r) {
+//                if (r == null) {
+//                    showErrorMessage();
+//                } else {
+//                    logMemberIn(r.member);
+//                }
+//            }
+//        }).execute(member);
 
     }
 
@@ -74,9 +87,9 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
         dialogBuilder.show();
     }
 
-    private void logUserIn(User returnedUser) {
-        userLocalStore.storeUserData(returnedUser);
-        userLocalStore.setUserLoggedIn(true);
+    private void logMemberIn(Member member) {
+        memberLocalStore.storeUserData(member);
+        memberLocalStore.setMemberLoggedIn(true);
 
         MainActivity.beginFragment(getActivity(), new HomeFragment());
     }

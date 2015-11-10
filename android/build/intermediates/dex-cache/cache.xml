@@ -2,32 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/bugrahan/AndroidStudioProjects/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/jars/classes.jar"
+        jar="/home/xyllan/bounswe2015group8/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="/Users/bugrahan/AndroidStudioProjects/android/app/build/intermediates/pre-dexed/debug/classes-3fe3bd3e3986a0180008c02248e7bb9c514ab076.jar" />
-    </item>
-    <item
-        jar="/Users/bugrahan/AndroidStudioProjects/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/jars/libs/internal_impl-21.0.3.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="/Users/bugrahan/AndroidStudioProjects/android/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-bfdc15aa6d4854afd95e5c26c5bad7bdbeb87166.jar" />
-    </item>
-    <item
-        jar="/Users/bugrahan/AndroidStudioProjects/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="/Users/bugrahan/AndroidStudioProjects/android/app/build/intermediates/pre-dexed/debug/classes-1c97ce9664bd161d974eb1899d1f6ef3f8ae9140.jar" />
-    </item>
-    <item
-        jar="/Users/bugrahan/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="/Users/bugrahan/AndroidStudioProjects/android/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-79f102af854675c6b2fe59e03fcee2dd71254b8f.jar" />
+        sha1="57ae0d750ff83f0c738d21720224ac7ea866a094">
+        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/classes-63655430c1fdfe5e99babc29df5eb836be400c2e.jar" />
     </item>
 
 </items>

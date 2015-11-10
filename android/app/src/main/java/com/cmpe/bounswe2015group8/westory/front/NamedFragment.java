@@ -1,4 +1,4 @@
-package com.cmpe.bounswe2015group8.westory;
+package com.cmpe.bounswe2015group8.westory.front;
 
 import android.app.Fragment;
 
