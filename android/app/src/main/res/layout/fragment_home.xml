@@ -27,6 +27,7 @@
                 android:textSize="20dp"/>
 
         <TextView
+<<<<<<< HEAD
                 android:id="@+id/etUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,6 +51,31 @@
                 android:textAllCaps="false"
                 android:textColor="@color/primary_text"
                 android:textSize="15dp"/>
+=======
+            android:id="@+id/tvHomeUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@color/accent"
+            android:textSize="24dp" />
+
+        <TextView
+            android:id="@+id/tvHomeEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13dp" />
+
+        <Button
+            android:id="@+id/btnHomeLogout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dip"
+            android:background="@color/accent"
+            android:text="@string/btn_logout"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_text"
+            android:textSize="15dp" />
+>>>>>>> Added support c7 dependency.
     </LinearLayout>
 
 </RelativeLayout>

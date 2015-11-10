@@ -1,4 +1,4 @@
-package com.cmpe.bounswe2015group8.westory;
+package com.cmpe.bounswe2015group8.westory.front;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,6 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.GetCallback;
+import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
+import com.cmpe.bounswe2015group8.westory.model.Member;
+
+import org.json.JSONObject;
 
 public class RegisterFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "REGISTER";
@@ -20,10 +27,10 @@ public class RegisterFragment extends NamedFragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_register,container,false);
 
-        etUsername = (EditText) v.findViewById(R.id.etUsername);
-        etMail = (EditText) v.findViewById(R.id.etMail);
-        etPassword = (EditText) v.findViewById(R.id.etPassword);
-        etPasswordConfirm = (EditText) v.findViewById(R.id.etPasswordConfirm);
+        etUsername = (EditText) v.findViewById(R.id.etRegisterUsername);
+        etMail = (EditText) v.findViewById(R.id.etRegisterEmail);
+        etPassword = (EditText) v.findViewById(R.id.etRegisterPassword);
+        etPasswordConfirm = (EditText) v.findViewById(R.id.etRegisterPasswordConfirm);
         btnRegister = (Button) v.findViewById(R.id.btnRegister);
 
         btnRegister.setOnClickListener(this);
@@ -35,13 +42,13 @@ public class RegisterFragment extends NamedFragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btnRegister:
                 String username = etUsername.getText().toString();
-                String mail = etMail.getText().toString();
+                String email = etMail.getText().toString();
                 String password = etPassword.getText().toString();
                 String passwordConfirm = etPasswordConfirm.getText().toString();
 
                 if (password.contentEquals(passwordConfirm)) {
-                    User user = new User(username, mail, password);
-                    registerUser(user );
+                    Member member = new Member(username, password, email,"");
+                    registerMember(member);
                 } else {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
                     dialogBuilder.setMessage("Passwords do not match.");
@@ -53,12 +60,16 @@ public class RegisterFragment extends NamedFragment implements View.OnClickListe
         }
     }
 
-    private void registerUser (User user){
-        ServerRequests serverRequests = new ServerRequests(getActivity());
+    private void registerMember(Member member){
+        ServerRequests serverRequests = new ServerRequests(getActivity(), ServerRequests.HTTP_Method.POST);
         final Activity a = this.getActivity();
-        serverRequests.storeUserDataInBackground(user, new GetUserCallback() {
+        serverRequests.storeDataInBackground(member.getRegisterRequestable(), new GetCallback<String>() {
             @Override
-            public void done(User returnedUser) {
+            public void done(String s) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(a);
+                dialogBuilder.setMessage(s);
+                dialogBuilder.setPositiveButton("OK", null);
+                dialogBuilder.show();
                 MainActivity.beginFragment(a, new LoginFragment());
             }
         });
