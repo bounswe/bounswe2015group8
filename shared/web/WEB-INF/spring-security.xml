@@ -12,7 +12,7 @@
         <intercept-url pattern="/home" access="permitAll" />
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/signup" access="permitAll" />
-        <form-login login-page="/login" default-target-url="/login_success"
+        <form-login login-page="/login" default-target-url="/show_heritages"
                     authentication-failure-url="/login" />
         <logout logout-success-url="/login" />
         <!--<intercept-url pattern="/**" access="isAuthenticated()" /> -->

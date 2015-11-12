@@ -10,6 +10,17 @@ public class Media {
     private int mediaType;
     private boolean postOrHeritage;
 
+    public Media(){
+
+    }
+
+    public Media(long postOrHeritageId, String mediaLink, int mediaType, boolean postOrHeritage){
+        this.postOrHeritageId = postOrHeritageId;
+        this.mediaLink = mediaLink;
+        this.mediaType = mediaType;
+        this.postOrHeritage = postOrHeritage;
+    }
+
     public long getId() {
         return id;
     }
