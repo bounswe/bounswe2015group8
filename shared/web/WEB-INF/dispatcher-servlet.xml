@@ -7,20 +7,19 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-       <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+    <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 
-       <!-- Enables the Spring MVC @Controller programming model -->
-       <annotation-driven />
-       <resources mapping="/static/**" location="/static/" />
+    <!-- Enables the Spring MVC @Controller programming model -->
+    <annotation-driven/>
+    <resources mapping="/static/**" location="/static/"/>
 
-       <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-       <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-              <beans:property name="prefix" value="/WEB-INF/pages/" />
-              <beans:property name="suffix" value=".jsp" />
-       </beans:bean>
+    <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/pages/"/>
+        <beans:property name="suffix" value=".jsp"/>
+    </beans:bean>
 
-       <context:component-scan base-package="controller" />
-
+    <context:component-scan base-package="controller, api"/>
 
 
 </beans:beans>

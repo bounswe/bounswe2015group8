@@ -10,15 +10,15 @@ import java.util.HashSet;
 public class Post {
     private long id;
     private int type;
-    private Member owner;
+    private transient Member owner;
     private Timestamp postDate;
     private Timestamp lastEditedDate;
     private String title;
     private String content;
-    private Collection<Comment> comments;
-    private Collection<Heritage> heritages;
-    private Collection<PostVote> votes;
-    private Collection<Tag> tags;
+    private transient Collection<Comment> comments;
+    private transient Collection<Heritage> heritages;
+    private transient Collection<PostVote> votes;
+    private transient Collection<Tag> tags;
     public Post() {
         comments = new HashSet<Comment>();
         heritages = new HashSet<Heritage>();
@@ -160,4 +160,5 @@ public class Post {
             t.getPosts().add(this);
         }
     }
+
 }

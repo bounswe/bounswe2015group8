@@ -11,13 +11,13 @@ public class Member {
     private String username;
     private String password;
     private String email;
-    private String profilePicture;
-    private Collection<Comment> comments;
-    private Collection<CommentVote> commentVotes;
-    private Collection<Member> followedMembers;
-    private Collection<Member> followers;
-    private Collection<Post> posts;
-    private Collection<PostVote> postVotes;
+    private transient String profilePicture;
+    private transient Collection<Comment> comments;
+    private transient Collection<CommentVote> commentVotes;
+    private transient Collection<Member> followedMembers;
+    private transient Collection<Member> followers;
+    private transient Collection<Post> posts;
+    private transient Collection<PostVote> postVotes;
     public Member() {
         comments = new HashSet<Comment>();
         commentVotes = new HashSet<CommentVote>();
