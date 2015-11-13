@@ -11,39 +11,46 @@
 
 <c:set var="posts" value="${allContent.posts}"/>
 <c:set var="medias" value="${allContent.medias}"/>
+<c:set var="comments" value="${allContent.comments}"/>
 
 <html>
 <head>
     <title>Sign up</title>
     <style>
-        form {text-align:center}
-        #header{
-            background-color:black;
-            color:white;
-            text-align:center;
-            padding:10px;
+        form {
+            text-align: center
         }
-        #section{
-            background-color:skyblue;
-            color:black;
-            text-align:center;
-            padding:40%;
+
+        #header {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px;
         }
-        #footer{
-            background-color:black;
-            color:white;
-            text-align:right;
+
+        #section {
+            background-color: skyblue;
+            color: black;
+            text-align: center;
+            padding: 40%;
+        }
+
+        #footer {
+            background-color: black;
+            color: white;
+            text-align: right;
             padding: 5px;
         }
+
         div.roundbox {
-            border: 2px solid #00f ;
-            border-radius: 20px ;
-            padding: 20px ;
-            background-color: #e4e8f3 ;
-            color: #000 ;
-            width: 100% ;
-            margin-left: auto ;
-            margin-right: auto ;
+            border: 2px solid #00f;
+            border-radius: 20px;
+            padding: 20px;
+            background-color: #e4e8f3;
+            color: #000;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
             margin-bottom: 5px;
         }
     </style>
@@ -63,18 +70,19 @@
                     <div class="form-group">
                         <label for="title_${post.id}">Title</label>
                         <input disabled="disabled" type="text" class="form-control" id="title_${post.id}"
-                                value="${post.title}">
+                               value="${post.title}">
                     </div>
                     <div class="form-group" style="height:50%;">
                         <label for="content_${post.id}">Content</label>
-                    <textarea disabled="disabled" type="text" class="form-control wideInput" id="content_${post.id}"
-                             style="height:80%;">${post.content}</textarea>
+                        <textarea disabled="disabled" type="text" class="form-control wideInput" id="content_${post.id}"
+                                  style="height:80%;">${post.content}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="date_${post.id}">Date posted:</label>
                         <input type="text" disabled="disabled" class="form-control" id="date_${post.id}"
-                                value="${post.postDate}">
+                               value="${post.postDate}">
                     </div>
+
                     <c:forEach var="media" items="${medias}">
                         <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage==false}">
                             <div class="form-group">
@@ -94,7 +102,13 @@
             <br>
             <span>Date posted: ${post.postDate}</span>
         </div>--%>
+    <span>Do you have an opinion on this post?
+        <button style="float:right; margin-right:5%;"
+                onclick="window.location.href='${contextPath}/comment/${post.id}'">Add Comment
+        </button>
+    </span>
     </c:forEach>
+
 </div>
 
 <div id="footer">

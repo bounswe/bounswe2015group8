@@ -1,6 +1,5 @@
 package controller;
 
-import dao.MemberDao;
 import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
@@ -16,18 +15,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import service.CommentService;
 import service.HeritageService;
 import service.MemberDetailsService;
 import service.PostService;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +41,7 @@ public class MainController {
     MemberDetailsService memberService;
     PostService postService;
     HeritageService heritageService;
+    CommentService commentService;
     public MainController() {
         memberService = new MemberDetailsService();
         MemberDaoImpl mdao = new MemberDaoImpl();
@@ -52,6 +49,7 @@ public class MainController {
         memberService.setMemberDao(mdao);
         postService = new PostService(Main.getSessionFactory());
         heritageService = new HeritageService(Main.getSessionFactory());
+        commentService = new CommentService(Main.getSessionFactory());
     }
     @RequestMapping(value = "/")
     public ModelAndView home(){ return new ModelAndView("home"); }
@@ -196,11 +194,12 @@ public class MainController {
                 .add(Restrictions.eq("owner", m));
         List posts = criteria.list();
 
-
         List medias = session.createCriteria(Media.class).list();
+        List comments = session.createCriteria(Comment.class).list();
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("posts", posts);
         allContent.put("medias", medias);
+        allContent.put("comments", comments);
         session.close();
 
         return new ModelAndView("list_post","allContent", allContent);
@@ -280,6 +279,45 @@ public class MainController {
     public ModelAndView show_heritages(){
         List<Heritage> allHeritages = heritageService.getAllHeritages();
         return new ModelAndView("list_heritage", "allHeritages", allHeritages);
+    }
+
+    @RequestMapping(value = "/comment/{postId}")
+    public ModelAndView comment(@PathVariable long postId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Map viewVariables = new HashMap();
+        viewVariables.put("username", username);
+        viewVariables.put("postId", postId);
+        return new ModelAndView("comment", viewVariables);
+    }
+
+    @RequestMapping(value = "/post_comment", method = RequestMethod.POST)
+    public ModelAndView upload_post(@RequestParam("content") String content, @RequestParam("postId") long postId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        final Session session = Main.getSession();
+        session.getTransaction().begin();
+
+        Member m = memberService.getMemberByUsername(username);
+        Post post = postService.getPostById(postId);
+        java.util.Date now = new java.util.Date();
+
+        Comment comment = commentService.saveComment(m, post, content, new Timestamp(now.getTime()));
+
+        Criteria criteria = session.createCriteria(Post.class)
+                .add(Restrictions.eq("owner", m));
+        List posts = criteria.list();
+
+        List medias = session.createCriteria(Media.class).list();
+        List comments = session.createCriteria(Comment.class).list();
+        Map<String, List> allContent = new HashMap<String, List>();
+        allContent.put("posts", posts);
+        allContent.put("medias", medias);
+        allContent.put("comments", comments);
+        session.close();
+
+        return new ModelAndView("list_post","allContent", allContent);
     }
 
 }
