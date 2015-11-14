@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.model.Heritage;
 
 /**
  * Created by xyllan on 09.11.2015.
@@ -18,6 +19,8 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
     public static final String NAME = "HERITAGE_EDIT";
     Button btnSubmit;
     EditText etName, etPlace, etDescription;
+    boolean isNew = true;
+    Heritage heritage;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -28,10 +31,11 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
         etDescription = (EditText) v.findViewById(R.id.etHeritageEditDescription);
         btnSubmit = (Button) v.findViewById(R.id.btnHeritageSubmit);
         btnSubmit.setOnClickListener(this);
-        if(savedInstanceState!=null && !savedInstanceState.getBoolean("isNew",true)) {
-
+        isNew = savedInstanceState!=null && !savedInstanceState.getBoolean("isNew",true);
+        if(isNew) {
+            heritage = new Heritage();
         } else {
-
+            heritage = new Heritage(savedInstanceState);
         }
         return v;
     }
@@ -49,5 +53,13 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
     @Override
     String getName() {
         return NAME;
+    }
+    @Override
+    String getTitle() {
+        if(isNew) {
+            return getResources().getString(R.string.title_heritage_new);
+        } else {
+            return getResources().getString(R.string.title_heritage_edit) + heritage.getName();
+        }
     }
 }

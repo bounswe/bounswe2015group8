@@ -24,61 +24,14 @@ public class ServerRequests{
         progressDialog.setMessage("Please wait...");
 
     }
-
-//    public void storeDataInBackground(Requestable t, GetCallback<String> callback) {
-//        progressDialog.show();
-//        new StoreDataAsyncTask(callback).execute(t);
-//    }
-    public void registerMemberInBackground(Member m, GetCallback<Long> callback) {
+    public void registerMemberInBackground(Member m, Consumer<Long> callback) {
         progressDialog.show();
         new RestAsyncTask<Long>(callback, HttpMethod.POST).execute(m.getRegisterRequestable());
     }
-
-//    public class StoreDataAsyncTask extends AsyncTask<Requestable, Void, String> {
-//        GetCallback<String> callback;
-//
-//        public StoreDataAsyncTask(GetCallback<String> callback) {
-//            this.callback = callback;
-//        }
-//
-//        @Override
-//        protected String doInBackground(Requestable... params) {
-//            for(Requestable r : params) {
-//
-//                ArrayList<NameValuePair> dataToSend = r.getData();
-//                HttpParams httpRequestParams = new BasicHttpParams();
-//                HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
-//                HttpConnectionParams.setSoTimeout(httpRequestParams, CONNECTION_TIMEOUT);
-//
-//                HttpClient client = new DefaultHttpClient(httpRequestParams);
-//                HttpPost post = new HttpPost(SERVER_ADDRESS + r.getEndpoint());
-//
-//                try {
-//                    post.setEntity(new UrlEncodedFormEntity(dataToSend));
-//                    HttpResponse httpResponse = client.execute(post);
-//
-//                    HttpEntity entity = httpResponse.getEntity();
-//                    String result = EntityUtils.toString(entity);
-//                    return result;
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String s) {
-//            progressDialog.dismiss();
-//            callback.done(s);
-//            super.onPostExecute(s);
-//        }
-//    }
-
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
-        GetCallback<T> callback;
+        Consumer<T> callback;
         HttpMethod method;
-        public RestAsyncTask(GetCallback<T>  callback, HttpMethod method) {
+        public RestAsyncTask(Consumer<T>  callback, HttpMethod method) {
             this.callback = callback;
             this.method = method;
         }
@@ -100,7 +53,7 @@ public class ServerRequests{
         @Override
         protected void onPostExecute(T t) {
             progressDialog.dismiss();
-            callback.done(t);
+            callback.accept(t);
             super.onPostExecute(t);
         }
     }

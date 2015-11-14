@@ -76,7 +76,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
-            android:background="#FFEB3B"
+            android:background="@color/accent"
             android:text="@string/btn_register"
             android:textColor="@color/primary_text" />
 

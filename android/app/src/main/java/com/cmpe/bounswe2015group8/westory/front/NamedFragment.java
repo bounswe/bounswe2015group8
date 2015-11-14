@@ -7,4 +7,5 @@ import android.app.Fragment;
  */
 public abstract class NamedFragment extends Fragment {
     abstract String getName();
+    abstract String getTitle();
 }

@@ -10,17 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cmpe.bounswe2015group8.westory.R;
-import com.cmpe.bounswe2015group8.westory.back.GetCallback;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Member;
-import com.cmpe.bounswe2015group8.westory.model.Requestable;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class LoginFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "LOGIN";

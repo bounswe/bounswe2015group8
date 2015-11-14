@@ -10,11 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cmpe.bounswe2015group8.westory.R;
-import com.cmpe.bounswe2015group8.westory.back.GetCallback;
+import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Member;
-
-import org.json.JSONObject;
 
 public class RegisterFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "REGISTER";
@@ -63,9 +61,9 @@ public class RegisterFragment extends NamedFragment implements View.OnClickListe
     private void registerMember(Member member){
         ServerRequests serverRequests = new ServerRequests(getActivity());
         final Activity a = this.getActivity();
-        serverRequests.registerMemberInBackground(member, new GetCallback<Long>() {
+        serverRequests.registerMemberInBackground(member, new Consumer<Long>() {
             @Override
-            public void done(Long l) {
+            public void accept(Long l) {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(a);
                 dialogBuilder.setMessage(""+l);
                 dialogBuilder.setPositiveButton("OK", null);

@@ -1,4 +1,6 @@
 package com.cmpe.bounswe2015group8.westory.model;
+import android.os.Bundle;
+
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
@@ -7,6 +9,7 @@ import java.util.HashSet;
  * Created by xyllan on 07.11.2015.
  */
 public class Heritage {
+    public static String BUNDLE_BASE = "heritage_cur_";
     private long id;
     private String name;
     private String place;
@@ -27,7 +30,16 @@ public class Heritage {
         this.posts = new HashSet<Post>();
         this.tags = new HashSet<Tag>();
     }
-
+    public Heritage(Bundle b) {
+        id = b.getLong(BUNDLE_BASE + "id", -1);
+        name = b.getString(BUNDLE_BASE + "name", "");
+        place = b.getString(BUNDLE_BASE + "place","");
+        postDate = new Timestamp(b.getLong(BUNDLE_BASE + "postDate",-1));
+        description = b.getString(BUNDLE_BASE + "description","");
+        //TODO fix posts
+        this.posts = new HashSet<Post>();
+        this.tags = new HashSet<Tag>();
+    }
     public long getId() {
         return id;
     }
@@ -116,5 +128,15 @@ public class Heritage {
             this.tags.add(t);
             t.getHeritages().add(this);
         }
+    }
+    public Bundle getBundle() {
+        Bundle b = new Bundle();
+        b.putLong(BUNDLE_BASE + "id", id);
+        b.putString(BUNDLE_BASE + "name",name);
+        b.putString(BUNDLE_BASE + "place",place);
+        b.putLong(BUNDLE_BASE + "postDate",postDate.getTime());
+        b.putString(BUNDLE_BASE + "description",description);
+        //TODO fix posts
+        return b;
     }
 }
