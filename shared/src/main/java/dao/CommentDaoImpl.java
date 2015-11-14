@@ -14,7 +14,6 @@ import java.util.List;
 public class CommentDaoImpl implements CommentDao {
     private SessionFactory sessionFactory;
 
-    @Override
     public Comment getCommentById(long id) {
         Session s = getSessionFactory().openSession();
         Comment comment = (Comment) s
@@ -24,7 +23,6 @@ public class CommentDaoImpl implements CommentDao {
         return comment;
     }
 
-    @Override
     public List<Comment> getCommentsByOwner(Member owner) {
         Session s = getSessionFactory().openSession();
         List<Comment> comments = s
@@ -34,7 +32,6 @@ public class CommentDaoImpl implements CommentDao {
         return comments;
     }
 
-    @Override
     public List<Comment> getCommentsByPost(Post post) {
         Session s = getSessionFactory().openSession();
         List<Comment> postComments = s
@@ -43,15 +40,13 @@ public class CommentDaoImpl implements CommentDao {
         return postComments;
     }
 
-    @Override
     public List<Comment> getAllComments() {
         Session s = getSessionFactory().openSession();
         List<Comment> comments = s.createQuery("from Comment").list();
         s.close();
         return comments;
     }
-
-    @Override
+    
     public Comment saveComment(Comment comment, Post post) {
         Session s = getSessionFactory().openSession();
         s.getTransaction().begin();
