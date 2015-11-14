@@ -8,74 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<html>
-<title>Sign up</title>
-<style>
-    body {
-        background-color: skyblue;
-    }
 
-    form {
-        text-align: center
-    }
 
-    #header {
-        background-color: black;
-        color: white;
-        text-align: center;
-        padding: 10px;
-    }
-
-    #section {
-        background-color: skyblue;
-        color: black;
-        text-align: center;
-        padding: 40%;
-    }
-
-    #footer {
-        background-color: black;
-        color: white;
-        text-align: right;
-        padding: 5px;
-    }
-
-    div.roundbox {
-        border: 2px solid #00f;
-        border-radius: 20px;
-        padding: 20px;
-        background-color: #e4e8f3;
-        color: #000;
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .image-upload > input {
-        display: none;
-    }
-
-    .wideInput {
-        text-align: left;
-        padding-left: 0;
-        padding-top: 0;
-        padding-bottom: 0.4em;
-        padding-right: 0.4em;
-        width: 400px;
-        height: 200px;
-    }
-</style>
-<link rel="stylesheet" href="${contextPath}/static/css/bootstrap/bootstrap.css">
-<link rel="stylesheet" href="${contextPath}/static/css/bootstrap/bootstrap-theme.css">
-</head>
-<body>
-<div id="header">
-    POST YOUR STORY!
-</div>
-<br>
-
-<div class="row" style="background-color: skyblue;">
-    <div class="col-md-4 col-md-offset-4">
+<%@ include file="/WEB-INF/pages/header.jsp" %>
+<div class="roundbox">
         <form id="form" action="${contextPath}/upload_post" method="POST" enctype="multipart/form-data">
             <input type="text" name="heritageId" style="display:none;" value="${heritageId}"/>
 
@@ -90,14 +26,14 @@
             </div>
             <div class="form-group">
                 <label for="media">
-                    <img style="float: right;" height="5%" width="10%" src="/static/img/attachment.png"/>
+                    <img height="3%" width="10%" src="/static/img/attachment.png"/>
                 </label>
                 <input style="display: none;" id="media" name="media" type="file"/>
-                <button type="submit" class="btn btn-success">POST!</button>
+                <button type="submit" class="btn-modified" style="float: right">POST!</button>
             </div>
         </form>
-    </div>
 </div>
+<%@ include file="/WEB-INF/pages/footer.jsp" %>
 
 
 <%--
@@ -114,8 +50,3 @@
 </div>
 --%>
 
-<div id="footer">
-    Copyright © lokum
-</div>
-</body>
-</html>

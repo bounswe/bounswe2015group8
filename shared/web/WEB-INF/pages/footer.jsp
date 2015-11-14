@@ -5,9 +5,7 @@
   Time: 7:06 PM
   To change this template use File | Settings | File Templates.
 --%>
-<br/><br/>
-<center>
-<p>Copyright WeStory</p>
-</center>
+
+<div id="footer">Copyright WeStory</div>
 </body>
 </html>
