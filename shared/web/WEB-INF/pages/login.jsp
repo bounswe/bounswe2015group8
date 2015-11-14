@@ -56,7 +56,7 @@
                 <label for="password"><b>Password: </b></label>
                 <input type="password" name="password" id="password" class="form-control"> <br>
                 <button type="submit" class="btn btn-default">Log In</button><br>
-                <c:if test="${doesUserExist == false}">
+                <c:if test="${param['success'] == 'false'}">
                     <span style="color:red;">Your username or password is wrong!</span>
                 </c:if>
             </form>
