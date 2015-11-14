@@ -28,6 +28,11 @@ public class MemberDetailsService implements UserDetailsService{
         Member m = new Member(username,hashedPassword, email,profilePic);
         return memberDao.saveMember(m);
     }
+
+    public Member getMemberByUsername(String username) {
+        return memberDao.getMemberByUsername(username);
+    }
+
     public MemberDao getMemberDao() {
         return memberDao;
     }

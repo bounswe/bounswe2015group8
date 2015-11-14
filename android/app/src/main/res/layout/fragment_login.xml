@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@color/primary"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="10dp">
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+        <EditText
+                android:id="@+id/etUsername"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/primary_light"
+                android:hint="@string/hint_username"
+                android:inputType="text"
+                android:padding="10dp"
+                android:singleLine="true"/>
+
+        <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/primary_light"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@color/primary_text"
+                android:textColorHint="@color/primary_text"/>
+
+
+        <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/accent_dark"
+                android:text="@string/btn_login"
+                android:textColor="@color/primary_text"/>
+
+
+        <!-- Link to LoginFragment Screen -->
+        <TextView
+                android:id="@+id/tvLinkToRegisterScreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@null"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/tv_link_to_register"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_text"
+                android:textSize="15dp"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
