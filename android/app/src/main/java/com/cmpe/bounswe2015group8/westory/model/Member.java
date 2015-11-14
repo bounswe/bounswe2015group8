@@ -5,7 +5,9 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Created by xyllan on 07.11.2015.
@@ -185,11 +187,11 @@ public class Member {
         followedMembers.add(other);
         other.followers.add(this);
     }
-    public Requestable getRegisterRequestable() {
-        ArrayList<NameValuePair> dataToSend = new ArrayList<>();
-        dataToSend.add(new BasicNameValuePair("username", username));
-        dataToSend.add(new BasicNameValuePair("password", password));
-        dataToSend.add(new BasicNameValuePair("email", email));
-        return new Requestable("/api/signup",dataToSend);
+    public Requestable<Long> getRegisterRequestable() {
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("username", username);
+        dataToSend.put("password", password);
+        dataToSend.put("email", email);
+        return new Requestable("/api/signup",dataToSend,Long.class);
     }
 }

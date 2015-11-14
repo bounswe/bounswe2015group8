@@ -65,7 +65,7 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
         }
     }
     private void authenticate(Member member){
-        ServerRequests serverRequests = new ServerRequests(getActivity(), ServerRequests.HTTP_Method.POST);
+        ServerRequests serverRequests = new ServerRequests(getActivity());
 //        LoginRequestable r = new LoginRequestable(member);
 //        serverRequests.fetchDataInBackground(r, r, new GetCallback<LoginRequestable>() {
 //            @Override

@@ -3,7 +3,6 @@ package com.cmpe.bounswe2015group8.westory.back;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.cmpe.bounswe2015group8.westory.User;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 
 /**

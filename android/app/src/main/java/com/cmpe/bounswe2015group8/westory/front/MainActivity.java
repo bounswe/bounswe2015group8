@@ -62,7 +62,6 @@ public class MainActivity extends Activity{
         } else {
             MainActivity.beginFragment(this, new LoginFragment());
         }
-        //setOnItemClickListener(navBarView);
     }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

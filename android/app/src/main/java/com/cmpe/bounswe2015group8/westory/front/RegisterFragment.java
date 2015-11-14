@@ -61,13 +61,13 @@ public class RegisterFragment extends NamedFragment implements View.OnClickListe
     }
 
     private void registerMember(Member member){
-        ServerRequests serverRequests = new ServerRequests(getActivity(), ServerRequests.HTTP_Method.POST);
+        ServerRequests serverRequests = new ServerRequests(getActivity());
         final Activity a = this.getActivity();
-        serverRequests.storeDataInBackground(member.getRegisterRequestable(), new GetCallback<String>() {
+        serverRequests.registerMemberInBackground(member, new GetCallback<Long>() {
             @Override
-            public void done(String s) {
+            public void done(Long l) {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(a);
-                dialogBuilder.setMessage(s);
+                dialogBuilder.setMessage(""+l);
                 dialogBuilder.setPositiveButton("OK", null);
                 dialogBuilder.show();
                 MainActivity.beginFragment(a, new LoginFragment());

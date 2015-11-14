@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/home/xyllan/bounswe2015group8/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.0/jars/classes.jar"
+        jar="/home/xyllan/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.6.3/435efa54afd2853995546802280e8cd2d2770d00/jackson-annotations-2.6.3.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="57ae0d750ff83f0c738d21720224ac7ea866a094">
-        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/classes-63655430c1fdfe5e99babc29df5eb836be400c2e.jar" />
+        sha1="435efa54afd2853995546802280e8cd2d2770d00">
+        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.6.3-c7b85ebf441ef1e2b76534ee065790b2c8752eca.jar" />
     </item>
 
 </items>
