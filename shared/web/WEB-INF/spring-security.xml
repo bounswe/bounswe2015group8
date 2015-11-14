@@ -13,7 +13,7 @@
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/signup" access="permitAll" />
         <form-login login-page="/login" default-target-url="/show_heritages"
-                    authentication-failure-url="/login" />
+                    authentication-failure-url="/login?success=false" />
         <logout logout-success-url="/login" />
         <!--<intercept-url pattern="/**" access="isAuthenticated()" /> -->
         <!--<intercept-url access="ROLE_USER" pattern="/admin**"/>-->
