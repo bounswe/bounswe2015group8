@@ -21,10 +21,11 @@
             android:id="@+id/etRegisterUsername"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp" />
+            android:layout_marginBottom="10dp"
+            android:background="@color/primary_light"
+            android:hint="@string/hint_username"
+            android:padding="10dp"
+            android:singleLine="true"/>
 
         <EditText
             android:id="@+id/etRegisterEmail"
@@ -58,18 +59,6 @@
             android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true" />
-
-        <EditText
-                android:id="@+id/etPasswordConfirm"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@color/primary_light"
-                android:hint="@string/hint_password_confirm"
-                android:inputType="textPassword"
-                android:padding="10dp"
-                android:singleLine="true"/>
-
 
         <Button
             android:id="@+id/btnRegister"

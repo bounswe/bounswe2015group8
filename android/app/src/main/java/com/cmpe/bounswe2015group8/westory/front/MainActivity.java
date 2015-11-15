@@ -111,9 +111,12 @@ public class MainActivity extends Activity{
                         Post p = new Post(null,-1,new Timestamp(System.currentTimeMillis()),"asd","leflef");
                         nf.setArguments(p.getBundle());
                         break;
+                    case 4:
+                        nf = new PostEditFragment();
+                        break;
                     case 5:
                         memberLocalStore.clearMemberData();
-                        MainActivity.beginFragment(a,new RegisterFragment());
+                        nf = new RegisterFragment();
                         break;
                     default:
                         break;
