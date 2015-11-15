@@ -47,15 +47,15 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
     }
     @Override
     public void onClick(View v) {
-//        switch(v.getId()) {
-//            case R.id.btnPostViewEdit:
-//                NamedFragment nf = new PostEditFragment();
-//                Bundle b = post.getBundle();
-//                b.putBoolean("isNew", true);
-//                nf.setArguments(b);
-//                MainActivity.beginFragment(getActivity(),nf);
-//                break;
-//        }
+        switch(v.getId()) {
+            case R.id.btnPostViewEdit:
+                NamedFragment nf = new PostEditFragment();
+                Bundle b = post.getBundle();
+                b.putBoolean("isNew", false);
+                nf.setArguments(b);
+                MainActivity.beginFragment(getActivity(),nf);
+                break;
+        }
     }
     @Override
     String getName() {

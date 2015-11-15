@@ -4,12 +4,12 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
 
-    <string name="btn_login">LOGIN</string>
-    <string name="btn_logout">LOGOUT</string>
-    <string name="btn_register">REGISTER</string>
-    <string name="btn_upload">UPLOAD</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_logout">Logout</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_upload">Upload</string>
     <string name="btn_edit">Edit</string>
-    <string name="btn_submit">SUBMIT</string>
+    <string name="btn_submit">Submit</string>
     <string name="tv_link_to_register">Not a member? Join us now.</string>
     <string name="welcome">Welcome</string>
 
@@ -31,6 +31,8 @@
     <string name="btn_new_post">Add Post</string>
     <string name="generic_description">Description:</string>
     <string name="generic_owner">Creator:</string>
+    <string name="generic_title">Title:</string>
+    <string name="generic_content">Content:</string>
     <string name="post_post_date">Post Date:</string>
     <string name="post_last_edit_date">Last Edit Date:</string>
     <string name="post_view_title_default">Viewing Post</string>
@@ -43,5 +45,6 @@
         <item >Logout</item>
     </string-array>
     <string name="title_heritage_new">New Heritage</string>
-    <string name="title_heritage_edit">Edit </string>
+    <string name="title_post_new">New Post</string>
+    <string name="title_generic_edit">Edit </string>
 </resources>

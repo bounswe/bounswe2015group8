@@ -1,6 +1,5 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
-
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,26 +9,25 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cmpe.bounswe2015group8.westory.R;
-import com.cmpe.bounswe2015group8.westory.model.Heritage;
+import com.cmpe.bounswe2015group8.westory.model.Post;
 
 /**
- * Created by xyllan on 09.11.2015.
+ * Created by xyllan on 15.11.2015.
  */
-public class HeritageEditFragment extends NamedFragment implements View.OnClickListener {
-    public static final String NAME = "HERITAGE_EDIT";
+public class PostEditFragment extends NamedFragment implements View.OnClickListener {
+    public static final String NAME = "POST_EDIT";
     Button btnSubmit;
-    EditText etName, etPlace, etDescription;
+    EditText etTitle, etContent;
     boolean isNew = true;
-    Heritage heritage;
+    Post post;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View v = inflater.inflate(R.layout.fragment_heritage_edit,container,false);
-        etName = (EditText) v.findViewById(R.id.etHeritageEditName);
-        etPlace = (EditText) v.findViewById(R.id.etHeritageEditPlace);
-        etDescription = (EditText) v.findViewById(R.id.etHeritageEditDescription);
-        btnSubmit = (Button) v.findViewById(R.id.btnHeritageSubmit);
+        View v = inflater.inflate(R.layout.fragment_post_edit,container,false);
+        etTitle = (EditText) v.findViewById(R.id.etPostEditTitle);
+        etContent = (EditText) v.findViewById(R.id.etPostEditContent);
+        btnSubmit = (Button) v.findViewById(R.id.btnPostEditSubmit);
         btnSubmit.setOnClickListener(this);
         initViews(getArguments());
         return v;
@@ -37,12 +35,11 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
     private void initViews(Bundle args) {
         isNew = args==null || args.getBoolean("isNew",true);
         if(isNew) {
-            heritage = new Heritage();
+            post = new Post();
         } else {
-            heritage = new Heritage(args);
-            etName.setText(heritage.getName());
-            etPlace.setText(heritage.getPlace());
-            etDescription.setText(heritage.getDescription());
+            post = new Post(args);
+            etTitle.setText(post.getTitle());
+            etContent.setText(post.getContent());
         }
     }
     @Override
@@ -63,9 +60,10 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
     @Override
     String getTitle() {
         if(isNew) {
-            return getResources().getString(R.string.title_heritage_new);
+            return getResources().getString(R.string.title_post_new);
         } else {
-            return getResources().getString(R.string.title_generic_edit) + ": " + heritage.getName();
+            return getResources().getString(R.string.title_generic_edit) + ": "
+                    + (post.getTitle() == null ? "Post" : post.getTitle());
         }
     }
 }

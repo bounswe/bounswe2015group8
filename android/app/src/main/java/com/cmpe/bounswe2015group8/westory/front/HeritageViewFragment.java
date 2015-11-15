@@ -50,7 +50,7 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 MainActivity.beginFragment(getActivity(),nf);
                 break;
             case R.id.btnHeritageNewPost:
-                MainActivity.beginFragment(getActivity(),new HeritageEditFragment());
+                MainActivity.beginFragment(getActivity(),new PostEditFragment());
                 break;
         }
     }
