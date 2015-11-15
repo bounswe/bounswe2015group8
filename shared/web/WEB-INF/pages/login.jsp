@@ -20,6 +20,7 @@
                     <span style="color:red;">Your username or password is wrong!</span>
                 </c:if>
             </form>
+            <a href="${contextPath}/forget_password">Forgot your password?</a>
         </div>
 <%@ include file="/WEB-INF/pages/footer.jsp" %>
 
