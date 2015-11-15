@@ -22,7 +22,6 @@ public class ServerRequests{
         progressDialog.setCancelable(false);
         progressDialog.setTitle("Processing...");
         progressDialog.setMessage("Please wait...");
-
     }
     public void registerMemberInBackground(Member m, Consumer<Long> callback) {
         progressDialog.show();

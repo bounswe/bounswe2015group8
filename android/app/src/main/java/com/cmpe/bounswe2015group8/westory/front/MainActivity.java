@@ -1,6 +1,7 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
 import android.app.Activity;
+
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;

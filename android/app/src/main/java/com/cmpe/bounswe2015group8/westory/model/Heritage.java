@@ -1,6 +1,5 @@
 package com.cmpe.bounswe2015group8.westory.model;
 import android.os.Bundle;
-
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
