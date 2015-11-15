@@ -12,7 +12,13 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 /**
- * Created by xyllan on 15.11.2015.
+ * Fragment for creating and editing posts.
+ * Depending on the arguments passed into it, it can act both as an editing
+ * page and a new post creation page. It's title changes with the post being
+ * edited / created.
+ * @see Post
+ * @author xyllan
+ * Date: 15.11.2015.
  */
 public class PostEditFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "POST_EDIT";

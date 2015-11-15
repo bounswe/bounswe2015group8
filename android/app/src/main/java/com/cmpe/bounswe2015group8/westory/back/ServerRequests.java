@@ -12,7 +12,12 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Created by bugrahan on 31/10/15.
+ * Class handling all server requests through REST API.
+ * Originally created by Bugrahan Memis, later changed by Doruk Kilitcioglu
+ * to comply with REST API.
+ * @authot bugrahan
+ * @author xyllan
+ * Date: 31/10/15.
  */
 public class ServerRequests{
     private ProgressDialog progressDialog;

@@ -13,7 +13,14 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Member;
-
+/**
+ * Fragment for user login. Checks for a successful login and
+ * stores user details if successful.
+ * @see Member
+ * @author Buğrahan Memiş
+ * @author xyllan
+ * Date: 01.11.2015.
+ */
 public class LoginFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "LOGIN";
     Button btnLogin;

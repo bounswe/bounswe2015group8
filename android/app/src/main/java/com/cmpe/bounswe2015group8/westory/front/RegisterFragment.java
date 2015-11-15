@@ -13,7 +13,13 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Member;
-
+/**
+ * Fragment for registering onto the site.
+ * Performs a client side password check. Stores user details if successful.
+ * @see Member
+ * @author xyllan
+ * Date: 01.11.2015.
+ */
 public class RegisterFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "REGISTER";
     Button btnRegister;

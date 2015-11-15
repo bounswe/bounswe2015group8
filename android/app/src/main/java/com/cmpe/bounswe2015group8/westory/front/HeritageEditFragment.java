@@ -13,7 +13,13 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 
 /**
- * Created by xyllan on 09.11.2015.
+ * Fragment for creating and editing heritage objects.
+ * Depending on the arguments passed into it, it can act both as an editing
+ * page and a new heritage creation page. It's title changes with the object being
+ * edited / created.
+ * @see Heritage
+ * @author xyllan
+ * Date: 09.11.2015.
  */
 public class HeritageEditFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "HERITAGE_EDIT";

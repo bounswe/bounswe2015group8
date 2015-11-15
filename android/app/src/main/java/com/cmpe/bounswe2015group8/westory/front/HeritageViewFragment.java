@@ -11,7 +11,13 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 
 /**
- * Created by xyllan on 15.11.2015.
+ * Fragment for viewing heritage objects.
+ * Needs a {@link Heritage} object to be passed in as argument.
+ * Contains links to {@link HeritageEditFragment} for editing and {@link PostEditFragment}
+ * for posting about this object.
+ * @see Heritage
+ * @author xyllan
+ * Date: 15.11.2015.
  */
 public class HeritageViewFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "HERITAGE_VIEW";

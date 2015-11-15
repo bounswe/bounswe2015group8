@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 
 /**
- * Created by bugrahan on 29/10/15.
+ * Class for storing current member information.
+ * @author bugrahan
+ * Date: 29/10/15.
  */
 public class MemberLocalStore {
 

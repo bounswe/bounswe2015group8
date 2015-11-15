@@ -11,7 +11,12 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 /**
- * Created by xyllan on 15.11.2015.
+ * Fragment for viewing posts. It needs a post to be passed in as an argument.
+ * Contains link for editing this post.
+ * edited / created.
+ * @see Post
+ * @author xyllan
+ * Date: 15.11.2015.
  */
 public class PostViewFragment extends NamedFragment implements View.OnClickListener{
     public static final String NAME = "POST_VIEW";

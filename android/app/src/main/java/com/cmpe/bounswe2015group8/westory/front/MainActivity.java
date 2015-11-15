@@ -20,7 +20,12 @@ import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 import java.sql.Timestamp;
-
+/**
+ * Main activity overviewing all operations. Contains an action bar and navigation sidebar.
+ * Is responsible for fragment management and all operations related to action bar and sidebar.
+ * @author xyllan
+ * Date: 01.11.2015.
+ */
 public class MainActivity extends Activity{
     public static void beginFragment(Activity a, NamedFragment f) {
         beginFragment(a,f,true);
