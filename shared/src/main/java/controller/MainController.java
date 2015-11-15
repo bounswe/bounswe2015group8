@@ -1,10 +1,10 @@
 package controller;
 
+import com.fasterxml.jackson.databind.deser.Deserializers;
+import com.sun.javafx.sg.prism.NGShape;
+import com.sun.org.glassfish.external.statistics.annotations.Reset;
 import dao.MemberDaoImpl;
-import model.Heritage;
-import model.Media;
-import model.Member;
-import model.Post;
+import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.crypto.codec.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +27,12 @@ import service.HeritageService;
 import service.MemberDetailsService;
 import service.PostService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by gokcan on 25.10.2015.
@@ -36,6 +40,10 @@ import java.util.Map;
 
 @Controller
 public class MainController {
+    @Autowired
+    private MailSender mailSender;
+    private SecureRandom random = new SecureRandom();
+
     MemberDetailsService memberService;
     PostService postService;
     HeritageService heritageService;
@@ -79,6 +87,69 @@ public class MainController {
         }
 
 
+    }
+
+    @RequestMapping(value = "/forget_password", method = RequestMethod.POST)
+    public ModelAndView forget_password(HttpServletRequest request,
+                                        @RequestParam(value = "username") String username){
+        Member member = memberService.getMemberByUsername(username);
+        if(member == null){
+            return new ModelAndView("redirect:/forget_password?userNotExists");
+        }
+        String email = member.getEmail();
+        String baseURL = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/"));
+        logger.info("Base URL: " + baseURL);
+
+
+        String token = new BigInteger(130, random).toString(32);
+        String text = "Hello " + username + "! " + " We heard that you wanted to reset your password...\n\n";
+        text += "You can click this link to reset your password: ";
+        text += baseURL + "/reset_password?token=" + token;
+        text += "\nHave a nice day...";
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom("WeStory");
+        mail.setTo(email);
+        mail.setSubject("WeStory Password Reset");
+        mail.setText(text);
+        mailSender.send(mail);
+
+        java.util.Date now = new java.util.Date();
+
+        final Session session = Main.getSession();
+        session.getTransaction().begin();
+        ResetPassword rp = new ResetPassword(member, token, new Timestamp(now.getTime()));
+        session.save(rp);
+        session.getTransaction().commit();
+        session.close();
+
+
+        return new ModelAndView("redirect:/login?resetPassword=true");
+    }
+
+    @RequestMapping(value = "/forget_password", method = RequestMethod.GET)
+    public ModelAndView forget_password_page(@RequestParam(value = "userNotExists", required = false) String notExists){
+        return new ModelAndView("forget_password");
+    }
+
+    @RequestMapping(value = "/reset_password", method = RequestMethod.GET)
+    public ModelAndView reset_password_page(@RequestParam(value = "token") String token){
+        final Session session = Main.getSession();
+        session.getTransaction().begin();
+        ResetPassword rp = (ResetPassword) session.createCriteria(ResetPassword.class)
+                .add(Restrictions.eq("token", token)).uniqueResult();
+        Member member = rp.getMember();
+        return new ModelAndView("reset_password", "username", member.getUsername());
+    }
+
+    @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
+    public ModelAndView reset_password(@RequestParam(value = "username") String username,
+                                       @RequestParam(value = "password") String password){
+        logger.info("username " + username);
+        logger.info("password " + password);
+        Member member = memberService.getMemberByUsername(username);
+        memberService.updatePassword(username, password);
+        return new ModelAndView("redirect:/login?passwordChanged=true");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
