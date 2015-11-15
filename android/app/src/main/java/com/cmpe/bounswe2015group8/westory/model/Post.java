@@ -1,5 +1,7 @@
 package com.cmpe.bounswe2015group8.westory.model;
 
+import android.os.Bundle;
+
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,6 +10,7 @@ import java.util.HashSet;
  * Created by xyllan on 07.11.2015.
  */
 public class Post {
+    public static String BUNDLE_BASE = "post_cur_";
     private long id;
     private int type;
     private Member owner;
@@ -36,6 +39,21 @@ public class Post {
         heritages = new HashSet<Heritage>();
         votes = new HashSet<PostVote>();
         tags = new HashSet<Tag>();
+    }
+    public Post(Bundle b) {
+        id = b.getLong(BUNDLE_BASE + "id", -1);
+        //TODO save owner also
+        //owner = b.getString(BUNDLE_BASE + "owner", "");
+        postDate = new Timestamp(b.getLong(BUNDLE_BASE + "postDate",-1));
+        long time = b.getLong(BUNDLE_BASE + "lastEditedDate",-1);
+        if(time != -1) lastEditedDate = new Timestamp(time);
+        title = b.getString(BUNDLE_BASE + "title","");
+        content = b.getString(BUNDLE_BASE + "content","");
+        //TODO fix comments
+        this.comments = new HashSet<>();
+        this.heritages = new HashSet<>();
+        this.votes = new HashSet<>();
+        this.tags = new HashSet<>();
     }
     public long getId() {
         return id;
@@ -159,5 +177,17 @@ public class Post {
             this.tags.add(t);
             t.getPosts().add(this);
         }
+    }
+    public Bundle getBundle() {
+        Bundle b = new Bundle();
+        b.putLong(BUNDLE_BASE + "id",id);
+        //TODO save owner also
+        //owner = b.getString(BUNDLE_BASE + "owner", "");
+        b.putLong(BUNDLE_BASE + "postDate",postDate.getTime());
+        if(lastEditedDate!= null) b.putLong(BUNDLE_BASE + "lastEditedDate",lastEditedDate.getTime());
+        b.putString(BUNDLE_BASE + "title",title);
+        b.putString(BUNDLE_BASE + "content",content);
+        //TODO fix comments
+        return b;
     }
 }

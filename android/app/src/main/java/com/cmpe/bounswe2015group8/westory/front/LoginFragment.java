@@ -89,4 +89,6 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
     public String getName() {
         return NAME;
     }
+    @Override
+    public String getTitle() { return NAME; }
 }

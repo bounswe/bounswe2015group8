@@ -57,4 +57,8 @@ public class HomeFragment extends NamedFragment implements View.OnClickListener{
     public String getName() {
         return NAME;
     }
+    @Override
+    public String getTitle() {
+        return getResources().getString(R.string.app_name);
+    }
 }

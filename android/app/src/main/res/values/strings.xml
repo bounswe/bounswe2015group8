@@ -30,9 +30,15 @@
     <string name="heritage_creationDate">Created at:</string>
     <string name="btn_new_post">Add Post</string>
     <string name="generic_description">Description:</string>
+    <string name="generic_owner">Creator:</string>
+    <string name="post_post_date">Post Date:</string>
+    <string name="post_last_edit_date">Last Edit Date:</string>
+    <string name="post_view_title_default">Viewing Post</string>
     <string-array name="nav_drawer_items">
         <item >Home</item>
+        <item >Example Heritage</item>
         <item >Add Heritage</item>
+        <item >Example Post</item>
         <item >Add Post</item>
         <item >Logout</item>
     </string-array>

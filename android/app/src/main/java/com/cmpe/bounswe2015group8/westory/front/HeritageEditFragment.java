@@ -31,11 +31,12 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
         etDescription = (EditText) v.findViewById(R.id.etHeritageEditDescription);
         btnSubmit = (Button) v.findViewById(R.id.btnHeritageSubmit);
         btnSubmit.setOnClickListener(this);
-        isNew = savedInstanceState!=null && !savedInstanceState.getBoolean("isNew",true);
+        Bundle bundle = getArguments();
+        isNew = bundle!=null && !bundle.getBoolean("isNew",true);
         if(isNew) {
             heritage = new Heritage();
         } else {
-            heritage = new Heritage(savedInstanceState);
+            heritage = new Heritage(bundle);
         }
         return v;
     }

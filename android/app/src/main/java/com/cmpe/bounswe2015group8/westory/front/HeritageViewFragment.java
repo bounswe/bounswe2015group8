@@ -30,11 +30,11 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         btnAddPost = (Button) v.findViewById(R.id.btnHeritageNewPost);
         btnEdit.setOnClickListener(this);
         btnAddPost.setOnClickListener(this);
-        initViews(savedInstanceState);
+        initViews(this.getArguments());
         return v;
     }
-    private void initViews(Bundle savedInstanceState) {
-        heritage = new Heritage(savedInstanceState);
+    private void initViews(Bundle args) {
+        heritage = new Heritage(args);
         tvPlace.setText(heritage.getPlace());
         tvCreationDate.setText(heritage.getPostDate().toString());
         tvDescription.setText(heritage.getDescription());

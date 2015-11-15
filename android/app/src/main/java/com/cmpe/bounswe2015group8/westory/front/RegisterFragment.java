@@ -76,4 +76,6 @@ public class RegisterFragment extends NamedFragment implements View.OnClickListe
     public String getName() {
         return NAME;
     }
+    @Override
+    public String getTitle() { return NAME; }
  }

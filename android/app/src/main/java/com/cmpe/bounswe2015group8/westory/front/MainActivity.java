@@ -1,7 +1,6 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
@@ -16,6 +15,10 @@ import android.widget.ListView;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
+import com.cmpe.bounswe2015group8.westory.model.Heritage;
+import com.cmpe.bounswe2015group8.westory.model.Post;
+
+import java.sql.Timestamp;
 
 public class MainActivity extends Activity{
     public static void beginFragment(Activity a, NamedFragment f) {
@@ -90,20 +93,32 @@ public class MainActivity extends Activity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 drawerLayout.closeDrawer(navBarView);
+                NamedFragment nf = null;
                 switch(position) {
                     case 0:
-                        MainActivity.beginFragment(a,new HomeFragment());
+                        nf = new HomeFragment();
                         break;
                     case 1:
-                        MainActivity.beginFragment(a,new HeritageEditFragment());
+                        nf = new HeritageViewFragment();
+                        Heritage h = new Heritage("asd","asdasd","asdasdasd", new Timestamp(System.currentTimeMillis()));
+                        nf.setArguments(h.getBundle());
+                        break;
+                    case 2:
+                        nf = new HeritageEditFragment();
                         break;
                     case 3:
+                        nf = new PostViewFragment();
+                        Post p = new Post(null,-1,new Timestamp(System.currentTimeMillis()),"asd","leflef");
+                        nf.setArguments(p.getBundle());
+                        break;
+                    case 5:
                         memberLocalStore.clearMemberData();
                         MainActivity.beginFragment(a,new RegisterFragment());
                         break;
                     default:
                         break;
                 }
+                MainActivity.beginFragment(a,nf);
             }
         });
     }
