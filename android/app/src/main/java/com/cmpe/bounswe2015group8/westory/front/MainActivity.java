@@ -28,7 +28,6 @@ public class MainActivity extends Activity{
     public static void beginFragment(Activity a, NamedFragment f, boolean addToBackstack) {
         FragmentTransaction ft = a.getFragmentManager().beginTransaction().replace(R.id.fragmentFrame, f, f.getName());
         if(addToBackstack) ft.addToBackStack(f.getName());
-        a.getActionBar().setTitle(f.getName());
         ft.commit();
     }
     MemberLocalStore memberLocalStore;

@@ -45,7 +45,7 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
             case R.id.btnHeritageEdit:
                 NamedFragment nf = new HeritageEditFragment();
                 Bundle b = heritage.getBundle();
-                b.putBoolean("isNew", true);
+                b.putBoolean("isNew", false);
                 nf.setArguments(b);
                 MainActivity.beginFragment(getActivity(),nf);
                 break;

@@ -31,14 +31,19 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
         etDescription = (EditText) v.findViewById(R.id.etHeritageEditDescription);
         btnSubmit = (Button) v.findViewById(R.id.btnHeritageSubmit);
         btnSubmit.setOnClickListener(this);
-        Bundle bundle = getArguments();
-        isNew = bundle!=null && !bundle.getBoolean("isNew",true);
+        initViews(getArguments());
+        return v;
+    }
+    private void initViews(Bundle args) {
+        isNew = args==null || args.getBoolean("isNew",true);
         if(isNew) {
             heritage = new Heritage();
         } else {
-            heritage = new Heritage(bundle);
+            heritage = new Heritage(args);
+            etName.setText(heritage.getName());
+            etPlace.setText(heritage.getPlace());
+            etDescription.setText(heritage.getDescription());
         }
-        return v;
     }
     @Override
     public void onClick(View v) {
