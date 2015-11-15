@@ -5,12 +5,14 @@ package api;
  */
 public class PostApiModel {
     private long heritageId;
+    private long ownerId;
     private int type;
     private String title;
     private String content;
 
-    public PostApiModel(long heritageId, int type, String title, String content) {
+    public PostApiModel(long heritageId, long ownerId ,int type, String title, String content) {
         this.heritageId = heritageId;
+        this.ownerId = ownerId;
         this.type = type;
         this.title = title;
         this.content = content;
@@ -23,6 +25,10 @@ public class PostApiModel {
     public void setHeritageId(long heritageId) {
         this.heritageId = heritageId;
     }
+
+    public long getOwnerId() { return ownerId; }
+
+    public void setOwnerId(long ownerId) { this.ownerId = ownerId; }
 
     public int getType() {
         return type;

@@ -1,10 +1,12 @@
 package api;
 
+import adapter.PostAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.Heritage;
 import model.Member;
 import model.Post;
+import adapter.HeritageAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -32,6 +34,8 @@ public class HeritageApi implements ErrorCodes {
     @RequestMapping(value = "/api/getHeritageById",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getById(@RequestBody int id) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Heritage.class, new HeritageAdapter()).create();
         ArrayList<Heritage> heritages = HeritageUtility.getHeritageList();
         for (Heritage h : heritages) {
             if (id == h.getId()) {
@@ -45,6 +49,8 @@ public class HeritageApi implements ErrorCodes {
     @RequestMapping(value = "/api/getPostById",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostById(@RequestBody int id) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
         ArrayList<Post> posts = HeritageUtility.getPostList();
         for (Post p : posts) {
             if (p.getId() == id) {
@@ -57,6 +63,8 @@ public class HeritageApi implements ErrorCodes {
     @RequestMapping(value = "/api/getAllHeritages",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getAll() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Heritage.class, new HeritageAdapter()).create();
         ArrayList<Heritage> heritages = HeritageUtility.getHeritageList();
         String json = gson.toJson(heritages);
         return json;
@@ -66,6 +74,7 @@ public class HeritageApi implements ErrorCodes {
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostsByHeritageId(@RequestBody int id) {
         GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
 
         ArrayList<Heritage> heritages = HeritageUtility.getHeritageList();
         for (Heritage h : heritages) {
@@ -80,6 +89,8 @@ public class HeritageApi implements ErrorCodes {
     @RequestMapping(value = "/api/getAllPosts",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getAllPosts() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
         ArrayList<Post> posts = HeritageUtility.getPostList();
         return gson.toJson(posts);
     }
@@ -111,7 +122,7 @@ public class HeritageApi implements ErrorCodes {
 
         Date now = new Date();
 
-        Member m = MemberUtility.getMemberService().getMemberByUsername(username);
+        Member m = MemberUtility.getMemberService().getMemberById(apiModel.getOwnerId());
         Heritage heritage = HeritageUtility.getHeritageService().getHeritageById(apiModel.getHeritageId());
 
         Post post = HeritageUtility.getPostService().savePost(m, 0, new Timestamp(now.getTime()), apiModel.getTitle(), apiModel.getContent(), heritage);

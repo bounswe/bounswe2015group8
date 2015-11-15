@@ -32,6 +32,8 @@ public class MemberDetailsService implements UserDetailsService{
         return memberDao.getMemberByUsername(username);
     }
 
+    public Member getMemberById(long id) { return memberDao.getMemberById(id); }
+
     public MemberDao getMemberDao() {
         return memberDao;
     }
