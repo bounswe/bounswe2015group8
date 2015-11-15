@@ -10,10 +10,13 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 <div class="roundbox" style="padding-top: 40px">
-  <form action="${contextPath}/forget_password" method="post" class="form-inline" id="form">
-    <label for="username"><b>Username: </b></label>
-    <input type="text" name="username" id="username" class="form-control"> <br>
-    <button type="submit" class="btn btn-default">Reset</button><br>
+    <form action="${contextPath}/forget_password" method="post" class="form-inline" id="form">
+        <label for="username"><b>Username: </b></label>
+        <input type="text" name="username" id="username" class="form-control"> <br>
+        <button type="submit" class="btn btn-default">Reset</button><br>
+        <c:if test="${param['userNotExists'] != null}">
+            <span style="color:red;">There is no such user!</span>
+        </c:if>
   </form>
 </div>
 <%@ include file="/WEB-INF/pages/footer.jsp" %>

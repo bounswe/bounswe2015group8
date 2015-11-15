@@ -27,6 +27,7 @@ import service.HeritageService;
 import service.MemberDetailsService;
 import service.PostService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -89,15 +90,21 @@ public class MainController {
     }
 
     @RequestMapping(value = "/forget_password", method = RequestMethod.POST)
-    public ModelAndView forget_password(@RequestParam(value = "username") String username){
+    public ModelAndView forget_password(HttpServletRequest request,
+                                        @RequestParam(value = "username") String username){
         Member member = memberService.getMemberByUsername(username);
+        if(member == null){
+            return new ModelAndView("redirect:/forget_password?userNotExists");
+        }
         String email = member.getEmail();
+        String baseURL = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/"));
+        logger.info("Base URL: " + baseURL);
+
 
         String token = new BigInteger(130, random).toString(32);
-        String text = "We heard that you wanted to reset your password...\n\n";
+        String text = "Hello " + username + "! " + " We heard that you wanted to reset your password...\n\n";
         text += "You can click this link to reset your password: ";
-        text += "http://localhost:8080/" +
-                appContext.getApplicationName().substring(1) + "/reset_password?token=" + token;
+        text += baseURL + "/reset_password?token=" + token;
         text += "\nHave a nice day...";
 
         SimpleMailMessage mail = new SimpleMailMessage();
@@ -116,11 +123,12 @@ public class MainController {
         session.getTransaction().commit();
         session.close();
 
-        return new ModelAndView("login");
+
+        return new ModelAndView("redirect:/login?resetPassword=true");
     }
 
     @RequestMapping(value = "/forget_password", method = RequestMethod.GET)
-    public ModelAndView forget_password_page(){
+    public ModelAndView forget_password_page(@RequestParam(value = "userNotExists", required = false) String notExists){
         return new ModelAndView("forget_password");
     }
 
@@ -141,7 +149,7 @@ public class MainController {
         logger.info("password " + password);
         Member member = memberService.getMemberByUsername(username);
         memberService.updatePassword(username, password);
-        return new ModelAndView("reset_password", "username", member.getUsername());
+        return new ModelAndView("redirect:/login?passwordChanged=true");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
