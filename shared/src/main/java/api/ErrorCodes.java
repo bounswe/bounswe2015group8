@@ -5,8 +5,8 @@ package api;
  */
 public interface ErrorCodes {
     // Login
-    final int USER_DOES_NOT_EXIST_ERROR_CODE = -1;
-    final int WRONG_PASSWORD_ERROR_CODE = -2;
+    final String USER_DOES_NOT_EXIST_ERROR_CODE = "user-does-not-exist";
+    final String WRONG_PASSWORD_ERROR_CODE = "wrong-password";
 
     // Register
     final int USERNAME_NULL = -101;
