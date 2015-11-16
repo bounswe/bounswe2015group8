@@ -25,15 +25,14 @@ public class Member {
     private Collection<Post> posts;
     private Collection<PostVote> postVotes;
     public Member() {
-        comments = new HashSet<Comment>();
-        commentVotes = new HashSet<CommentVote>();
-        followedMembers = new HashSet<Member>();
-        followers = new HashSet<Member>();
-        posts = new HashSet<Post>();
-        postVotes = new HashSet<PostVote>();
+        this("","","","");
     }
 
     public Member(String username, String password, String email, String profilePicture) {
+        this(-1l,username,password,email,profilePicture);
+    }
+    public Member(long id, String username, String password, String email, String profilePicture) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -187,11 +186,45 @@ public class Member {
         followedMembers.add(other);
         other.followers.add(this);
     }
+    public Requestable<Member> getLoginRequestable() {
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("username", username);
+        dataToSend.put("password", password);
+        return new Requestable("/api/login",dataToSend,Member.class);
+    }
     public Requestable<Long> getRegisterRequestable() {
         Map<String,String> dataToSend = new HashMap<>();
         dataToSend.put("username", username);
         dataToSend.put("password", password);
         dataToSend.put("email", email);
         return new Requestable("/api/signup",dataToSend,Long.class);
+    }
+    public class LoginMember {
+        public long id;
+        public String email, profilePicture;
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getProfilePicture() {
+            return profilePicture;
+        }
+
+        public void setProfilePicture(String profilePicture) {
+            this.profilePicture = profilePicture;
+        }
     }
 }

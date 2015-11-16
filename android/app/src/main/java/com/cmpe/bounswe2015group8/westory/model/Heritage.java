@@ -2,7 +2,9 @@ package com.cmpe.bounswe2015group8.westory.model;
 import android.os.Bundle;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Created by xyllan on 07.11.2015.
@@ -137,5 +139,12 @@ public class Heritage {
         b.putString(BUNDLE_BASE + "description",description);
         //TODO fix posts
         return b;
+    }
+    public Requestable<Long> getCreateRequestable() {
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("name", name);
+        dataToSend.put("place", place);
+        dataToSend.put("description", description);
+        return new Requestable("/api/createHeritage",dataToSend,Long.class);
     }
 }

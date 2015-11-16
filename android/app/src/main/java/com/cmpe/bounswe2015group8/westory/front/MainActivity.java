@@ -49,12 +49,9 @@ public class MainActivity extends Activity{
 
         memberLocalStore = new MemberLocalStore(this);
         fm = this.getFragmentManager();
-        String[] navbarItems = this.getResources().getStringArray(R.array.nav_drawer_items);
-
         navBarView = (ListView) findViewById(R.id.drawer_list);
-        navBarAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navbarItems);
-        navBarView.setAdapter(navBarAdapter);
         setOnItemClickListener(navBarView);
+        resetNavbar();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
         drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.generic_description,R.string.generic_description);
@@ -66,7 +63,7 @@ public class MainActivity extends Activity{
     @Override
     protected void onStart() {
         super.onStart();
-        if (authenticate()) {
+        if (authenticated()) {
             MainActivity.beginFragment(this, new HomeFragment());
         } else {
             MainActivity.beginFragment(this, new LoginFragment());
@@ -89,7 +86,13 @@ public class MainActivity extends Activity{
         }
         return super.onOptionsItemSelected(item);
     }
-    private boolean authenticate() {
+    public void resetNavbar() {
+        String[] navbarItems = getResources().getStringArray(R.array.nav_drawer_items);
+        if(authenticated()) navbarItems[navbarItems.length-1] = getResources().getString(R.string.btn_logout);
+        navBarAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navbarItems);
+        navBarView.setAdapter(navBarAdapter);
+    }
+    private boolean authenticated() {
         return memberLocalStore.getUserLoggedIn();
     }
     private void setOnItemClickListener(ListView lv) {

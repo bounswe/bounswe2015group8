@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Created by xyllan on 07.11.2015.
@@ -189,5 +191,14 @@ public class Post {
         b.putString(BUNDLE_BASE + "content",content);
         //TODO fix comments
         return b;
+    }
+    public Requestable<Long> getCreateRequestable(long heritageId) {
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("heritageId", Long.toString(heritageId));
+        dataToSend.put("type",Integer.toString(0));
+        dataToSend.put("ownerId", Long.toString(owner.getId()));
+        dataToSend.put("title", title);
+        dataToSend.put("content", content);
+        return new Requestable("/api/createPost",dataToSend,Long.class);
     }
 }
