@@ -16,11 +16,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="/static/js/jquery-1.11.3.js"></script>
-    <script src="/static/js/bootstrap/bootstrap.js"></script>
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
-    <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="${contextPath}/static/js/jquery-1.11.3.js"></script>
+    <script src="${contextPath}/static/js/bootstrap/bootstrap.js"></script>
+    <link rel="stylesheet" href="${contextPath}/static/css/bootstrap.css">
+    <link rel="stylesheet" href="${contextPath}/static/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="${contextPath}/static/css/styles.css">
 </head>
 
 
