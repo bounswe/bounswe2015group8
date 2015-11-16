@@ -16,7 +16,7 @@ public class SignUpApi implements ErrorCodes {
 
     /**
      * Creates member via API. Gets details with RequestMethod Post.
-     * @param apiMember ApiMemberModel as JSON
+     * @param apiMember Member as JSON
      * @return the member id
      */
     @RequestMapping(value = "/api/signup",

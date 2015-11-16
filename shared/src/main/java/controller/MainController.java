@@ -1,9 +1,5 @@
 package controller;
 
-import com.fasterxml.jackson.databind.deser.Deserializers;
-import com.sun.javafx.sg.prism.NGShape;
-import com.sun.org.glassfish.external.statistics.annotations.Reset;
-
 import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
@@ -13,35 +9,20 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.crypto.codec.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import service.HeritageService;
-import service.MemberDetailsService;
-import service.PostService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.sql.Timestamp;
-import java.util.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import service.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
