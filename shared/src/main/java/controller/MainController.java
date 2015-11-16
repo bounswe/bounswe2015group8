@@ -8,19 +8,14 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import service.CommentService;
-import service.HeritageService;
-import service.MemberDetailsService;
-import service.PostService;
+import service.*;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -42,6 +37,7 @@ public class MainController {
     PostService postService;
     HeritageService heritageService;
     CommentService commentService;
+    VoteService voteService;
     public MainController() {
         memberService = new MemberDetailsService();
         MemberDaoImpl mdao = new MemberDaoImpl();
@@ -50,6 +46,7 @@ public class MainController {
         postService = new PostService(Main.getSessionFactory());
         heritageService = new HeritageService(Main.getSessionFactory());
         commentService = new CommentService(Main.getSessionFactory());
+        voteService = new VoteService(Main.getSessionFactory());
     }
     @RequestMapping(value = "/")
     public ModelAndView home(){ return new ModelAndView("home"); }
@@ -292,7 +289,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/post_comment", method = RequestMethod.POST)
-    public ModelAndView upload_post(@RequestParam("content") String content, @RequestParam("postId") long postId) {
+    public ModelAndView upload_comment(@RequestParam("content") String content, @RequestParam("postId") long postId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
@@ -318,6 +315,20 @@ public class MainController {
         session.close();
 
         return new ModelAndView("list_post","allContent", allContent);
+    }
+
+    // This function will be called via an AJAX request.
+    @RequestMapping(value = "/vote_post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long vote_post(@PathVariable long postId,
+                                  @RequestParam(value = "voteType") boolean voteType){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Member member = memberService.getMemberByUsername(username);
+        Post post = postService.getPostById(postId);
+        voteService.savePostVote(member, post, voteType);
+
+        return (long)1;
     }
 
 }
