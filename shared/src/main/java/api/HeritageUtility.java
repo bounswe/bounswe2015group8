@@ -32,7 +32,7 @@ public class HeritageUtility {
 
     public static ArrayList<Post> getPostList() {
         if (postList == null) {
-            postList = new ArrayList<>();
+            postList = new ArrayList<Post>();
         }
         if (heritageList == null) {
             heritageList = new ArrayList<Heritage>();
