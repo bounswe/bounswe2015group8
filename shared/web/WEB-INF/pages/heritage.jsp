@@ -1,25 +1,45 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gokcan
-  Date: 08.11.2015
-  Time: 17:28
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <%@ include file="/WEB-INF/pages/header.jsp" %>
-<div class="roundbox">
-    <form class="form-inline" id="form" action="${contextPath}/upload_heritage" method="POST"
-          enctype="multipart/form-data">
-        <b>Name: </b><input type="text" name="name" id="name" class="form-control"> <br>
-        <b>Place: </b><input type="text" name="place" id="place" class="form-control"> <br>
-        <b>Description: </b><input valign="top" style="height:50%; width:80%;" type="text" name="description" id="description" class="form-control"> <br>
-        <input type="file" name="media" id="media" class="form-control"> <br>
-        <button type="submit" class="btn-modified">POST!</button>
-        <br>
-    </form>
-</div>
+
+<form class="form-horizontal"
+      id="heritageForm"
+      action="${contextPath}/upload_heritage"
+      method="post"
+      enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="name" id="name" placeholder="Name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="place" class="col-sm-2 control-label">Place</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="place" id="place" placeholder="Place">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="place" class="col-sm-2 control-label">Description</label>
+
+        <div class="col-sm-10">
+            <textarea class="form-control" rows="3" name="description" id="description" placeholder="Description"
+                      style="width: 100%; resize: vertical"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="media" class="col-sm-2 control-label">Media</label>
+        <div class="col-sm-10">
+            <label for="media" class="btn btn-lg"><i class="glyphicon glyphicon-paperclip"></i></label>
+            <input type="file" name="media" id="media" style="display:none"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default btn-block">Post</button>
+        </div>
+    </div>
+</form>
+
+
 <%@ include file="/WEB-INF/pages/footer.jsp" %>
 
 

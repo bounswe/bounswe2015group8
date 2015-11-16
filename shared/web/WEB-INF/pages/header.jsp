@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,14 +16,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
-    <link rel="stylesheet" href="/static/css/bootstrap-theme.css">
+    <script src="/static/js/jquery-1.11.3.js"></script>
     <script src="/static/js/bootstrap/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 
 
-<body>
+<body style="background-color: #265a88">
 <nav class="navbar navbar-default navbar-static-top header">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -30,4 +33,4 @@
     </div>
 </nav>
 
-<div class="page-content">
+<div class="page-content container" >

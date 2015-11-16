@@ -1,47 +1,86 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gokcan
-  Date: 08.11.2015
-  Time: 17:32
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 <script type="text/javascript">
     console.log("${allHeritages}");
 </script>
-<div id="section">
-    <center>
-        <div class="roundbox" style="width: 25%; margin-top: 15px;">
 
-            Why don't you add a new cultural heritage?<br>
-            <button type="button" class="btn-modified" onclick="window.location.href='${contextPath}/heritage'"> Add a cultural heritage!</button>
+<div class="well">
+    <div class="row">
+        <div class="col-xs-12">
+            Why don't you add a new cultural heritage?
         </div>
-
-    </center>
-
-    <br>
-
-    <c:forEach items="${allHeritages}" var="heritage">
-        <div class="roundbox">
-            <span><b>Name: </b> ${heritage.name}</span>
-            <br>
-            <span><b>Place: </b> ${heritage.place}</span>
-            <br>
-            <span><b>Description: </b> ${heritage.description}</span>
-            <button type="button" class="btn-modified" style="float:right; margin-right:5%; border: solid#337ab7"
-                    onclick="window.location.href='${contextPath}/post/${heritage.id}'">Add Post
-            </button>
-            <button type="button" class="btn-modified" style="float:right; margin-right:5%;"
-                    onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">See Posts
-            </button>
-            <br>
-            <span><b>Date posted: </b> ${heritage.postDate}</span>
-
+        <div class="col-xs-12" style="height:20px;"></div>
+        <div class="col-sm-12">
+            <div class="btn-group pull-right" role="group">
+                <button type="button"
+                        class="btn btn-default"
+                        onclick="window.location.href='${contextPath}/heritage'">
+                    Add a cultural heritage!
+                </button>
+            </div>
         </div>
-    </c:forEach>
-
+    </div>
 </div>
+
+<c:forEach items="${allHeritages}" var="heritage">
+    <div class="row">
+        <div class="col-xs-12" style="height:20px;"></div>
+    </div>
+    <div class="well">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <label for="name" class="col-sm-2 control-label">Name</label>
+
+                    <div class="col-sm-10">
+                        <p name="name" id="name">
+                                ${heritage.name}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="place" class="col-sm-2 control-label">Place</label>
+
+                    <div class="col-sm-10">
+                        <p name="place" id="place">
+                                ${heritage.place}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="description" class="col-sm-2 control-label">Description</label>
+
+                    <div class="col-sm-10">
+                        <p name="description" id="description">
+                                ${heritage.description}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="postDate" class="col-sm-2 control-label">Description</label>
+
+                    <div class="col-sm-10">
+                        <p name="postDate" id="postDate">
+                                ${heritage.postDate}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-8 col-sm-4" role="group">
+                        <button type="button"
+                                class="btn btn-default"
+                                onclick="window.location.href='${contextPath}/post/${heritage.id}'">
+                            Add Post
+                        </button>
+                        <button type="button"
+                                class="btn btn-default"
+                                onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
+                            See Posts
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:forEach>
+
 <%@ include file="/WEB-INF/pages/footer.jsp" %>

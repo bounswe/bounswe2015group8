@@ -11,7 +11,8 @@
 
 .page-content {
     /* margin-top: 70px; */
-    margin-bottom: 70px;
+    margin: 0px auto 70px auto;
+    width: 80%
 }
 
 .footer {
@@ -22,8 +23,15 @@
     background-color: #f6f6f6;
 }
 
+.pull-left {
+    float: left !important;
+}
+.pull-right {
+    float: right !important;
+}
 
-.center-div {
-    margin: 0 auto;
-    width: 80%
+.well {
+   /* background: #66afe9;
+    border-color: #67b168;
+    */
 }
