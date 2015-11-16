@@ -3,6 +3,7 @@ package controller;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.sun.javafx.sg.prism.NGShape;
 import com.sun.org.glassfish.external.statistics.annotations.Reset;
+
 import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
@@ -11,12 +12,14 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.codec.*;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +36,17 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import service.*;
+
+import java.io.File;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * Created by gokcan on 25.10.2015.
@@ -47,9 +61,13 @@ public class MainController {
     MemberDetailsService memberService;
     PostService postService;
     HeritageService heritageService;
+
     @Autowired
     private ApplicationContext appContext;
     private Logger logger = Logger.getLogger(MainController.class);
+
+    CommentService commentService;
+    VoteService voteService;
     public MainController() {
         memberService = new MemberDetailsService();
         MemberDaoImpl mdao = new MemberDaoImpl();
@@ -57,6 +75,8 @@ public class MainController {
         memberService.setMemberDao(mdao);
         postService = new PostService(Main.getSessionFactory());
         heritageService = new HeritageService(Main.getSessionFactory());
+        commentService = new CommentService(Main.getSessionFactory());
+        voteService = new VoteService(Main.getSessionFactory());
     }
     @RequestMapping(value = "/")
     public ModelAndView home() {
@@ -266,11 +286,12 @@ public class MainController {
                 .add(Restrictions.eq("owner", m));
         List posts = criteria.list();
 
-
         List medias = session.createCriteria(Media.class).list();
+        List comments = session.createCriteria(Comment.class).list();
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("posts", posts);
         allContent.put("medias", medias);
+        allContent.put("comments", comments);
         session.close();
 
         return new ModelAndView("list_post", "allContent", allContent);
@@ -350,6 +371,75 @@ public class MainController {
     public ModelAndView show_heritages() {
         List<Heritage> allHeritages = heritageService.getAllHeritages();
         return new ModelAndView("list_heritage", "allHeritages", allHeritages);
+    }
+
+    @RequestMapping(value = "/comment/{postId}")
+    public ModelAndView comment(@PathVariable long postId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Map viewVariables = new HashMap();
+        viewVariables.put("username", username);
+        viewVariables.put("postId", postId);
+        return new ModelAndView("comment", viewVariables);
+    }
+
+    @RequestMapping(value = "/post_comment", method = RequestMethod.POST)
+    public ModelAndView upload_comment(@RequestParam("content") String content, @RequestParam("postId") long postId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        final Session session = Main.getSession();
+        session.getTransaction().begin();
+
+        Member m = memberService.getMemberByUsername(username);
+        Post post = postService.getPostById(postId);
+        java.util.Date now = new java.util.Date();
+
+        Comment comment = commentService.saveComment(m, post, content, new Timestamp(now.getTime()));
+
+        Criteria criteria = session.createCriteria(Post.class)
+                .add(Restrictions.eq("owner", m));
+        List posts = criteria.list();
+
+        List medias = session.createCriteria(Media.class).list();
+        List comments = session.createCriteria(Comment.class).list();
+        Map<String, List> allContent = new HashMap<String, List>();
+        allContent.put("posts", posts);
+        allContent.put("medias", medias);
+        allContent.put("comments", comments);
+        session.close();
+
+        return new ModelAndView("list_post","allContent", allContent);
+    }
+
+    // This function will be called via an AJAX request.
+    // It returns the overall vote for that post. (upvotes - downvotes)
+    @RequestMapping(value = "/vote_post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long vote_post(@PathVariable long postId,
+                          @RequestParam(value = "voteType") boolean voteType){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Member member = memberService.getMemberByUsername(username);
+        Post post = postService.getPostById(postId);
+        voteService.savePostVote(member, post, voteType);
+
+        return voteService.getPostOverallVote(post);
+    }
+
+    // This function will be called via an AJAX request.
+    // It returns the overall vote for that comment. (upvotes - downvotes)
+    @RequestMapping(value = "/vote_comment/{commentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long vote_comment(@PathVariable long commentId,
+                             @RequestParam(value = "voteType") boolean voteType){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Member member = memberService.getMemberByUsername(username);
+        Comment comment = commentService.getCommentById(commentId);
+        voteService.saveCommentVote(member, comment, voteType);
+
+        return voteService.getCommentOverallVote(comment);
     }
 
 }
