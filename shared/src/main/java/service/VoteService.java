@@ -42,6 +42,30 @@ public class VoteService {
         return voteDao.getPostVotesByOwner(member);
     }
 
+    public long getCommentUpvoteCount(Comment comment){
+        return voteDao.getCommentUpvoteCount(comment);
+    }
+
+    public long getPostUpvoteCount(Post post){
+        return voteDao.getPostUpvoteCount(post);
+    }
+
+    public long getCommentDownvoteCount(Comment comment){
+        return voteDao.getCommentDownvoteCount(comment);
+    }
+
+    public long getPostDownvoteCount(Post post){
+        return voteDao.getPostDownvoteCount(post);
+    }
+
+    public long getCommentOverallVote(Comment comment){
+        return getCommentUpvoteCount(comment) - getCommentDownvoteCount(comment);
+    }
+
+    public long getPostOverallVote(Post post){
+        return getPostUpvoteCount(post) - getPostDownvoteCount(post);
+    }
+
     public CommentVote saveCommentVote(Member member, Comment comment, boolean voteType){
         CommentVote oldCommentVote = voteDao.getVoteByCommentAndOwner(comment, member);
         if(oldCommentVote != null){

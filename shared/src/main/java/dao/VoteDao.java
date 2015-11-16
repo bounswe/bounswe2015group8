@@ -23,6 +23,11 @@ public interface VoteDao {
     public void deleteCommentVote(CommentVote commentVote);
     public void deletePostVote(PostVote postVote);
 
+    public long getCommentUpvoteCount(Comment comment);
+    public long getPostUpvoteCount(Post post);
+    public long getCommentDownvoteCount(Comment comment);
+    public long getPostDownvoteCount(Post post);
+
     public SessionFactory getSessionFactory();
     public void setSessionFactory(SessionFactory sessionFactory);
 }

@@ -124,6 +124,42 @@ public class VoteDaoImpl implements VoteDao{
         s.close();
     }
 
+    public long getCommentUpvoteCount(Comment comment){
+        Session s = getSessionFactory().openSession();
+        long upvoteCount = (long)s
+                .createQuery("from CommentVote where comment=? and voteType=true")
+                .setParameter(0, comment).list().size();
+        s.close();
+        return upvoteCount;
+    }
+
+    public long getPostUpvoteCount(Post post){
+        Session s = getSessionFactory().openSession();
+        long upvoteCount = (long)s
+                .createQuery("from PostVote where post=? and voteType=true")
+                .setParameter(0, post).list().size();
+        s.close();
+        return upvoteCount;
+    }
+
+    public long getCommentDownvoteCount(Comment comment){
+        Session s = getSessionFactory().openSession();
+        long downvoteCount = (long)s
+                .createQuery("from CommentVote where comment=? and voteType=false")
+                .setParameter(0, comment).list().size();
+        s.close();
+        return downvoteCount;
+    }
+
+    public long getPostDownvoteCount(Post post){
+        Session s = getSessionFactory().openSession();
+        long downvoteCount = (long)s
+                .createQuery("from PostVote where post=? and voteType=false")
+                .setParameter(0, post).list().size();
+        s.close();
+        return downvoteCount;
+    }
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }

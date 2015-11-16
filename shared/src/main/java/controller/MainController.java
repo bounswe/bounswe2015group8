@@ -318,17 +318,33 @@ public class MainController {
     }
 
     // This function will be called via an AJAX request.
+    // It returns the overall vote for that post. (upvotes - downvotes)
     @RequestMapping(value = "/vote_post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public long vote_post(@PathVariable long postId,
-                                  @RequestParam(value = "voteType") boolean voteType){
+                          @RequestParam(value = "voteType") boolean voteType){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Member member = memberService.getMemberByUsername(username);
         Post post = postService.getPostById(postId);
         voteService.savePostVote(member, post, voteType);
 
-        return (long)1;
+        return voteService.getPostOverallVote(post);
+    }
+
+    // This function will be called via an AJAX request.
+    // It returns the overall vote for that comment. (upvotes - downvotes)
+    @RequestMapping(value = "/vote_comment/{commentId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long vote_comment(@PathVariable long commentId,
+                             @RequestParam(value = "voteType") boolean voteType){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Member member = memberService.getMemberByUsername(username);
+        Comment comment = commentService.getCommentById(commentId);
+        voteService.saveCommentVote(member, comment, voteType);
+
+        return voteService.getCommentOverallVote(comment);
     }
 
 }
