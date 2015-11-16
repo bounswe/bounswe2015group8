@@ -1,4 +1,6 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+<c:set var="medias" value="${allContent.medias}"/>
+
 <script type="text/javascript">
     console.log("${allHeritages}");
 </script>
@@ -78,6 +80,19 @@
                         </button>
                     </div>
                 </div>
+                <c:forEach var="media" items="${medias}">
+                    <c:if test="${media.postOrHeritageId == heritage.id && media.postOrHeritage==true}">
+                        <div class="row">
+                            <label class="col-sm-2 control-label">Media</label>
+
+                            <div class="media col-sm-10">
+                                <div class="media-left">
+                                    <img src="${contextPath}/static/${media.mediaLink}" height="100%" width="100%">
+                                </div>
+                            </div>
+                        </div>
+                    </c:if>
+                </c:forEach>
             </div>
         </div>
     </div>

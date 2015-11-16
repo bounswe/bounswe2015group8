@@ -28,7 +28,7 @@
 <nav class="navbar navbar-default navbar-static-top header">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">&#x2655; WeStory</a>
+            <a class="navbar-brand" href="${contextPath}/index.jsp">&#x2655; WeStory</a>
         </div>
     </div>
 </nav>
