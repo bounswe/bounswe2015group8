@@ -19,7 +19,7 @@
               <beans:property name="suffix" value=".jsp" />
        </beans:bean>
 
-       <context:component-scan base-package="controller" />
+       <context:component-scan base-package="controller, api" />
 
 
 

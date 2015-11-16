@@ -19,7 +19,14 @@
                 <c:if test="${param['success'] == 'false'}">
                     <span style="color:red;">Your username or password is wrong!</span>
                 </c:if>
+                <c:if test="${param['resetPassword'] == 'true'}">
+                    <span style="color:blue;">You have been sent the password reset link!</span>
+                </c:if>
+                <c:if test="${param['passwordChanged'] == 'true'}">
+                    <span style="color:green;">Your password is successfully changed!</span>
+                </c:if>
             </form>
+            <a href="${contextPath}/forget_password">Forgot your password?</a>
         </div>
 <%@ include file="/WEB-INF/pages/footer.jsp" %>
 

@@ -227,6 +227,21 @@
             <column name="VOTE_TYPE" sql-type="bit" not-null="true"/>
         </property>
     </class>
+    <class name="model.ResetPassword" table="RESET_PASSWORD" schema="cmpe451_db">
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one name="member" class="model.Member" cascade="save-update">
+            <column name="MEMBER_ID" not-null="true"/>
+        </many-to-one>
+        <property name="token">
+            <column name="TOKEN" sql-type="text" length="65535" not-null="true"/>
+        </property>
+        <property name="requestedDate">
+            <column name="REQUESTED_DATE" sql-type="timestamp"/>
+        </property>
+    </class>
     <class name="model.Tag" table="TAG" schema="cmpe451_db" >
         <id name="id">
             <column name="ID" sql-type="bigint" not-null="true"/>

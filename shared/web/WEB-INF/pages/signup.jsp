@@ -10,7 +10,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <%@ include file="/WEB-INF/pages/header.jsp" %>
     <div class="roundbox" style="padding-top: 60px">
-        <form action="${contextPath}/login" method="post" class="form-inline" id="form">
+        <form action="${contextPath}/signup" method="post" class="form-inline" id="form">
             <center>
                 <table>
                     <tr>
