@@ -113,6 +113,17 @@
                                 </button>
                             </div>
                         </div>
+                        <c:forEach var="comment" items="${comments}">
+                            <div class="row">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <blockquote>
+                                        <p><strong>${comment.owner}</strong></p>
+                                        <p>${comment.content}</p>
+                                        <footer>${comment.lastEditedDate}</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
