@@ -1,6 +1,8 @@
 package controller;
 
-import dao.MemberDao;
+import com.fasterxml.jackson.databind.deser.Deserializers;
+import com.sun.javafx.sg.prism.NGShape;
+import com.sun.org.glassfish.external.statistics.annotations.Reset;
 import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
@@ -11,26 +13,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.crypto.codec.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import service.HeritageService;
 import service.MemberDetailsService;
 import service.PostService;
 
-import java.io.BufferedOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.Serializable;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by gokcan on 25.10.2015.
@@ -39,12 +41,15 @@ import java.util.Map;
 @Controller
 public class MainController {
     @Autowired
-    private ApplicationContext appContext;
-    private Logger logger = Logger.getLogger(MainController.class);
+    private MailSender mailSender;
+    private SecureRandom random = new SecureRandom();
 
     MemberDetailsService memberService;
     PostService postService;
     HeritageService heritageService;
+    @Autowired
+    private ApplicationContext appContext;
+    private Logger logger = Logger.getLogger(MainController.class);
     public MainController() {
         memberService = new MemberDetailsService();
         MemberDaoImpl mdao = new MemberDaoImpl();
@@ -54,7 +59,9 @@ public class MainController {
         heritageService = new HeritageService(Main.getSessionFactory());
     }
     @RequestMapping(value = "/")
-    public ModelAndView home(){ return new ModelAndView("home"); }
+    public ModelAndView home() {
+        return new ModelAndView("home");
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(@RequestParam(value="username") String username,
@@ -80,6 +87,69 @@ public class MainController {
         }
 
 
+    }
+
+    @RequestMapping(value = "/forget_password", method = RequestMethod.POST)
+    public ModelAndView forget_password(HttpServletRequest request,
+                                        @RequestParam(value = "username") String username){
+        Member member = memberService.getMemberByUsername(username);
+        if(member == null){
+            return new ModelAndView("redirect:/forget_password?userNotExists");
+        }
+        String email = member.getEmail();
+        String baseURL = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/"));
+        logger.info("Base URL: " + baseURL);
+
+
+        String token = new BigInteger(130, random).toString(32);
+        String text = "Hello " + username + "! " + " We heard that you wanted to reset your password...\n\n";
+        text += "You can click this link to reset your password: ";
+        text += baseURL + "/reset_password?token=" + token;
+        text += "\nHave a nice day...";
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom("WeStory");
+        mail.setTo(email);
+        mail.setSubject("WeStory Password Reset");
+        mail.setText(text);
+        mailSender.send(mail);
+
+        java.util.Date now = new java.util.Date();
+
+        final Session session = Main.getSession();
+        session.getTransaction().begin();
+        ResetPassword rp = new ResetPassword(member, token, new Timestamp(now.getTime()));
+        session.save(rp);
+        session.getTransaction().commit();
+        session.close();
+
+
+        return new ModelAndView("redirect:/login?resetPassword=true");
+    }
+
+    @RequestMapping(value = "/forget_password", method = RequestMethod.GET)
+    public ModelAndView forget_password_page(@RequestParam(value = "userNotExists", required = false) String notExists){
+        return new ModelAndView("forget_password");
+    }
+
+    @RequestMapping(value = "/reset_password", method = RequestMethod.GET)
+    public ModelAndView reset_password_page(@RequestParam(value = "token") String token){
+        final Session session = Main.getSession();
+        session.getTransaction().begin();
+        ResetPassword rp = (ResetPassword) session.createCriteria(ResetPassword.class)
+                .add(Restrictions.eq("token", token)).uniqueResult();
+        Member member = rp.getMember();
+        return new ModelAndView("reset_password", "username", member.getUsername());
+    }
+
+    @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
+    public ModelAndView reset_password(@RequestParam(value = "username") String username,
+                                       @RequestParam(value = "password") String password){
+        logger.info("username " + username);
+        logger.info("password " + password);
+        Member member = memberService.getMemberByUsername(username);
+        memberService.updatePassword(username, password);
+        return new ModelAndView("redirect:/login?passwordChanged=true");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -110,7 +180,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/post/{heritageId}")
-    public ModelAndView post(@PathVariable long heritageId){
+    public ModelAndView post(@PathVariable long heritageId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Map viewVariables = new HashMap();
@@ -123,7 +193,7 @@ public class MainController {
     public ModelAndView upload_post(@RequestParam("title") String title,
                                     @RequestParam("content") String content,
                                     @RequestParam("media") MultipartFile media,
-                                    @RequestParam("heritageId") long heritageId){
+                                    @RequestParam("heritageId") long heritageId) {
         logger.info("heritage id: " + Long.toString(heritageId));
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -142,11 +212,11 @@ public class MainController {
         Heritage heritage = heritageService.getHeritageById(heritageId);
         Post post = postService.savePost(m, 0, new Timestamp(now.getTime()), title, content, heritage);
 
-        if(!media.isEmpty()){
+        if (!media.isEmpty()) {
             try {
                 // Creating the directory to store file
                 String mediaName = media.getOriginalFilename();
-                String filePath =  mediaName;
+                String filePath = mediaName;
                 final Session session = Main.getSession();
                 session.getTransaction().begin();
                 Media mediaObject = new Media(post.getId(), filePath, 0, false);
@@ -181,11 +251,11 @@ public class MainController {
         */
 
         List<Post> posts = postService.getPostsByMember(m);
-        return new ModelAndView("list_post","posts", posts);
+        return new ModelAndView("list_post", "posts", posts);
     }
 
     @RequestMapping(value = "/show_posts")
-    public ModelAndView show_posts(){
+    public ModelAndView show_posts() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         final Session session = Main.getSession();
@@ -203,11 +273,11 @@ public class MainController {
         allContent.put("medias", medias);
         session.close();
 
-        return new ModelAndView("list_post","allContent", allContent);
+        return new ModelAndView("list_post", "allContent", allContent);
     }
 
     @RequestMapping(value = "/show_posts/{heritageId}")
-    public ModelAndView show_posts_of_heritage(@PathVariable long heritageId){
+    public ModelAndView show_posts_of_heritage(@PathVariable long heritageId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         final Session session = Main.getSession();
@@ -222,11 +292,11 @@ public class MainController {
         allContent.put("medias", medias);
         session.close();
 
-        return new ModelAndView("list_post","allContent", allContent);
+        return new ModelAndView("list_post", "allContent", allContent);
     }
 
     @RequestMapping(value = "/heritage")
-    public ModelAndView heritage(){
+    public ModelAndView heritage() {
         return new ModelAndView("heritage");
     }
 
@@ -234,14 +304,14 @@ public class MainController {
     public ModelAndView upload_heritage(@RequestParam("name") String name,
                                         @RequestParam("place") String place,
                                         @RequestParam("media") MultipartFile media,
-                                        @RequestParam("description") String description){
+                                        @RequestParam("description") String description) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
         java.util.Date now = new java.util.Date();
         Heritage heritage = heritageService.saveHeritage(name, place, description, new Timestamp(now.getTime()));
 
-        if(!media.isEmpty()){
+        if (!media.isEmpty()) {
             try {
                 // Creating the directory to store file
                 String mediaName = media.getOriginalFilename();
@@ -277,7 +347,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/show_heritages")
-    public ModelAndView show_heritages(){
+    public ModelAndView show_heritages() {
         List<Heritage> allHeritages = heritageService.getAllHeritages();
         return new ModelAndView("list_heritage", "allHeritages", allHeritages);
     }

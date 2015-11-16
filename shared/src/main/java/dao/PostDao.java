@@ -11,10 +11,15 @@ import java.util.List;
  * Created by gokcan on 08.11.2015.
  */
 public interface PostDao {
-    public Post getPostById(long id);
-    public List<Post> getPostsByOwner(Member owner);
-    public List<Post> getPostsByHeritage(Heritage heritage);
-    public Post savePost(Post post, Heritage heritage);
-    public SessionFactory getSessionFactory();
-    public void setSessionFactory(SessionFactory sessionFactory);
+    Post getPostById(long id);
+
+    List<Post> getPostsByOwner(Member owner);
+
+    List<Post> getPostsByHeritage(Heritage heritage);
+
+    Post savePost(Post post, Heritage heritage);
+
+    SessionFactory getSessionFactory();
+
+    void setSessionFactory(SessionFactory sessionFactory);
 }

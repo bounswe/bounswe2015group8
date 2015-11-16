@@ -10,11 +10,11 @@ public class Media {
     private int mediaType;
     private boolean postOrHeritage;
 
-    public Media(){
+    public Media() {
 
     }
 
-    public Media(long postOrHeritageId, String mediaLink, int mediaType, boolean postOrHeritage){
+    public Media(long postOrHeritageId, String mediaLink, int mediaType, boolean postOrHeritage) {
         this.postOrHeritageId = postOrHeritageId;
         this.mediaLink = mediaLink;
         this.mediaType = mediaType;
@@ -72,9 +72,8 @@ public class Media {
         if (postOrHeritageId != media.postOrHeritageId) return false;
         if (mediaType != media.mediaType) return false;
         if (postOrHeritage != media.postOrHeritage) return false;
-        if (mediaLink != null ? !mediaLink.equals(media.mediaLink) : media.mediaLink != null) return false;
+        return !(mediaLink != null ? !mediaLink.equals(media.mediaLink) : media.mediaLink != null);
 
-        return true;
     }
 
     @Override

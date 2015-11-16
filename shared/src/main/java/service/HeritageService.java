@@ -14,20 +14,20 @@ import java.util.List;
 public class HeritageService {
     private HeritageDao heritageDao;
 
-    public HeritageService(SessionFactory sessionFactory){
+    public HeritageService(SessionFactory sessionFactory) {
         heritageDao = new HeritageDaoImpl();
         heritageDao.setSessionFactory(sessionFactory);
     }
 
-    public Heritage getHeritageById(long id){
+    public Heritage getHeritageById(long id) {
         return heritageDao.getHeritageById(id);
     }
 
-    public List<Heritage> getAllHeritages(){
+    public List<Heritage> getAllHeritages() {
         return heritageDao.getAllHeritages();
     }
 
-    public Heritage saveHeritage(String name, String place, String description, Timestamp postDate){
+    public Heritage saveHeritage(String name, String place, String description, Timestamp postDate) {
         Heritage heritage = new Heritage(name, place, description, postDate);
         return heritageDao.saveHeritage(heritage);
     }

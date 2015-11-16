@@ -9,4 +9,5 @@ public interface MemberDao {
     public Member getMemberById(long id);
     public Member getMemberByUsername(String username);
     public Member saveMember(Member m);
+    public Member updateMember(Member m);
 }

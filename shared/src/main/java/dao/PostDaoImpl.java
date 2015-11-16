@@ -1,9 +1,9 @@
 package dao;
 
 import model.Heritage;
+import model.HeritagePost;
 import model.Member;
 import model.Post;
-import model.HeritagePost;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -17,16 +17,16 @@ public class PostDaoImpl implements PostDao {
 
     private SessionFactory sessionFactory;
 
-    public Post getPostById(long id){
+    public Post getPostById(long id) {
         Session s = getSessionFactory().openSession();
-        Post post = (Post)s
+        Post post = (Post) s
                 .createQuery("from Post where id=?")
                 .setParameter(0, id).uniqueResult();
         s.close();
         return post;
     }
 
-    public List<Post> getPostsByOwner(Member owner){
+    public List<Post> getPostsByOwner(Member owner) {
         Session s = getSessionFactory().openSession();
         List<Post> posts = s
                 .createQuery("from Post where owner=?")
@@ -35,7 +35,7 @@ public class PostDaoImpl implements PostDao {
         return posts;
     }
 
-    public Post savePost(Post post, Heritage heritage){
+    public Post savePost(Post post, Heritage heritage) {
         Session s = getSessionFactory().openSession();
         s.getTransaction().begin();
         s.save(post);
@@ -50,13 +50,13 @@ public class PostDaoImpl implements PostDao {
         return post;
     }
 
-    public List<Post> getPostsByHeritage(Heritage heritage){
+    public List<Post> getPostsByHeritage(Heritage heritage) {
         Session s = getSessionFactory().openSession();
         List<HeritagePost> heritageposts = s
                 .createQuery("from HeritagePost where heritage=?")
                 .setParameter(0, heritage).list();
         List<Post> posts = new ArrayList<Post>();
-        for(int i=0; i < heritageposts.size(); i++){
+        for (int i = 0; i < heritageposts.size(); i++) {
             posts.add(heritageposts.get(i).getPost());
         }
         return posts;
@@ -65,6 +65,7 @@ public class PostDaoImpl implements PostDao {
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
+
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

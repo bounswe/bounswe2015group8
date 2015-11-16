@@ -1,6 +1,19 @@
 <resources>
-    <string name="app_name">Cultural Heritage</string>
+    <string name="app_name">WeStory</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_register">Register</string>
+
+    <string name="btn_login">LOGIN</string>
+    <string name="btn_logout">LOGOUT</string>
+    <string name="btn_register">REGISTER</string>
+    <string name="tv_link_to_register">Not a member? Join us now.</string>
+    <string name="welcome">Welcome</string>
+
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_password_confirm">Confirm Password</string>
+    <string name="hint_email">Email</string>
+
+
 </resources>

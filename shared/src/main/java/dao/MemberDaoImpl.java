@@ -33,6 +33,14 @@ public class MemberDaoImpl implements MemberDao{
         s.close();
         return m;
     }
+    public Member updateMember(Member m){
+        Session s = getSessionFactory().openSession();
+        s.getTransaction().begin();
+        s.update(m);
+        s.getTransaction().commit();
+        s.close();
+        return m;
+    }
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
