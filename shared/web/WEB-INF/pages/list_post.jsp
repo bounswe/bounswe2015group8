@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 <c:set var="posts" value="${allContent.posts}"/>
 <c:set var="medias" value="${allContent.medias}"/>
-
+<c:set var="comments" value="${allContent.comments}"/>
 
 <c:forEach items="${posts}" var="post">
     <div class="row">
@@ -41,5 +41,4 @@
         </div>
     </div>
 </c:forEach>
-
 <%@ include file="/WEB-INF/pages/footer.jsp" %>

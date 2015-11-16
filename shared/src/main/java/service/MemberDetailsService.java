@@ -29,9 +29,19 @@ public class MemberDetailsService implements UserDetailsService{
         return memberDao.saveMember(m);
     }
 
+    public Member updatePassword(String username, String password){
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
+        Member m = memberDao.getMemberByUsername(username);
+        m.setPassword(hashedPassword);
+        return memberDao.updateMember(m);
+    }
+
     public Member getMemberByUsername(String username) {
         return memberDao.getMemberByUsername(username);
     }
+
+    public Member getMemberById(long id) { return memberDao.getMemberById(id); }
 
     public MemberDao getMemberDao() {
         return memberDao;
