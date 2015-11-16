@@ -24,7 +24,7 @@ import com.cmpe.bounswe2015group8.westory.model.Member;
  * Date: 01.11.2015.
  */
 public class LoginFragment extends NamedFragment implements View.OnClickListener {
-    public static final String NAME = "LOGIN";
+    public static final String NAME = "Login";
     Button btnLogin;
     EditText etUsername, etPassword;
     TextView tvLinkToRegisterScreen;
@@ -85,13 +85,6 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
         dialogBuilder.setMessage("Incorrect user details.");
         dialogBuilder.setPositiveButton("OK", null);
         dialogBuilder.show();
-    }
-
-    private void logMemberIn(Member member) {
-        memberLocalStore.storeUserData(member);
-        memberLocalStore.setMemberLoggedIn(true);
-
-        MainActivity.beginFragment(getActivity(), new HomeFragment());
     }
     @Override
     public String getName() {

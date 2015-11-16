@@ -63,11 +63,7 @@ public class MainActivity extends Activity{
     @Override
     protected void onStart() {
         super.onStart();
-        if (authenticated()) {
-            MainActivity.beginFragment(this, new HomeFragment());
-        } else {
-            MainActivity.beginFragment(this, new LoginFragment());
-        }
+        MainActivity.beginFragment(this, new HomeFragment());
     }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -96,7 +92,7 @@ public class MainActivity extends Activity{
         return memberLocalStore.getUserLoggedIn();
     }
     private void setOnItemClickListener(ListView lv) {
-        final Activity a = this;
+        final MainActivity a = this;
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -123,8 +119,13 @@ public class MainActivity extends Activity{
                         nf = new PostEditFragment();
                         break;
                     case 5:
-                        memberLocalStore.clearMemberData();
-                        nf = new RegisterFragment();
+                        if(authenticated()) {
+                            memberLocalStore.clearMemberData();
+                            nf = new HomeFragment();
+                        } else {
+                            nf = new LoginFragment();
+                        }
+                        resetNavbar();
                         break;
                     default:
                         break;

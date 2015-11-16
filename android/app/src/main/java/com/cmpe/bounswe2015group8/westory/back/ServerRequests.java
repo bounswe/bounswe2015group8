@@ -40,15 +40,15 @@ public class ServerRequests{
         m.put("id", Long.toString(id));
         new RestAsyncTask<Post>(callback, HttpMethod.POST).execute(new Requestable<Post>("/api/getHeritageById", m, Post.class));
     }
-    public void getPostsByHeritageId(long id, Consumer<List> callback) {
+    public void getPostsByHeritageId(long id, Consumer<Post[]> callback) {
         progressDialog.show();
         Map<String,String> m = new HashMap<>();
         m.put("id", Long.toString(id));
-        new RestAsyncTask<List>(callback, HttpMethod.POST).execute(new Requestable<List>("/api/getHeritagePostsById", m, List.class));
+        new RestAsyncTask<Post[]>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/getHeritagePostsById", m, Post[].class));
     }
-    public void getAllPosts(Consumer<List> callback) {
+    public void getAllPosts(Consumer<Post[]> callback) {
         progressDialog.show();
-        new RestAsyncTask<List>(callback, HttpMethod.POST).execute(new Requestable<List>("/api/getAllPosts",null,List.class) );
+        new RestAsyncTask<Post[]>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/getAllPosts",null,Post[].class) );
     }
     public void createPost(Post p, long heritageId, Consumer<Long> callback) {
         progressDialog.show();
@@ -60,9 +60,9 @@ public class ServerRequests{
         m.put("id", Long.toString(id));
         new RestAsyncTask<Heritage>(callback, HttpMethod.POST).execute(new Requestable<Heritage>("/api/getPostById", m, Heritage.class));
     }
-    public void getAllHeritages(Consumer<List> callback) {
+    public void getAllHeritages(Consumer<Heritage[]> callback) {
         progressDialog.show();
-        new RestAsyncTask<List>(callback, HttpMethod.POST).execute(new Requestable<List>("/api/getAllHeritages",null,List.class) );
+        new RestAsyncTask<Heritage[]>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/getAllHeritages",null,Heritage[].class) );
     }
     public void createHeritage(Heritage h, Consumer<Long> callback) {
         progressDialog.show();

@@ -22,7 +22,7 @@ import com.cmpe.bounswe2015group8.westory.model.Member;
  * Date: 01.11.2015.
  */
 public class RegisterFragment extends NamedFragment implements View.OnClickListener {
-    public static final String NAME = "REGISTER";
+    public static final String NAME = "Register";
     Button btnRegister;
     EditText etUsername, etMail, etPassword, etPasswordConfirm;
     MemberLocalStore memberLocalStore;
