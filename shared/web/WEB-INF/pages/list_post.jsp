@@ -6,6 +6,7 @@
 <script>
     $(document).ready(function(){
         $("#upvote").click(function(){
+            console.log($(this).attr("name"));
             var postId = $(this).attr("name");
             $.ajax({
                 url: "${contextPath}/vote_post/" + postId,
@@ -19,6 +20,7 @@
             });
         });
         $("#downvote").click(function(){
+            console.log($(this).attr("name"));
             var postId = $(this).attr("name");
             $.ajax({
                 url: "${contextPath}/vote_post/" + postId,
@@ -42,18 +44,18 @@
         <div class="row">
             <div class="col-sm-2">
                 <div class="row">
-                    <div class="col-sm-12 form-group">
+                    <div class="col-sm-12 form-group pull-right">
                         <label for="upvote" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-top"></i></label>
                         <input type="button" name="${post.id}" id="upvote" style="display:none"/>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12 form-group" id="votecount_${post.id}">
-                        
+                    <div class="col-sm-12 form-group text-right" id="votecount_${post.id}">
+
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12 form-group">
+                    <div class="col-sm-12 form-group pull-right">
                         <label for="downvote" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-bottom"></i></label>
                         <input type="button" name="${post.id}" id="downvote" style="display:none"/>
                     </div>
@@ -102,6 +104,15 @@
                                 </div>
                             </c:if>
                         </c:forEach>
+                        <div class="row">
+                            <div class="col-sm-offset-8 col-sm-4" role="group">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        onclick="window.location.href='${contextPath}/comment/${post.id}'">
+                                    Comment
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
