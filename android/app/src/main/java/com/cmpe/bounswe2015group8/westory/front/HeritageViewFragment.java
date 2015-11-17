@@ -5,11 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
+import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
+import com.cmpe.bounswe2015group8.westory.front.adapter.PostAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
+import com.cmpe.bounswe2015group8.westory.model.Post;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Fragment for viewing heritage objects.
@@ -25,6 +34,7 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     Button btnEdit, btnAddPost;
     TextView tvPlace, tvCreationDate, tvDescription;
     Heritage heritage;
+    ListView lvPosts;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,15 +45,25 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         tvDescription = (TextView) v.findViewById(R.id.tvHeritageViewDescriptionValue);
         btnEdit = (Button) v.findViewById(R.id.btnHeritageEdit);
         btnAddPost = (Button) v.findViewById(R.id.btnHeritageNewPost);
+        lvPosts = (ListView) v.findViewById(R.id.lvHeritageViewPosts);
         btnEdit.setOnClickListener(this);
         btnAddPost.setOnClickListener(this);
         initViews(this.getArguments());
+        ServerRequests sr = new ServerRequests(getActivity());
+        sr.getPostsByHeritageId(heritage.getId(), new Consumer<Post[]>() {
+            @Override
+            public void accept(Post[] posts) {
+                lvPosts.setAdapter(new PostAdapter(getActivity(), R.layout.post_small,
+                        posts));
+                heritage.setPosts(Arrays.asList(posts));
+            }
+        });
         return v;
     }
     private void initViews(Bundle args) {
         heritage = new Heritage(args);
         tvPlace.setText(heritage.getPlace());
-        tvCreationDate.setText(heritage.getPostDate().toString());
+        tvCreationDate.setText(heritage.getPostDate());
         tvDescription.setText(heritage.getDescription());
     }
     @Override

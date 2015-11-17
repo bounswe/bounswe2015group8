@@ -12,6 +12,21 @@ import java.util.Map;
  * Created by xyllan on 07.11.2015.
  */
 public class Post {
+    public static Bundle storePosts(Post[] posts) {
+        Bundle b = new Bundle();
+        b.putInt("arr_size",posts.length);
+        for(int i=0;i<posts.length;i++) {
+            b.putAll(posts[i].getBundle(i));
+        }
+        return b;
+    }
+    public static Post[] getPosts(Bundle b) {
+        Post[] posts = new Post[b.getInt("arr_size")];
+        for(int i=0;i<posts.length;i++) {
+            posts[i]=new Post(b,i);
+        }
+        return posts;
+    }
     public static String BUNDLE_BASE = "post_cur_";
     private long id;
     private int type;
@@ -44,14 +59,17 @@ public class Post {
         tags = new HashSet<Tag>();
     }
     public Post(Bundle b) {
-        id = b.getLong(BUNDLE_BASE + "id", -1);
+        this(b,-1);
+    }
+    public Post(Bundle b, int index) {
+        String base = BUNDLE_BASE + index + "_";
+        id = b.getLong(base + "id", -1);
         //TODO save owner also
-        //owner = b.getString(BUNDLE_BASE + "owner", "");
-        postDate = b.getString(BUNDLE_BASE + "postDate", "");
-        lastEditedDate = b.getString(BUNDLE_BASE + "lastEditedDate","");
-        long time = b.getLong(BUNDLE_BASE + "lastEditedDate",-1);
-        title = b.getString(BUNDLE_BASE + "title","");
-        content = b.getString(BUNDLE_BASE + "content","");
+        //owner = b.getString(base + "owner", "");
+        postDate = b.getString(base + "postDate", "");
+        lastEditedDate = b.getString(base + "lastEditedDate","");
+        title = b.getString(base + "title","");
+        content = b.getString(base + "content","");
         //TODO fix comments
         this.comments = new HashSet<>();
         this.heritages = new HashSet<>();
@@ -186,14 +204,18 @@ public class Post {
         }
     }
     public Bundle getBundle() {
+        return getBundle(-1);
+    }
+    public Bundle getBundle(int index) {
         Bundle b = new Bundle();
-        b.putLong(BUNDLE_BASE + "id",id);
+        String base = BUNDLE_BASE + index + "_";
+        b.putLong(base + "id",id);
         //TODO save owner also
         //owner = b.getString(BUNDLE_BASE + "owner", "");
-        b.putString(BUNDLE_BASE + "postDate",postDate);
-        b.putString(BUNDLE_BASE + "lastEditedDate",lastEditedDate);
-        b.putString(BUNDLE_BASE + "title",title);
-        b.putString(BUNDLE_BASE + "content",content);
+        b.putString(base + "postDate",postDate);
+        b.putString(base + "lastEditedDate",lastEditedDate);
+        b.putString(base + "title",title);
+        b.putString(base + "content",content);
         //TODO fix comments
         return b;
     }
