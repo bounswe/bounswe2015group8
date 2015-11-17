@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 /**
@@ -26,10 +27,12 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
     EditText etTitle, etContent;
     boolean isNew = true;
     Post post;
+    MemberLocalStore memberLocalStore;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        memberLocalStore = new MemberLocalStore(getActivity());
         View v = inflater.inflate(R.layout.fragment_post_edit,container,false);
         etTitle = (EditText) v.findViewById(R.id.etPostEditTitle);
         etContent = (EditText) v.findViewById(R.id.etPostEditContent);
@@ -47,6 +50,7 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
             etTitle.setText(post.getTitle());
             etContent.setText(post.getContent());
         }
+        post.setOwner(memberLocalStore.getLoggedInMember());
     }
     @Override
     public void onClick(View v) {

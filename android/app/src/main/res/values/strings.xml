@@ -28,6 +28,7 @@
     <string name="generic_name">Name:</string>
     <string name="heritage_place">Place:</string>
     <string name="heritage_creationDate">Created at:</string>
+    <string name="heritage_small_see_posts"> -see Posts</string>
     <string name="btn_new_post">Add Post</string>
     <string name="generic_description">Description:</string>
     <string name="generic_owner">Creator:</string>
@@ -38,7 +39,7 @@
     <string name="post_view_title_default">Viewing Post</string>
     <string-array name="nav_drawer_items">
         <item >Home</item>
-        <item >Example Heritage</item>
+        <item >Heritages</item>
         <item >Add Heritage</item>
         <item >Example Post</item>
         <item >Add Post</item>

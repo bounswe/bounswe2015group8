@@ -1,6 +1,7 @@
 package com.cmpe.bounswe2015group8.westory.model;
 import android.os.Bundle;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +15,7 @@ public class Heritage {
     private long id;
     private String name;
     private String place;
-    private Timestamp postDate;
+    private String postDate;
     private String description;
     private Collection<Post> posts;
     private Collection<Tag> tags;
@@ -23,7 +24,7 @@ public class Heritage {
         this.tags = new HashSet<Tag>();
     }
 
-    public Heritage(String name, String place, String description, Timestamp postDate) {
+    public Heritage(String name, String place, String description, String postDate) {
         this.name = name;
         this.place = place;
         this.description = description;
@@ -35,7 +36,7 @@ public class Heritage {
         id = b.getLong(BUNDLE_BASE + "id", -1);
         name = b.getString(BUNDLE_BASE + "name", "");
         place = b.getString(BUNDLE_BASE + "place","");
-        postDate = new Timestamp(b.getLong(BUNDLE_BASE + "postDate",-1));
+        postDate = b.getString(BUNDLE_BASE + "postDate","");
         description = b.getString(BUNDLE_BASE + "description","");
         //TODO fix posts
         this.posts = new HashSet<Post>();
@@ -65,11 +66,11 @@ public class Heritage {
         this.place = place;
     }
 
-    public Timestamp getPostDate() {
+    public String getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(Timestamp postDate) {
+    public void setPostDate(String postDate) {
         this.postDate = postDate;
     }
 
@@ -135,7 +136,7 @@ public class Heritage {
         b.putLong(BUNDLE_BASE + "id", id);
         b.putString(BUNDLE_BASE + "name",name);
         b.putString(BUNDLE_BASE + "place",place);
-        b.putLong(BUNDLE_BASE + "postDate",postDate.getTime());
+        b.putString(BUNDLE_BASE + "postDate",postDate);
         b.putString(BUNDLE_BASE + "description",description);
         //TODO fix posts
         return b;

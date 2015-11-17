@@ -63,7 +63,8 @@ public class MainActivity extends Activity{
     @Override
     protected void onStart() {
         super.onStart();
-        MainActivity.beginFragment(this, new HomeFragment());
+        //MainActivity.beginFragment(this, new HomeFragment());
+        MainActivity.beginFragment(this, new HeritagesFragment());
     }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -103,16 +104,14 @@ public class MainActivity extends Activity{
                         nf = new HomeFragment();
                         break;
                     case 1:
-                        nf = new HeritageViewFragment();
-                        Heritage h = new Heritage("asd","asdasd","asdasdasd", new Timestamp(System.currentTimeMillis()));
-                        nf.setArguments(h.getBundle());
+                        nf = new HeritagesFragment();
                         break;
                     case 2:
                         nf = new HeritageEditFragment();
                         break;
                     case 3:
                         nf = new PostViewFragment();
-                        Post p = new Post(null,-1,new Timestamp(System.currentTimeMillis()),"asd","leflef");
+                        Post p = new Post(null,-1,new Timestamp(System.currentTimeMillis()).toString(),"asd","leflef");
                         nf.setArguments(p.getBundle());
                         break;
                     case 4:

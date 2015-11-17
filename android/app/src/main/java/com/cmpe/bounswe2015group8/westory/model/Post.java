@@ -16,8 +16,9 @@ public class Post {
     private long id;
     private int type;
     private Member owner;
-    private Timestamp postDate;
-    private Timestamp lastEditedDate;
+    private long ownerId;
+    private String postDate;
+    private String lastEditedDate;
     private String title;
     private String content;
     private Collection<Comment> comments;
@@ -31,7 +32,7 @@ public class Post {
         tags = new HashSet<Tag>();
     }
 
-    public Post(Member owner, int type, Timestamp postDate, String title, String content) {
+    public Post(Member owner, int type, String postDate, String title, String content) {
         this.owner = owner;
         this.type = type;
         this.postDate = postDate;
@@ -46,9 +47,9 @@ public class Post {
         id = b.getLong(BUNDLE_BASE + "id", -1);
         //TODO save owner also
         //owner = b.getString(BUNDLE_BASE + "owner", "");
-        postDate = new Timestamp(b.getLong(BUNDLE_BASE + "postDate",-1));
+        postDate = b.getString(BUNDLE_BASE + "postDate", "");
+        lastEditedDate = b.getString(BUNDLE_BASE + "lastEditedDate","");
         long time = b.getLong(BUNDLE_BASE + "lastEditedDate",-1);
-        if(time != -1) lastEditedDate = new Timestamp(time);
         title = b.getString(BUNDLE_BASE + "title","");
         content = b.getString(BUNDLE_BASE + "content","");
         //TODO fix comments
@@ -73,19 +74,19 @@ public class Post {
         this.type = type;
     }
 
-    public Timestamp getPostDate() {
+    public String getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(Timestamp postDate) {
+    public void setPostDate(String postDate) {
         this.postDate = postDate;
     }
 
-    public Timestamp getLastEditedDate() {
+    public String getLastEditedDate() {
         return lastEditedDate;
     }
 
-    public void setLastEditedDate(Timestamp lastEditedDate) {
+    public void setLastEditedDate(String lastEditedDate) {
         this.lastEditedDate = lastEditedDate;
     }
 
@@ -158,6 +159,10 @@ public class Post {
         this.owner = owner;
     }
 
+    public long getOwnerId() { return ownerId; }
+
+    public void setOwnerId(long ownerId) { this.ownerId = ownerId; }
+
     public Collection<PostVote> getVotes() {
         return votes;
     }
@@ -185,8 +190,8 @@ public class Post {
         b.putLong(BUNDLE_BASE + "id",id);
         //TODO save owner also
         //owner = b.getString(BUNDLE_BASE + "owner", "");
-        b.putLong(BUNDLE_BASE + "postDate",postDate.getTime());
-        if(lastEditedDate!= null) b.putLong(BUNDLE_BASE + "lastEditedDate",lastEditedDate.getTime());
+        b.putString(BUNDLE_BASE + "postDate",postDate);
+        b.putString(BUNDLE_BASE + "lastEditedDate",lastEditedDate);
         b.putString(BUNDLE_BASE + "title",title);
         b.putString(BUNDLE_BASE + "content",content);
         //TODO fix comments
