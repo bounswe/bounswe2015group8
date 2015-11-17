@@ -58,7 +58,7 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         return v;
     }
     private void initViews(Bundle args) {
-        heritage = new Heritage(args);
+        heritage = args.getParcelable("heritage");
         tvPlace.setText(heritage.getPlace());
         tvCreationDate.setText(heritage.getPostDate());
         tvDescription.setText(heritage.getDescription());
@@ -68,8 +68,9 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         switch(v.getId()) {
             case R.id.btnHeritageEdit:
                 NamedFragment nf = new HeritageEditFragment();
-                Bundle b = heritage.getBundle();
+                Bundle b = new Bundle();
                 b.putBoolean("isNew", false);
+                b.putParcelable("heritage",heritage);
                 nf.setArguments(b);
                 MainActivity.beginFragment(getActivity(),nf);
                 break;

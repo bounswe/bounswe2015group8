@@ -2,6 +2,7 @@ package com.cmpe.bounswe2015group8.westory.front.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,9 @@ public class HeritageAdapter extends ArrayAdapter<Heritage> {
             @Override
             public void onClick(View v) {
                 NamedFragment nf = new HeritageViewFragment();
-                nf.setArguments(h.getBundle());
+                Bundle b = new Bundle();
+                b.putParcelable("heritage",h);
+                nf.setArguments(b);
                 MainActivity.beginFragment(context, nf);
             }
         });
