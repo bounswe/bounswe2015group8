@@ -110,9 +110,7 @@ public class MainActivity extends Activity{
                         nf = new HeritageEditFragment();
                         break;
                     case 3:
-                        nf = new PostViewFragment();
-                        Post p = new Post(null,-1,new Timestamp(System.currentTimeMillis()).toString(),"asd","leflef");
-                        nf.setArguments(p.getBundle());
+                        nf = new PostsFragment();
                         break;
                     case 4:
                         nf = new PostEditFragment();

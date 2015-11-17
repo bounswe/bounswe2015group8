@@ -39,12 +39,11 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
     }
     private void initViews(Bundle args) {
         post = new Post(args);
-        tvOwner.setText("owner");
         //TODO fix this once owner is properly stored
-        //tvOwner.setText(post.getOwner().getUsername());
-        tvCreationDate.setText(post.getPostDate().toString());
+        tvOwner.setText(""+post.getOwnerId());
+        tvCreationDate.setText(post.getPostDate());
         if(post.getLastEditedDate()!=null) {
-            tvLastEditDate.setText(post.getLastEditedDate().toString());
+            tvLastEditDate.setText(post.getLastEditedDate());
         } else {
             tvLastEditDate.setText("---");
         }
