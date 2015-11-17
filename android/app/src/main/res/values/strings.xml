@@ -35,6 +35,7 @@
     <string name="generic_owner">Creator:</string>
     <string name="generic_title">Title:</string>
     <string name="generic_content">Content:</string>
+    <string name="generic_by">by </string>
     <string name="post_post_date">Post Date:</string>
     <string name="post_last_edit_date">Last Edit Date:</string>
     <string name="post_view_title_default">Viewing Post</string>

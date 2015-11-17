@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    android:padding="5dp" >
 
     <TextView
         android:id="@+id/tvHeritageSmallName"
@@ -11,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@color/primary_dark" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvHeritageSmallPlace"
@@ -42,7 +44,8 @@
         android:text="@string/placeholder_mid"
         android:layout_below="@+id/tvHeritageSmallPlace"
         android:layout_toRightOf="@+id/tvHeritageSmallCreationDate"
-        android:layout_toEndOf="@+id/tvHeritageSmallCreationDate" />
+        android:layout_toEndOf="@+id/tvHeritageSmallCreationDate"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallDescription"
@@ -53,8 +56,7 @@
         android:layout_margin="10dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/hint_heritage_description"
-        android:background="@color/primary_light"
-        android:maxLines="5"/>
+        android:background="@color/accent"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallSeePosts"
@@ -67,5 +69,6 @@
         android:text="@string/heritage_small_see_posts"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:textStyle="italic" />
 </RelativeLayout>

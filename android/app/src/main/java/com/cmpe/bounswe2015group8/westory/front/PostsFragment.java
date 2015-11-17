@@ -66,7 +66,7 @@ public class PostsFragment extends NamedFragment {
             TextView tvSeeHeritages = (TextView) v.findViewById(R.id.tvPostSmallSeeHeritages);
             final Post p = getItem(position);
             tvTitle.setText(p.getTitle());
-            tvOwner.setText(""+p.getOwnerId());
+            tvOwner.setText(getResources().getString(R.string.generic_by)+" "+p.getOwnerId());
             tvCreationDate.setText(p.getPostDate());
             tvContent.setText(p.getContent());
             tvSeeHeritages.setOnClickListener(new View.OnClickListener() {
