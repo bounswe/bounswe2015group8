@@ -26,7 +26,4 @@
             <a href="${contextPath}/forget_password">Forgot your password?</a>
         </div>
     </div>
-    <div class="text-center form-group">
-        <a href="${contextPath}/forget_password">Forgot Password</a>
-    </div>
 <%@ include file="/WEB-INF/pages/footer.jsp" %>

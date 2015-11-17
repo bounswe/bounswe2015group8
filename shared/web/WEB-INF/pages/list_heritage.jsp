@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+<c:set var="allHeritages" value="${allContent.heritages}"/>
 <c:set var="medias" value="${allContent.medias}"/>
 
 <script type="text/javascript">
@@ -87,7 +88,7 @@
 
                             <div class="media col-sm-10">
                                 <div class="media-left">
-                                    <img src="${contextPath}/static/${media.mediaLink}" height="100%" width="100%">
+                                    <img src="${contextPath}/static/${media.mediaLink}" height="240px;" width="360px;">
                                 </div>
                             </div>
                         </div>

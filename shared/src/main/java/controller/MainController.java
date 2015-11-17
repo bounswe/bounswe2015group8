@@ -24,6 +24,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -172,13 +173,11 @@ public class MainController {
         Map<String, String> templateVars = new HashMap<String, String>();
         templateVars.put("member_id", ""+m.getId());
         templateVars.put("username", m.getUsername());
-        return new ModelAndView("login_success", "username", username);
+        return new ModelAndView("login");
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView signup(){
-        return new ModelAndView("signup");
-    }
+    public ModelAndView signup(){ return new ModelAndView("signup"); }
 
     @RequestMapping(value = "/post/{heritageId}")
     public ModelAndView post(@PathVariable long heritageId) {
@@ -252,7 +251,7 @@ public class MainController {
         */
 
         List<Post> posts = postService.getPostsByMember(m);
-        return new ModelAndView("list_post", "posts", posts);
+        return new ModelAndView("redirect:/show_posts/" + heritageId);
     }
 
     @RequestMapping(value = "/show_posts")
@@ -263,16 +262,14 @@ public class MainController {
 
         logger.info("The current user is: " + username);
         Member m = memberService.getMemberByUsername(username);
-        Criteria criteria = session.createCriteria(Post.class)
-                .add(Restrictions.eq("owner", m));
-        List posts = criteria.list();
+        List posts = postService.getPostsByMember(m);
 
         List medias = session.createCriteria(Media.class).list();
-        List comments = session.createCriteria(Comment.class).list();
+        //List comments = session.createCriteria(Comment.class).list();
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("posts", posts);
         allContent.put("medias", medias);
-        allContent.put("comments", comments);
+        //allContent.put("comments", comments);
         session.close();
 
         return new ModelAndView("list_post", "allContent", allContent);
@@ -289,9 +286,14 @@ public class MainController {
         Heritage heritage = heritageService.getHeritageById(heritageId);
         List posts = postService.getPostsByHeritage(heritage);
         List medias = session.createCriteria(Media.class).list();
+        List heritages = new ArrayList<Heritage>();
+        logger.info("Current heritage: " + heritage.getName());
+        heritages.add(heritage);
+        logger.info("size of heritages: " + heritages.size());
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("posts", posts);
         allContent.put("medias", medias);
+        allContent.put("heritages", heritages);
         session.close();
 
         return new ModelAndView("list_post", "allContent", allContent);
@@ -317,7 +319,7 @@ public class MainController {
             try {
                 // Creating the directory to store file
                 String mediaName = media.getOriginalFilename();
-                String filePath = "/media/" + mediaName;
+                String filePath = mediaName;
                 final Session session = Main.getSession();
                 session.getTransaction().begin();
                 Media mediaObject = new Media(heritage.getId(), filePath, 0, true);
@@ -345,13 +347,19 @@ public class MainController {
         }
 
         List<Heritage> allHeritages = heritageService.getAllHeritages();
-        return new ModelAndView("list_heritage", "allHeritages", allHeritages);
+        return new ModelAndView("redirect:/show_heritages");
     }
 
     @RequestMapping(value = "/show_heritages")
     public ModelAndView show_heritages() {
         List<Heritage> allHeritages = heritageService.getAllHeritages();
-        return new ModelAndView("list_heritage", "allHeritages", allHeritages);
+        final Session session = Main.getSession();
+        List medias = session.createCriteria(Media.class).list();
+        session.close();
+        Map<String, List> allContent = new HashMap<String, List>();
+        allContent.put("heritages", allHeritages);
+        allContent.put("medias", medias);
+        return new ModelAndView("list_heritage", "allContent", allContent);
     }
 
     @RequestMapping(value = "/comment/{postId}")
@@ -378,16 +386,19 @@ public class MainController {
 
         Comment comment = commentService.saveComment(m, post, content, new Timestamp(now.getTime()));
 
-        Criteria criteria = session.createCriteria(Post.class)
-                .add(Restrictions.eq("owner", m));
-        List posts = criteria.list();
+        Heritage heritage = heritageService.getFirstHeritageByPost(post);
+        List heritages = new ArrayList<Heritage>();
+        heritages.add(heritage);
+
+        List posts = postService.getPostsByHeritage(heritage);
 
         List medias = session.createCriteria(Media.class).list();
-        List comments = session.createCriteria(Comment.class).list();
+        //List comments = session.createCriteria(Comment.class).list();
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("posts", posts);
         allContent.put("medias", medias);
-        allContent.put("comments", comments);
+        allContent.put("heritages", heritages);
+        //allContent.put("comments", comments);
         session.close();
 
         return new ModelAndView("list_post","allContent", allContent);
