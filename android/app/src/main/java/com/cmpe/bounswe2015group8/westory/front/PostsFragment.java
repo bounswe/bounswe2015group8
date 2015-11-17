@@ -17,7 +17,6 @@ import com.cmpe.bounswe2015group8.westory.model.Post;
  */
 public class PostsFragment extends NamedFragment {
     public static final String NAME = "All Posts";
-    public static final String POSTS_READY = "postsReady";
     private ListView listView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,22 +24,14 @@ public class PostsFragment extends NamedFragment {
         super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_heritages,container,false);
         listView = (ListView) v.findViewById(R.id.lvHeritages);
-        Bundle args = getArguments();
-        if(arePostsReady(args)) {
-            setAdapter(Post.getPosts(args));
-        } else {
-            ServerRequests sr = new ServerRequests(getActivity());
-            sr.getAllPosts(new Consumer<Post[]>() {
-                @Override
-                public void accept(Post[] posts) {
-                    setAdapter(posts);
-                }
-            });
-        }
+        ServerRequests sr = new ServerRequests(getActivity());
+        sr.getAllPosts(new Consumer<Post[]>() {
+            @Override
+            public void accept(Post[] posts) {
+                setAdapter(posts);
+            }
+        });
         return v;
-    }
-    private boolean arePostsReady(Bundle b) {
-        return b.getBoolean(POSTS_READY,false);
     }
     private void setAdapter(Post[] posts) {
         listView.setAdapter(new PostAdapter(getActivity(),R.layout.post_small, posts));

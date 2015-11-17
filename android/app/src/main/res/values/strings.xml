@@ -44,7 +44,6 @@
         <item >Heritages</item>
         <item >Add Heritage</item>
         <item >Posts</item>
-        <item >Add Post</item>
         <item >Login</item>
     </string-array>
     <string name="title_heritage_new">New Heritage</string>

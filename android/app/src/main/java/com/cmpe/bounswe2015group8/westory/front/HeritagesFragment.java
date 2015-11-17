@@ -1,18 +1,16 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
+import com.cmpe.bounswe2015group8.westory.front.adapter.HeritageAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 
 /**
@@ -53,37 +51,5 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-    }
-    class HeritageAdapter extends ArrayAdapter<Heritage> {
-
-        public HeritageAdapter(Context context, int resource, Heritage[] objects) {
-            super(context, resource, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) getActivity()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View v = inflater.inflate(R.layout.heritage_small,parent,false);
-            TextView tvName = (TextView) v.findViewById(R.id.tvHeritageSmallName);
-            TextView tvPlace = (TextView) v.findViewById(R.id.tvHeritageSmallPlace);
-            TextView tvCreationDate = (TextView) v.findViewById(R.id.tvHeritageSmallCreationDateValue);
-            TextView tvDescription = (TextView) v.findViewById(R.id.tvHeritageSmallDescription);
-            TextView tvSeePosts = (TextView) v.findViewById(R.id.tvHeritageSmallSeePosts);
-            final Heritage h = getItem(position);
-            tvName.setText(h.getName());
-            tvPlace.setText(h.getPlace());
-            tvCreationDate.setText(h.getPostDate().toString());
-            tvDescription.setText(h.getDescription());
-            tvSeePosts.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NamedFragment nf = new HeritageViewFragment();
-                    nf.setArguments(h.getBundle());
-                    MainActivity.beginFragment(getActivity(),nf);
-                }
-            });
-            return v;
-        }
     }
 }

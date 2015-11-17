@@ -38,7 +38,7 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         return v;
     }
     private void initViews(Bundle args) {
-        post = new Post(args);
+        post = args.getParcelable("post");
         //TODO fix this once owner is properly stored
         tvOwner.setText(""+post.getOwnerId());
         tvCreationDate.setText(post.getPostDate());
@@ -54,7 +54,8 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         switch(v.getId()) {
             case R.id.btnPostViewEdit:
                 NamedFragment nf = new PostEditFragment();
-                Bundle b = post.getBundle();
+                Bundle b = new Bundle();
+                b.putParcelable("post",post);
                 b.putBoolean("isNew", false);
                 nf.setArguments(b);
                 MainActivity.beginFragment(getActivity(),nf);

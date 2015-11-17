@@ -1,8 +1,8 @@
 package com.cmpe.bounswe2015group8.westory.model;
 
-import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,23 +11,7 @@ import java.util.Map;
 /**
  * Created by xyllan on 07.11.2015.
  */
-public class Post {
-    public static Bundle storePosts(Post[] posts) {
-        Bundle b = new Bundle();
-        b.putInt("arr_size",posts.length);
-        for(int i=0;i<posts.length;i++) {
-            b.putAll(posts[i].getBundle(i));
-        }
-        return b;
-    }
-    public static Post[] getPosts(Bundle b) {
-        Post[] posts = new Post[b.getInt("arr_size")];
-        for(int i=0;i<posts.length;i++) {
-            posts[i]=new Post(b,i);
-        }
-        return posts;
-    }
-    public static String BUNDLE_BASE = "post_cur_";
+public class Post implements Parcelable{
     private long id;
     private int type;
     private Member owner;
@@ -58,18 +42,14 @@ public class Post {
         votes = new HashSet<PostVote>();
         tags = new HashSet<Tag>();
     }
-    public Post(Bundle b) {
-        this(b,-1);
-    }
-    public Post(Bundle b, int index) {
-        String base = BUNDLE_BASE + index + "_";
-        id = b.getLong(base + "id", -1);
+    public Post(Parcel in) {
+        id = in.readLong();
         //TODO save owner also
-        //owner = b.getString(base + "owner", "");
-        postDate = b.getString(base + "postDate", "");
-        lastEditedDate = b.getString(base + "lastEditedDate","");
-        title = b.getString(base + "title","");
-        content = b.getString(base + "content","");
+        //owner = b.getString(base + "owner", "")
+        postDate = in.readString();
+        lastEditedDate = in.readString();
+        title = in.readString();
+        content = in.readString();
         //TODO fix comments
         this.comments = new HashSet<>();
         this.heritages = new HashSet<>();
@@ -203,22 +183,6 @@ public class Post {
             t.getPosts().add(this);
         }
     }
-    public Bundle getBundle() {
-        return getBundle(-1);
-    }
-    public Bundle getBundle(int index) {
-        Bundle b = new Bundle();
-        String base = BUNDLE_BASE + index + "_";
-        b.putLong(base + "id",id);
-        //TODO save owner also
-        //owner = b.getString(BUNDLE_BASE + "owner", "");
-        b.putString(base + "postDate",postDate);
-        b.putString(base + "lastEditedDate",lastEditedDate);
-        b.putString(base + "title",title);
-        b.putString(base + "content",content);
-        //TODO fix comments
-        return b;
-    }
     public Requestable<Long> getCreateRequestable(long heritageId) {
         Map<String,String> dataToSend = new HashMap<>();
         dataToSend.put("heritageId", Long.toString(heritageId));
@@ -226,6 +190,32 @@ public class Post {
         dataToSend.put("ownerId", Long.toString(owner.getId()));
         dataToSend.put("title", title);
         dataToSend.put("content", content);
-        return new Requestable("/api/createPost",dataToSend,Long.class);
+        return new Requestable<Long>("/api/createPost",dataToSend,Long.class);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(postDate);
+        dest.writeString(lastEditedDate);
+        dest.writeString(title);
+        dest.writeString(content);
+        //TODO save owner and other fields
+    }
+    public static final Parcelable.Creator<Post> CREATOR
+            = new Parcelable.Creator<Post>() {
+        public Post createFromParcel(Parcel in) {
+            return new Post(in);
+        }
+
+        public Post[] newArray(int size) {
+            return new Post[size];
+        }
+    };
+
 }

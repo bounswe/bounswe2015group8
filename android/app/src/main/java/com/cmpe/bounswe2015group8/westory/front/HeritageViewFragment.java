@@ -10,15 +10,12 @@ import android.widget.TextView;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
-import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.PostAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Fragment for viewing heritage objects.
@@ -77,7 +74,11 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 MainActivity.beginFragment(getActivity(),nf);
                 break;
             case R.id.btnHeritageNewPost:
-                MainActivity.beginFragment(getActivity(),new PostEditFragment());
+                NamedFragment pef = new PostEditFragment();
+                Bundle b2 = new Bundle();
+                b2.putLong("heritageId",heritage.getId());
+                pef.setArguments(b2);
+                MainActivity.beginFragment(getActivity(),pef);
                 break;
         }
     }

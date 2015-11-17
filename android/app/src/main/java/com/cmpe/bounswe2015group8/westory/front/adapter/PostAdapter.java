@@ -2,6 +2,7 @@ package com.cmpe.bounswe2015group8.westory.front.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
             @Override
             public void onClick(View v) {
                 NamedFragment nf = new PostViewFragment();
-                nf.setArguments(p.getBundle());
+                Bundle b = new Bundle();
+                b.putParcelable("post",p);
+                nf.setArguments(b);
                 MainActivity.beginFragment(context, nf);
             }
         });

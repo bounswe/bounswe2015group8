@@ -113,9 +113,6 @@ public class MainActivity extends Activity{
                         nf = new PostsFragment();
                         break;
                     case 4:
-                        nf = new PostEditFragment();
-                        break;
-                    case 5:
                         if(authenticated()) {
                             memberLocalStore.clearMemberData();
                             nf = new HomeFragment();
