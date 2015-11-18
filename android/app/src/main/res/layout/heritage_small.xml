@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/tvHeritageSmallName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/hint_heritage_name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvHeritageSmallPlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:layout_below="@+id/tvHeritageSmallName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tvHeritageSmallCreationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/heritage_creationDate"
+        android:layout_below="@+id/tvHeritageSmallPlace"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tvHeritageSmallCreationDateValue"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/placeholder_mid"
+        android:layout_below="@+id/tvHeritageSmallPlace"
+        android:layout_toRightOf="@+id/tvHeritageSmallCreationDate"
+        android:layout_toEndOf="@+id/tvHeritageSmallCreationDate"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/tvHeritageSmallDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvHeritageSmallCreationDateValue"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/hint_heritage_description"
+        android:background="@color/accent"/>
+
+    <TextView
+        android:id="@+id/tvHeritageSmallSeePosts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvHeritageSmallDescription"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/heritage_small_see_posts"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:clickable="true"
+        android:textStyle="italic" />
+</RelativeLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/primary"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:rowCount="7"
+        android:columnCount="2">
+        <TextView
+            android:id="@+id/tvPostEditTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="1"
+            android:layout_row="0"
+            android:layout_rowSpan="1"
+            android:layout_margin="5dp"
+            android:text="@string/generic_title"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/etPostEditTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_columnSpan="1"
+            android:layout_row="0"
+            android:layout_rowSpan="1"
+            android:layout_margin="5dp"
+            android:background="@color/primary_light"
+            android:textColor="@color/primary_text"
+            android:hint="@string/hint_heritage_name"
+            android:textColorHint="@color/secondary_text"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:singleLine="true"/>
+        <TextView
+            android:id="@+id/tvPostEditContent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_row="1"
+            android:layout_rowSpan="1"
+            android:layout_margin="5dp"
+            android:text="@string/generic_content"
+            android:textColor="@color/primary_text"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/etPostEditContent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_row="2"
+            android:layout_rowSpan="4"
+            android:layout_margin="5dp"
+            android:background="@color/primary_light"
+            android:hint="@string/hint_heritage_description"
+            android:textColor="@color/primary_text"
+            android:textColorHint="@color/secondary_text"
+            android:textSize="20sp"
+            android:gravity="start"
+            android:padding="10dp"
+            android:minLines="4"
+            android:maxLines="4"/>
+        <Button
+            android:id="@+id/btnPostEditSubmit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="6"
+            android:layout_rowSpan="1"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_margin="5dp"
+            android:background="@color/accent"
+            android:text="@string/btn_submit"
+            android:textColor="@color/primary_text" />
+
+    </GridLayout>
+
+
+</LinearLayout>
+
