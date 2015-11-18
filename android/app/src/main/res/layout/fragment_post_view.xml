@@ -2,7 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:background="@color/primary"
     android:gravity="center"
     android:orientation="vertical">
@@ -132,6 +132,11 @@
             android:textColor="@color/primary_text" />
 
     </GridLayout>
+    <include layout="@layout/fragment_heritages"
+        android:id="@+id/lPostViewHeritages"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

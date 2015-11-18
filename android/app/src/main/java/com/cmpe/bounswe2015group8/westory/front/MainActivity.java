@@ -20,7 +20,12 @@ import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 import java.sql.Timestamp;
-
+/**
+ * Main activity overviewing all operations. Contains an action bar and navigation sidebar.
+ * Is responsible for fragment management and all operations related to action bar and sidebar.
+ * @author xyllan
+ * Date: 01.11.2015.
+ */
 public class MainActivity extends Activity{
     public static void beginFragment(Activity a, NamedFragment f) {
         beginFragment(a,f,true);
@@ -44,12 +49,9 @@ public class MainActivity extends Activity{
 
         memberLocalStore = new MemberLocalStore(this);
         fm = this.getFragmentManager();
-        String[] navbarItems = this.getResources().getStringArray(R.array.nav_drawer_items);
-
         navBarView = (ListView) findViewById(R.id.drawer_list);
-        navBarAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navbarItems);
-        navBarView.setAdapter(navBarAdapter);
         setOnItemClickListener(navBarView);
+        resetNavbar();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
         drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.generic_description,R.string.generic_description);
@@ -61,11 +63,8 @@ public class MainActivity extends Activity{
     @Override
     protected void onStart() {
         super.onStart();
-        if (authenticate()) {
-            MainActivity.beginFragment(this, new HomeFragment());
-        } else {
-            MainActivity.beginFragment(this, new LoginFragment());
-        }
+        //MainActivity.beginFragment(this, new HomeFragment());
+        MainActivity.beginFragment(this, new HeritagesFragment());
     }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -84,11 +83,17 @@ public class MainActivity extends Activity{
         }
         return super.onOptionsItemSelected(item);
     }
-    private boolean authenticate() {
+    public void resetNavbar() {
+        String[] navbarItems = getResources().getStringArray(R.array.nav_drawer_items);
+        if(authenticated()) navbarItems[navbarItems.length-1] = getResources().getString(R.string.btn_logout);
+        navBarAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navbarItems);
+        navBarView.setAdapter(navBarAdapter);
+    }
+    private boolean authenticated() {
         return memberLocalStore.getUserLoggedIn();
     }
     private void setOnItemClickListener(ListView lv) {
-        final Activity a = this;
+        final MainActivity a = this;
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,24 +104,22 @@ public class MainActivity extends Activity{
                         nf = new HomeFragment();
                         break;
                     case 1:
-                        nf = new HeritageViewFragment();
-                        Heritage h = new Heritage("asd","asdasd","asdasdasd", new Timestamp(System.currentTimeMillis()));
-                        nf.setArguments(h.getBundle());
+                        nf = new HeritagesFragment();
                         break;
                     case 2:
                         nf = new HeritageEditFragment();
                         break;
                     case 3:
-                        nf = new PostViewFragment();
-                        Post p = new Post(null,-1,new Timestamp(System.currentTimeMillis()),"asd","leflef");
-                        nf.setArguments(p.getBundle());
+                        nf = new PostsFragment();
                         break;
                     case 4:
-                        nf = new PostEditFragment();
-                        break;
-                    case 5:
-                        memberLocalStore.clearMemberData();
-                        nf = new RegisterFragment();
+                        if(authenticated()) {
+                            memberLocalStore.clearMemberData();
+                            nf = new HomeFragment();
+                        } else {
+                            nf = new LoginFragment();
+                        }
+                        resetNavbar();
                         break;
                     default:
                         break;

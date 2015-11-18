@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/tvPostSmallTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/hint_heritage_name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvPostSmallOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/hint_username"
+        android:layout_toEndOf="@id/tvPostSmallTitle"
+        android:layout_toRightOf="@id/tvPostSmallTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="end"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tvPostSmallCreationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/heritage_creationDate"
+        android:layout_below="@id/tvPostSmallTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tvPostSmallCreationDateValue"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/placeholder_mid"
+        android:layout_below="@id/tvPostSmallTitle"
+        android:layout_toRightOf="@id/tvPostSmallCreationDate"
+        android:layout_toEndOf="@id/tvPostSmallCreationDate" />
+
+    <TextView
+        android:id="@+id/tvPostSmallContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPostSmallCreationDateValue"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/hint_heritage_description"
+        android:background="@color/accent"/>
+
+    <TextView
+        android:id="@+id/tvPostSmallSeeHeritages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPostSmallContent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/post_small_see_heritages"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:clickable="true"
+        android:textStyle="italic" />
+</RelativeLayout>

@@ -11,7 +11,12 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 /**
- * Created by xyllan on 15.11.2015.
+ * Fragment for viewing posts. It needs a post to be passed in as an argument.
+ * Contains link for editing this post.
+ * edited / created.
+ * @see Post
+ * @author xyllan
+ * Date: 15.11.2015.
  */
 public class PostViewFragment extends NamedFragment implements View.OnClickListener{
     public static final String NAME = "POST_VIEW";
@@ -33,13 +38,12 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         return v;
     }
     private void initViews(Bundle args) {
-        post = new Post(args);
-        tvOwner.setText("owner");
+        post = args.getParcelable("post");
         //TODO fix this once owner is properly stored
-        //tvOwner.setText(post.getOwner().getUsername());
-        tvCreationDate.setText(post.getPostDate().toString());
+        tvOwner.setText(""+post.getOwnerId());
+        tvCreationDate.setText(post.getPostDate());
         if(post.getLastEditedDate()!=null) {
-            tvLastEditDate.setText(post.getLastEditedDate().toString());
+            tvLastEditDate.setText(post.getLastEditedDate());
         } else {
             tvLastEditDate.setText("---");
         }
@@ -50,7 +54,8 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         switch(v.getId()) {
             case R.id.btnPostViewEdit:
                 NamedFragment nf = new PostEditFragment();
-                Bundle b = post.getBundle();
+                Bundle b = new Bundle();
+                b.putParcelable("post",post);
                 b.putBoolean("isNew", false);
                 nf.setArguments(b);
                 MainActivity.beginFragment(getActivity(),nf);

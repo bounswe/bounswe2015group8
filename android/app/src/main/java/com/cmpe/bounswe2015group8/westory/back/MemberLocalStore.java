@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 
 /**
- * Created by bugrahan on 29/10/15.
+ * Class for storing current member information.
+ * @author bugrahan
+ * Date: 29/10/15.
  */
 public class MemberLocalStore {
 
@@ -19,19 +21,20 @@ public class MemberLocalStore {
 
     public void storeUserData(Member m) {
         SharedPreferences.Editor spEditor = memberLocalDatabase.edit();
+        spEditor.putLong("id",m.getId());
         spEditor.putString("username", m.getUsername());
         spEditor.putString("email", m.getEmail());
-        spEditor.putString("password", m.getPassword());
+        spEditor.putString("profilePicture",m.getProfilePicture());
+        spEditor.putBoolean("loggedIn",true);
         spEditor.commit();
     }
 
     public Member getLoggedInMember() {
+        long id = memberLocalDatabase.getLong("id",-1);
         String username = memberLocalDatabase.getString("username", "");
         String email = memberLocalDatabase.getString("email", "");
-        String password = memberLocalDatabase.getString("password", "");
-
-        Member storedMember = new Member(username, password, email, "");
-        return storedMember;
+        String profilePicture = memberLocalDatabase.getString("profilePicture","");
+        return new Member(id, username, "", email, profilePicture);
     }
 
     public void setMemberLoggedIn(boolean loggedIn) {

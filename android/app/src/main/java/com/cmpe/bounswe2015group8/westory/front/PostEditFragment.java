@@ -1,6 +1,5 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,21 +8,33 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.Consumer;
+import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
+import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 /**
- * Created by xyllan on 15.11.2015.
+ * Fragment for creating and editing posts.
+ * Depending on the arguments passed into it, it can act both as an editing
+ * page and a new post creation page. It's title changes with the post being
+ * edited / created.
+ * @see Post
+ * @author xyllan
+ * Date: 15.11.2015.
  */
 public class PostEditFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "POST_EDIT";
-    Button btnSubmit;
-    EditText etTitle, etContent;
-    boolean isNew = true;
-    Post post;
+    private Button btnSubmit;
+    private EditText etTitle, etContent;
+    private boolean isNew = true;
+    private Post post;
+    private MemberLocalStore memberLocalStore;
+    private long heritageId;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        memberLocalStore = new MemberLocalStore(getActivity());
         View v = inflater.inflate(R.layout.fragment_post_edit,container,false);
         etTitle = (EditText) v.findViewById(R.id.etPostEditTitle);
         etContent = (EditText) v.findViewById(R.id.etPostEditContent);
@@ -33,24 +44,36 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
         return v;
     }
     private void initViews(Bundle args) {
-        isNew = args==null || args.getBoolean("isNew",true);
+        isNew = args.getBoolean("isNew",true);
         if(isNew) {
             post = new Post();
         } else {
-            post = new Post(args);
+            post = args.getParcelable("post");
             etTitle.setText(post.getTitle());
             etContent.setText(post.getContent());
         }
+        post.setOwner(memberLocalStore.getLoggedInMember());
+        heritageId = args.getLong("heritageId");
     }
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.btnHeritageSubmit:
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-                dialogBuilder.setMessage("This will (in time) work.");
-                dialogBuilder.setPositiveButton("OK", null);
-                dialogBuilder.show();
-                return;
+            case R.id.btnPostEditSubmit:
+                post.setTitle(etTitle.getText().toString());
+                post.setContent(etContent.getText().toString());
+                ServerRequests sr = new ServerRequests(getActivity());
+                sr.createPost(post, heritageId, new Consumer<Long>() {
+                    @Override
+                    public void accept(Long id) {
+                        post.setId(id);
+                        NamedFragment nf = new PostViewFragment();
+                        Bundle b = new Bundle();
+                        b.putParcelable("post",post);
+                        nf.setArguments(b);
+                        MainActivity.beginFragment(getActivity(),nf);
+                    }
+                });
+                break;
         }
     }
     @Override

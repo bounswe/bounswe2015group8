@@ -13,7 +13,11 @@ import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 
 /**
- * Created by xyllan on 07.11.2015.
+ * Fragment for the landing/home page of the users of the app.
+ * This will be populated later. Currently is a placeholder.
+ * @author xyllan
+ * @author Buğrahan Memiş
+ * Date: 07.11.2015.
  */
 public class HomeFragment extends NamedFragment implements View.OnClickListener{
     public static final String NAME = "HOME";

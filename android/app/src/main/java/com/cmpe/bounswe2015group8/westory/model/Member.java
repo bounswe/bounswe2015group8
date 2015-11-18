@@ -1,9 +1,8 @@
 package com.cmpe.bounswe2015group8.westory.model;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +11,7 @@ import java.util.Map;
 /**
  * Created by xyllan on 07.11.2015.
  */
-public class Member {
+public class Member implements Parcelable{
     private long id;
     private String username;
     private String password;
@@ -25,6 +24,18 @@ public class Member {
     private Collection<Post> posts;
     private Collection<PostVote> postVotes;
     public Member() {
+        this("","","","");
+    }
+
+    public Member(String username, String password, String email, String profilePicture) {
+        this(-1l,username,password,email,profilePicture);
+    }
+    public Member(long id, String username, String password, String email, String profilePicture) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.profilePicture = profilePicture;
         comments = new HashSet<Comment>();
         commentVotes = new HashSet<CommentVote>();
         followedMembers = new HashSet<Member>();
@@ -32,12 +43,12 @@ public class Member {
         posts = new HashSet<Post>();
         postVotes = new HashSet<PostVote>();
     }
-
-    public Member(String username, String password, String email, String profilePicture) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.profilePicture = profilePicture;
+    public Member(Parcel in) {
+        id = in.readLong();
+        username = in.readString();
+        email = in.readString();
+        profilePicture = in.readString();
+        //TODO read comments and others
         comments = new HashSet<Comment>();
         commentVotes = new HashSet<CommentVote>();
         followedMembers = new HashSet<Member>();
@@ -187,11 +198,41 @@ public class Member {
         followedMembers.add(other);
         other.followers.add(this);
     }
+    public Requestable<Member> getLoginRequestable() {
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("username", username);
+        dataToSend.put("password", password);
+        return new Requestable<Member>("/api/login",dataToSend,Member.class);
+    }
     public Requestable<Long> getRegisterRequestable() {
         Map<String,String> dataToSend = new HashMap<>();
         dataToSend.put("username", username);
         dataToSend.put("password", password);
         dataToSend.put("email", email);
-        return new Requestable("/api/signup",dataToSend,Long.class);
+        return new Requestable<Long>("/api/signup",dataToSend,Long.class);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(username);
+        dest.writeString(email);
+        dest.writeString(profilePicture);
+        //TODO write others
+    }
+    public static final Parcelable.Creator<Member> CREATOR
+            = new Parcelable.Creator<Member>() {
+        public Member createFromParcel(Parcel in) {
+            return new Member(in);
+        }
+
+        public Member[] newArray(int size) {
+            return new Member[size];
+        }
+    };
 }

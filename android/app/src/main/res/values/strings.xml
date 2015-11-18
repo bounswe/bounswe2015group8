@@ -28,21 +28,23 @@
     <string name="generic_name">Name:</string>
     <string name="heritage_place">Place:</string>
     <string name="heritage_creationDate">Created at:</string>
+    <string name="heritage_small_see_posts"> -see Posts</string>
+    <string name="post_small_see_heritages"> -see Heritages</string>
     <string name="btn_new_post">Add Post</string>
     <string name="generic_description">Description:</string>
     <string name="generic_owner">Creator:</string>
     <string name="generic_title">Title:</string>
     <string name="generic_content">Content:</string>
+    <string name="generic_by">by </string>
     <string name="post_post_date">Post Date:</string>
     <string name="post_last_edit_date">Last Edit Date:</string>
     <string name="post_view_title_default">Viewing Post</string>
     <string-array name="nav_drawer_items">
         <item >Home</item>
-        <item >Example Heritage</item>
+        <item >Heritages</item>
         <item >Add Heritage</item>
-        <item >Example Post</item>
-        <item >Add Post</item>
-        <item >Logout</item>
+        <item >Posts</item>
+        <item >Login</item>
     </string-array>
     <string name="title_heritage_new">New Heritage</string>
     <string name="title_post_new">New Post</string>

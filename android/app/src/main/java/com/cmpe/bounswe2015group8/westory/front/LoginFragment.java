@@ -8,14 +8,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Member;
-
+/**
+ * Fragment for user login. Checks for a successful login and
+ * stores user details if successful.
+ * @see Member
+ * @author Buğrahan Memiş
+ * @author xyllan
+ * Date: 01.11.2015.
+ */
 public class LoginFragment extends NamedFragment implements View.OnClickListener {
-    public static final String NAME = "LOGIN";
+    public static final String NAME = "Login";
     Button btnLogin;
     EditText etUsername, etPassword;
     TextView tvLinkToRegisterScreen;
@@ -46,7 +55,7 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
             case R.id.btnLogin:
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
-                Member member = new Member(username, password,"","");   //TODO (HALFDONE) take the real values. and then, in the same way, add them to main activity.
+                Member member = new Member(username, password,"","");
 
                 authenticate(member);
 
@@ -56,20 +65,19 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
                 break;
         }
     }
-    private void authenticate(Member member){
-        ServerRequests serverRequests = new ServerRequests(getActivity());
-//        LoginRequestable r = new LoginRequestable(member);
-//        serverRequests.fetchDataInBackground(r, r, new GetCallback<LoginRequestable>() {
-//            @Override
-//            public void done(LoginRequestable r) {
-//                if (r == null) {
-//                    showErrorMessage();
-//                } else {
-//                    logMemberIn(r.member);
-//                }
-//            }
-//        }).execute(member);
-
+    private void authenticate(final Member member){
+        final MainActivity a = (MainActivity) getActivity();
+        ServerRequests serverRequests = new ServerRequests(a);
+        serverRequests.login(member, new Consumer<Member>() {
+            @Override
+            public void accept(Member m) {
+                m.setUsername(member.getUsername());
+                memberLocalStore.storeUserData(m);
+                a.resetNavbar();
+                Toast.makeText(getActivity(), "Congratulations " + m.getUsername() + ", you are logged in!", Toast.LENGTH_LONG).show();
+                MainActivity.beginFragment(a, new HomeFragment());
+            }
+        });
     }
 
     private void showErrorMessage() {
@@ -77,13 +85,6 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
         dialogBuilder.setMessage("Incorrect user details.");
         dialogBuilder.setPositiveButton("OK", null);
         dialogBuilder.show();
-    }
-
-    private void logMemberIn(Member member) {
-        memberLocalStore.storeUserData(member);
-        memberLocalStore.setMemberLoggedIn(true);
-
-        MainActivity.beginFragment(getActivity(), new HomeFragment());
     }
     @Override
     public String getName() {

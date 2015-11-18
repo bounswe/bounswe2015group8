@@ -10,9 +10,9 @@ import java.util.Map;
  */
 public class Requestable<T>{
     private String endpoint;
-    private Map<String,String> data;
+    private Object data;
     private Class<T> dataClass;
-    public Requestable(String endpoint, Map<String,String> data, Class<T> dataClass) {
+    public Requestable(String endpoint, Object data, Class<T> dataClass) {
         this.endpoint = endpoint;
         this.data = data;
         this.dataClass = dataClass;
@@ -21,7 +21,7 @@ public class Requestable<T>{
     public String getEndpoint() {
         return endpoint;
     }
-    public Map<String,String> getData() {
+    public Object getData() {
         return data;
     }
     public Class<T> getDataClass() { return dataClass; }

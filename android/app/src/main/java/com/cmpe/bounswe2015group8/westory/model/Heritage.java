@@ -1,18 +1,21 @@
 package com.cmpe.bounswe2015group8.westory.model;
-import android.os.Bundle;
-import java.sql.Timestamp;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Created by xyllan on 07.11.2015.
  */
-public class Heritage {
-    public static String BUNDLE_BASE = "heritage_cur_";
+public class Heritage implements Parcelable{
     private long id;
     private String name;
     private String place;
-    private Timestamp postDate;
+    private String postDate;
     private String description;
     private Collection<Post> posts;
     private Collection<Tag> tags;
@@ -21,7 +24,7 @@ public class Heritage {
         this.tags = new HashSet<Tag>();
     }
 
-    public Heritage(String name, String place, String description, Timestamp postDate) {
+    public Heritage(String name, String place, String description, String postDate) {
         this.name = name;
         this.place = place;
         this.description = description;
@@ -29,12 +32,12 @@ public class Heritage {
         this.posts = new HashSet<Post>();
         this.tags = new HashSet<Tag>();
     }
-    public Heritage(Bundle b) {
-        id = b.getLong(BUNDLE_BASE + "id", -1);
-        name = b.getString(BUNDLE_BASE + "name", "");
-        place = b.getString(BUNDLE_BASE + "place","");
-        postDate = new Timestamp(b.getLong(BUNDLE_BASE + "postDate",-1));
-        description = b.getString(BUNDLE_BASE + "description","");
+    public Heritage(Parcel in) {
+        id = in.readLong();
+        name = in.readString();
+        place = in.readString();
+        postDate = in.readString();
+        description = in.readString();
         //TODO fix posts
         this.posts = new HashSet<Post>();
         this.tags = new HashSet<Tag>();
@@ -63,11 +66,11 @@ public class Heritage {
         this.place = place;
     }
 
-    public Timestamp getPostDate() {
+    public String getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(Timestamp postDate) {
+    public void setPostDate(String postDate) {
         this.postDate = postDate;
     }
 
@@ -128,14 +131,36 @@ public class Heritage {
             t.getHeritages().add(this);
         }
     }
-    public Bundle getBundle() {
-        Bundle b = new Bundle();
-        b.putLong(BUNDLE_BASE + "id", id);
-        b.putString(BUNDLE_BASE + "name",name);
-        b.putString(BUNDLE_BASE + "place",place);
-        b.putLong(BUNDLE_BASE + "postDate",postDate.getTime());
-        b.putString(BUNDLE_BASE + "description",description);
-        //TODO fix posts
-        return b;
+    public Requestable<Long> getCreateRequestable() {
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("name", name);
+        dataToSend.put("place", place);
+        dataToSend.put("description", description);
+        return new Requestable<>("/api/createHeritage",dataToSend,Long.class);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(name);
+        dest.writeString(place);
+        dest.writeString(postDate);
+        dest.writeString(description);
+        //TODO fix posts
+    }
+    public static final Parcelable.Creator<Heritage> CREATOR
+            = new Parcelable.Creator<Heritage>() {
+        public Heritage createFromParcel(Parcel in) {
+            return new Heritage(in);
+        }
+
+        public Heritage[] newArray(int size) {
+            return new Heritage[size];
+        }
+    };
 }
