@@ -1,8 +1,8 @@
 package com.cmpe.bounswe2015group8.westory.front.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +19,8 @@ import com.cmpe.bounswe2015group8.westory.model.Heritage;
  * Created by xyllan on 17.11.2015.
  */
 public class HeritageAdapter extends ArrayAdapter<Heritage> {
-    private Activity context;
-    public HeritageAdapter(Activity context, int resource, Heritage[] objects) {
+    private FragmentActivity context;
+    public HeritageAdapter(FragmentActivity context, int resource, Heritage[] objects) {
         super(context, resource, objects);
         this.context = context;
     }

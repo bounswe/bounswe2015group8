@@ -1,13 +1,14 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
-import android.app.Activity;
-
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,22 +17,18 @@ import android.widget.ListView;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
-import com.cmpe.bounswe2015group8.westory.model.Heritage;
-import com.cmpe.bounswe2015group8.westory.model.Post;
-
-import java.sql.Timestamp;
 /**
  * Main activity overviewing all operations. Contains an action bar and navigation sidebar.
  * Is responsible for fragment management and all operations related to action bar and sidebar.
  * @author xyllan
  * Date: 01.11.2015.
  */
-public class MainActivity extends Activity{
-    public static void beginFragment(Activity a, NamedFragment f) {
+public class MainActivity extends AppCompatActivity {
+    public static void beginFragment(FragmentActivity a, NamedFragment f) {
         beginFragment(a,f,true);
     }
-    public static void beginFragment(Activity a, NamedFragment f, boolean addToBackstack) {
-        FragmentTransaction ft = a.getFragmentManager().beginTransaction().replace(R.id.fragmentFrame, f, f.getName());
+    public static void beginFragment(FragmentActivity a, NamedFragment f, boolean addToBackstack) {
+        FragmentTransaction ft = a.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentFrame, f, f.getName());
         if(addToBackstack) ft.addToBackStack(f.getName());
         ft.commit();
     }
@@ -48,7 +45,7 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
 
         memberLocalStore = new MemberLocalStore(this);
-        fm = this.getFragmentManager();
+        fm = this.getSupportFragmentManager();
         navBarView = (ListView) findViewById(R.id.drawer_list);
         setOnItemClickListener(navBarView);
         resetNavbar();
@@ -56,8 +53,10 @@ public class MainActivity extends Activity{
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
         drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.generic_description,R.string.generic_description);
         drawerLayout.setDrawerListener(drawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        Toolbar t = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(t);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override

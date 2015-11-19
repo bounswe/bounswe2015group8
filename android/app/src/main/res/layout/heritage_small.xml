@@ -49,14 +49,14 @@
 
     <TextView
         android:id="@+id/tvHeritageSmallDescription"
+        android:drawableLeft="@android:drawable/status_bar_item_app_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvHeritageSmallCreationDateValue"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/hint_heritage_description"
-        android:background="@color/accent"/>
+        android:text="@string/hint_heritage_description" />
 
     <TextView
         android:id="@+id/tvHeritageSmallSeePosts"

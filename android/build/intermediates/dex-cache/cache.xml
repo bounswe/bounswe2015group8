@@ -2,12 +2,18 @@
 <items version="2" >
 
     <item
-<<<<<<< HEAD
-        jar="/home/xyllan/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.6.3/435efa54afd2853995546802280e8cd2d2770d00/jackson-annotations-2.6.3.jar"
+        jar="/home/xyllan/bounswe2015group8/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="435efa54afd2853995546802280e8cd2d2770d00">
-        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.6.3-c7b85ebf441ef1e2b76534ee065790b2c8752eca.jar" />
+        sha1="3f151e49c316a5ab2c065969a3b3b55ef9b393fc">
+        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/classes-f37c183ca4dc499645afad176bf879173da8d25a.jar" />
+    </item>
+    <item
+        jar="/home/xyllan/bounswe2015group8/android/app/build/intermediates/exploded-aar/com.android.support/design/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="19026d31f5d3ae868db81319671a642be5fbba08">
+        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/classes-92eab8aa84fb5a0671596e90619ae7df5892d9c5.jar" />
     </item>
 
 </items>

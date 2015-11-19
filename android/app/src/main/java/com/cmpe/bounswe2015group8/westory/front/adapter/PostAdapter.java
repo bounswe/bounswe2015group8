@@ -1,8 +1,8 @@
 package com.cmpe.bounswe2015group8.westory.front.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +19,8 @@ import com.cmpe.bounswe2015group8.westory.model.Post;
  * Created by xyllan on 17.11.2015.
  */
 public class PostAdapter extends ArrayAdapter<Post> {
-    private Activity context;
-    public PostAdapter(Activity context, int resource, Post[] objects) {
+    private FragmentActivity context;
+    public PostAdapter(FragmentActivity context, int resource, Post[] objects) {
         super(context, resource, objects);
         this.context = context;
     }

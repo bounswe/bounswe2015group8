@@ -1,7 +1,7 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
-import android.app.Fragment;
-import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Base fragment for all fragments used in the application.
@@ -19,7 +19,7 @@ public abstract class NamedFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getActionBar().setTitle(getTitle());
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getTitle());
     }
 
 }
