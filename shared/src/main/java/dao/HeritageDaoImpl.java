@@ -1,9 +1,12 @@
 package dao;
 
 import model.Heritage;
+import model.HeritagePost;
+import model.Post;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +28,19 @@ public class HeritageDaoImpl implements HeritageDao {
         Session s = getSessionFactory().openSession();
         List<Heritage> heritages = s.createQuery("from Heritage").list();
         s.close();
+        return heritages;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Heritage> getHeritagesByPost(Post post){
+        Session s = getSessionFactory().openSession();
+        List<HeritagePost> heritageposts = s
+                .createQuery("from HeritagePost where post=?")
+                .setParameter(0, post).list();
+        List<Heritage> heritages = new ArrayList<Heritage>();
+        for (int i = 0; i < heritageposts.size(); i++) {
+            heritages.add(heritageposts.get(i).getHeritage());
+        }
         return heritages;
     }
 

@@ -1,0 +1,37 @@
+.jumbotron {
+    background-color: #f4511e; /* Orange */
+    color: #ffffff;
+}
+
+.header {
+    background-color: #f4511e; /* Orange */
+    color: #ffffff;
+    height: 50px;
+}
+
+.page-content {
+    /* margin-top: 70px; */
+    margin: 0px auto 70px auto;
+    width: 80%
+}
+
+.footer {
+    height: 50px;
+}
+
+.bg-grey {
+    background-color: #f6f6f6;
+}
+
+.pull-left {
+    float: left !important;
+}
+.pull-right {
+    float: right !important;
+}
+
+.well {
+   /* background: #66afe9;
+    border-color: #67b168;
+    */
+}

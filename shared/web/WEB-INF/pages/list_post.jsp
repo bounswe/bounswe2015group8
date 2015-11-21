@@ -1,118 +1,153 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gokcan
-  Date: 03.11.2015
-  Time: 02:34
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
+<%@ include file="/WEB-INF/pages/header.jsp" %>
 <c:set var="posts" value="${allContent.posts}"/>
 <c:set var="medias" value="${allContent.medias}"/>
-<c:set var="comments" value="${allContent.comments}"/>
 
-<html>
-<head>
-    <title>Sign up</title>
-    <style>
-        form {
-            text-align: center
-        }
+<script>
+    $(document).ready(function(){
+        $(".upvote").click(function(){
+            console.log($(this).attr("name"));
+            var postId = $(this).attr("name");
+            $.ajax({
+                url: "${contextPath}/vote_post/" + postId,
+                data:{voteType: true},
+                type: "POST",
+                success: function(response) {
+                    console.log(response);
+                    console.log('#votecount_' + postId);
+                    $('#votecount_' + postId).text("Score: " + response);
+                }
+            });
+        });
+        $(".downvote").click(function(){
+            console.log($(this).attr("name"));
+            var postId = $(this).attr("name");
+            $.ajax({
+                url: "${contextPath}/vote_post/" + postId,
+                data:{voteType: false},
+                type: "POST",
+                success: function(response) {
+                    console.log(response);
+                    console.log('#votecount_' + postId);
+                    $('#votecount_' + postId).text("Score: " + response);
+                }
+            });
+        });
+    });
+</script>
 
-        #header {
-            background-color: black;
-            color: white;
-            text-align: center;
-            padding: 10px;
-        }
-
-        #section {
-            background-color: skyblue;
-            color: black;
-            text-align: center;
-            padding: 40%;
-        }
-
-        #footer {
-            background-color: black;
-            color: white;
-            text-align: right;
-            padding: 5px;
-        }
-
-        div.roundbox {
-            border: 2px solid #00f;
-            border-radius: 20px;
-            padding: 20px;
-            background-color: #e4e8f3;
-            color: #000;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 5px;
-        }
-    </style>
-    <link rel="stylesheet" href="${contextPath}/static/css/bootstrap/bootstrap.css">
-    <link rel="stylesheet" href="${contextPath}/static/css/bootstrap/bootstrap-theme.css">
-</head>
-<body>
-<div id="header">
-    YOUR POSTS
-</div>
-
-<div class="container" style="height:100%; overflow-y: scroll;">
-    <c:forEach items="${posts}" var="post">
-        <div class="row" style="background-color: skyblue;">
-            <div class="col-md-4 col-md-offset-4">
-                <form id="form" action="${contextPath}/upload_post" method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="title_${post.id}">Title</label>
-                        <input disabled="disabled" type="text" class="form-control" id="title_${post.id}"
-                               value="${post.title}">
-                    </div>
-                    <div class="form-group" style="height:50%;">
-                        <label for="content_${post.id}">Content</label>
-                        <textarea disabled="disabled" type="text" class="form-control wideInput" id="content_${post.id}"
-                                  style="height:80%;">${post.content}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="date_${post.id}">Date posted:</label>
-                        <input type="text" disabled="disabled" class="form-control" id="date_${post.id}"
-                               value="${post.postDate}">
-                    </div>
-
-                    <c:forEach var="media" items="${medias}">
-                        <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage==false}">
-                            <div class="form-group">
-                                <img src="${contextPath}/static/${media.mediaLink}" height="100%" width="100%">
-                            </div>
-                        </c:if>
-                    </c:forEach>
-                </form>
+<c:if test="${allContent.heritages != null}">
+    <div class="well">
+        <div class="row">
+            <div class="col-sm-12 form-group text-right" style="text-align:center; font-size:16px">
+                <strong>Heritage Name: ${allContent.heritages[0].name}</strong>
             </div>
         </div>
-        <hr style="border:3px;">
+    </div>
+</c:if>
 
-        <%--<div class="roundbox">
-            <span>Title: ${post.title}</span>
-            <br>
-            <span>Content: ${post.content}</span>
-            <br>
-            <span>Date posted: ${post.postDate}</span>
-        </div>--%>
-    <span>Do you have an opinion on this post?
-        <button style="float:right; margin-right:5%;"
-                onclick="window.location.href='${contextPath}/comment/${post.id}'">Add Comment
-        </button>
-    </span>
-    </c:forEach>
+<c:forEach items="${posts}" var="post">
+    <div class="row">
+        <div class="col-xs-12" style="height:20px;"></div>
+    </div>
+    <div class="well">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="row">
+                    <div class="col-sm-12 form-group pull-right">
+                        <label for="upvote_${post.id}" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-top"></i></label>
+                        <input id="upvote_${post.id}" type="button" name="${post.id}" class="upvote" style="display:none"/>
+                    </div>
+                </div>
+                <div class="row">
 
-</div>
+                    <div class="col-sm-12 form-group text-right" id="votecount_${post.id}">
+                        Score: ?
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 form-group pull-right">
+                        <label for="downvote_${post.id}" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-bottom"></i></label>
+                        <input id="downvote_${post.id}" type="button" name="${post.id}" class="downvote" style="display:none"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <label for="title_${post.id}" class="col-sm-2 control-label">Title</label>
 
-<div id="footer">
-    Copyright © lokum
-</div>
-</body>
-</html>
+                            <div class="col-sm-10">
+                                <p name="title_${post.id}" id="title_${post.id}">
+                                        ${post.title}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="content_${post.id}" class="col-sm-2 control-label">Content</label>
+
+                            <div class="col-sm-10">
+                                <p name="content_${post.id}" id="content_${post.id}">
+                                        ${post.content}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="owner_${post.id}" class="col-sm-2 control-label">By</label>
+
+                            <div class="col-sm-10">
+                                <p name="owner_${post.id}" id="owner_${post.id}">
+                                        ${post.owner.username}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="date_${post.id}" class="col-sm-2 control-label">Date posted</label>
+
+                            <div class="col-sm-10">
+                                <p name="date_${post.id}" id="date_${post.id}">
+                                        ${post.postDate}
+                                </p>
+                            </div>
+                        </div>
+                        <c:forEach var="media" items="${medias}">
+                            <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage==false}">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label">Media</label>
+
+                                    <div class="media col-sm-10">
+                                        <div class="media-left">
+                                            <img src="${contextPath}/static/${media.mediaLink}" height="240px;" width="360px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                        <div class="row">
+                            <div class="col-sm-offset-8 col-sm-4" role="group">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        onclick="window.location.href='${contextPath}/comment/${post.id}'">
+                                    Comment
+                                </button>
+                            </div>
+                        </div>
+                        <c:forEach var="comment" items="${post.comments}">
+                            <div class="row">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <blockquote>
+                                        <p><strong>by ${comment.owner.username}</strong></p>
+                                        <p>"${comment.content}"</p>
+                                        <footer>${comment.lastEditedDate}</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</c:forEach>
+<%@ include file="/WEB-INF/pages/footer.jsp" %>

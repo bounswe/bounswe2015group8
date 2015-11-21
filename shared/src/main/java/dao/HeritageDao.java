@@ -1,6 +1,7 @@
 package dao;
 
 import model.Heritage;
+import model.Post;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
@@ -13,9 +14,12 @@ public interface HeritageDao {
 
     List<Heritage> getAllHeritages();
 
+    List<Heritage> getHeritagesByPost(Post post);
+
     Heritage saveHeritage(Heritage heritage);
 
     SessionFactory getSessionFactory();
 
     void setSessionFactory(SessionFactory sessionFactory);
+
 }

@@ -78,6 +78,11 @@
             <artifactId>spring-security-config</artifactId>
             <version>4.0.2.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>4.0.2.RELEASE</version>
+        </dependency>
         <!-- Other dependencies -->
         <dependency>
             <groupId>org.jboss.logging</groupId>
