@@ -1,7 +1,6 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
 import android.app.Activity;
-
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
@@ -16,10 +15,6 @@ import android.widget.ListView;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
-import com.cmpe.bounswe2015group8.westory.model.Heritage;
-import com.cmpe.bounswe2015group8.westory.model.Post;
-
-import java.sql.Timestamp;
 /**
  * Main activity overviewing all operations. Contains an action bar and navigation sidebar.
  * Is responsible for fragment management and all operations related to action bar and sidebar.
@@ -113,6 +108,9 @@ public class MainActivity extends Activity{
                         nf = new PostsFragment();
                         break;
                     case 4:
+                        nf = new ProfileFragment();
+                        break;
+                    case 5:
                         if(authenticated()) {
                             memberLocalStore.clearMemberData();
                             nf = new HomeFragment();
