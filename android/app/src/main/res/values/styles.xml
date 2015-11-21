@@ -7,7 +7,6 @@
         <item name="android:buttonStyle">?android:attr/buttonBarButtonStyle</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
-
         <!--   darker variant for the status bar and contextual app bars -->
         <item name="colorPrimaryDark">@color/primary_dark</item>
 

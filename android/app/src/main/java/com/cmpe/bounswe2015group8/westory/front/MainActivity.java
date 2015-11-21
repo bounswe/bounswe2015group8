@@ -2,6 +2,7 @@ package com.cmpe.bounswe2015group8.westory.front;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,11 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
@@ -34,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
     MemberLocalStore memberLocalStore;
     FragmentManager fm;
-    ListView navBarView;
-    ArrayAdapter<String> navBarAdapter;
+    NavigationView navBarView;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
 
@@ -46,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         memberLocalStore = new MemberLocalStore(this);
         fm = this.getSupportFragmentManager();
-        navBarView = (ListView) findViewById(R.id.drawer_list);
+        navBarView = (NavigationView) findViewById(R.id.navigation);
         setOnItemClickListener(navBarView);
         resetNavbar();
 
@@ -62,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //MainActivity.beginFragment(this, new HomeFragment());
-        MainActivity.beginFragment(this, new HeritagesFragment());
+        MainActivity.beginFragment(this, new HomeFragment());
+        //MainActivity.beginFragment(this, new HeritagesFragment());
     }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -83,36 +80,36 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void resetNavbar() {
-        String[] navbarItems = getResources().getStringArray(R.array.nav_drawer_items);
-        if(authenticated()) navbarItems[navbarItems.length-1] = getResources().getString(R.string.btn_logout);
-        navBarAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navbarItems);
-        navBarView.setAdapter(navBarAdapter);
+        Menu menu = navBarView.getMenu();
+        MenuItem item = menu.getItem(menu.size() - 1);
+        if(authenticated()) item.setTitle(getResources().getString(R.string.nav_logout));
+        else item.setTitle(getResources().getString(R.string.nav_login));
     }
     private boolean authenticated() {
         return memberLocalStore.getUserLoggedIn();
     }
-    private void setOnItemClickListener(ListView lv) {
+    private void setOnItemClickListener(NavigationView nv) {
         final MainActivity a = this;
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onNavigationItemSelected(MenuItem item) {
                 drawerLayout.closeDrawer(navBarView);
                 NamedFragment nf = null;
-                switch(position) {
-                    case 0:
+                switch (item.getItemId()) {
+                    case R.id.navHome:
                         nf = new HomeFragment();
                         break;
-                    case 1:
+                    case R.id.navHeritages:
                         nf = new HeritagesFragment();
                         break;
-                    case 2:
+                    case R.id.navAddHeritage:
                         nf = new HeritageEditFragment();
                         break;
-                    case 3:
+                    case R.id.navPosts:
                         nf = new PostsFragment();
                         break;
-                    case 4:
-                        if(authenticated()) {
+                    case R.id.navLogin:
+                        if (authenticated()) {
                             memberLocalStore.clearMemberData();
                             nf = new HomeFragment();
                         } else {
@@ -123,9 +120,9 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         break;
                 }
-                MainActivity.beginFragment(a,nf);
+                MainActivity.beginFragment(a, nf);
+                return true;
             }
         });
     }
-
 }
