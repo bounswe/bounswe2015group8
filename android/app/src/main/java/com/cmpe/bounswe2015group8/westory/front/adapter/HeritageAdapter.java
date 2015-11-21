@@ -29,12 +29,12 @@ public class HeritageAdapter extends ArrayAdapter<Heritage> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.heritage_small,parent,false);
+        View v = (convertView == null) ? inflater.inflate(R.layout.heritage_small,parent,false) : convertView;
         TextView tvName = (TextView) v.findViewById(R.id.tvHeritageSmallName);
         TextView tvPlace = (TextView) v.findViewById(R.id.tvHeritageSmallPlace);
         TextView tvCreationDate = (TextView) v.findViewById(R.id.tvHeritageSmallCreationDateValue);
         TextView tvDescription = (TextView) v.findViewById(R.id.tvHeritageSmallDescription);
-        TextView tvSeePosts = (TextView) v.findViewById(R.id.tvHeritageSmallSeePosts);
+        TextView tvSeePosts = (TextView) v.findViewById(R.id.tvHeritageSmallSeeMore);
         final Heritage h = getItem(position);
         tvName.setText(h.getName());
         tvPlace.setText(h.getPlace());

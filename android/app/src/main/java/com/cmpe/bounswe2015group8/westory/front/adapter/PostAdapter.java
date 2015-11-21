@@ -29,7 +29,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.post_small,parent,false);
+        View v = (convertView == null) ? inflater.inflate(R.layout.post_small,parent,false) : convertView;
         TextView tvTitle = (TextView) v.findViewById(R.id.tvPostSmallTitle);
         TextView tvOwner = (TextView) v.findViewById(R.id.tvPostSmallOwner);
         TextView tvCreationDate = (TextView) v.findViewById(R.id.tvPostSmallCreationDateValue);

@@ -24,7 +24,10 @@
         android:layout_below="@+id/tvHeritageSmallName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:drawableLeft="@drawable/ic_place_black_24dp"
+        android:drawableStart="@drawable/ic_place_black_24dp"
+        android:gravity="center_vertical"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallCreationDate"
@@ -45,11 +48,11 @@
         android:layout_below="@+id/tvHeritageSmallPlace"
         android:layout_toRightOf="@+id/tvHeritageSmallCreationDate"
         android:layout_toEndOf="@+id/tvHeritageSmallCreationDate"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallDescription"
-        android:drawableLeft="@android:drawable/status_bar_item_app_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvHeritageSmallCreationDateValue"
@@ -59,14 +62,14 @@
         android:text="@string/hint_heritage_description" />
 
     <TextView
-        android:id="@+id/tvHeritageSmallSeePosts"
+        android:id="@+id/tvHeritageSmallSeeMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvHeritageSmallDescription"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/heritage_small_see_posts"
+        android:text="@string/generic_see_more"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:clickable="true"
