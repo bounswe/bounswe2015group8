@@ -12,31 +12,18 @@ android:layout_height="match_parent">
     android:padding="10dp"
     android:textColor="@color/accent"
     android:textSize="24dp"
-    android:layout_alignParentTop="true"
-    android:layout_toRightOf="@+id/textWelcome"
-    android:layout_toEndOf="@+id/textWelcome" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome"
-        android:id="@+id/textWelcome"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/tvHomeName"
-        android:padding="10dp"
-        android:textColor="@color/accent"
-        android:textSize="24dp"/>
+    android:layout_marginTop="8dp"
+    android:layout_below="@+id/profilePicture"
+    android:layout_centerHorizontal="true" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listPosts"
-        android:layout_below="@+id/tvHomeName"
+        android:layout_marginTop="47dp"
+        android:layout_alignTop="@+id/yourPosts"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="67dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -46,8 +33,19 @@ android:layout_height="match_parent">
         android:padding="10dp"
         android:textColor="@color/accent"
         android:textSize="18dp"
-        android:layout_below="@+id/textWelcome"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/tvHomeName"
+        android:layout_toLeftOf="@+id/tvHomeName"
+        android:layout_toStartOf="@+id/tvHomeName" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profilePicture"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        android:contextClickable="false" />
 
 </RelativeLayout>
