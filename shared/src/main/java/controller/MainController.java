@@ -4,8 +4,8 @@ import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -357,13 +357,15 @@ public class MainController {
 
     @RequestMapping(value = "/show_heritages")
     public ModelAndView show_heritages() {
-        List<Heritage> allHeritages = heritageService.getAllHeritages();
         final Session session = Main.getSession();
+        List<Heritage> allHeritages = heritageService.getAllHeritages();
         List medias = session.createCriteria(Media.class).list();
-        session.close();
+        List allTags = session.createCriteria(Tag.class).list();
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("heritages", allHeritages);
         allContent.put("medias", medias);
+        allContent.put("allTags", allTags);
+        session.close();
         return new ModelAndView("list_heritage", "allContent", allContent);
     }
 

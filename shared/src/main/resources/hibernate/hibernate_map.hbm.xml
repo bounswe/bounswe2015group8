@@ -77,7 +77,7 @@
             </key>
             <many-to-many not-found="ignore" class="model.Post" column="POST_ID"/>
         </set>
-        <set name="tags" table="TAG_HERITAGE" inverse="true" cascade="save-update" fetch="select" lazy="true">
+        <set name="tags" table="TAG_HERITAGE" inverse="true" cascade="save-update" fetch="select" lazy="true" order-by="TAG_ID asc">
             <key>
                 <column name="HERITAGE_ID" not-null="true"/>
             </key>
