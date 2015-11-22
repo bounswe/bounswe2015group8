@@ -59,6 +59,50 @@ public class TagDaoImpl implements TagDao {
         return tags;
     }
 
+    public TagHeritage getTagHeritage(Heritage heritage, Tag tag){
+        Session s = getSessionFactory().openSession();
+        TagHeritage tagheritage = (TagHeritage)s
+                .createQuery("from TagHeritage where heritage=? and tag=?")
+                .setParameter(0, heritage)
+                .setParameter(1, tag).uniqueResult();
+        s.close();
+        return tagheritage;
+    }
+
+    public TagPost getTagPost(Post post, Tag tag){
+        Session s = getSessionFactory().openSession();
+        TagPost tagpost = (TagPost)s
+                .createQuery("from TagPost where post=? and tag=?")
+                .setParameter(0, post)
+                .setParameter(1, tag).uniqueResult();
+        s.close();
+        return tagpost;
+    }
+
+    public boolean doesHeritageHaveTag(Heritage heritage, Tag tag){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from TagHeritage where heritage=? and tag=?")
+                .setParameter(0, heritage)
+                .setParameter(1, tag).list().size();
+        if(count == 0)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean doesPostHaveTag(Post post, Tag tag){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from TagPost where post=? and tag=?")
+                .setParameter(0, post)
+                .setParameter(1, tag).list().size();
+        if(count == 0)
+            return false;
+        else
+            return true;
+    }
+
     public Tag saveTag(Tag tag){
         Session s = getSessionFactory().openSession();
         s.getTransaction().begin();

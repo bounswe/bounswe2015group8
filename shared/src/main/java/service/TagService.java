@@ -34,7 +34,21 @@ public class TagService {
         return tagDao.getTagsByPost(post);
     }
 
+    public TagHeritage getTagHeritage(Heritage heritage, Tag tag) { return tagDao.getTagHeritage(heritage, tag); }
+
+    public TagPost getTagPost(Post post, Tag tag) { return tagDao.getTagPost(post, tag); }
+
+    public boolean doesHeritageHaveTag(Heritage heritage, String tagText){
+        return tagDao.doesHeritageHaveTag(heritage, tagDao.getTagByText(tagText));
+    }
+
+    public boolean doesPostHaveTag(Post post, String tagText){
+        return tagDao.doesPostHaveTag(post, tagDao.getTagByText(tagText));
+    }
+
     public TagHeritage addTag(String tagText, Heritage heritage){
+        if(doesHeritageHaveTag(heritage, tagText))
+            return getTagHeritage(heritage, tagDao.getTagByText(tagText));
         Tag tag = getTagByText(tagText);
         if(tag == null){
             tag = new Tag(tagText);
@@ -44,6 +58,8 @@ public class TagService {
     }
 
     public TagPost addTag(String tagText, Post post){
+        if(doesPostHaveTag(post, tagText))
+            return getTagPost(post, tagDao.getTagByText(tagText));
         Tag tag = getTagByText(tagText);
         if(tag == null){
             tag = new Tag(tagText);

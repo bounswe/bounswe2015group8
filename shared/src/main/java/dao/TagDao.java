@@ -15,6 +15,12 @@ public interface TagDao {
     List<Tag> getTagsByHeritage(Heritage heritage);
     List<Tag> getTagsByPost(Post post);
 
+    TagHeritage getTagHeritage(Heritage heritage, Tag tag);
+    TagPost getTagPost(Post post, Tag tag);
+
+    boolean doesHeritageHaveTag(Heritage heritage, Tag tag);
+    boolean doesPostHaveTag(Post post, Tag tag);
+
     Tag saveTag(Tag tag);
     TagHeritage saveTagHeritage(Tag tag, Heritage heritage);
     TagPost saveTagPost(Tag tag, Post post);
