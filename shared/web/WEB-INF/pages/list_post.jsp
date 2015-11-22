@@ -51,8 +51,11 @@
                 data:{tagTexts: postTags},
                 type: "POST",
                 success: function(response) {
-                    console.log(response);
-                    alert(response);
+                    $("#tags_" + postId).html("");
+                    for(var i = 0; i < response.length; i++){
+                        var tag = response[i];
+                        $("#tags_" + postId).append("<a href='${contextPath}/search/" + tag + "'>&lt;" + tag + "&gt;</a> ");
+                    }
                 }
             });
         });
@@ -147,6 +150,16 @@
                                 </div>
                             </c:if>
                         </c:forEach>
+                        <div class="row">
+                            <label for="tags_${post.id}" class="col-sm-2 control-label">Tags:</label>
+                            <div class="col-sm-4" role="group">
+                                <p id="tags_${post.id}">
+                                    <c:forEach items="${post.tags}" var="tag">
+                                        <a href="${contextPath}/search/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
+                                    </c:forEach>
+                                </p>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-offset-8 col-sm-4" role="group">
                                 <button type="button"

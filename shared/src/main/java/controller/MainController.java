@@ -441,12 +441,22 @@ public class MainController {
 
     @RequestMapping(value = "/tag_heritage/{heritageId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public long tag_heritage(@PathVariable long heritageId,
-                             @RequestParam(value = "tagText") String tagText){
+    public String[] tag_heritage(@PathVariable long heritageId,
+                             @RequestParam(value = "tagTexts[]") String[] tagTexts){
 
         Heritage heritage = heritageService.getHeritageById(heritageId);
-        tagService.addTag(tagText, heritage);
-        return tagService.getTagByText(tagText).getId();
+        for(int i = 0; i < tagTexts.length; i++){
+            tagService.addTag(tagTexts[i], heritage);
+        }
+        List<Tag> heritageTags = tagService.getTagsByHeritage(heritage);
+        String[] tags = new String[heritageTags.size()];
+        final Session session = Main.getSession();
+        for(int i = 0; i < tags.length; i++){
+            session.update(heritageTags.get(i));
+            tags[i] = heritageTags.get(i).getTagText();
+        }
+        session.close();
+        return tags;
     }
 
     @RequestMapping(value = "/tag_post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
