@@ -3,6 +3,7 @@ package com.cmpe.bounswe2015group8.westory.front;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -94,19 +95,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 drawerLayout.closeDrawer(navBarView);
+                Fragment f = null;
                 NamedFragment nf = null;
                 switch (item.getItemId()) {
                     case R.id.navHome:
-                        nf = new HomeFragment();
+                        f = getSupportFragmentManager().findFragmentByTag(HomeFragment.NAME);
+                        nf = (f == null) ? new HomeFragment(): (NamedFragment)f;
                         break;
                     case R.id.navHeritages:
-                        nf = new HeritagesFragment();
+                        f = getSupportFragmentManager().findFragmentByTag(HeritagesFragment.NAME);
+                        nf = (f == null) ? new HeritagesFragment(): (NamedFragment)f;
                         break;
                     case R.id.navAddHeritage:
                         nf = new HeritageEditFragment();
                         break;
                     case R.id.navPosts:
-                        nf = new PostsFragment();
+                        f = getSupportFragmentManager().findFragmentByTag(PostsFragment.NAME);
+                        nf = (f == null) ? new PostsFragment(): (NamedFragment)f;
                         break;
                     case R.id.navLogin:
                         if (authenticated()) {
