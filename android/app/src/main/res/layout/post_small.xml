@@ -5,29 +5,29 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/tvPostSmallTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/hint_heritage_name"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/tvPostSmallOwner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/hint_username"
-        android:layout_toEndOf="@id/tvPostSmallTitle"
-        android:layout_toRightOf="@id/tvPostSmallTitle"
+        android:text="@string/generic_by_username"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:gravity="end"
         android:textStyle="italic" />
+    <TextView
+        android:id="@+id/tvPostSmallTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/hint_heritage_name"
+        android:layout_toStartOf="@id/tvPostSmallOwner"
+        android:layout_toLeftOf="@id/tvPostSmallOwner"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/tvPostSmallCreationDate"
@@ -57,18 +57,17 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/hint_heritage_description"
-        android:background="@color/accent"/>
+        android:text="@string/hint_heritage_description"/>
 
     <TextView
-        android:id="@+id/tvPostSmallSeeHeritages"
+        android:id="@+id/tvPostSmallSeeMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvPostSmallContent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/post_small_see_heritages"
+        android:text="@string/generic_see_more"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:clickable="true"

@@ -55,13 +55,17 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(t);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        if(savedInstanceState == null || savedInstanceState.containsKey("curFragment")) {
+            MainActivity.beginFragment(this, new HomeFragment());
+        } else {
+            MainActivity.beginFragment(this,
+                    (NamedFragment)getSupportFragmentManager().getFragment(savedInstanceState, "curFragment"));
+        }
     }
-
     @Override
-    protected void onStart() {
-        super.onStart();
-        MainActivity.beginFragment(this, new HomeFragment());
-        //MainActivity.beginFragment(this, new HeritagesFragment());
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState,"curFragment",getSupportFragmentManager().findFragmentById(R.id.fragmentFrame));
     }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

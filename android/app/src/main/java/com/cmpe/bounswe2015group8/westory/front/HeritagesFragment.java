@@ -1,7 +1,6 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
@@ -27,6 +25,9 @@ import java.util.List;
  */
 public class HeritagesFragment extends NamedFragment implements AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String NAME = "All Heritages";
+    public static final String BUNDLE_INDEX = "index";
+    public static final String BUNDLE_TOP = "top";
+    public static final String BUNDLE_HERITAGES = "heritages";
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView listView;
     private FloatingActionButton fab;
@@ -56,13 +57,13 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
             return v;
         }
         if (savedInstanceState != null) {
-            int index = savedInstanceState.getInt("index", -1);
-            int top = savedInstanceState.getInt("top", 0);
+            int index = savedInstanceState.getInt(BUNDLE_INDEX, -1);
+            int top = savedInstanceState.getInt(BUNDLE_TOP, 0);
             if(index!=-1){
                 listView.setSelectionFromTop(index, top);
             }
-            if(savedInstanceState.containsKey("heritages")) {
-                List<Heritage> heritageList = savedInstanceState.getParcelableArrayList("heritages");
+            if(savedInstanceState.containsKey(BUNDLE_HERITAGES)) {
+                List<Heritage> heritageList = savedInstanceState.getParcelableArrayList(BUNDLE_HERITAGES);
                 heritages = heritageList.toArray(new Heritage[heritageList.size()]);
                 setAdapter(heritages);
             } else {
@@ -96,10 +97,10 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
         View v = listView.getChildAt(0);
         int top = (v == null) ? 0 : v.getTop();
 
-        outState.putInt("index", index);
-        outState.putInt("top", top);
+        outState.putInt(BUNDLE_INDEX, index);
+        outState.putInt(BUNDLE_TOP, top);
 
-        outState.putParcelableArrayList("heritages", new ArrayList<Heritage>(Arrays.asList(heritages)));
+        outState.putParcelableArrayList(BUNDLE_HERITAGES, new ArrayList<Heritage>(Arrays.asList(heritages)));
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
