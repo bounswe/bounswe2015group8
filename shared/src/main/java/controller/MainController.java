@@ -5,6 +5,7 @@ import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -50,6 +51,7 @@ public class MainController {
 
     CommentService commentService;
     VoteService voteService;
+    TagService tagService;
     public MainController() {
         memberService = new MemberDetailsService();
         MemberDaoImpl mdao = new MemberDaoImpl();
@@ -59,6 +61,7 @@ public class MainController {
         heritageService = new HeritageService(Main.getSessionFactory());
         commentService = new CommentService(Main.getSessionFactory());
         voteService = new VoteService(Main.getSessionFactory());
+        tagService = new TagService(Main.getSessionFactory());
     }
     @RequestMapping(value = "/")
     public ModelAndView home() {
@@ -286,6 +289,7 @@ public class MainController {
         Heritage heritage = heritageService.getHeritageById(heritageId);
         List posts = postService.getPostsByHeritage(heritage);
         List medias = session.createCriteria(Media.class).list();
+        List allTags = session.createCriteria(Tag.class).list();
         List heritages = new ArrayList<Heritage>();
         logger.info("Current heritage: " + heritage.getName());
         heritages.add(heritage);
@@ -294,6 +298,7 @@ public class MainController {
         allContent.put("posts", posts);
         allContent.put("medias", medias);
         allContent.put("heritages", heritages);
+        allContent.put("allTags", allTags);
         session.close();
 
         return new ModelAndView("list_post", "allContent", allContent);
@@ -432,6 +437,37 @@ public class MainController {
         voteService.saveCommentVote(member, comment, voteType);
 
         return voteService.getCommentOverallVote(comment);
+    }
+
+    @RequestMapping(value = "/tag_heritage/{heritageId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long tag_heritage(@PathVariable long heritageId,
+                             @RequestParam(value = "tagText") String tagText){
+
+        Heritage heritage = heritageService.getHeritageById(heritageId);
+        tagService.addTag(tagText, heritage);
+        return tagService.getTagByText(tagText).getId();
+    }
+
+    @RequestMapping(value = "/tag_post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String[] tag_post(@PathVariable long postId,
+                             @RequestParam(value = "tagTexts[]") String[] tagTexts){
+
+
+        Post post = postService.getPostById(postId);
+        for(int i = 0; i < tagTexts.length; i++){
+            tagService.addTag(tagTexts[i], post);
+        }
+        List<Tag> postTags = tagService.getTagsByPost(post);
+        String[] tags = new String[postTags.size()];
+        final Session session = Main.getSession();
+        for(int i = 0; i < tags.length; i++){
+            session.update(postTags.get(i));
+            tags[i] = postTags.get(i).getTagText();
+        }
+        session.close();
+        return tags;
     }
 
 }

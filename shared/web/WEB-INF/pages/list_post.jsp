@@ -1,9 +1,14 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 <c:set var="posts" value="${allContent.posts}"/>
 <c:set var="medias" value="${allContent.medias}"/>
+<c:set var="allTags" value="${allContent.allTags}"/>
 
 <script>
     $(document).ready(function(){
+        var tags = [];
+        <c:forEach var="tag" items="${allTags}">
+            tags.push("${tag.tagText}");
+        </c:forEach>
         $(".upvote").click(function(){
             console.log($(this).attr("name"));
             var postId = $(this).attr("name");
@@ -29,6 +34,25 @@
                     console.log(response);
                     console.log('#votecount_' + postId);
                     $('#votecount_' + postId).text("Score: " + response);
+                }
+            });
+        });
+        $(".tokenfield").tokenfield({
+            autocomplete: {
+                source: tags,
+                delay: 100
+            }
+        });
+        $(".tagbutton").click(function(){
+            var postId = $(this).attr("id").split("_")[1];
+            var postTags = $("#tokenfield_" + postId).val().split(", ");
+            $.ajax({
+                url: "${contextPath}/tag_post/" + postId,
+                data:{tagTexts: postTags},
+                type: "POST",
+                success: function(response) {
+                    console.log(response);
+                    alert(response);
                 }
             });
         });
@@ -132,6 +156,15 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-offset-2 col-sm-5" role="group">
+                                <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." />
+                                <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">
+                                    Add Tags
+                                </button>
+                            </div>
+                        </div>
+
                         <c:forEach var="comment" items="${post.comments}">
                             <div class="row">
                                 <div class="col-sm-offset-2 col-sm-10">
