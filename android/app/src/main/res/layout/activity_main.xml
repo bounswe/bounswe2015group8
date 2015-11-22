@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
+    android:background="@color/primary_light"
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
     <android.support.v7.widget.Toolbar
@@ -25,14 +25,14 @@
             <FrameLayout
                 android:id="@+id/fragmentFrame"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"/>
          </LinearLayout>
         <android.support.design.widget.NavigationView
             android:id="@+id/navigation"
             android:layout_width="200dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/primary_light"
+            android:background="@color/primary_very_light"
             app:menu="@menu/nav_items" />
     </android.support.v4.widget.DrawerLayout>
 

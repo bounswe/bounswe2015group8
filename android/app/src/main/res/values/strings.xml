@@ -10,7 +10,8 @@
     <string name="btn_upload">Upload</string>
     <string name="btn_edit">Edit</string>
     <string name="btn_submit">Submit</string>
-    <string name="tv_link_to_register">Not a member? Join us now.</string>
+    <string name="login_to_register">Not a member? Join us now.</string>
+    <string name="login_forgot_password">Forgot your password?</string>
     <string name="welcome">Welcome</string>
 
     <string name="hint_username">Username</string>

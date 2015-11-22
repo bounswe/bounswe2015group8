@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:dividerHeight="5dp"/>
+        android:dividerHeight="5dp"
+        android:divider="@android:drawable/divider_horizontal_bright"/>
     </android.support.v4.widget.SwipeRefreshLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabHeritages"

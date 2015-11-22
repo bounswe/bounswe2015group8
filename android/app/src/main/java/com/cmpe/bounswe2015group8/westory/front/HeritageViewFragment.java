@@ -28,10 +28,10 @@ import java.util.Arrays;
  */
 public class HeritageViewFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "HERITAGE_VIEW";
-    Button btnEdit, btnAddPost;
-    TextView tvPlace, tvCreationDate, tvDescription;
-    Heritage heritage;
-    ListView lvPosts;
+    private Button btnEdit, btnAddPost;
+    private TextView tvPlace, tvCreationDate, tvDescription;
+    private Heritage heritage;
+    private ListView lvPosts;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
