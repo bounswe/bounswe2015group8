@@ -23,6 +23,7 @@
                 }
             });
         });
+
         $(".downvote").click(function(){
             console.log($(this).attr("name"));
             var postId = $(this).attr("name");
@@ -37,6 +38,37 @@
                 }
             });
         });
+
+        $(".upvote-comment").click(function(){
+            console.log($(this).attr("name"));
+            var commentId = $(this).attr("name");
+            $.ajax({
+                url: "${contextPath}/vote_comment/" + commentId,
+                data:{voteType: true},
+                type: "POST",
+                success: function(response) {
+                    console.log(response);
+                    console.log('#votecount_comment_' + commentId);
+                    $('#votecount_comment_' + commentId).text("Score: " + response);
+                }
+            });
+        });
+
+        $(".downvote-comment").click(function(){
+            console.log($(this).attr("name"));
+            var commentId = $(this).attr("name");
+            $.ajax({
+                url: "${contextPath}/vote_comment/" + commentId,
+                data:{voteType: false},
+                type: "POST",
+                success: function(response) {
+                    console.log(response);
+                    console.log('#votecount_comment_' + commentId);
+                    $('#votecount_comment_' + commentId).text("Score: " + response);
+                }
+            });
+        });
+
         $(".tokenfield").tokenfield({
             autocomplete: {
                 source: tags,
@@ -180,7 +212,27 @@
 
                         <c:forEach var="comment" items="${post.comments}">
                             <div class="row">
-                                <div class="col-sm-offset-2 col-sm-10">
+                                <div class="col-sm-offset-1 col-sm-1">
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group pull-right">
+                                            <label for="upvote_comment_${comment.id}" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-top"></i></label>
+                                            <input id="upvote_comment_${comment.id}" type="button" name="${comment.id}" class="upvote-comment" style="display:none"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-sm-12 form-group text-right" id="votecount_comment_${comment.id}">
+                                            Score: ?
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group pull-right">
+                                            <label for="downvote_comment_${comment.id}" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-bottom"></i></label>
+                                            <input id="downvote_comment_${comment.id}" type="button" name="${comment.id}" class="downvote-comment" style="display:none"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
                                     <blockquote>
                                         <p><strong>by ${comment.owner.username}</strong></p>
                                         <p>"${comment.content}"</p>
