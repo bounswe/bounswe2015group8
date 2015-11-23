@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+<div class="page-content container">
 <c:set var="posts" value="${allContent.posts}"/>
 <c:set var="medias" value="${allContent.medias}"/>
 
@@ -150,4 +151,7 @@
 
     </div>
 </c:forEach>
+    <div class="row">
+        <div class="col-xs-12" style="height:40px;"></div>
+    </div>
 <%@ include file="/WEB-INF/pages/footer.jsp" %>

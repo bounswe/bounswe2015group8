@@ -25,16 +25,15 @@
 </head>
 
 
-<body style="background-color: #265a88">
+<body>
 <nav class="navbar navbar-default navbar-static-top header">
-    <div class="container-fluid">
+    <div class="container-fluid"  style="background-color: orange">
         <div class="navbar-header">
             <a class="navbar-brand" href="${contextPath}/index.jsp">&#x2655; WeStory</a>
         </div>
         <sec:authorize access="isAuthenticated()">
-            <a style="float:right; margin-top:0.5%;" href="${contextPath}/logout" class="btn btn-danger" role="button">Log Out</a>
+            <a style="float:right; margin-top:0.5%;" href="${contextPath}/logout" class="btn btn-default" role="button">Log Out</a>
         </sec:authorize>
     </div>
 </nav>
 
-<div class="page-content container" >

@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+<div class="page-content container">
 
     <div class="panel panel-default">
         <div class="panel-body">
