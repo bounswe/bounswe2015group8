@@ -4,6 +4,7 @@ import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class MainController {
 
     CommentService commentService;
     VoteService voteService;
+    TagService tagService;
     public MainController() {
         memberService = new MemberDetailsService();
         MemberDaoImpl mdao = new MemberDaoImpl();
@@ -59,6 +61,7 @@ public class MainController {
         heritageService = new HeritageService(Main.getSessionFactory());
         commentService = new CommentService(Main.getSessionFactory());
         voteService = new VoteService(Main.getSessionFactory());
+        tagService = new TagService(Main.getSessionFactory());
     }
     @RequestMapping(value = "/")
     public ModelAndView home() {
@@ -286,6 +289,7 @@ public class MainController {
         Heritage heritage = heritageService.getHeritageById(heritageId);
         List posts = postService.getPostsByHeritage(heritage);
         List medias = session.createCriteria(Media.class).list();
+        List allTags = session.createCriteria(Tag.class).list();
         List heritages = new ArrayList<Heritage>();
         logger.info("Current heritage: " + heritage.getName());
         heritages.add(heritage);
@@ -294,6 +298,7 @@ public class MainController {
         allContent.put("posts", posts);
         allContent.put("medias", medias);
         allContent.put("heritages", heritages);
+        allContent.put("allTags", allTags);
         session.close();
 
         return new ModelAndView("list_post", "allContent", allContent);
@@ -352,13 +357,15 @@ public class MainController {
 
     @RequestMapping(value = "/show_heritages")
     public ModelAndView show_heritages() {
-        List<Heritage> allHeritages = heritageService.getAllHeritages();
         final Session session = Main.getSession();
+        List<Heritage> allHeritages = heritageService.getAllHeritages();
         List medias = session.createCriteria(Media.class).list();
-        session.close();
+        List allTags = session.createCriteria(Tag.class).list();
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("heritages", allHeritages);
         allContent.put("medias", medias);
+        allContent.put("allTags", allTags);
+        session.close();
         return new ModelAndView("list_heritage", "allContent", allContent);
     }
 
@@ -432,6 +439,47 @@ public class MainController {
         voteService.saveCommentVote(member, comment, voteType);
 
         return voteService.getCommentOverallVote(comment);
+    }
+
+    @RequestMapping(value = "/tag_heritage/{heritageId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String[] tag_heritage(@PathVariable long heritageId,
+                             @RequestParam(value = "tagTexts[]") String[] tagTexts){
+
+        Heritage heritage = heritageService.getHeritageById(heritageId);
+        for(int i = 0; i < tagTexts.length; i++){
+            tagService.addTag(tagTexts[i], heritage);
+        }
+        List<Tag> heritageTags = tagService.getTagsByHeritage(heritage);
+        String[] tags = new String[heritageTags.size()];
+        final Session session = Main.getSession();
+        for(int i = 0; i < tags.length; i++){
+            session.update(heritageTags.get(i));
+            tags[i] = heritageTags.get(i).getTagText();
+        }
+        session.close();
+        return tags;
+    }
+
+    @RequestMapping(value = "/tag_post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String[] tag_post(@PathVariable long postId,
+                             @RequestParam(value = "tagTexts[]") String[] tagTexts){
+
+
+        Post post = postService.getPostById(postId);
+        for(int i = 0; i < tagTexts.length; i++){
+            tagService.addTag(tagTexts[i], post);
+        }
+        List<Tag> postTags = tagService.getTagsByPost(post);
+        String[] tags = new String[postTags.size()];
+        final Session session = Main.getSession();
+        for(int i = 0; i < tags.length; i++){
+            session.update(postTags.get(i));
+            tags[i] = postTags.get(i).getTagText();
+        }
+        session.close();
+        return tags;
     }
 
 }

@@ -2,9 +2,14 @@
 <div class="page-content container">
 <c:set var="posts" value="${allContent.posts}"/>
 <c:set var="medias" value="${allContent.medias}"/>
+<c:set var="allTags" value="${allContent.allTags}"/>
 
 <script>
     $(document).ready(function(){
+        var tags = [];
+        <c:forEach var="tag" items="${allTags}">
+            tags.push("${tag.tagText}");
+        </c:forEach>
         $(".upvote").click(function(){
             console.log($(this).attr("name"));
             var postId = $(this).attr("name");
@@ -19,6 +24,7 @@
                 }
             });
         });
+
         $(".downvote").click(function(){
             console.log($(this).attr("name"));
             var postId = $(this).attr("name");
@@ -30,6 +36,59 @@
                     console.log(response);
                     console.log('#votecount_' + postId);
                     $('#votecount_' + postId).text("Score: " + response);
+                }
+            });
+        });
+
+        $(".upvote-comment").click(function(){
+            console.log($(this).attr("name"));
+            var commentId = $(this).attr("name");
+            $.ajax({
+                url: "${contextPath}/vote_comment/" + commentId,
+                data:{voteType: true},
+                type: "POST",
+                success: function(response) {
+                    console.log(response);
+                    console.log('#votecount_comment_' + commentId);
+                    $('#votecount_comment_' + commentId).text("Score: " + response);
+                }
+            });
+        });
+
+        $(".downvote-comment").click(function(){
+            console.log($(this).attr("name"));
+            var commentId = $(this).attr("name");
+            $.ajax({
+                url: "${contextPath}/vote_comment/" + commentId,
+                data:{voteType: false},
+                type: "POST",
+                success: function(response) {
+                    console.log(response);
+                    console.log('#votecount_comment_' + commentId);
+                    $('#votecount_comment_' + commentId).text("Score: " + response);
+                }
+            });
+        });
+
+        $(".tokenfield").tokenfield({
+            autocomplete: {
+                source: tags,
+                delay: 100
+            }
+        });
+        $(".tagbutton").click(function(){
+            var postId = $(this).attr("id").split("_")[1];
+            var postTags = $("#tokenfield_" + postId).val().split(", ");
+            $.ajax({
+                url: "${contextPath}/tag_post/" + postId,
+                data:{tagTexts: postTags},
+                type: "POST",
+                success: function(response) {
+                    $("#tags_" + postId).html("");
+                    for(var i = 0; i < response.length; i++){
+                        var tag = response[i];
+                        $("#tags_" + postId).append("<a href='${contextPath}/search/" + tag + "'>&lt;" + tag + "&gt;</a> ");
+                    }
                 }
             });
         });
@@ -121,6 +180,7 @@
                                 </c:if>
                             </c:forEach>
 
+                            <%--
                             <c:forEach var="comment" items="${post.comments}">
                                 <div class="row">
                                     <div class="col-sm-offset-2 col-sm-10">
@@ -132,7 +192,58 @@
                                     </div>
                                 </div>
                             </c:forEach>
+                            --%>
                         </div>
+                        <div class="row">
+                            <label for="tags_${post.id}" class="col-sm-2 control-label">Tags:</label>
+                            <div class="col-sm-4" role="group">
+                                <p id="tags_${post.id}">
+                                    <c:forEach items="${post.tags}" var="tag">
+                                        <a href="${contextPath}/search/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
+                                    </c:forEach>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-offset-2 col-sm-5" role="group">
+                                <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." />
+                                <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">
+                                    Add Tags
+                                </button>
+                            </div>
+                        </div>
+
+                        <c:forEach var="comment" items="${post.comments}">
+                            <div class="row">
+                                <div class="col-sm-offset-1 col-sm-1">
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group pull-right">
+                                            <label for="upvote_comment_${comment.id}" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-top"></i></label>
+                                            <input id="upvote_comment_${comment.id}" type="button" name="${comment.id}" class="upvote-comment" style="display:none"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-sm-12 form-group text-right" id="votecount_comment_${comment.id}">
+                                            Score: ?
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 form-group pull-right">
+                                            <label for="downvote_comment_${comment.id}" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-bottom"></i></label>
+                                            <input id="downvote_comment_${comment.id}" type="button" name="${comment.id}" class="downvote-comment" style="display:none"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <blockquote>
+                                        <p><strong>by ${comment.owner.username}</strong></p>
+                                        <p>"${comment.content}"</p>
+                                        <footer>${comment.lastEditedDate}</footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
@@ -142,7 +253,7 @@
         <div class="panel-footer">
             <div class="row">
                 <div class="col-sm-offset-8 col-sm-4" role="group">
-                    <button type="button"
+                    <button type="button" style="float:right"
                             class="btn btn-default"
                             onclick="window.location.href='${contextPath}/comment/${post.id}'">
                         Comment
@@ -150,9 +261,6 @@
                 </div>
             </div>
         </div>
-
-
-
     </div>
 </c:forEach>
     <div class="row">
