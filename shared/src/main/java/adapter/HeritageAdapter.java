@@ -24,6 +24,7 @@ public class HeritageAdapter implements JsonSerializer<Heritage> {
             JsonObject jsonObjectPost = new JsonObject();
             jsonObjectPost.addProperty("id", post.getId());
             jsonObjectPost.addProperty("ownerId", post.getOwner().getId());
+            jsonObjectPost.addProperty("ownerName", post.getOwner().getUsername());
             jsonObjectPost.addProperty("type", post.getType());
             jsonObjectPost.addProperty("postDate", post.getPostDate().toString());
             jsonObjectPost.addProperty("lastEditedDate", post.getLastEditedDate().toString());
