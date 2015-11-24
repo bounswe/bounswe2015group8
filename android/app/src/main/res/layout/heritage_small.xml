@@ -12,7 +12,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/tertiary_text"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallPlace"
@@ -35,8 +36,10 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/heritage_creationDate"
         android:layout_below="@+id/tvHeritageSmallPlace"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignLeft="@id/tvHeritageSmallPlace"
+        android:layout_alignStart="@id/tvHeritageSmallPlace"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallCreationDateValue"

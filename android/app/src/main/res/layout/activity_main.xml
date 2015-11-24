@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
+        app:titleTextColor="@color/primary_light"
         android:elevation="4dp"/>
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/main_drawer"

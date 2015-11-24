@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 /**
@@ -33,7 +34,6 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         tvLastEditDate = (TextView) v.findViewById(R.id.tvPostViewLastEditDateValue);
         tvContent = (TextView) v.findViewById(R.id.tvPostViewContentValue);
         btnEdit = (Button) v.findViewById(R.id.btnPostViewEdit);
-        btnEdit.setOnClickListener(this);
         initViews(this.getArguments());
         return v;
     }
@@ -48,6 +48,12 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
             tvLastEditDate.setText("---");
         }
         tvContent.setText(post.getContent());
+        MemberLocalStore memberLocalStore = new MemberLocalStore(getActivity());
+        if(memberLocalStore.getUserLoggedIn() && post.getOwnerId() == memberLocalStore.getLoggedInMember().getId()) {
+            btnEdit.setOnClickListener(this);
+        } else {
+            btnEdit.setVisibility(View.GONE);
+        }
     }
     @Override
     public void onClick(View v) {

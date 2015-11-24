@@ -7,14 +7,18 @@
     <color name="accent_dark">#E64A19</color>
     <color name="accent">#F57C00</color>
     -->
-    <color name="primary">#457B9D</color>
-    <color name="primary_dark">#1D3557</color>
-    <color name="primary_light">#EFEFEF</color>
+    <!-- <color name="primary">#8f5933</color>
+    -->
+    <!-- <color name="primary">#6E3710</color> -->
+    <color name="primary">#472004</color>
+    <color name="primary_dark">#472004</color>
+    <color name="primary_light">#FEF8D8</color>
     <color name="primary_very_light">#F1FAEE</color>
-    <color name="accent">#F57C00</color>
+    <color name="accent">#c66808</color>
     <color name="accent_light">#FF7766</color>
     <color name="light_grey">#C5CAE9</color>
     <color name="primary_text">#212121</color>
+    <color name="tertiary_text">#6b0907</color>
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>

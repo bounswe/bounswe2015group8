@@ -74,6 +74,13 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
         }
         return v;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     private void setAdapter(Heritage[] heritages) {
         this.heritages = heritages;
         listView.setAdapter(new HeritageAdapter(getActivity(),R.layout.heritage_small, heritages));

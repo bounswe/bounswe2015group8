@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
+import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.PostAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
@@ -36,15 +37,21 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MemberLocalStore memberLocalStore = new MemberLocalStore(getActivity());
         View v = inflater.inflate(R.layout.fragment_heritage_view,container,false);
         tvPlace = (TextView) v.findViewById(R.id.tvHeritageViewPlaceValue);
         tvCreationDate = (TextView) v.findViewById(R.id.tvHeritageViewCreationDateValue);
         tvDescription = (TextView) v.findViewById(R.id.tvHeritageViewDescriptionValue);
+        lvPosts = (ListView) v.findViewById(R.id.lvHeritageViewPosts);
         btnEdit = (Button) v.findViewById(R.id.btnHeritageEdit);
         btnAddPost = (Button) v.findViewById(R.id.btnHeritageNewPost);
-        lvPosts = (ListView) v.findViewById(R.id.lvHeritageViewPosts);
-        btnEdit.setOnClickListener(this);
-        btnAddPost.setOnClickListener(this);
+        if(memberLocalStore.getUserLoggedIn()) {
+            btnEdit.setOnClickListener(this);
+            btnAddPost.setOnClickListener(this);
+        } else {
+            btnEdit.setVisibility(View.GONE);
+            btnAddPost.setVisibility(View.GONE);
+        }
         initViews(this.getArguments());
         ServerRequests sr = new ServerRequests(getActivity());
         sr.getPostsByHeritageId(heritage.getId(), new Consumer<Post[]>() {

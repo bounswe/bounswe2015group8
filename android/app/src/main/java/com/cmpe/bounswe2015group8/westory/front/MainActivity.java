@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
         if(addToBackstack) ft.addToBackStack(f.getName());
         ft.commit();
     }
-    MemberLocalStore memberLocalStore;
-    FragmentManager fm;
-    NavigationView navBarView;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle drawerToggle;
+    private MemberLocalStore memberLocalStore;
+    private FragmentManager fm;
+    private NavigationView navBarView;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
