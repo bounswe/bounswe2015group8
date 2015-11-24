@@ -32,7 +32,7 @@
 
 <body>
 <nav class="navbar navbar-default navbar-static-top header">
-    <div class="container-fluid"  style="background-color: orange">
+    <div class="container-fluid"  style="background-color: darkblue">
         <div class="navbar-header">
             <a class="navbar-brand" href="${contextPath}/index.jsp">&#x2655; WeStory</a>
         </div>
