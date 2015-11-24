@@ -37,4 +37,22 @@ public class LoginApi implements ErrorCodes{
         }
         return USER_DOES_NOT_EXIST_ERROR_CODE;
     }
+
+    @RequestMapping(value = "/api/getMemberById",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getMemberById(@RequestBody long id) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        MemberAdapter.IS_EXTENSIVE = true;
+        Gson gson = gsonBuilder.registerTypeAdapter(Member.class, new MemberAdapter()).create();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        ArrayList<Member> members = MemberUtility.getUserList();
+        for (Member m : members) {
+            if (m.getId() == id) {
+                String output = gson.toJson(m);
+                MemberAdapter.IS_EXTENSIVE = false;
+                return output;
+            }
+        }
+        return USER_DOES_NOT_EXIST_ERROR_CODE;
+    }
 }
