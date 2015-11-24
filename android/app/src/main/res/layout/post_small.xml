@@ -27,8 +27,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textStyle="bold"
-        android:ellipsize="end"
-        android:textColor="@color/tertiary_text"/>
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/tvPostSmallCreationDate"

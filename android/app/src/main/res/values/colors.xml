@@ -10,9 +10,11 @@
     <!-- <color name="primary">#8f5933</color>
     -->
     <!-- <color name="primary">#6E3710</color> -->
-    <color name="primary">#472004</color>
-    <color name="primary_dark">#472004</color>
-    <color name="primary_light">#FEF8D8</color>
+    <!--kestane <color name="primary">#472004</color> -->
+    <color name="primary">#3b78e8</color>
+    <color name="primary_dark">#072D72</color>
+    q
+    <color name="primary_light">#FBFBFB</color>
     <color name="primary_very_light">#F1FAEE</color>
     <color name="accent">#c66808</color>
     <color name="accent_light">#FF7766</color>

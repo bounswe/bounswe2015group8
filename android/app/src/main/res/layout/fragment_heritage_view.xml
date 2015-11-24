@@ -3,8 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/primary"
-    android:gravity="center"
+    android:background="@color/primary_light"
+    android:gravity="top"
     android:orientation="vertical">
 
     <GridLayout
@@ -117,7 +117,8 @@
                 android:layout_margin="5dp"
                 android:background="@color/accent"
                 android:text="@string/btn_edit"
-                android:textColor="@color/primary_text" />
+                android:textColor="@color/primary_text"
+                android:elevation="2dp"/>
             <Button
                 android:id="@+id/btnHeritageNewPost"
                 android:layout_width="fill_parent"
@@ -126,7 +127,8 @@
                 android:layout_margin="5dp"
                 android:background="@color/accent"
                 android:text="@string/btn_new_post"
-                android:textColor="@color/primary_text" />
+                android:textColor="@color/primary_text"
+                android:elevation="2dp"/>
         </LinearLayout>
 
 
