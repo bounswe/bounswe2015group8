@@ -5,6 +5,7 @@ import dao.PostDaoImpl;
 import model.Heritage;
 import model.Member;
 import model.Post;
+import model.Tag;
 import org.hibernate.SessionFactory;
 
 import java.sql.Timestamp;
@@ -32,6 +33,8 @@ public class PostService {
     public List<Post> getPostsByHeritage(Heritage heritage) {
         return postDao.getPostsByHeritage(heritage);
     }
+
+    public List<Post> getPostsByTag(Tag tag){ return postDao.getPostsByTag(tag); }
 
     public Post savePost(Member member, int type, Timestamp timestamp, String title, String content, Heritage heritage) {
         Post post = new Post(member, type, timestamp, title, content);

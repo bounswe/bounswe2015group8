@@ -1,9 +1,6 @@
 package dao;
 
-import model.Heritage;
-import model.HeritagePost;
-import model.Member;
-import model.Post;
+import model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -58,6 +55,19 @@ public class PostDaoImpl implements PostDao {
         List<Post> posts = new ArrayList<Post>();
         for (int i = 0; i < heritageposts.size(); i++) {
             posts.add(heritageposts.get(i).getPost());
+        }
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsByTag(Tag tag) {
+        Session s = getSessionFactory().openSession();
+        List<TagPost> tagposts = s
+                .createQuery("from TagPost where tag=?")
+                .setParameter(0, tag).list();
+        List<Post> posts = new ArrayList<Post>();
+        for (int i = 0; i < tagposts.size(); i++) {
+            posts.add(tagposts.get(i).getPost());
         }
         return posts;
     }

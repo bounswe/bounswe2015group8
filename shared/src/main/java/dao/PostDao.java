@@ -3,6 +3,7 @@ package dao;
 import model.Heritage;
 import model.Member;
 import model.Post;
+import model.Tag;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface PostDao {
     List<Post> getPostsByOwner(Member owner);
 
     List<Post> getPostsByHeritage(Heritage heritage);
+
+    List<Post> getPostsByTag(Tag tag);
 
     Post savePost(Post post, Heritage heritage);
 
