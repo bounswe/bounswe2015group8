@@ -3,6 +3,8 @@ package api;
 import adapter.PostAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import model.Heritage;
 import model.Member;
 import model.Post;
@@ -33,7 +35,7 @@ public class HeritageApi implements ErrorCodes {
 
     @RequestMapping(value = "/api/getHeritageById",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getById(@RequestBody int id) {
+    public String getById(@RequestBody long id) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Heritage.class, new HeritageAdapter()).create();
         ArrayList<Heritage> heritages = HeritageUtility.getHeritageList();
@@ -48,7 +50,7 @@ public class HeritageApi implements ErrorCodes {
 
     @RequestMapping(value = "/api/getPostById",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getPostById(@RequestBody int id) {
+    public String getPostById(@RequestBody long id) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
         ArrayList<Post> posts = HeritageUtility.getPostList();
@@ -72,7 +74,7 @@ public class HeritageApi implements ErrorCodes {
 
     @RequestMapping(value = "/api/getHeritagePostsById",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getPostsByHeritageId(@RequestBody int id) {
+    public String getPostsByHeritageId(@RequestBody long id) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
 
@@ -97,7 +99,7 @@ public class HeritageApi implements ErrorCodes {
 
     @RequestMapping(value = "/api/createHeritage",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public long createHeritage(@RequestBody Heritage apiHeritage) {
+    public String createHeritage(@RequestBody Heritage apiHeritage) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
 
@@ -109,12 +111,15 @@ public class HeritageApi implements ErrorCodes {
         MultipartFile media = null;
         Heritage heritage = HeritageUtility.getHeritageService().saveHeritage(name, place, description, new Timestamp(now.getTime()));
 
-        return heritage.getId();
+        JsonObject output = new JsonObject();
+        output.addProperty("id", heritage.getId());
+        output.addProperty("postDate", heritage.getPostDate().toString());
+        return output.toString();
     }
 
     @RequestMapping(value="/api/createPost",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public long createPost(@RequestBody String json) {
+    public String createPost(@RequestBody String json) {
         PostApiModel apiModel = gson.fromJson(json, PostApiModel.class);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -127,7 +132,10 @@ public class HeritageApi implements ErrorCodes {
 
         Post post = HeritageUtility.getPostService().savePost(m, 0, new Timestamp(now.getTime()), apiModel.getTitle(), apiModel.getContent(), heritage);
 
-        return post.getId();
+        JsonObject output = new JsonObject();
+        output.addProperty("id", post.getId());
+        output.addProperty("postDate", post.getPostDate().toString());
+        return output.toString();
     }
 
 
