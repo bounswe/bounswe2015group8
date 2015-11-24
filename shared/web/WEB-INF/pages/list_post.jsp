@@ -86,7 +86,7 @@
                     $("#tags_" + postId).html("");
                     for(var i = 0; i < response.length; i++){
                         var tag = response[i];
-                        $("#tags_" + postId).append("<a href='${contextPath}/search/" + tag + "'>&lt;" + tag + "&gt;</a> ");
+                        $("#tags_" + postId).append("<a href='${contextPath}/searchByTag/" + tag + "'>&lt;" + tag + "&gt;</a> ");
                     }
                 }
             });
@@ -103,6 +103,17 @@
         </div>
     </div>
 </c:if>
+
+<c:if test="${allContent.searchedTags != null}">
+    <div class="well">
+        <div class="row">
+            <div class="col-sm-12 form-group text-right" style="text-align:center; font-size:16px">
+                <strong>Searched Tag: ${allContent.searchedTags[0].tagText}</strong>
+            </div>
+        </div>
+    </div>
+</c:if>
+
 
 <c:forEach items="${posts}" var="post">
     <div class="row">
@@ -187,7 +198,7 @@
                             <div class="col-sm-4" role="group">
                                 <p id="tags_${post.id}">
                                     <c:forEach items="${post.tags}" var="tag">
-                                        <a href="${contextPath}/search/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
+                                        <a href="${contextPath}/searchByTag/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
                                     </c:forEach>
                                 </p>
                             </div>

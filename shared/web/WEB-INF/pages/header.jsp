@@ -29,6 +29,12 @@
     <script src="${contextPath}/static/js/bootstrap/bootstrap-tokenfield.js"></script>
 </head>
 
+<script type="text/javascript">
+    function searchByTag(){
+        var tag = document.getElementById("search").value;
+        window.location.href = "${contextPath}/searchByTag/" + tag;
+    }
+</script>
 
 <body style="background-color: #265a88">
 <nav class="navbar navbar-default navbar-static-top header">
@@ -36,6 +42,12 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="${contextPath}/index.jsp">&#x2655; WeStory</a>
         </div>
+
+        <div class="navbar-header" style="margin-left:35%; margin-top:0.5%; width:25%;">
+            <input style="color:black;" id="search" type="text" placeholder="Search Posts by Tags...">
+            <button class="glyphicon glyphicon-search" onclick="searchByTag();"></button>
+        </div>
+
         <sec:authorize access="isAuthenticated()">
             <a style="float:right; margin-top:0.5%;" href="${contextPath}/logout" class="btn btn-danger" role="button">Log Out</a>
         </sec:authorize>

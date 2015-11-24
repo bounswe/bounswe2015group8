@@ -482,4 +482,24 @@ public class MainController {
         return tags;
     }
 
+    @RequestMapping(value = "/searchByTag/{tagText}")
+    public ModelAndView searchByTag(@PathVariable String tagText){
+        final Session session = Main.getSession();
+
+        Tag tag = tagService.getTagByText(tagText);
+        List posts = postService.getPostsByTag(tag);
+        List medias = session.createCriteria(Media.class).list();
+        List allTags = session.createCriteria(Tag.class).list();
+
+        List tags = new ArrayList<Tag>();
+        tags.add(tag);
+
+        Map<String, List> allContent = new HashMap<String, List>();
+        allContent.put("searchedTags", tags);
+        allContent.put("posts", posts);
+        allContent.put("medias", medias);
+        allContent.put("allTags", allTags);
+        return new ModelAndView("list_post", "allContent", allContent);
+    }
+
 }
