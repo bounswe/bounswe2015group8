@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(t);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        if(savedInstanceState == null || savedInstanceState.containsKey("curFragment")) {
+        if(savedInstanceState == null || !savedInstanceState.containsKey("curFragment")) {
             MainActivity.beginFragment(this, new HomeFragment());
         } else {
             MainActivity.beginFragment(this,
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState,"curFragment",getSupportFragmentManager().findFragmentById(R.id.fragmentFrame));
+        getSupportFragmentManager().putFragment(outState, "curFragment", getSupportFragmentManager().findFragmentById(R.id.fragmentFrame));
     }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -87,8 +87,16 @@ public class MainActivity extends AppCompatActivity {
     public void resetNavbar() {
         Menu menu = navBarView.getMenu();
         MenuItem item = menu.getItem(menu.size() - 1);
-        if(authenticated()) item.setTitle(getResources().getString(R.string.nav_logout));
+        boolean authenticated = authenticated();
+        if(authenticated) item.setTitle(getResources().getString(R.string.nav_logout));
         else item.setTitle(getResources().getString(R.string.nav_login));
+        for(int i=0;i<menu.size();i++) {
+            MenuItem cur = menu.getItem(i);
+            if(cur.getItemId() == R.id.navAddHeritage) {
+                cur.setVisible(authenticated);
+                break;
+            }
+        }
     }
     private boolean authenticated() {
         return memberLocalStore.getUserLoggedIn();

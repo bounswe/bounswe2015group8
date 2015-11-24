@@ -61,6 +61,13 @@ public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.O
         }
         return v;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     private void setAdapter(Post[] posts) {
         this.posts = posts;
         listView.setAdapter(new PostAdapter(getActivity(),R.layout.post_small, posts));
