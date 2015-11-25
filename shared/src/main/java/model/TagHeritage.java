@@ -9,15 +9,6 @@ public class TagHeritage {
     private Tag tag;
     private Heritage heritage;
 
-    public TagHeritage(){
-
-    }
-
-    public TagHeritage(Tag tag, Heritage heritage){
-        this.tag = tag;
-        this.heritage = heritage;
-    }
-
     public long getTagId() {
         return tagId;
     }

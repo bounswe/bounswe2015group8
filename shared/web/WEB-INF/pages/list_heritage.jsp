@@ -1,37 +1,9 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 <c:set var="allHeritages" value="${allContent.heritages}"/>
 <c:set var="medias" value="${allContent.medias}"/>
-<c:set var="allTags" value="${allContent.allTags}"/>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-        var tags = [];
-        <c:forEach var="tag" items="${allTags}">
-            tags.push("${tag.tagText}");
-        </c:forEach>
-        $(".tokenfield").tokenfield({
-            autocomplete: {
-                source: tags,
-                delay: 100
-            }
-        });
-        $(".tagbutton").click(function(){
-            var heritageId = $(this).attr("id").split("_")[1];
-            var heritageTags = $("#tokenfield_" + heritageId).val().split(", ");
-            $.ajax({
-                url: "${contextPath}/tag_heritage/" + heritageId,
-                data:{tagTexts: heritageTags},
-                type: "POST",
-                success: function(response) {
-                    $("#tags_" + heritageId).html("");
-                    for(var i = 0; i < response.length; i++){
-                        var tag = response[i];
-                        $("#tags_" + heritageId).append("<a href='${contextPath}/search/" + tag + "'>&lt;" + tag + "&gt;</a> ");
-                    }
-                }
-            });
-        });
-    });
+    console.log("${allHeritages}");
 </script>
 
 <div class="well">
@@ -122,24 +94,6 @@
                         </div>
                     </c:if>
                 </c:forEach>
-                <div class="row">
-                    <label for="tags_${heritage.id}" class="col-sm-2 control-label">Tags:</label>
-                    <div class="col-sm-4" role="group">
-                        <p id="tags_${heritage.id}">
-                            <c:forEach items="${heritage.tags}" var="tag">
-                                <a href="${contextPath}/search/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
-                            </c:forEach>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-offset-2 col-sm-5" role="group">
-                        <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
-                        <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${heritage.id}">
-                            Add Tags
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
