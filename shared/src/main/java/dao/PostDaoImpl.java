@@ -1,6 +1,5 @@
 package dao;
 
-import javafx.geometry.Pos;
 import model.Heritage;
 import model.HeritagePost;
 import model.Member;
@@ -48,14 +47,6 @@ public class PostDaoImpl implements PostDao {
 
         s.getTransaction().commit();
         s.close();
-        return post;
-    }
-
-    public Post updatePost(Post post, Heritage heritage){
-        Session s = getSessionFactory().openSession();
-        s.getTransaction().begin();
-        s.update(post);
-        s.getTransaction().commit();
         return post;
     }
 
