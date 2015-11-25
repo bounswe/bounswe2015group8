@@ -1,4 +1,3 @@
-
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 <form class="form-horizontal"
       id="postForm"

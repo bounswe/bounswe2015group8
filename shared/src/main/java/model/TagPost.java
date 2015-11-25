@@ -9,6 +9,15 @@ public class TagPost {
     private Tag tag;
     private Post post;
 
+    public TagPost(){
+
+    }
+
+    public TagPost(Tag tag, Post post){
+        this.tag = tag;
+        this.post = post;
+    }
+
     public long getTagId() {
         return tagId;
     }

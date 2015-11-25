@@ -1,6 +1,5 @@
 package dao;
 
-import javafx.geometry.Pos;
 import model.Heritage;
 import model.Member;
 import model.Post;
@@ -19,8 +18,6 @@ public interface PostDao {
     List<Post> getPostsByHeritage(Heritage heritage);
 
     Post savePost(Post post, Heritage heritage);
-
-    Post updatePost(Post post, Heritage heritage);
 
     SessionFactory getSessionFactory();
 
