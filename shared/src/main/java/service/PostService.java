@@ -37,4 +37,10 @@ public class PostService {
         Post post = new Post(member, type, timestamp, title, content);
         return postDao.savePost(post, heritage);
     }
+    public Post updatePost(Member member, int type, Timestamp timestamp, String title, String content, Heritage heritage){
+        Post post = new Post(member, type, timestamp, title, content);
+        return postDao.updatePost(post, heritage);
+
+
+    }
 }
