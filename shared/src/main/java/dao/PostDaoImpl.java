@@ -62,6 +62,14 @@ public class PostDaoImpl implements PostDao {
         return posts;
     }
 
+    public Post updatePost(Post post, Heritage heritage){
+        Session s = getSessionFactory().openSession();
+        s.getTransaction().begin();
+        s.update(post);
+        s.getTransaction().commit();
+        return post;
+    }
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }
