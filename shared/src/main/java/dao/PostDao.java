@@ -19,7 +19,7 @@ public interface PostDao {
 
     Post savePost(Post post, Heritage heritage);
 
-    Post updatePost(Post post, Heritage heritage);
+    Post updatePost(Post post);
 
     SessionFactory getSessionFactory();
 

@@ -11,14 +11,14 @@
   <div class="form-group">
     <label for="title" class="col-sm-2 control-label">Title</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="title" id="title" placeholder="${title}">
+      <input type="text" class="form-control" name="title" id="title" value="${title}">
     </div>
   </div>
   <div class="form-group">
     <label for="content" class="col-sm-2 control-label">Content</label>
     <div class="col-sm-10">
-            <textarea class="form-control" rows="3" name="content" id="content" placeholder="${content}"
-                      style="width: 100%; resize: vertical"></textarea>
+            <textarea class="form-control" rows="3" name="content" id="content"
+                      style="width: 100%; resize: vertical">${content}</textarea>
     </div>
   </div>
   <div class="form-group">

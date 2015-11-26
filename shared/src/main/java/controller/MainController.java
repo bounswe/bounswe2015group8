@@ -379,8 +379,8 @@ public class MainController {
         Post post = postService.getPostById(postId);
         Heritage heritage = heritageService.getFirstHeritageByPost(post);
         long heritageId = heritage.getId();
-        postService.updatePost(m, 0, new Timestamp(now.getTime()), title, content, heritage);
-        return new ModelAndView("redirect:/show_posts/heritageId");
+        postService.updatePost(postId, title, content, new Timestamp(now.getTime()));
+        return new ModelAndView("redirect:/show_posts/" + heritageId);
     }
 
     @RequestMapping(value = "/show_heritages")
