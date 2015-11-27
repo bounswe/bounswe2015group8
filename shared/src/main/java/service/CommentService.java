@@ -39,4 +39,8 @@ public class CommentService {
         Comment comment = new Comment(member, post, content, timestamp);
         return commentDao.saveComment(comment, post);
     }
+
+    public SessionFactory getSessionFactory(){
+        return commentDao.getSessionFactory();
+    }
 }

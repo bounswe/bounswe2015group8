@@ -107,7 +107,8 @@ public class MainController {
 
 
         String token = new BigInteger(130, random).toString(32);
-        String text = "Hello " + username + "! " + " We heard that you wanted to reset your password...\n\n";        text += "You can click this link to reset your password: ";
+        String text = "Hello " + username + "! " + " We heard that you wanted to reset your password...\n\n";
+        text += "You can click this link to reset your password: ";
         text += baseURL + "/reset_password?token=" + token;
         text += "\nHave a nice day...";
 

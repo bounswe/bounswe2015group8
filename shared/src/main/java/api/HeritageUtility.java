@@ -5,6 +5,7 @@ import model.Heritage;
 import model.Post;
 import service.HeritageService;
 import service.PostService;
+import service.VoteService;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,7 @@ public class HeritageUtility {
     private static ArrayList<Post> postList;
     static HeritageService heritageService;
     static PostService postService;
+    static VoteService voteService;
 
     /**
      * Creates and/or updates member list.
@@ -58,5 +60,12 @@ public class HeritageUtility {
             postService = new PostService(Main.getSessionFactory());
         }
         return postService;
+    }
+
+    public static VoteService getVoteService() {
+        if (voteService == null) {
+            voteService = new VoteService(Main.getSessionFactory());
+        }
+        return voteService;
     }
 }
