@@ -3,6 +3,7 @@ package api;
 import adapter.PostAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import model.Heritage;
 import model.Member;
 import model.Post;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import service.VoteService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by Goktug on 13.11.2015.
@@ -128,6 +131,21 @@ public class HeritageApi implements ErrorCodes {
         Post post = HeritageUtility.getPostService().savePost(m, 0, new Timestamp(now.getTime()), apiModel.getTitle(), apiModel.getContent(), heritage);
 
         return post.getId();
+    }
+
+    @RequestMapping(value = "/api/votePost",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public long votePost(@RequestBody String json){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        Member member = MemberUtility.getMemberService().getMemberById(Long.parseLong(jsonComment.get("ownerId")));
+        Post post = HeritageUtility.getPostService().getPostById(Long.parseLong(jsonComment.get("postId")));
+        boolean voteType = Boolean.parseBoolean(jsonComment.get("voteType"));
+
+        HeritageUtility.getVoteService().savePostVote(member, post, voteType);
+        return HeritageUtility.getVoteService().getPostOverallVote(post);
     }
 
 

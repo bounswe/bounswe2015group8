@@ -77,4 +77,19 @@ public class CommentApi implements ErrorCodes {
         return json;
     }
 
+    @RequestMapping(value = "/api/voteComment",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public long voteComment(@RequestBody String json){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        Member member = MemberUtility.getMemberService().getMemberById(Long.parseLong(jsonComment.get("ownerId")));
+        Comment comment = CommentUtility.getCommentService().getCommentById(Long.parseLong(jsonComment.get("commentId")));
+        boolean voteType = Boolean.parseBoolean(jsonComment.get("voteType"));
+
+        CommentUtility.getVoteService().saveCommentVote(member, comment, voteType);
+        return CommentUtility.getVoteService().getCommentOverallVote(comment);
+    }
+
 }
