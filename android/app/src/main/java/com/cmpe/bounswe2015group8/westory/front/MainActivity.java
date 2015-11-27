@@ -111,6 +111,9 @@ public class MainActivity extends Activity{
                         nf = new ProfileFragment();
                         break;
                     case 5:
+                        nf = new CommentsFragment();
+                        break;
+                    case 6:
                         if(authenticated()) {
                             memberLocalStore.clearMemberData();
                             nf = new HomeFragment();
