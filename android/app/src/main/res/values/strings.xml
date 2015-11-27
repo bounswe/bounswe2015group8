@@ -20,7 +20,7 @@
     <string name="hint_heritage_name">Lokum</string>
     <string name="hint_heritage_place">Middle East</string>
     <string name="hint_heritage_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vitae vehicula nibh, et tempor mi. Vivamus malesuada tincidunt risus, quis dapibus nibh mattis ut. Morbi gravida neque ac ligula malesuada fermentum. Pellentesque nec consequat ligula. Sed iaculis metus eu arcu venenatis malesuada.</string>
-
+    <string name="comment_hint">Type your comment here</string>
     <string name="placeholder_short">WeStory</string>
     <string name="placeholder_mid">Cultural Heritage Story</string>
     <string name="placeholder_long">WeStory: Share your story. Make your own cultural history</string>
@@ -45,8 +45,8 @@
         <item >Add Heritage</item>
         <item >Posts</item>
         <item >Profile</item>
+        <item > Comments</item>
         <item >Login</item>
-        <item >Comments</item>
     </string-array>
     <string name="title_heritage_new">New Heritage</string>
     <string name="title_post_new">New Post</string>
