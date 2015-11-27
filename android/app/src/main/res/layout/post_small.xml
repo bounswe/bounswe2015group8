@@ -73,4 +73,17 @@
         android:layout_marginLeft="20dp"
         android:clickable="true"
         android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/tvPostComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="See post/comments"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/tvPostSmallContent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:clickable="true"
+        android:textStyle="italic" />/>
 </RelativeLayout>
