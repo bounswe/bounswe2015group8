@@ -35,6 +35,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         TextView tvCreationDate = (TextView) v.findViewById(R.id.tvPostSmallCreationDateValue);
         TextView tvContent = (TextView) v.findViewById(R.id.tvPostSmallContent);
         TextView tvSeeHeritages = (TextView) v.findViewById(R.id.tvPostSmallSeeHeritages);
+        TextView tvSeeComments = (TextView) v.findViewById(R.id.tvPostComment);
         final Post p = getItem(position);
         tvTitle.setText(p.getTitle());
         tvOwner.setText(context.getResources().getString(R.string.generic_by)+" "+p.getOwnerId());
@@ -45,7 +46,19 @@ public class PostAdapter extends ArrayAdapter<Post> {
             public void onClick(View v) {
                 NamedFragment nf = new PostViewFragment();
                 Bundle b = new Bundle();
+                b.putParcelable("post", p);
+                nf.setArguments(b);
+                MainActivity.beginFragment(context, nf);
+            }
+        });
+
+        tvSeeComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NamedFragment nf = new PostViewFragment();
+                Bundle b = new Bundle();
                 b.putParcelable("post",p);
+                b.putBoolean("isNew",false);
                 nf.setArguments(b);
                 MainActivity.beginFragment(context, nf);
             }
