@@ -54,10 +54,13 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
 
         memberLocalStore = new MemberLocalStore(getActivity());
         tvName = (TextView) v.findViewById(R.id.tvHomeName);
-        displayMemberDetails();
+
         listView = (ListView) v.findViewById(R.id.listPosts);
         Member member = memberLocalStore.getLoggedInMember();
+        displayMemberDetails();
+
         long id=member.getId();
+        System.out.println("name: "+member.getUsername());
         ServerRequests sr = new ServerRequests(getActivity());
         sr.getAllPosts(new Consumer<Post[]>() {
             @Override
