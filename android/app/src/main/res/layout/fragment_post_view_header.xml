@@ -5,7 +5,8 @@
     android:layout_height="fill_parent"
     android:background="@color/primary_light"
     android:gravity="top"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/relative_layout_margin">
     <TextView
         android:id="@+id/tvPostViewOwner"
         android:layout_width="wrap_content"
@@ -15,8 +16,8 @@
         android:layout_alignParentStart="true"
         android:text="@string/generic_owner"
         android:textSize="20sp"
-        android:layout_margin="10dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="@dimen/relative_layout_margin_between"/>
 
     <TextView
         android:id="@+id/tvPostViewOwnerValue"
@@ -32,9 +33,10 @@
         android:textColor="@color/primary_text"
         android:textColorHint="@color/secondary_text"
         android:textSize="20sp"
+        android:ellipsize="end"
         android:singleLine="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:layout_marginLeft="@dimen/relative_layout_margin_between"
+        android:layout_marginStart="@dimen/relative_layout_margin_between"/>
     <TextView
         android:id="@+id/tvPostViewCreationDate"
         android:layout_width="wrap_content"
@@ -45,7 +47,7 @@
         android:text="@string/heritage_creationDate"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="@dimen/relative_layout_margin_between"/>
     <TextView
         android:id="@+id/tvPostViewCreationDateValue"
         android:layout_width="fill_parent"
@@ -59,8 +61,10 @@
         android:text="@string/placeholder_mid"
         android:textColor="@color/primary_text"
         android:textSize="20sp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"/>
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_marginLeft="@dimen/relative_layout_margin_between"
+        android:layout_marginStart="@dimen/relative_layout_margin_between"/>
     <TextView
         android:id="@+id/tvPostViewLastEditDate"
         android:layout_width="wrap_content"
@@ -84,8 +88,10 @@
         android:text="@string/placeholder_mid"
         android:textColor="@color/primary_text"
         android:textSize="20sp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"/>
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:layout_marginLeft="@dimen/relative_layout_margin_between"
+        android:layout_marginStart="@dimen/relative_layout_margin_between"/>
     <TextView
         android:id="@+id/tvPostViewContent"
         android:layout_width="wrap_content"
@@ -95,7 +101,7 @@
         android:layout_alignStart="@id/tvPostViewLastEditDate"
         android:text="@string/generic_content"
         android:textSize="20sp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/relative_layout_margin_between"
         android:textStyle="bold"/>
     <TextView
         android:id="@+id/tvPostViewContentValue"
@@ -110,14 +116,14 @@
         android:text="@string/hint_heritage_description"
         android:textColor="@color/primary_text"
         android:textSize="20sp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="@dimen/relative_layout_margin_between"/>
     <LinearLayout
         android:id="@+id/llPostViewButtons"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvPostViewContentValue"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/relative_layout_margin_between">
         <Button
             android:id="@+id/btnPostViewEdit"
             android:layout_width="fill_parent"
@@ -127,7 +133,7 @@
             android:background="@color/accent"
             android:text="@string/btn_edit"
             android:textColor="@color/primary_light"
-            android:elevation="2dp"/>
+            android:elevation="@dimen/btn_elevation"/>
         <Button
             android:id="@+id/btnPostViewNewComment"
             android:layout_width="fill_parent"
@@ -137,7 +143,7 @@
             android:background="@color/accent"
             android:text="@string/btn_new_comment"
             android:textColor="@color/primary_light"
-            android:elevation="2dp"/>
+            android:elevation="@dimen/btn_elevation"/>
     </LinearLayout>
 </RelativeLayout>
 

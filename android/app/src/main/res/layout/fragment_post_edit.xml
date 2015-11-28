@@ -12,7 +12,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="@dimen/relative_layout_margin">
         <TextView
             android:id="@+id/tvPostEditTitle"
             android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
             android:hint="@string/hint_heritage_name"
             android:textColorHint="@color/secondary_text"
             android:inputType="text"
-            android:padding="10dp"
+            android:padding="@dimen/relative_layout_margin_between"
             android:singleLine="true" />
 
         <TextView
@@ -51,11 +51,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:layout_marginTop="@dimen/relative_layout_margin_between"
             android:layout_alignParentBottom="true"
             android:background="@color/accent"
             android:text="@string/btn_submit"
             android:textColor="@color/primary_text"
-            android:elevation="2dp"/>
+            android:elevation="@dimen/btn_elevation"/>
         <EditText
             android:id="@+id/etPostEditContent"
             android:layout_width="fill_parent"
@@ -67,7 +68,7 @@
             android:hint="@string/hint_heritage_description"
             android:textColorHint="@color/secondary_text"
             android:inputType="textMultiLine"
-            android:padding="10dp"
+            android:padding="@dimen/relative_layout_margin_between"
             android:singleLine="false"/>
 
 

@@ -7,7 +7,7 @@
     android:gravity="center"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="@dimen/relative_layout_margin">
 
     <EditText
         android:id="@+id/etLoginUsername"
@@ -18,9 +18,9 @@
         android:hint="@string/hint_username"
         android:textColorHint="@color/secondary_text"
         android:inputType="text"
-        android:padding="10dp"
+        android:padding="@dimen/relative_layout_margin_between"
         android:singleLine="true"
-        android:elevation="2dp"/>
+        android:elevation="@dimen/btn_elevation"/>
     <EditText
         android:id="@+id/etLoginPassword"
         android:layout_width="match_parent"
@@ -29,11 +29,11 @@
         android:background="@color/primary_light"
         android:hint="@string/hint_password"
         android:inputType="textPassword"
-        android:padding="10dp"
+        android:padding="@dimen/relative_layout_margin_between"
         android:singleLine="true"
         android:textColor="@color/primary_text"
         android:textColorHint="@color/secondary_text"
-        android:elevation="2dp"/>
+        android:elevation="@dimen/btn_elevation"/>
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="fill_parent"
@@ -42,7 +42,7 @@
         android:background="@color/accent"
         android:text="@string/btn_login"
         android:textColor="@color/primary_text"
-        android:elevation="2dp"/>
+        android:elevation="@dimen/btn_elevation"/>
     <TextView
         android:id="@+id/tvLoginToRegister"
         android:layout_width="wrap_content"

@@ -22,6 +22,7 @@ import org.json.JSONObject;
  */
 public class CommentEditFragment extends NamedFragment implements View.OnClickListener{
     public static final String NAME = "COMMENT_EDIT";
+    public static final String TITLE = "Edit Comment";
     private Button btnSubmit;
     private EditText etContent;
     private boolean isNew = true;
@@ -87,7 +88,7 @@ public class CommentEditFragment extends NamedFragment implements View.OnClickLi
     }
     @Override
     String getTitle() {
-        return NAME;
+        return TITLE;
     }
 
 }
