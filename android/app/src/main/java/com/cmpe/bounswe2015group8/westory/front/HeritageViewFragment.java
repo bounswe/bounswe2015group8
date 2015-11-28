@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
+import com.cmpe.bounswe2015group8.westory.front.adapter.HeritageViewAdapter;
 import com.cmpe.bounswe2015group8.westory.front.adapter.PostAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Post;
@@ -32,19 +34,20 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     private Button btnEdit, btnAddPost;
     private TextView tvPlace, tvCreationDate, tvDescription;
     private Heritage heritage;
-    private ListView lvPosts;
+    private ExpandableListView elvPosts;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MemberLocalStore memberLocalStore = new MemberLocalStore(getActivity());
         View v = inflater.inflate(R.layout.fragment_heritage_view,container,false);
-        tvPlace = (TextView) v.findViewById(R.id.tvHeritageViewPlaceValue);
-        tvCreationDate = (TextView) v.findViewById(R.id.tvHeritageViewCreationDateValue);
-        tvDescription = (TextView) v.findViewById(R.id.tvHeritageViewDescriptionValue);
-        lvPosts = (ListView) v.findViewById(R.id.lvHeritageViewPosts);
-        btnEdit = (Button) v.findViewById(R.id.btnHeritageEdit);
-        btnAddPost = (Button) v.findViewById(R.id.btnHeritageNewPost);
+        elvPosts = (ExpandableListView) v.findViewById(R.id.lvHeritageViewPosts);
+        View header = inflater.inflate(R.layout.fragment_heritage_view_header,elvPosts,false);
+        tvPlace = (TextView) header.findViewById(R.id.tvHeritageViewPlaceValue);
+        tvCreationDate = (TextView) header.findViewById(R.id.tvHeritageViewCreationDateValue);
+        tvDescription = (TextView) header.findViewById(R.id.tvHeritageViewDescriptionValue);
+        btnEdit = (Button) header.findViewById(R.id.btnHeritageEdit);
+        btnAddPost = (Button) header.findViewById(R.id.btnHeritageNewPost);
         if(memberLocalStore.getUserLoggedIn()) {
             btnEdit.setOnClickListener(this);
             btnAddPost.setOnClickListener(this);
@@ -53,12 +56,12 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
             btnAddPost.setVisibility(View.GONE);
         }
         initViews(this.getArguments());
+        elvPosts.addHeaderView(header);
         ServerRequests sr = new ServerRequests(getActivity());
         sr.getPostsByHeritageId(heritage.getId(), new Consumer<Post[]>() {
             @Override
             public void accept(Post[] posts) {
-                lvPosts.setAdapter(new PostAdapter(getActivity(), R.layout.post_small,
-                        posts));
+                elvPosts.setAdapter(new HeritageViewAdapter(getActivity(),Arrays.asList(posts),null,null));
                 heritage.setPosts(Arrays.asList(posts));
             }
         });
@@ -88,6 +91,16 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 pef.setArguments(b2);
                 MainActivity.beginFragment(getActivity(),pef);
                 break;
+//            case R.id.btnHeritageViewPosts:
+//                if(lvPosts.getVisibility() == View.GONE) {
+//                    lvPosts.setVisibility(View.VISIBLE);
+//                    btnPosts.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expand_more_white_24dp,0,0,0);
+//                }
+//                else {
+//                    lvPosts.setVisibility(View.GONE);
+//                    btnPosts.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_chevron_right_white_24dp, 0, 0, 0);
+//                }
+//                break;
         }
     }
     @Override
