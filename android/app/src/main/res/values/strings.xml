@@ -32,12 +32,14 @@
     <string name="heritage_small_see_posts"> -see Posts</string>
     <string name="post_small_see_heritages"> -see Heritages</string>
     <string name="btn_new_post">Add Post</string>
+    <string name="btn_new_comment">Add Comment</string>
     <string name="generic_description">Description:</string>
     <string name="generic_owner">Creator:</string>
     <string name="generic_title">Title:</string>
     <string name="generic_content">Content:</string>
     <string name="generic_by">by </string>
     <string name="generic_by_username">by %1$s</string>
+    <string name="generic_created_at">Created at %1$s</string>
     <string name="generic_see_more"> - see more</string>
     <string name="post_post_date">Post Date:</string>
     <string name="post_last_edit_date">Last Edit Date:</string>
@@ -57,6 +59,12 @@
     <string name="title_generic_edit">Edit </string>
     <string-array name="heritage_view_list">
         <item>Posts</item>
+        <item>Tags</item>
+        <item>Media</item>
+    </string-array>
+    <string-array name="post_view_list">
+        <item>Comments</item>
+        <item>Heritages</item>
         <item>Tags</item>
         <item>Media</item>
     </string-array>

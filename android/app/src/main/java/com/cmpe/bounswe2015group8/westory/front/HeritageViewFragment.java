@@ -1,6 +1,7 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,20 +30,23 @@ import java.util.Arrays;
  * @author xyllan
  * Date: 15.11.2015.
  */
-public class HeritageViewFragment extends NamedFragment implements View.OnClickListener {
+public class HeritageViewFragment extends NamedFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String NAME = "HERITAGE_VIEW";
     private Button btnEdit, btnAddPost;
     private TextView tvPlace, tvCreationDate, tvDescription;
     private Heritage heritage;
-    private ExpandableListView elvPosts;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ExpandableListView elvData;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MemberLocalStore memberLocalStore = new MemberLocalStore(getActivity());
         View v = inflater.inflate(R.layout.fragment_heritage_view,container,false);
-        elvPosts = (ExpandableListView) v.findViewById(R.id.lvHeritageViewPosts);
-        View header = inflater.inflate(R.layout.fragment_heritage_view_header,elvPosts,false);
+        swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.srlHeritageView);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        elvData = (ExpandableListView) v.findViewById(R.id.lvHeritageViewPosts);
+        View header = inflater.inflate(R.layout.fragment_heritage_view_header,elvData,false);
         tvPlace = (TextView) header.findViewById(R.id.tvHeritageViewPlaceValue);
         tvCreationDate = (TextView) header.findViewById(R.id.tvHeritageViewCreationDateValue);
         tvDescription = (TextView) header.findViewById(R.id.tvHeritageViewDescriptionValue);
@@ -56,15 +60,8 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
             btnAddPost.setVisibility(View.GONE);
         }
         initViews(this.getArguments());
-        elvPosts.addHeaderView(header);
-        ServerRequests sr = new ServerRequests(getActivity());
-        sr.getPostsByHeritageId(heritage.getId(), new Consumer<Post[]>() {
-            @Override
-            public void accept(Post[] posts) {
-                elvPosts.setAdapter(new HeritageViewAdapter(getActivity(),Arrays.asList(posts),null,null));
-                heritage.setPosts(Arrays.asList(posts));
-            }
-        });
+        elvData.addHeaderView(header);
+        manualRefresh();
         return v;
     }
     private void initViews(Bundle args) {
@@ -91,16 +88,6 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 pef.setArguments(b2);
                 MainActivity.beginFragment(getActivity(),pef);
                 break;
-//            case R.id.btnHeritageViewPosts:
-//                if(lvPosts.getVisibility() == View.GONE) {
-//                    lvPosts.setVisibility(View.VISIBLE);
-//                    btnPosts.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_expand_more_white_24dp,0,0,0);
-//                }
-//                else {
-//                    lvPosts.setVisibility(View.GONE);
-//                    btnPosts.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_chevron_right_white_24dp, 0, 0, 0);
-//                }
-//                break;
         }
     }
     @Override
@@ -110,5 +97,21 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     @Override
     String getTitle() {
         return heritage.getName();
+    }
+
+    @Override
+    public void onRefresh() {
+        ServerRequests sr = new ServerRequests(getActivity());
+        sr.getPostsByHeritageId(heritage.getId(), new Consumer<Post[]>() {
+            @Override
+            public void accept(Post[] posts) {
+                elvData.setAdapter(new HeritageViewAdapter(getActivity(),Arrays.asList(posts),null,null));
+                heritage.setPosts(Arrays.asList(posts));
+            }
+        });
+    }
+    private void manualRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        onRefresh();
     }
 }

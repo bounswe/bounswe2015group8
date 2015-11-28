@@ -1,10 +1,12 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.CommentAdapter;
+import com.cmpe.bounswe2015group8.westory.front.adapter.PostViewAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Comment;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
@@ -26,33 +29,42 @@ import java.util.Arrays;
  * @author xyllan
  * Date: 15.11.2015.
  */
-public class PostViewFragment extends NamedFragment implements View.OnClickListener{
+public class PostViewFragment extends NamedFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
     public static final String NAME = "POST_VIEW";
-    Button btnEdit, btnComment;
-    TextView tvOwner, tvCreationDate, tvLastEditDate, tvContent;
-    ListView lvComments;
-    Post post;
+    private Button btnEdit, btnComment;
+    private TextView tvOwner, tvCreationDate, tvLastEditDate, tvContent;
+    private Post post;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ExpandableListView elvData;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View v = inflater.inflate(R.layout.fragment_post_view,container,false);
-        tvOwner = (TextView) v.findViewById(R.id.tvPostViewOwnerValue);
-        tvCreationDate = (TextView) v.findViewById(R.id.tvPostViewCreationDateValue);
-        tvLastEditDate = (TextView) v.findViewById(R.id.tvPostViewLastEditDateValue);
-        tvContent = (TextView) v.findViewById(R.id.tvPostViewContentValue);
-        lvComments=(ListView) v.findViewById(R.id.listComments);
-        btnEdit = (Button) v.findViewById(R.id.btnPostViewEdit);
-		btnComment = (Button) v.findViewById(R.id.btnAddComment);
+        MemberLocalStore memberLocalStore = new MemberLocalStore(getActivity());
+        View v = inflater.inflate(R.layout.fragment_heritage_view,container,false);
+        swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.srlHeritageView);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        elvData = (ExpandableListView) v.findViewById(R.id.lvHeritageViewPosts);
+        View header = inflater.inflate(R.layout.fragment_post_view_header,elvData,false);
+        tvOwner = (TextView) header.findViewById(R.id.tvPostViewOwnerValue);
+        tvCreationDate = (TextView) header.findViewById(R.id.tvPostViewCreationDateValue);
+        tvLastEditDate = (TextView) header.findViewById(R.id.tvPostViewLastEditDateValue);
+        tvContent = (TextView) header.findViewById(R.id.tvPostViewContentValue);
+        btnEdit = (Button) header.findViewById(R.id.btnPostViewEdit);
+		btnComment = (Button) header.findViewById(R.id.btnPostViewNewComment);
         initViews(this.getArguments());
-        ServerRequests sr = new ServerRequests(getActivity());
-        sr.getCommentsByPostId(post.getId(), new Consumer<Comment[]>() {
-            @Override
-            public void accept(Comment[] comments) {
-                lvComments.setAdapter(new CommentAdapter(getActivity(), R.layout.comment_small, comments));
-                post.setComments(Arrays.asList(comments));
-            }
-        });
+        if(memberLocalStore.getUserLoggedIn() && post.getOwnerId() == memberLocalStore.getLoggedInMember().getId()) {
+            btnEdit.setOnClickListener(this);
+        } else {
+            btnEdit.setVisibility(View.GONE);
+        }
+        if(memberLocalStore.getUserLoggedIn()) {
+            btnComment.setOnClickListener(this);
+        } else {
+            btnComment.setVisibility(View.GONE);
+        }
+        elvData.addHeaderView(header);
+        manualRefresh();
         return v;
     }
     private void initViews(Bundle args) {
@@ -66,17 +78,6 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
             tvLastEditDate.setText("---");
         }
         tvContent.setText(post.getContent());
-        MemberLocalStore memberLocalStore = new MemberLocalStore(getActivity());
-        if(memberLocalStore.getUserLoggedIn() && post.getOwnerId() == memberLocalStore.getLoggedInMember().getId()) {
-            btnEdit.setOnClickListener(this);
-        } else {
-            btnEdit.setVisibility(View.GONE);
-        }
-        if(memberLocalStore.getUserLoggedIn()) {
-            btnComment.setOnClickListener(this);
-        } else {
-            btnComment.setVisibility(View.GONE);
-        }
     }
     @Override
     public void onClick(View v) {
@@ -90,7 +91,7 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                 MainActivity.beginFragment(getActivity(), nf);
                 break;
 
-            case R.id.btnAddComment:
+            case R.id.btnPostViewNewComment:
                 NamedFragment nf1 = new CommentEditFragment();
                 Bundle b1 = new Bundle();
                 b1.putLong("postId", post.getId());
@@ -107,5 +108,20 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
     String getTitle() {
         if(post.getTitle() != null) return post.getTitle();
         else return getResources().getString(R.string.post_view_title_default);
+    }
+    @Override
+    public void onRefresh() {
+        ServerRequests sr = new ServerRequests(getActivity());
+        sr.getCommentsByPostId(post.getId(), new Consumer<Comment[]>() {
+            @Override
+            public void accept(Comment[] comments) {
+                elvData.setAdapter(new PostViewAdapter(getActivity(),Arrays.asList(comments),null,null,null));
+                post.setComments(Arrays.asList(comments));
+            }
+        });
+    }
+    private void manualRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        onRefresh();
     }
 }
