@@ -1,6 +1,8 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +27,10 @@ import com.cmpe.bounswe2015group8.westory.model.Member;
  */
 public class LoginFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "Login";
-    Button btnLogin;
-    EditText etUsername, etPassword;
-    TextView tvLinkToRegisterScreen;
-    MemberLocalStore memberLocalStore;
+    private Button btnLogin;
+    private EditText etUsername, etPassword;
+    private TextView tvLoginToRegister, tvLoginForgotPassword;
+    private MemberLocalStore memberLocalStore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,13 +40,14 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
 
         memberLocalStore = new MemberLocalStore(getActivity());
 
-        etUsername = (EditText) v.findViewById(R.id.etUsername);
-        etPassword = (EditText) v.findViewById(R.id.etPassword);
+        etUsername = (EditText) v.findViewById(R.id.etLoginUsername);
+        etPassword = (EditText) v.findViewById(R.id.etLoginPassword);
         btnLogin = (Button) v.findViewById(R.id.btnLogin);
-        tvLinkToRegisterScreen = (TextView) v.findViewById(R.id.tvLinkToRegisterScreen);
-
+        tvLoginToRegister = (TextView) v.findViewById(R.id.tvLoginToRegister);
+        tvLoginForgotPassword = (TextView) v.findViewById(R.id.tvLoginForgotPassword);
         btnLogin.setOnClickListener(this);
-        tvLinkToRegisterScreen.setOnClickListener(this);
+        tvLoginToRegister.setOnClickListener(this);
+        tvLoginForgotPassword.setOnClickListener(this);
         return v;
 
     }
@@ -60,8 +63,11 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
                 authenticate(member);
 
                 break;
-            case R.id.tvLinkToRegisterScreen:
+            case R.id.tvLoginToRegister:
                 MainActivity.beginFragment(getActivity(), new RegisterFragment());
+                break;
+            case R.id.tvLoginForgotPassword:
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ServerRequests.SERVER_ADDRESS+"/forget_password")));
                 break;
         }
     }

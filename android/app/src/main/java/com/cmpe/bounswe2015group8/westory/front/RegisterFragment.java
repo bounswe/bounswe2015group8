@@ -23,9 +23,9 @@ import com.cmpe.bounswe2015group8.westory.model.Member;
  */
 public class RegisterFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "Register";
-    Button btnRegister;
-    EditText etUsername, etMail, etPassword, etPasswordConfirm;
-    MemberLocalStore memberLocalStore;
+    private Button btnRegister;
+    private EditText etUsername, etMail, etPassword, etPasswordConfirm;
+    private MemberLocalStore memberLocalStore;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                 Bundle savedInstanceState) {

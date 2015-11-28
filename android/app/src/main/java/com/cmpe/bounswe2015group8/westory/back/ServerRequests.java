@@ -26,22 +26,28 @@ import java.util.Map;
  * Date: 31/10/15.
  */
 public class ServerRequests{
-    private ProgressDialog progressDialog;
     public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com:8080/lokum_v3";
+    private ProgressDialog progressDialog;
+    private boolean display;
     public ServerRequests(Context context){
+        this(context, true);
+    }
+    public ServerRequests(Context context, boolean display) {
         progressDialog = new ProgressDialog(context);
         progressDialog.setCancelable(false);
         progressDialog.setTitle("Processing...");
         progressDialog.setMessage("Please wait...");
+        this.display = display;
+
     }
     public void getPostById(long id, Consumer<Post> callback) {
-        progressDialog.show();
+        if(display) progressDialog.show();
         Map<String,String> m = new HashMap<>();
         m.put("id", Long.toString(id));
         new RestAsyncTask<Post>(callback, HttpMethod.POST).execute(new Requestable<Post>("/api/getPostById", m, Post.class));
     }
     public void getPostsByHeritageId(long id, Consumer<Post[]> callback) {
-        progressDialog.show();
+        if(display) progressDialog.show();
         new RestAsyncTask<Post[]>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/getHeritagePostsById", id, Post[].class));
     }
     public void getCommentsByPostId(long id, Consumer<Comment[]> callback) {
@@ -49,7 +55,7 @@ public class ServerRequests{
         new RestAsyncTask<Comment[]>(callback, HttpMethod.GET).execute(new Requestable<Comment[]>("/api/getCommentsByPostId/"+id, id, Comment[].class));
     }
     public void getAllPosts(Consumer<Post[]> callback) {
-        progressDialog.show();
+        if(display) progressDialog.show();
         new RestAsyncTask<Post[]>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/getAllPosts",null,Post[].class) );
     }
     public void getAllComments(Consumer<Comment[]> callback) {
@@ -57,7 +63,7 @@ public class ServerRequests{
         new RestAsyncTask<Comment[]>(callback, HttpMethod.GET).execute(new Requestable<Comment[]>("/api/getAllComments",null,Comment[].class) );
     }
     public void createPost(Post p, long heritageId, Consumer<Long> callback) {
-        progressDialog.show();
+        if(display) progressDialog.show();
         new RestAsyncTask<Long>(callback, HttpMethod.POST).execute(p.getCreateRequestable(heritageId));
     }
     public void createComment(Comment c, long postId, Consumer<String> callback){
@@ -66,25 +72,25 @@ public class ServerRequests{
     }
 
     public void getHeritageById(long id, Consumer<Heritage> callback) {
-        progressDialog.show();
+        if(display) progressDialog.show();
         Map<String,String> m = new HashMap<>();
         m.put("id", Long.toString(id));
         new RestAsyncTask<Heritage>(callback, HttpMethod.POST).execute(new Requestable<Heritage>("/api/getHeritageById", m, Heritage.class));
     }
     public void getAllHeritages(Consumer<Heritage[]> callback) {
-        progressDialog.show();
+        if(display) progressDialog.show();
         new RestAsyncTask<Heritage[]>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/getAllHeritages",null,Heritage[].class) );
     }
     public void createHeritage(Heritage h, Consumer<Long> callback) {
-        progressDialog.show();
+        if(display) progressDialog.show();
         new RestAsyncTask<Long>(callback, HttpMethod.POST).execute(h.getCreateRequestable());
     }
     public void login(Member m, Consumer<Member> callback) {
-        progressDialog.show();
+        if(display) progressDialog.show();
         new RestAsyncTask<Member>(callback, HttpMethod.POST).execute(m.getLoginRequestable());
     }
     public void register(Member m, Consumer<Long> callback) {
-        progressDialog.show();
+        if(display) progressDialog.show();
         new RestAsyncTask<Long>(callback, HttpMethod.POST).execute(m.getRegisterRequestable());
     }
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
@@ -111,7 +117,7 @@ public class ServerRequests{
 
         @Override
         protected void onPostExecute(T t) {
-            progressDialog.dismiss();
+            if(display) progressDialog.dismiss();
             callback.accept(t);
             super.onPostExecute(t);
         }
