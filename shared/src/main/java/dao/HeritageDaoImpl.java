@@ -3,6 +3,7 @@ package dao;
 import model.Heritage;
 import model.HeritagePost;
 import model.Post;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -20,6 +21,7 @@ public class HeritageDaoImpl implements HeritageDao {
         Heritage heritage = (Heritage) s
                 .createQuery("from Heritage where id=?")
                 .setParameter(0, id).uniqueResult();
+        Hibernate.initialize(heritage.getTags());
         s.close();
         return heritage;
     }
@@ -27,6 +29,9 @@ public class HeritageDaoImpl implements HeritageDao {
     public List<Heritage> getAllHeritages() {
         Session s = getSessionFactory().openSession();
         List<Heritage> heritages = s.createQuery("from Heritage").list();
+        for(Heritage heritage : heritages){
+            Hibernate.initialize(heritage.getTags());
+        }
         s.close();
         return heritages;
     }

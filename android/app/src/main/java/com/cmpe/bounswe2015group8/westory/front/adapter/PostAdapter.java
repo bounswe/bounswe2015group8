@@ -45,7 +45,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             public void onClick(View v) {
                 NamedFragment nf = new PostViewFragment();
                 Bundle b = new Bundle();
-                b.putParcelable("post",p);
+                b.putParcelable("post", p);
                 nf.setArguments(b);
                 MainActivity.beginFragment(context, nf);
             }

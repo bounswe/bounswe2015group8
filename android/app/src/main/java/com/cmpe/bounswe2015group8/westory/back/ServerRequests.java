@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.cmpe.bounswe2015group8.westory.model.Comment;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 import com.cmpe.bounswe2015group8.westory.model.Post;
@@ -14,7 +15,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,25 +44,38 @@ public class ServerRequests{
         if(display) progressDialog.show();
         Map<String,String> m = new HashMap<>();
         m.put("id", Long.toString(id));
-        new RestAsyncTask<Post>(callback, HttpMethod.POST).execute(new Requestable<Post>("/api/getHeritageById", m, Post.class));
+        new RestAsyncTask<Post>(callback, HttpMethod.POST).execute(new Requestable<Post>("/api/getPostById", m, Post.class));
     }
     public void getPostsByHeritageId(long id, Consumer<Post[]> callback) {
         if(display) progressDialog.show();
         new RestAsyncTask<Post[]>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/getHeritagePostsById", id, Post[].class));
     }
+    public void getCommentsByPostId(long id, Consumer<Comment[]> callback) {
+        progressDialog.show();
+        new RestAsyncTask<Comment[]>(callback, HttpMethod.GET).execute(new Requestable<Comment[]>("/api/getCommentsByPostId/"+id, id, Comment[].class));
+    }
     public void getAllPosts(Consumer<Post[]> callback) {
         if(display) progressDialog.show();
         new RestAsyncTask<Post[]>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/getAllPosts",null,Post[].class) );
+    }
+    public void getAllComments(Consumer<Comment[]> callback) {
+        progressDialog.show();
+        new RestAsyncTask<Comment[]>(callback, HttpMethod.GET).execute(new Requestable<Comment[]>("/api/getAllComments",null,Comment[].class) );
     }
     public void createPost(Post p, long heritageId, Consumer<Long> callback) {
         if(display) progressDialog.show();
         new RestAsyncTask<Long>(callback, HttpMethod.POST).execute(p.getCreateRequestable(heritageId));
     }
+    public void createComment(Comment c, long postId, Consumer<String> callback){
+        progressDialog.show();
+        new RestAsyncTask<String>(callback, HttpMethod.POST).execute(c.getCreateRequestable(postId));
+    }
+
     public void getHeritageById(long id, Consumer<Heritage> callback) {
         if(display) progressDialog.show();
         Map<String,String> m = new HashMap<>();
         m.put("id", Long.toString(id));
-        new RestAsyncTask<Heritage>(callback, HttpMethod.POST).execute(new Requestable<Heritage>("/api/getPostById", m, Heritage.class));
+        new RestAsyncTask<Heritage>(callback, HttpMethod.POST).execute(new Requestable<Heritage>("/api/getHeritageById", m, Heritage.class));
     }
     public void getAllHeritages(Consumer<Heritage[]> callback) {
         if(display) progressDialog.show();

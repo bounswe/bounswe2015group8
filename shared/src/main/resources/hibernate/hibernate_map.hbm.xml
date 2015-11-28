@@ -24,7 +24,7 @@
         <many-to-one name="post" class="model.Post" cascade="save-update">
             <column name="POST_ID" not-null="true"/>
         </many-to-one>
-        <set name="votes" inverse="true" cascade="save-update">
+        <set name="votes" inverse="true" cascade="save-update" lazy="false">
             <key>
                 <column name="COMMENT_ID" not-null="true"/>
             </key>
@@ -77,7 +77,7 @@
             </key>
             <many-to-many not-found="ignore" class="model.Post" column="POST_ID"/>
         </set>
-        <set name="tags" table="TAG_HERITAGE" inverse="true" cascade="save-update" fetch="select" lazy="true">
+        <set name="tags" table="TAG_HERITAGE" inverse="true" cascade="save-update" fetch="select" lazy="true" order-by="TAG_ID asc">
             <key>
                 <column name="HERITAGE_ID" not-null="true"/>
             </key>
@@ -189,7 +189,7 @@
         <many-to-one name="owner" class="model.Member" cascade="save-update">
             <column name="OWNER" not-null="true"/>
         </many-to-one>
-        <set name="comments" inverse="true">
+        <set name="comments" inverse="true" order-by="ID asc">
             <key>
                 <column name="POST_ID" not-null="true"/>
             </key>
@@ -207,11 +207,11 @@
             </key>
             <one-to-many not-found="ignore" class="model.PostVote"/>
         </set>
-        <set name="tags" table="TAG_POST" inverse="true">
+        <set name="tags" table="TAG_POST" inverse="true" order-by="TAG_ID asc">
             <key>
                 <column name="POST_ID" not-null="true"/>
             </key>
-            <many-to-many not-found="ignore" class="model.Tag"/>
+            <many-to-many not-found="ignore" column="TAG_ID" class="model.Tag"/>
         </set>
     </class>
     <class name="model.PostVote" table="POST_VOTE" schema="cmpe451_db" >

@@ -127,12 +127,20 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.navLogin:
                         if (authenticated()) {
-                            memberLocalStore.clearMemberData();
+                             memberLocalStore.clearMemberData();
                             nf = new HomeFragment();
                         } else {
                             nf = new LoginFragment();
                         }
                         resetNavbar();
+                        break;
+                    case R.id.navProfile:
+                        f = getSupportFragmentManager().findFragmentByTag(ProfileFragment.NAME);
+                        nf = (f == null) ? new ProfileFragment(): (NamedFragment)f;
+                        break;
+                    case R.id.navComments:
+                        f = getSupportFragmentManager().findFragmentByTag(CommentsFragment.NAME);
+                        nf = (f == null) ? new CommentsFragment(): (NamedFragment)f;
                         break;
                     default:
                         break;

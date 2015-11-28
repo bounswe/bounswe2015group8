@@ -4,5 +4,7 @@
     <item android:id="@+id/navHeritages" android:title="@string/nav_heritages" />
     <item android:id="@+id/navAddHeritage" android:title="@string/nav_add_heritage" />
     <item android:id="@+id/navPosts" android:title="@string/nav_posts" />
+    <item android:id="@+id/navProfile" android:title="@string/nav_profile" />
+    <item android:id="@+id/navComments" android:title="@string/nav_comments" />
     <item android:id="@+id/navLogin" android:title="@string/nav_login" />
 </menu>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
     android:background="@color/primary"
-    android:gravity="center"
+    android:gravity="top"
     android:orientation="vertical">
 
     <GridLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
@@ -120,23 +120,43 @@
             android:maxLines="3"/>
         <Button
             android:id="@+id/btnPostViewEdit"
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_row="6"
             android:layout_rowSpan="1"
             android:layout_column="0"
-            android:layout_columnSpan="2"
+            android:layout_columnSpan="1"
             android:layout_margin="5dp"
             android:background="@color/accent"
             android:text="@string/btn_edit"
-            android:textColor="@color/primary_text" />
+            android:textColor="@color/primary_text"
+         />
+
+        <Button
+            android:id="@+id/btnAddComment"
+            android:layout_height="wrap_content"
+            android:layout_row="6"
+            android:layout_rowSpan="1"
+            android:layout_column="1"
+            android:layout_columnSpan="1"
+            android:layout_margin="5dp"
+            android:background="@color/accent"
+            android:text="Add Comment"
+            android:textColor="@color/primary_text"
+            />
+
 
     </GridLayout>
-    <include layout="@layout/fragment_heritages"
-        android:id="@+id/lPostViewHeritages"
-        android:layout_marginTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listComments"
+            android:layout_gravity="center" />
+    </FrameLayout>
 
 
 </LinearLayout>
