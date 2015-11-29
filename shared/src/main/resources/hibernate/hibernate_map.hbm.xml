@@ -186,6 +186,9 @@
         <property name="content">
             <column name="CONTENT" sql-type="text" length="65535" not-null="true"/>
         </property>
+        <property name="place">
+            <column name="PLACE" sql-type="text" length="65535"/>
+        </property>
         <many-to-one name="owner" class="model.Member" cascade="save-update">
             <column name="OWNER" not-null="true"/>
         </many-to-one>
@@ -249,6 +252,9 @@
         </id>
         <property name="tagText">
             <column name="TAG_TEXT" sql-type="varchar" length="1024" not-null="true"/>
+        </property>
+        <property name="tagContext">
+            <column name="TAG_CONTEXT" sql-type="varchar" length="1024"/>
         </property>
         <set name="heritages" table="TAG_HERITAGE" cascade="save-update" fetch="select" lazy="true">
             <key>

@@ -25,8 +25,18 @@ public class TagDaoImpl implements TagDao {
     public Tag getTagByText(String tagText){
         Session s = getSessionFactory().openSession();
         Tag tag = (Tag) s
-                .createQuery("from Tag where tagText=?")
+                .createQuery("from Tag where tagText=? and tagContext is null")
                 .setParameter(0, tagText).uniqueResult();
+        s.close();
+        return tag;
+    }
+
+    public Tag getTagByTextAndContext(String tagText, String tagContext){
+        Session s = getSessionFactory().openSession();
+        Tag tag = (Tag) s
+                .createQuery("from Tag where tagText=? and tagContext=?")
+                .setParameter(0, tagText)
+                .setParameter(1, tagContext).uniqueResult();
         s.close();
         return tag;
     }

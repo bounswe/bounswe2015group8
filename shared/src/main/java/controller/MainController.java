@@ -482,11 +482,12 @@ public class MainController {
         return tags;
     }
 
-    @RequestMapping(value = "/searchByTag/{tagText}")
-    public ModelAndView searchByTag(@PathVariable String tagText){
+    @RequestMapping(value = "/searchByTag/{wholetag}")
+    public ModelAndView searchByTag(@PathVariable String wholetag){
         final Session session = Main.getSession();
 
-        Tag tag = tagService.getTagByText(tagText);
+        String[] tagPieces = tagService.extractTextAndContext(wholetag);
+        Tag tag = tagService.getTagByText(tagPieces[0], tagPieces[1]);
         List posts = postService.getPostsByTag(tag);
         List medias = session.createCriteria(Media.class).list();
         List allTags = session.createCriteria(Tag.class).list();

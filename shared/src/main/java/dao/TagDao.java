@@ -11,6 +11,7 @@ import java.util.List;
 public interface TagDao {
     Tag getTagById(long id);
     Tag getTagByText(String tagText);
+    Tag getTagByTextAndContext(String tagText, String tagContext);
 
     List<Tag> getTagsByHeritage(Heritage heritage);
     List<Tag> getTagsByPost(Post post);

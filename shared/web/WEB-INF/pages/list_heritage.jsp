@@ -15,6 +15,15 @@
                 delay: 100
             }
         });
+        $(".tokenfield").on('keypress', function (e) {
+            if(e.which == 41){ // If it is a closing paranthesis ")"
+                var inputField = $(this).find("input.token-input");
+                var newToken = $(inputField).val() + ")";
+                $(inputField).parent().find("input.tokenfield").tokenfield('createToken', newToken);
+                $(inputField).val("");
+                e.preventDefault();
+            }
+        });
         $(".tagbutton").click(function(){
             var heritageId = $(this).attr("id").split("_")[1];
             var heritageTags = $("#tokenfield_" + heritageId).val().split(", ");

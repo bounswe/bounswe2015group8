@@ -9,6 +9,7 @@ import java.util.HashSet;
 public class Tag {
     private long id;
     private String tagText;
+    private String tagContext;
     private Collection<Heritage> heritages;
     private Collection<Post> posts;
 
@@ -17,8 +18,9 @@ public class Tag {
         this.posts = new HashSet<Post>();
     }
 
-    public Tag(String tagText) {
+    public Tag(String tagText, String tagContext) {
         this.tagText = tagText;
+        this.tagContext = tagContext;
         this.heritages = new HashSet<Heritage>();
         this.posts = new HashSet<Post>();
     }
@@ -37,6 +39,14 @@ public class Tag {
 
     public void setTagText(String tagText) {
         this.tagText = tagText;
+    }
+
+    public String getTagContext() {
+        return tagContext;
+    }
+
+    public void setTagContext(String tagContext) {
+        this.tagContext = tagContext;
     }
 
     @Override
