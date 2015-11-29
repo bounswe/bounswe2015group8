@@ -30,7 +30,7 @@ public class MemberLocalStore {
     }
 
     public Member getLoggedInMember() {
-        long id = memberLocalDatabase.getLong("id",-1);
+        long id = memberLocalDatabase.getLong("id", -1);
         String username = memberLocalDatabase.getString("username", "");
         String email = memberLocalDatabase.getString("email", "");
         String profilePicture = memberLocalDatabase.getString("profilePicture","");

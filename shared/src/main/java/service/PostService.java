@@ -40,4 +40,13 @@ public class PostService {
         Post post = new Post(member, type, timestamp, title, content);
         return postDao.savePost(post, heritage);
     }
+    public Post updatePost(long postId, String newTitle, String newContent, Timestamp lastEditDate){
+        Post post = getPostById(postId);
+        post.setContent(newContent);
+        post.setTitle(newTitle);
+        post.setLastEditedDate(lastEditDate);
+        return postDao.updatePost(post);
+
+
+    }
 }

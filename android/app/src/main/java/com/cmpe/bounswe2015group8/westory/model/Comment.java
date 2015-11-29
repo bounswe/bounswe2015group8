@@ -1,8 +1,9 @@
 package com.cmpe.bounswe2015group8.westory.model;
 
-import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Created by xyllan on 07.11.2015.
@@ -10,15 +11,18 @@ import java.util.HashSet;
 public class Comment {
     private long id;
     private String content;
-    private Timestamp postDate;
-    private Timestamp lastEditedDate;
+    private String postDate;
+    private String lastEditedDate;
     private Member owner;
     private Post post;
+    private long ownerId;
+    private long postId;
+    private int netCount;
     private Collection<CommentVote> votes;
     public Comment() {
         votes = new HashSet<CommentVote>();
     }
-    public Comment(Member owner, Post post, String content, Timestamp postDate
+    public Comment(Member owner, Post post, String content, String postDate
     ) {
         this.owner = owner;
         this.post = post;
@@ -42,19 +46,19 @@ public class Comment {
         this.content = content;
     }
 
-    public Timestamp getPostDate() {
+    public String getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(Timestamp postDate) {
+    public void setPostDate(String postDate) {
         this.postDate = postDate;
     }
 
-    public Timestamp getLastEditedDate() {
+    public String getLastEditedDate() {
         return lastEditedDate;
     }
 
-    public void setLastEditedDate(Timestamp lastEditedDate) {
+    public void setLastEditedDate(String lastEditedDate) {
         this.lastEditedDate = lastEditedDate;
     }
 
@@ -83,6 +87,17 @@ public class Comment {
         return result;
     }
 
+    public Requestable<String> getCreateRequestable(long postId) {
+        Map<String,String> dataToSend = new HashMap<>();
+
+        dataToSend.put("postId", Long.toString(postId));
+        dataToSend.put("ownerId", Long.toString(owner.getId()));
+        dataToSend.put("content", content);
+        System.out.println("\n----mumu---- "+postId+" - "+owner.getId()+ " --- "+content+" ----------------");
+        return new Requestable<String>("/api/postComment",dataToSend,String.class);
+    }
+
+
     public Member getOwner() {
         return owner;
     }
@@ -94,6 +109,18 @@ public class Comment {
     public Post getPost() {
         return post;
     }
+
+    public long getOwnerId() { return ownerId; }
+
+    public void setOwnerId(long ownerId) { this.ownerId = ownerId; }
+
+    public long getPostId() { return postId; }
+
+    public void setPostId(long postId) { this.postId = postId; }
+
+    public int getNetCount() { return netCount; }
+
+    public void setNetCount(int netCount) { this.netCount = netCount; }
 
     public void setPost(Post post) {
         this.post = post;

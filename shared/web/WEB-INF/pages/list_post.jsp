@@ -7,7 +7,7 @@
     $(document).ready(function(){
         var tags = [];
         <c:forEach var="tag" items="${allTags}">
-            tags.push("${tag.tagText}");
+        tags.push("${tag.tagText}");
         </c:forEach>
         $(".upvote").click(function(){
             console.log($(this).attr("name"));
@@ -23,7 +23,6 @@
                 }
             });
         });
-
         $(".downvote").click(function(){
             console.log($(this).attr("name"));
             var postId = $(this).attr("name");
@@ -38,7 +37,6 @@
                 }
             });
         });
-
         $(".upvote-comment").click(function(){
             console.log($(this).attr("name"));
             var commentId = $(this).attr("name");
@@ -53,7 +51,6 @@
                 }
             });
         });
-
         $(".downvote-comment").click(function(){
             console.log($(this).attr("name"));
             var commentId = $(this).attr("name");
@@ -68,7 +65,6 @@
                 }
             });
         });
-
         $(".tokenfield").tokenfield({
             autocomplete: {
                 source: tags,
@@ -220,6 +216,11 @@
                                         class="btn btn-default"
                                         onclick="window.location.href='${contextPath}/comment/${post.id}'">
                                     Comment
+                                </button>
+                                <button type="button"
+                                        class="btn btn-default"
+                                        onclick="window.location.href='${contextPath}/edit_post/${post.id}'">
+                                    Edit Post
                                 </button>
                             </div>
                         </div>

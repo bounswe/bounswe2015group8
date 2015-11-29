@@ -22,6 +22,8 @@ public interface PostDao {
 
     Post savePost(Post post, Heritage heritage);
 
+    Post updatePost(Post post);
+
     SessionFactory getSessionFactory();
 
     void setSessionFactory(SessionFactory sessionFactory);

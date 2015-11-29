@@ -354,6 +354,35 @@ public class MainController {
         List<Heritage> allHeritages = heritageService.getAllHeritages();
         return new ModelAndView("redirect:/show_heritages");
     }
+    @RequestMapping(value = "/edit_post/{postId}")
+    public ModelAndView edit_post(@PathVariable long postId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Post post = postService.getPostById(postId);
+        String title = post.getTitle();
+        String content = post.getContent();
+        Map viewVariables = new HashMap();
+        viewVariables.put("username", username);
+        viewVariables.put("postId", postId);
+        viewVariables.put("title", title);
+        viewVariables.put("content", content);
+        return new ModelAndView("edit_post_page", viewVariables);
+    }
+    @RequestMapping(value = "/update_post" , method = RequestMethod.POST)
+    public ModelAndView update_post( @RequestParam("title") String title,
+                                     @RequestParam("content") String content,
+                                     @RequestParam("postId") long postId
+    ){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        java.util.Date now = new java.util.Date();
+        Member m = memberService.getMemberByUsername(username);
+        Post post = postService.getPostById(postId);
+        Heritage heritage = heritageService.getFirstHeritageByPost(post);
+        long heritageId = heritage.getId();
+        postService.updatePost(postId, title, content, new Timestamp(now.getTime()));
+        return new ModelAndView("redirect:/show_posts/" + heritageId);
+    }
 
     @RequestMapping(value = "/show_heritages")
     public ModelAndView show_heritages() {

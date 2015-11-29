@@ -24,7 +24,7 @@
         <many-to-one name="post" class="model.Post" cascade="save-update">
             <column name="POST_ID" not-null="true"/>
         </many-to-one>
-        <set name="votes" inverse="true" cascade="save-update">
+        <set name="votes" inverse="true" cascade="save-update" lazy="false">
             <key>
                 <column name="COMMENT_ID" not-null="true"/>
             </key>
