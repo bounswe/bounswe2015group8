@@ -200,6 +200,7 @@ public class MainController {
     @RequestMapping(value = "/upload_post", method = RequestMethod.POST)
     public ModelAndView upload_post(@RequestParam("title") String title,
                                     @RequestParam("content") String content,
+                                    @RequestParam("place") String place,
                                     @RequestParam("media") MultipartFile media,
                                     @RequestParam("heritageId") long heritageId) {
         logger.info("heritage id: " + Long.toString(heritageId));
@@ -218,7 +219,7 @@ public class MainController {
         java.util.Date now = new java.util.Date();
         Member m = memberService.getMemberByUsername(username);
         Heritage heritage = heritageService.getHeritageById(heritageId);
-        Post post = postService.savePost(m, 0, new Timestamp(now.getTime()), title, content, heritage);
+        Post post = postService.savePost(m, 0, new Timestamp(now.getTime()), title, content, place, heritage);
 
         if (!media.isEmpty()) {
             try {
@@ -367,9 +368,11 @@ public class MainController {
         Post post = postService.getPostById(postId);
         String title = post.getTitle();
         String content = post.getContent();
+        String place = post.getPlace();
         Map viewVariables = new HashMap();
         viewVariables.put("username", username);
         viewVariables.put("postId", postId);
+        viewVariables.put("place", place);
         viewVariables.put("title", title);
         viewVariables.put("content", content);
         return new ModelAndView("edit_post_page", viewVariables);
@@ -378,6 +381,8 @@ public class MainController {
     @RequestMapping(value = "/update_post", method = RequestMethod.POST)
     public ModelAndView update_post(@RequestParam("title") String title,
                                     @RequestParam("content") String content,
+                                    @RequestParam("place") String place,
+                                    @RequestParam("media") MultipartFile media,
                                     @RequestParam("postId") long postId
     ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -387,7 +392,40 @@ public class MainController {
         Post post = postService.getPostById(postId);
         Heritage heritage = heritageService.getFirstHeritageByPost(post);
         long heritageId = heritage.getId();
-        postService.updatePost(postId, title, content, new Timestamp(now.getTime()));
+        postService.updatePost(postId, title, content, place, new Timestamp(now.getTime()));
+        logger.info("PLACCCCCEEEEE " + place);
+
+        if (!media.isEmpty()) {
+            try {
+                // Creating the directory to store file
+                String mediaName = media.getOriginalFilename();
+                String filePath = mediaName;
+
+                File toUpload = new File(mediaName);
+                toUpload.createNewFile();
+                FileOutputStream fos = new FileOutputStream(toUpload);
+                fos.write(media.getBytes());
+                fos.close();
+
+                final Session session = Main.getSession();
+                session.getTransaction().begin();
+                try {
+                    Map utilsMap = ObjectUtils.asMap("resource_type", "auto");
+                    Map uploadResult = CloudinaryController.getCloudinary().uploader().upload(toUpload, utilsMap);
+                    int mediaType = CloudinaryController.getMediaType(mediaName);
+                    logger.info("media type is " + mediaType);
+                    Media mediaObject = new Media(heritage.getId(), uploadResult.get("url").toString(), mediaType, true);
+                    session.save(mediaObject);
+                    session.getTransaction().commit();
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                    return new ModelAndView("list_post", "error", "File uploaded failed:" + mediaName);
+                }
+            } catch (Exception e) {
+                return new ModelAndView("list_post", "error", "You failed to upload the file" + e.getMessage());
+            }
+        }
+
         return new ModelAndView("redirect:/show_posts/" + heritageId);
     }
 

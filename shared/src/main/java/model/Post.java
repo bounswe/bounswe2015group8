@@ -103,7 +103,7 @@ public class Post {
         return place;
     }
 
-    public void setPlace(String content) {
+    public void setPlace(String place) {
         this.place = place;
     }
 

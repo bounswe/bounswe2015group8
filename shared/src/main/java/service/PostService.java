@@ -6,6 +6,7 @@ import model.Heritage;
 import model.Member;
 import model.Post;
 import model.Tag;
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import java.sql.Timestamp;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 public class PostService {
     private PostDao postDao;
+    private Logger logger = Logger.getLogger(PostService.class);
 
     public PostService(SessionFactory sessionFactory) {
         postDao = new PostDaoImpl();
@@ -40,13 +42,20 @@ public class PostService {
         Post post = new Post(member, type, timestamp, title, content);
         return postDao.savePost(post, heritage);
     }
-    public Post updatePost(long postId, String newTitle, String newContent, Timestamp lastEditDate){
+
+    public Post savePost(Member member, int type, Timestamp timestamp, String title, String content, String place, Heritage heritage) {
+        Post post = new Post(member, type, timestamp, title, content, place);
+        return postDao.savePost(post, heritage);
+    }
+    public Post updatePost(long postId, String newTitle, String newContent, String newPlace, Timestamp lastEditDate){
+
         Post post = getPostById(postId);
         post.setContent(newContent);
         post.setTitle(newTitle);
+        post.setPlace(newPlace);
         post.setLastEditedDate(lastEditDate);
+        logger.info("NEW PLACE " + newPlace);
         return postDao.updatePost(post);
-
 
     }
 }
