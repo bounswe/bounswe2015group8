@@ -12,6 +12,7 @@ public interface TagDao {
     Tag getTagById(long id);
     Tag getTagByText(String tagText);
     Tag getTagByTextAndContext(String tagText, String tagContext);
+    String[] getTagContextsByText(String text);
 
     List<Tag> getTagsByHeritage(Heritage heritage);
     List<Tag> getTagsByPost(Post post);

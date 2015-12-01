@@ -28,6 +28,10 @@ public class TagService {
         return tagDao.getTagByTextAndContext(text, context);
     }
 
+    public String[] getTagContextsByText(String text){
+        return tagDao.getTagContextsByText(text);
+    }
+
     public String[] extractTextAndContext(String wholetag){
         String tagContext = null;
         String tagText = wholetag;

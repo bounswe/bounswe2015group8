@@ -67,7 +67,7 @@
         });
         $(".tokenfield").tokenfield({
             autocomplete: {
-                source: tags,
+                source: [],
                 delay: 100
             }
         });
@@ -77,7 +77,23 @@
                 var newToken = $(inputField).val() + ")";
                 $(inputField).parent().find("input.tokenfield").tokenfield('createToken', newToken);
                 $(inputField).val("");
+                $(inputField).autocomplete('option', 'source', []);
                 e.preventDefault();
+            }
+            else if(e.which == 40){ // If it is an opening paranthesis "("
+                var inputField = $(this).find("input.token-input");
+                var tagText = $(inputField).val();
+                $.ajax({
+                    url: "${contextPath}/suggestTagContexts",
+                    data:{tagText: tagText},
+                    type: "POST",
+                    success: function(response) {
+                        var tagSuggestions = response.map(function(suggestion){
+                            return tagText + "(" + suggestion + ")";
+                        })
+                        $(inputField).autocomplete('option', 'source', tagSuggestions);
+                    }
+                });
             }
         });
 

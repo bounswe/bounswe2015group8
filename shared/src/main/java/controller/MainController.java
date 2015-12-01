@@ -532,4 +532,15 @@ public class MainController {
         return new ModelAndView("list_post", "allContent", allContent);
     }
 
+    @RequestMapping(value = "/suggestTagContexts")
+    @ResponseBody
+    public String[] suggestTagContexts(@RequestParam(value = "tagText") String tagText){
+        return tagService.getTagContextsByText(tagText);
+    }
+
+    @RequestMapping(value = "/google_map")
+    public ModelAndView googleMap(){
+        return new ModelAndView("google_map");
+    }
+
 }
