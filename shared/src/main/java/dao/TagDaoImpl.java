@@ -51,6 +51,15 @@ public class TagDaoImpl implements TagDao {
     }
 
     @SuppressWarnings("unchecked")
+    public List<Tag> getTagsByContext(String context){
+        Session s = getSessionFactory().openSession();
+        List<Tag> tags = s
+                .createQuery("from Tag where tagContext=?")
+                .setParameter(0, context).list();
+        return tags;
+    }
+
+    @SuppressWarnings("unchecked")
     public List<Tag> getTagsByHeritage(Heritage heritage){
         Session s = getSessionFactory().openSession();
         List<TagHeritage> tagheritages = s
@@ -149,6 +158,24 @@ public class TagDaoImpl implements TagDao {
         s.getTransaction().commit();
         s.close();
         return tagPost;
+    }
+
+    public int countHeritagesForTag(Tag tag){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from TagHeritage where tag=?")
+                .setParameter(0, tag).list().size();
+        s.close();
+        return count;
+    }
+
+    public int countPostsForTag(Tag tag){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from TagPost where tag=?")
+                .setParameter(0, tag).list().size();
+        s.close();
+        return count;
     }
 
     public SessionFactory getSessionFactory() {

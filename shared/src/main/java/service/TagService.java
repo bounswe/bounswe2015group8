@@ -5,6 +5,7 @@ import dao.TagDaoImpl;
 import model.*;
 import org.hibernate.SessionFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -96,5 +97,51 @@ public class TagService {
             tag = tagDao.saveTag(tag);
         }
         return tagDao.saveTagPost(tag, post);
+    }
+
+    public List<Tag> getSemanticallyRelatedTags(Tag tag){
+        String tagText = tag.getTagText();
+        String tagContext = tag.getTagContext();
+        List<Tag> relatedTags = new ArrayList<Tag>();
+
+        for(Tag relatedTag : tagDao.getTagsByContext(tagContext)){
+            if(!tag.equals(relatedTag) && !relatedTags.contains(relatedTag)){
+                relatedTags.add(relatedTag);
+            }
+        }
+        return relatedTags;
+    }
+
+    public int countHeritagesForTag(Tag tag){
+        return tagDao.countHeritagesForTag(tag);
+    }
+
+    public int countPostsForTag(Tag tag){
+        return tagDao.countPostsForTag(tag);
+    }
+
+    public int countTag(Tag tag){
+        return countHeritagesForTag(tag) + countPostsForTag(tag);
+    }
+
+    public List<Tag> sortByCount(List<Tag> tags){
+        int size = tags.size();
+        List<Tag> sortedTags = new ArrayList<Tag>();
+
+        for(int i = 0; i < size; i++){
+            int maxCount = 0;
+            Tag mostPopularTag = null;
+            for(int j = 0; j < tags.size(); j++){
+                Tag tag = tags.get(j);
+                int count = countTag(tags.get(j));
+                if(count > maxCount){
+                    mostPopularTag = tag;
+                    maxCount = count;
+                }
+            }
+            sortedTags.add(mostPopularTag);
+            tags.remove(mostPopularTag);
+        }
+        return sortedTags;
     }
 }

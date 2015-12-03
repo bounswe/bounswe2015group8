@@ -1,8 +1,6 @@
 package dao;
 
-import model.Heritage;
-import model.HeritagePost;
-import model.Post;
+import model.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -45,6 +43,19 @@ public class HeritageDaoImpl implements HeritageDao {
         List<Heritage> heritages = new ArrayList<Heritage>();
         for (int i = 0; i < heritageposts.size(); i++) {
             heritages.add(heritageposts.get(i).getHeritage());
+        }
+        return heritages;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Heritage> getHeritagesByTag(Tag tag) {
+        Session s = getSessionFactory().openSession();
+        List<TagHeritage> tagheritages = s
+                .createQuery("from TagHeritage where tag=?")
+                .setParameter(0, tag).list();
+        List<Heritage> heritages = new ArrayList<Heritage>();
+        for (int i = 0; i < tagheritages.size(); i++) {
+            heritages.add(tagheritages.get(i).getHeritage());
         }
         return heritages;
     }

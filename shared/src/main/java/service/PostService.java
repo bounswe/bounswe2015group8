@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -57,5 +59,18 @@ public class PostService {
         logger.info("NEW PLACE " + newPlace);
         return postDao.updatePost(post);
 
+    }
+
+    public List<Post> removeDuplicates(List<Post> posts){
+        HashSet<Long> postIds = new HashSet<>();
+        for(int i = 0; i < posts.size(); i++){
+            if(!postIds.contains(posts.get(i).getId())){
+                postIds.add(posts.get(i).getId());
+            }
+            else{
+                posts.remove(i);
+            }
+        }
+        return posts;
     }
 }

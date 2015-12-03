@@ -556,33 +556,6 @@ public class MainController {
         return tags;
     }
 
-    @RequestMapping(value = "/searchByTag/{wholetag}")
-    public ModelAndView searchByTag(@PathVariable String wholetag){
-        final Session session = Main.getSession();
-
-        String[] tagPieces = tagService.extractTextAndContext(wholetag);
-        Tag tag = tagService.getTagByText(tagPieces[0], tagPieces[1]);
-        List posts = postService.getPostsByTag(tag);
-        List medias = session.createCriteria(Media.class).list();
-        List allTags = session.createCriteria(Tag.class).list();
-
-        List tags = new ArrayList<Tag>();
-        tags.add(tag);
-
-        Map<String, List> allContent = new HashMap<String, List>();
-        allContent.put("searchedTags", tags);
-        allContent.put("posts", posts);
-        allContent.put("medias", medias);
-        allContent.put("allTags", allTags);
-        return new ModelAndView("list_post", "allContent", allContent);
-    }
-
-    @RequestMapping(value = "/suggestTagContexts")
-    @ResponseBody
-    public String[] suggestTagContexts(@RequestParam(value = "tagText") String tagText){
-        return tagService.getTagContextsByText(tagText);
-    }
-
     @RequestMapping(value = "/google_map")
     public ModelAndView googleMap(){
         return new ModelAndView("google_map");

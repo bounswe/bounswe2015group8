@@ -2,6 +2,7 @@ package dao;
 
 import model.Heritage;
 import model.Post;
+import model.Tag;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface HeritageDao {
     List<Heritage> getAllHeritages();
 
     List<Heritage> getHeritagesByPost(Post post);
+
+    List<Heritage> getHeritagesByTag(Tag tag);
 
     Heritage saveHeritage(Heritage heritage);
 
