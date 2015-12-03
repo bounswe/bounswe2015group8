@@ -1,22 +1,27 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.CloudinaryAPI;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.HeritageViewAdapter;
-import com.cmpe.bounswe2015group8.westory.front.adapter.PostAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
+import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 import java.util.Arrays;
@@ -32,7 +37,7 @@ import java.util.Arrays;
  */
 public class HeritageViewFragment extends NamedFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String NAME = "HERITAGE_VIEW";
-    private Button btnEdit, btnAddPost;
+    private Button btnEdit, btnAddPost, btnHeritageNewMedia;
     private TextView tvPlace, tvCreationDate, tvDescription;
     private Heritage heritage;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -52,12 +57,15 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         tvDescription = (TextView) header.findViewById(R.id.tvHeritageViewDescriptionValue);
         btnEdit = (Button) header.findViewById(R.id.btnHeritageEdit);
         btnAddPost = (Button) header.findViewById(R.id.btnHeritageNewPost);
+        btnHeritageNewMedia = (Button) header.findViewById(R.id.btnHeritageNewMedia);
         if(memberLocalStore.getUserLoggedIn()) {
             btnEdit.setOnClickListener(this);
             btnAddPost.setOnClickListener(this);
+            btnHeritageNewMedia.setOnClickListener(this);
         } else {
             btnEdit.setVisibility(View.GONE);
             btnAddPost.setVisibility(View.GONE);
+            btnHeritageNewMedia.setVisibility(View.GONE);
         }
         initViews(this.getArguments());
         elvData.addHeaderView(header);
@@ -88,6 +96,44 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 pef.setArguments(b2);
                 MainActivity.beginFragment(getActivity(),pef);
                 break;
+            case R.id.btnHeritageNewMedia:
+                uploadMedia();
+                break;
+        }
+    }
+    private void uploadMedia() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Select media type");
+        final String[] mediaTypes = getResources().getStringArray(R.array.media_types);
+        builder.setItems(mediaTypes,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        uploadMedia(which);
+                    }
+                });
+        builder.show();
+    }
+    private void uploadMedia(int type) {
+        startActivityForResult(CloudinaryAPI.getMediaIntent(type),type);
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, int resultCode, Intent data) {
+        if(CloudinaryAPI.canHandleRequest(requestCode)) {
+            if(resultCode == FragmentActivity.RESULT_OK) {
+                Consumer<String> c = new Consumer<String>() {
+                    @Override
+                    public void accept(String link) {
+                        Media m = new Media(heritage.getId(), link, requestCode, false);
+                        //TODO upload media to server once API call is ready
+                        Toast.makeText(getActivity(), link, Toast.LENGTH_LONG).show();
+                    }
+                };
+                new CloudinaryAPI.CloudinaryUploadTask(getActivity(),c).execute(data.getData());
+            }
+        } else {
+            super.onActivityResult(requestCode,resultCode,data);
         }
     }
     @Override

@@ -33,6 +33,7 @@
     <string name="post_small_see_heritages"> -see Heritages</string>
     <string name="btn_new_post">Add Post</string>
     <string name="btn_new_comment">Add Comment</string>
+    <string name="btn_new_media">Add Media</string>
     <string name="generic_description">Description:</string>
     <string name="generic_owner">Creator:</string>
     <string name="generic_title">Title:</string>
@@ -67,5 +68,10 @@
         <item>Heritages</item>
         <item>Tags</item>
         <item>Media</item>
+    </string-array>
+    <string-array name="media_types">
+        <item>Image</item>
+        <item>Audio</item>
+        <item>Video</item>
     </string-array>
 </resources>

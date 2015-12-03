@@ -1,22 +1,27 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.CloudinaryAPI;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
-import com.cmpe.bounswe2015group8.westory.front.adapter.CommentAdapter;
 import com.cmpe.bounswe2015group8.westory.front.adapter.PostViewAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Comment;
+import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 import java.util.Arrays;
@@ -31,7 +36,7 @@ import java.util.Arrays;
  */
 public class PostViewFragment extends NamedFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
     public static final String NAME = "POST_VIEW";
-    private Button btnEdit, btnComment;
+    private Button btnEdit, btnComment, btnPostNewMedia;
     private TextView tvOwner, tvCreationDate, tvLastEditDate, tvContent;
     private Post post;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -52,6 +57,7 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         tvContent = (TextView) header.findViewById(R.id.tvPostViewContentValue);
         btnEdit = (Button) header.findViewById(R.id.btnPostViewEdit);
 		btnComment = (Button) header.findViewById(R.id.btnPostViewNewComment);
+        btnPostNewMedia = (Button) header.findViewById(R.id.btnPostNewMedia);
         initViews(this.getArguments());
         if(memberLocalStore.getUserLoggedIn() && post.getOwnerId() == memberLocalStore.getLoggedInMember().getId()) {
             btnEdit.setOnClickListener(this);
@@ -60,8 +66,10 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         }
         if(memberLocalStore.getUserLoggedIn()) {
             btnComment.setOnClickListener(this);
+            btnPostNewMedia.setOnClickListener(this);
         } else {
             btnComment.setVisibility(View.GONE);
+            btnPostNewMedia.setVisibility(View.GONE);
         }
         elvData.addHeaderView(header);
         manualRefresh();
@@ -98,6 +106,43 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                 nf1.setArguments(b1);
                 MainActivity.beginFragment(getActivity(), nf1);
                 break;
+            case R.id.btnPostNewMedia:
+                uploadMedia();
+                break;
+        }
+    }
+    private void uploadMedia() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Select media type");
+        final String[] mediaTypes = getResources().getStringArray(R.array.media_types);
+        builder.setItems(mediaTypes,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        uploadMedia(which);
+                    }
+                });
+        builder.show();
+    }
+    private void uploadMedia(int type) {
+        startActivityForResult(CloudinaryAPI.getMediaIntent(type), type);
+    }
+    @Override
+    public void onActivityResult(final int requestCode, int resultCode, Intent data) {
+        if(CloudinaryAPI.canHandleRequest(requestCode)) {
+            if(resultCode == FragmentActivity.RESULT_OK) {
+                Consumer<String> c = new Consumer<String>() {
+                    @Override
+                    public void accept(String link) {
+                        Media m = new Media(post.getId(), link, requestCode, true);
+                        //TODO upload media to server once API call is ready
+                        Toast.makeText(getActivity(), link, Toast.LENGTH_LONG).show();
+                    }
+                };
+                new CloudinaryAPI.CloudinaryUploadTask(getActivity(),c).execute(data.getData());
+            }
+        } else {
+            super.onActivityResult(requestCode,resultCode,data);
         }
     }
     @Override

@@ -7,7 +7,9 @@ public class Media {
     private long id;
     private long postOrHeritageId;
     private String mediaLink;
+    // 0 -> image, 1-> audio, 2-> video
     private int mediaType;
+    // true denotes post, false denotes heritage
     private boolean postOrHeritage;
 
     public Media() {
