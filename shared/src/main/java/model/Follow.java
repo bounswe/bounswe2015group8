@@ -1,5 +1,9 @@
 package model;
 
+import api.MemberUtility;
+
+import java.util.ArrayList;
+
 /**
  * Created by xyllan on 23.10.2015.
  */
@@ -8,6 +12,21 @@ public class Follow {
     private long followeeId;
     private Member follower;
     private Member followee;
+
+    public Follow(long followerId, long followeeId) {
+        this.followerId = followerId;
+        this.followeeId = followeeId;
+        ArrayList<Member> members = MemberUtility.getUserList();
+        for (Member m : members) {
+            if (m.getId() == followeeId) {
+                followee = m;
+            } else if (m.getId() == followerId) {
+                follower = m;
+            }
+        }
+
+        follower.follow(followee);
+    }
 
     public long getFollowerId() {
         return followerId;

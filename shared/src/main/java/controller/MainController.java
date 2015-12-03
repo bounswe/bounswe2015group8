@@ -4,7 +4,6 @@ import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +51,8 @@ public class MainController {
     CommentService commentService;
     VoteService voteService;
     TagService tagService;
+    FollowService followService;
+
     public MainController() {
         memberService = new MemberDetailsService();
         MemberDaoImpl mdao = new MemberDaoImpl();
@@ -62,6 +63,7 @@ public class MainController {
         commentService = new CommentService(Main.getSessionFactory());
         voteService = new VoteService(Main.getSessionFactory());
         tagService = new TagService(Main.getSessionFactory());
+        followService = new FollowService(Main.getSessionFactory());
     }
     @RequestMapping(value = "/")
     public ModelAndView home() {
@@ -368,6 +370,16 @@ public class MainController {
         viewVariables.put("content", content);
         return new ModelAndView("edit_post_page", viewVariables);
     }
+
+    @RequestMapping(value = "/follow/{followeeId}")
+    public ModelAndView follow(@PathVariable long followeeId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Member m = memberService.getMemberByUsername(username);
+        followService.saveFollow(m.getId(), followeeId);
+        return new ModelAndView("redirect:/show_heritages");
+    }
+
     @RequestMapping(value = "/update_post" , method = RequestMethod.POST)
     public ModelAndView update_post( @RequestParam("title") String title,
                                      @RequestParam("content") String content,
