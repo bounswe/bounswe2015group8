@@ -1,10 +1,10 @@
 package controller;
 
+import com.cloudinary.utils.ObjectUtils;
 import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,7 @@ import service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
@@ -52,6 +53,7 @@ public class MainController {
     CommentService commentService;
     VoteService voteService;
     TagService tagService;
+
     public MainController() {
         memberService = new MemberDetailsService();
         MemberDaoImpl mdao = new MemberDaoImpl();
@@ -63,30 +65,30 @@ public class MainController {
         voteService = new VoteService(Main.getSessionFactory());
         tagService = new TagService(Main.getSessionFactory());
     }
+
     @RequestMapping(value = "/")
     public ModelAndView home() {
         return new ModelAndView("home");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(@RequestParam(value="username") String username,
-                              @RequestParam(value="password") String password){
+    public ModelAndView login(@RequestParam(value = "username") String username,
+                              @RequestParam(value = "password") String password) {
 
         final Session session = Main.getSession();
         int numberUsers = 0;
-        try{
+        try {
 
             Criteria criteria = session.createCriteria(Member.class)
                     .add(Restrictions.eq("username", "xascsanlcs"))
                     .add(Restrictions.eq("password", password));
             numberUsers = criteria.list().size();
 
-        } finally{
+        } finally {
             session.close();
-            if(numberUsers == 0){
+            if (numberUsers == 0) {
                 return new ModelAndView("login", "doesUserExist", false);
-            }
-            else{
+            } else {
                 return new ModelAndView("login_success", "username", username); // login_success.jsp will be created soon.
             }
         }
@@ -96,9 +98,9 @@ public class MainController {
 
     @RequestMapping(value = "/forget_password", method = RequestMethod.POST)
     public ModelAndView forget_password(HttpServletRequest request,
-                                        @RequestParam(value = "username") String username){
+                                        @RequestParam(value = "username") String username) {
         Member member = memberService.getMemberByUsername(username);
-        if(member == null){
+        if (member == null) {
             return new ModelAndView("redirect:/forget_password?userNotExists");
         }
         String email = member.getEmail();
@@ -133,12 +135,12 @@ public class MainController {
     }
 
     @RequestMapping(value = "/forget_password", method = RequestMethod.GET)
-    public ModelAndView forget_password_page(@RequestParam(value = "userNotExists", required = false) String notExists){
+    public ModelAndView forget_password_page(@RequestParam(value = "userNotExists", required = false) String notExists) {
         return new ModelAndView("forget_password");
     }
 
     @RequestMapping(value = "/reset_password", method = RequestMethod.GET)
-    public ModelAndView reset_password_page(@RequestParam(value = "token") String token){
+    public ModelAndView reset_password_page(@RequestParam(value = "token") String token) {
         final Session session = Main.getSession();
         session.getTransaction().begin();
         ResetPassword rp = (ResetPassword) session.createCriteria(ResetPassword.class)
@@ -149,7 +151,7 @@ public class MainController {
 
     @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
     public ModelAndView reset_password(@RequestParam(value = "username") String username,
-                                       @RequestParam(value = "password") String password){
+                                       @RequestParam(value = "password") String password) {
         logger.info("username " + username);
         logger.info("password " + password);
         Member member = memberService.getMemberByUsername(username);
@@ -158,29 +160,32 @@ public class MainController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(){
+    public ModelAndView login() {
         return new ModelAndView("login");
     }
+
     @RequestMapping(value = "/login_success", method = RequestMethod.GET)
     public ModelAndView login_success() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        return new ModelAndView("login_success","username",name);
+        return new ModelAndView("login_success", "username", name);
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ModelAndView signup(@RequestParam(value="username") String username,
-                               @RequestParam(value="password") String password,
-                               @RequestParam(value="email") String email){
+    public ModelAndView signup(@RequestParam(value = "username") String username,
+                               @RequestParam(value = "password") String password,
+                               @RequestParam(value = "email") String email) {
         Member m = memberService.createMember(username, password, email, "");
         Map<String, String> templateVars = new HashMap<String, String>();
-        templateVars.put("member_id", ""+m.getId());
+        templateVars.put("member_id", "" + m.getId());
         templateVars.put("username", m.getUsername());
         return new ModelAndView("login");
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public ModelAndView signup(){ return new ModelAndView("signup"); }
+    public ModelAndView signup() {
+        return new ModelAndView("signup");
+    }
 
     @RequestMapping(value = "/post/{heritageId}")
     public ModelAndView post(@PathVariable long heritageId) {
@@ -220,27 +225,27 @@ public class MainController {
                 // Creating the directory to store file
                 String mediaName = media.getOriginalFilename();
                 String filePath = mediaName;
+
+                File toUpload = new File(mediaName);
+                toUpload.createNewFile();
+                FileOutputStream fos = new FileOutputStream(toUpload);
+                fos.write(media.getBytes());
+                fos.close();
+
                 final Session session = Main.getSession();
                 session.getTransaction().begin();
-                Media mediaObject = new Media(post.getId(), filePath, 0, false);
-
-                String rootPath = System.getProperty("catalina.home");
-                File dir = new File(rootPath + File.separator + "webapps"
-                        + File.separator + appContext.getApplicationName().substring(1)
-                        + File.separator + "static");
-                if (!dir.exists())
-                    dir.mkdirs();
-
-                File serverFile = new File(dir.getAbsolutePath() + File.separator + mediaName);
-
                 try {
-                    media.transferTo(serverFile);
-                } catch (IllegalStateException e) {
+                    Map utilsMap = ObjectUtils.asMap("resource_type", "auto");
+                    Map uploadResult = CloudinaryController.getCloudinary().uploader().upload(toUpload, utilsMap);
+                    int mediaType = CloudinaryController.getMediaType(mediaName);
+                    logger.info("media type is " + mediaType);
+                    Media mediaObject = new Media(post.getId(), uploadResult.get("url").toString(), mediaType, false);
+                    session.save(mediaObject);
+                    session.getTransaction().commit();
+                } catch (RuntimeException e) {
                     e.printStackTrace();
                     return new ModelAndView("list_post", "error", "File uploaded failed:" + mediaName);
                 }
-                session.save(mediaObject);
-                session.getTransaction().commit();
             } catch (Exception e) {
                 return new ModelAndView("list_post", "error", "You failed to upload the file" + e.getMessage());
             }
@@ -325,27 +330,27 @@ public class MainController {
                 // Creating the directory to store file
                 String mediaName = media.getOriginalFilename();
                 String filePath = mediaName;
+
+                File toUpload = new File(mediaName);
+                toUpload.createNewFile();
+                FileOutputStream fos = new FileOutputStream(toUpload);
+                fos.write(media.getBytes());
+                fos.close();
+
                 final Session session = Main.getSession();
                 session.getTransaction().begin();
-                Media mediaObject = new Media(heritage.getId(), filePath, 0, true);
-
-                String rootPath = System.getProperty("catalina.home");
-                File dir = new File(rootPath + File.separator + "webapps"
-                        + File.separator + appContext.getApplicationName().substring(1)
-                        + File.separator + "static");
-                if (!dir.exists())
-                    dir.mkdirs();
-
-                File serverFile = new File(dir.getAbsolutePath() + File.separator + mediaName);
 
                 try {
-                    media.transferTo(serverFile);
-                } catch (IllegalStateException e) {
+                    Map utilsMap = ObjectUtils.asMap("resource_type", "auto");
+                    Map uploadResult = CloudinaryController.getCloudinary().uploader().upload(toUpload, utilsMap);
+                    int mediaType = CloudinaryController.getMediaType(mediaName);
+                    Media mediaObject = new Media(heritage.getId(), uploadResult.get("url").toString(), mediaType, true);
+                    session.save(mediaObject);
+                    session.getTransaction().commit();
+                }  catch (RuntimeException e) {
                     e.printStackTrace();
                     return new ModelAndView("list_post", "error", "File uploaded failed:" + mediaName);
                 }
-                session.save(mediaObject);
-                session.getTransaction().commit();
             } catch (Exception e) {
                 return new ModelAndView("list_post", "error", "You failed to upload the file" + e.getMessage());
             }
@@ -354,8 +359,9 @@ public class MainController {
         List<Heritage> allHeritages = heritageService.getAllHeritages();
         return new ModelAndView("redirect:/show_heritages");
     }
+
     @RequestMapping(value = "/edit_post/{postId}")
-    public ModelAndView edit_post(@PathVariable long postId){
+    public ModelAndView edit_post(@PathVariable long postId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Post post = postService.getPostById(postId);
@@ -368,11 +374,12 @@ public class MainController {
         viewVariables.put("content", content);
         return new ModelAndView("edit_post_page", viewVariables);
     }
-    @RequestMapping(value = "/update_post" , method = RequestMethod.POST)
-    public ModelAndView update_post( @RequestParam("title") String title,
-                                     @RequestParam("content") String content,
-                                     @RequestParam("postId") long postId
-    ){
+
+    @RequestMapping(value = "/update_post", method = RequestMethod.POST)
+    public ModelAndView update_post(@RequestParam("title") String title,
+                                    @RequestParam("content") String content,
+                                    @RequestParam("postId") long postId
+    ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         java.util.Date now = new java.util.Date();
@@ -399,7 +406,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/comment/{postId}")
-    public ModelAndView comment(@PathVariable long postId){
+    public ModelAndView comment(@PathVariable long postId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Map viewVariables = new HashMap();
@@ -437,7 +444,7 @@ public class MainController {
         //allContent.put("comments", comments);
         session.close();
 
-        return new ModelAndView("list_post","allContent", allContent);
+        return new ModelAndView("list_post", "allContent", allContent);
     }
 
     // This function will be called via an AJAX request.
@@ -445,7 +452,7 @@ public class MainController {
     @RequestMapping(value = "/vote_post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public long vote_post(@PathVariable long postId,
-                          @RequestParam(value = "voteType") boolean voteType){
+                          @RequestParam(value = "voteType") boolean voteType) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Member member = memberService.getMemberByUsername(username);
@@ -460,7 +467,7 @@ public class MainController {
     @RequestMapping(value = "/vote_comment/{commentId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public long vote_comment(@PathVariable long commentId,
-                             @RequestParam(value = "voteType") boolean voteType){
+                             @RequestParam(value = "voteType") boolean voteType) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Member member = memberService.getMemberByUsername(username);
@@ -473,16 +480,16 @@ public class MainController {
     @RequestMapping(value = "/tag_heritage/{heritageId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String[] tag_heritage(@PathVariable long heritageId,
-                             @RequestParam(value = "tagTexts[]") String[] tagTexts){
+                                 @RequestParam(value = "tagTexts[]") String[] tagTexts) {
 
         Heritage heritage = heritageService.getHeritageById(heritageId);
-        for(int i = 0; i < tagTexts.length; i++){
+        for (int i = 0; i < tagTexts.length; i++) {
             tagService.addTag(tagTexts[i], heritage);
         }
         List<Tag> heritageTags = tagService.getTagsByHeritage(heritage);
         String[] tags = new String[heritageTags.size()];
         final Session session = Main.getSession();
-        for(int i = 0; i < tags.length; i++){
+        for (int i = 0; i < tags.length; i++) {
             session.update(heritageTags.get(i));
             tags[i] = heritageTags.get(i).getTagText();
         }
@@ -493,17 +500,17 @@ public class MainController {
     @RequestMapping(value = "/tag_post/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String[] tag_post(@PathVariable long postId,
-                             @RequestParam(value = "tagTexts[]") String[] tagTexts){
+                             @RequestParam(value = "tagTexts[]") String[] tagTexts) {
 
 
         Post post = postService.getPostById(postId);
-        for(int i = 0; i < tagTexts.length; i++){
+        for (int i = 0; i < tagTexts.length; i++) {
             tagService.addTag(tagTexts[i], post);
         }
         List<Tag> postTags = tagService.getTagsByPost(post);
         String[] tags = new String[postTags.size()];
         final Session session = Main.getSession();
-        for(int i = 0; i < tags.length; i++){
+        for (int i = 0; i < tags.length; i++) {
             session.update(postTags.get(i));
             tags[i] = postTags.get(i).getTagText();
         }
