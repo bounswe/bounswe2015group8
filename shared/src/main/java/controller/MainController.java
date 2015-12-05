@@ -53,6 +53,7 @@ public class MainController {
     CommentService commentService;
     VoteService voteService;
     TagService tagService;
+    FollowService followService;
 
     public MainController() {
         memberService = new MemberDetailsService();
@@ -64,6 +65,7 @@ public class MainController {
         commentService = new CommentService(Main.getSessionFactory());
         voteService = new VoteService(Main.getSessionFactory());
         tagService = new TagService(Main.getSessionFactory());
+        followService = new FollowService(Main.getSessionFactory());
     }
 
     @RequestMapping(value = "/")
@@ -383,8 +385,7 @@ public class MainController {
                                     @RequestParam("content") String content,
                                     @RequestParam("place") String place,
                                     @RequestParam("media") MultipartFile media,
-                                    @RequestParam("postId") long postId
-    ) {
+                                    @RequestParam("postId") long postId ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         java.util.Date now = new java.util.Date();
@@ -427,6 +428,14 @@ public class MainController {
         }
 
         return new ModelAndView("redirect:/show_posts/" + heritageId);
+    }
+    @RequestMapping(value = "/follow/{followeeId}")
+    public ModelAndView follow(@PathVariable long followeeId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Member m = memberService.getMemberByUsername(username);
+        followService.saveFollow(m.getId(), followeeId);
+        return new ModelAndView("redirect:/show_heritages");
     }
 
     @RequestMapping(value = "/show_heritages")

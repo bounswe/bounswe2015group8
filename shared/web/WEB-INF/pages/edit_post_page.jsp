@@ -44,4 +44,10 @@
     </div>
   </div>
 </form>
+
+<script type="text/javascript">
+  function fillPlaceFromGoogleMap(){
+    $("#place").val(window['place']);
+  }
+</script>
 <%@ include file="/WEB-INF/pages/footer.jsp" %>
