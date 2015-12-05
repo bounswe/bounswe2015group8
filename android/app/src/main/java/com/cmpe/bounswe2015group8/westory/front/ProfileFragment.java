@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,17 +99,17 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
         }
     }
 
-        private void setAdapter(Post[] posts) {
-        ArrayList<Post> usersPosts = new ArrayList<Post>();
-        Member member = memberLocalStore.getLoggedInMember();
-        long id=member.getId();
-        for (Post p:posts){
-            if(p.getOwnerId()==id)
-                usersPosts.add(p);
-        }
-        Post[] postArr = new Post[usersPosts.size()];
-        postArr = usersPosts.toArray(postArr);
-        listView.setAdapter(new PostAdapter(getActivity(),R.layout.post_small, postArr));
+    private void setAdapter(Post[] posts) {
+    ArrayList<Post> usersPosts = new ArrayList<Post>();
+    Member member = memberLocalStore.getLoggedInMember();
+    long id=member.getId();
+    for (Post p:posts){
+        if(p.getOwnerId()==id)
+            usersPosts.add(p);
+    }
+    Post[] postArr = new Post[usersPosts.size()];
+    postArr = usersPosts.toArray(postArr);
+    listView.setAdapter(new PostAdapter(getActivity(),R.layout.post_small, postArr));
     }
 
     public void displayMemberDetails(){
