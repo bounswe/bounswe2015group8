@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
-<div class="page-content container">
+<div class="page-content container" style="width: 450px">
 
     <div class="panel panel-default">
         <div class="panel-body">
@@ -21,7 +21,9 @@
                     <input class="form-control" type="password" name='password2' placeholder="Confirm password"/>
                 </div>
                 <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-4" style="float:right">
                     <button type="submit" class="btn btn btn-default btn-block">Sign Up</button>
+                   </div>
                 </div>
             </form>
         </div>
