@@ -18,6 +18,7 @@ public class Member {
     private transient Collection<Member> followers;
     private transient Collection<Post> posts;
     private transient Collection<PostVote> postVotes;
+    private transient Collection<Heritage> followedHeritages;
     public Member() {
         comments = new HashSet<Comment>();
         commentVotes = new HashSet<CommentVote>();
@@ -25,6 +26,7 @@ public class Member {
         followers = new HashSet<Member>();
         posts = new HashSet<Post>();
         postVotes = new HashSet<PostVote>();
+        followedHeritages = new HashSet<Heritage>();
     }
 
     public Member(String username, String password, String email, String profilePicture) {
@@ -153,6 +155,13 @@ public class Member {
     public void setPostVotes(Collection<PostVote> postVotes) {
         this.postVotes = postVotes;
     }
+
+    public Collection<Heritage> getFollowedHeritages() {
+        return followedHeritages;
+    }
+
+    public void setFollowedHeritages(Collection<Heritage> followedHeritages) { this.followedHeritages = followedHeritages; }
+
     public void postPost(Post p, Heritage... heritages) {
         p.setOwner(this);
         posts.add(p);
@@ -180,5 +189,10 @@ public class Member {
     public void follow(Member other) {
         followedMembers.add(other);
         other.followers.add(this);
+    }
+
+    public void followHeritage(Heritage heritage) {
+        followedHeritages.add(heritage);
+        heritage.getFollowers().add(this);
     }
 }
