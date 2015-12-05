@@ -184,7 +184,7 @@
                             <div class="row">
                                 <div class="col-sm-offset-2 col-sm-5" role="group">
                                     <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
-                                    <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." /> <br>
+                                    <input style="width:85%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." /> <br>
                                 </div>
                             </div>
 
@@ -268,10 +268,10 @@
                     </button>
                     <sec:authorize access="isAuthenticated()">
                         <c:if test="${principal.username == post.owner.username}">
-                            <button type="button" style="float:right"
+                            <button type="button" style="float:right; margin-right: 4%;"
                                     class="btn btn-default"
                                     onclick="window.location.href='${contextPath}/edit_post/${post.id}'">
-                                Edit Post
+                                Edit
                             </button>
                         </c:if>
                     </sec:authorize>

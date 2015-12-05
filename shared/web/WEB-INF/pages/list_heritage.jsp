@@ -122,7 +122,7 @@
             <div class="row">
                 <div class="col-sm-offset-2 col-sm-5" role="group">
                     <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${heritage.id}">Add</button>
-                    <input style="width:85%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
+                    <input style="width:88%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
                 </div>
             </div>
         </div>
@@ -130,12 +130,12 @@
         <div class="panel-footer">
             <div class="row">
                 <div class="col-sm-offset-8 col-sm-4" role="group">
-                    <button type="button"
+                    <button type="button" style="float:right;"
                             class="btn btn-default"
                             onclick="window.location.href='${contextPath}/post/${heritage.id}'">
                         Add Post
                     </button>
-                    <button type="button"
+                    <button type="button" style="float:right; margin-right: 4%;"
                             class="btn btn-default"
                             onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
                         See Posts

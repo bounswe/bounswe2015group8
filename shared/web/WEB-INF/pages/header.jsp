@@ -35,7 +35,7 @@
     <sec:authorize var="isAuthorized" access="isAuthenticated()" />
     <div class="container-fluid"  style="background-color: darkblue">
         <div class="navbar-header">
-            <a class="navbar-brand" href="${contextPath}/index.jsp">&#x2655; WeStory</a>
+            <a class="navbar-brand" href="${contextPath}/show_heritages">&#x2655; WeStory</a>
         </div>
         <c:if test="${isAuthorized}">
             <a style="float:right; margin-top: 0.5%;" href="${contextPath}/logout" class="btn btn-default" role="button">Log Out</a>
