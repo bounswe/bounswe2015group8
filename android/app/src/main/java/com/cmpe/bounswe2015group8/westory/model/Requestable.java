@@ -1,10 +1,5 @@
 package com.cmpe.bounswe2015group8.westory.model;
 
-import org.apache.http.NameValuePair;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by xyllan on 07.11.2015.
  */

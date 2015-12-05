@@ -10,7 +10,8 @@
     <string name="btn_upload">Upload</string>
     <string name="btn_edit">Edit</string>
     <string name="btn_submit">Submit</string>
-    <string name="tv_link_to_register">Not a member? Join us now.</string>
+    <string name="login_to_register">Not a member? Join us now.</string>
+    <string name="login_forgot_password">Forgot your password?</string>
     <string name="welcome">Welcome</string>
 
     <string name="hint_username">Username</string>
@@ -31,24 +32,40 @@
     <string name="heritage_small_see_posts"> -see Posts</string>
     <string name="post_small_see_heritages"> -see Heritages</string>
     <string name="btn_new_post">Add Post</string>
+    <string name="btn_new_comment">Add Comment</string>
     <string name="generic_description">Description:</string>
     <string name="generic_owner">Creator:</string>
     <string name="generic_title">Title:</string>
     <string name="generic_content">Content:</string>
     <string name="generic_by">by </string>
+    <string name="generic_by_username">by %1$s</string>
+    <string name="generic_created_at">Created at %1$s</string>
+    <string name="generic_see_more"> - see more</string>
     <string name="post_post_date">Post Date:</string>
     <string name="post_last_edit_date">Last Edit Date:</string>
     <string name="post_view_title_default">Viewing Post</string>
-    <string-array name="nav_drawer_items">
-        <item >Home</item>
-        <item >Heritages</item>
-        <item >Add Heritage</item>
-        <item >Posts</item>
-        <item >Profile</item>
-        <item > Comments</item>
-        <item >Login</item>
-    </string-array>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_heritages">Heritages</string>
+    <string name="nav_add_heritage">Add Heritage</string>
+    <string name="nav_posts">Posts</string>
+    <string name="nav_login">Login</string>
+    <string name="nav_logout">Logout</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_comments">Comments</string>
+
     <string name="title_heritage_new">New Heritage</string>
     <string name="title_post_new">New Post</string>
     <string name="title_generic_edit">Edit </string>
+    <string-array name="heritage_view_list">
+        <item>Posts</item>
+        <item>Tags</item>
+        <item>Media</item>
+    </string-array>
+    <string-array name="post_view_list">
+        <item>Comments</item>
+        <item>Heritages</item>
+        <item>Tags</item>
+        <item>Media</item>
+    </string-array>
 </resources>

@@ -30,7 +30,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         View v = inflater.inflate(R.layout.comment_small,parent,false);
         TextView tvOwner = (TextView) v.findViewById(R.id.tvCommentSmallOwner);
         TextView tvCreationDate = (TextView) v.findViewById(R.id.tvCommentSmallCreationDate);
-        TextView tvCreationDateValue = (TextView) v.findViewById(R.id.tvCommentSmallCreationDateValue);
+        TextView tvCreationDateValue = (TextView) v.findViewById(R.id.tvCommentSmallCreationDate);
         TextView tvContent = (TextView) v.findViewById(R.id.tvCommentSmallContent);
         final Comment c = getItem(position);
         tvOwner.setText(context.getResources().getString(R.string.generic_by) + " " + c.getOwnerId());

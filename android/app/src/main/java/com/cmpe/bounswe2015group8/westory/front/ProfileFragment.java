@@ -22,13 +22,10 @@ import com.cmpe.bounswe2015group8.westory.front.adapter.PostAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 /**
  * Created by marslanbenzer on 19.11.2015.
@@ -132,52 +129,20 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
         return NAME;
     }
 
-    private Bitmap downloadBitmap(String url) {
-        // initilize the default HTTP client object
-        final DefaultHttpClient client = new DefaultHttpClient();
-
-        //forming a HttoGet request
-        final HttpGet getRequest = new HttpGet(url);
+    private Bitmap downloadBitmap(String urlStr) {
         try {
-
-            HttpResponse response = client.execute(getRequest);
-
-            //check 200 OK for success
-            final int statusCode = response.getStatusLine().getStatusCode();
-
-            if (statusCode != HttpStatus.SC_OK) {
-                Log.w("ImageDownloader", "Error " + statusCode +
-                        " while retrieving bitmap from " + url);
-                return null;
-
-            }
-
-            final HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                InputStream inputStream = null;
-                try {
-                    // getting contents from the stream
-                    inputStream = entity.getContent();
-
-                    // decoding stream data back into image Bitmap that android understands
-                    image = BitmapFactory.decodeStream(inputStream);
-
-
-                } finally {
-                    if (inputStream != null) {
-                        inputStream.close();
-                    }
-                    entity.consumeContent();
-                }
-            }
-        } catch (Exception e) {
-            // You Could provide a more explicit error message for IOException
-            getRequest.abort();
-            Log.e("ImageDownloader", "Something went wrong while" +
-                    " retrieving bitmap from " + url + e.toString());
+            URL url = new URL(urlStr);
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-
-        return image;
     }
 
     @Override

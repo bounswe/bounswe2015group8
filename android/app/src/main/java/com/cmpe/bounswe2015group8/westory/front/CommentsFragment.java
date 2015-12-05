@@ -1,6 +1,7 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class CommentsFragment extends NamedFragment {
         super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_heritages,container,false);
         listView = (ListView) v.findViewById(R.id.lvHeritages);
+        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fabHeritages);
+        fab.hide();
         ServerRequests sr = new ServerRequests(getActivity());
         sr.getAllComments(new Consumer<Comment[]>() {
             @Override

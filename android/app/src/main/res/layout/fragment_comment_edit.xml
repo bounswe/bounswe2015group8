@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/primary"
+    android:background="@color/primary_light"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="@dimen/relative_layout_margin">
 
     <TextView
         android:id="@+id/tvCommentEditContent"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:text="@string/generic_content"
         android:textColor="@color/primary_text"
-        android:textSize="20sp" />
-
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+    <Button
+        android:id="@+id/btnCommentEditSubmit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/accent"
+        android:text="@string/btn_submit"
+        android:textColor="@color/primary_text"
+        android:elevation="@dimen/btn_elevation"/>
     <EditText
         android:id="@+id/etCommentEditContent"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@color/primary_light"
+        android:layout_below="@id/tvCommentEditContent"
+        android:layout_above="@id/btnCommentEditSubmit"
         android:hint="@string/comment_hint"
         android:textColor="@color/primary_text"
         android:textColorHint="@color/secondary_text"
         android:textSize="20sp"
         android:gravity="start"
-        android:padding="10dp"
-        android:minLines="4"
-        android:maxLines="4"/>
-    <Button
-        android:id="@+id/btnCommentEditSubmit"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@color/accent"
-        android:text="@string/btn_submit"
-        android:textColor="@color/primary_text" />
-
-
-</LinearLayout>
+        android:padding="10dp"/>
+</RelativeLayout>

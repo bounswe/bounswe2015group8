@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/primary_light"
     android:padding="5dp" >
 
     <TextView
@@ -13,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallPlace"
@@ -24,7 +23,10 @@
         android:layout_below="@+id/tvHeritageSmallName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:drawableLeft="@drawable/ic_place_black_24dp"
+        android:drawableStart="@drawable/ic_place_black_24dp"
+        android:gravity="center_vertical"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallCreationDate"
@@ -33,8 +35,10 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/heritage_creationDate"
         android:layout_below="@+id/tvHeritageSmallPlace"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignLeft="@id/tvHeritageSmallPlace"
+        android:layout_alignStart="@id/tvHeritageSmallPlace"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallCreationDateValue"
@@ -45,7 +49,8 @@
         android:layout_below="@+id/tvHeritageSmallPlace"
         android:layout_toRightOf="@+id/tvHeritageSmallCreationDate"
         android:layout_toEndOf="@+id/tvHeritageSmallCreationDate"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"/>
 
     <TextView
         android:id="@+id/tvHeritageSmallDescription"
@@ -53,22 +58,21 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvHeritageSmallCreationDateValue"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/relative_layout_margin_between"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/hint_heritage_description"
-        android:background="@color/accent"/>
+        android:text="@string/hint_heritage_description" />
 
     <TextView
-        android:id="@+id/tvHeritageSmallSeePosts"
+        android:id="@+id/tvHeritageSmallSeeMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvHeritageSmallDescription"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/heritage_small_see_posts"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:text="@string/generic_see_more"
+        android:layout_marginStart="@dimen/relative_layout_margin"
+        android:layout_marginLeft="@dimen/relative_layout_margin"
         android:clickable="true"
         android:textStyle="italic" />
 </RelativeLayout>
