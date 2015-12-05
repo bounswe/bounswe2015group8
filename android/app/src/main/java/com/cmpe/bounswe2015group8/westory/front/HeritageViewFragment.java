@@ -37,7 +37,6 @@ import java.util.Arrays;
  */
 public class HeritageViewFragment extends NamedFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String NAME = "HERITAGE_VIEW";
-    private Button btnEdit, btnAddPost, btnHeritageNewMedia;
     private TextView tvPlace, tvCreationDate, tvDescription;
     private Heritage heritage;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -55,9 +54,9 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         tvPlace = (TextView) header.findViewById(R.id.tvHeritageViewPlaceValue);
         tvCreationDate = (TextView) header.findViewById(R.id.tvHeritageViewCreationDateValue);
         tvDescription = (TextView) header.findViewById(R.id.tvHeritageViewDescriptionValue);
-        btnEdit = (Button) header.findViewById(R.id.btnHeritageEdit);
-        btnAddPost = (Button) header.findViewById(R.id.btnHeritageNewPost);
-        btnHeritageNewMedia = (Button) header.findViewById(R.id.btnHeritageNewMedia);
+        Button btnEdit = (Button) header.findViewById(R.id.btnHeritageEdit);
+        Button btnAddPost = (Button) header.findViewById(R.id.btnHeritageNewPost);
+        Button btnHeritageNewMedia = (Button) header.findViewById(R.id.btnHeritageNewMedia);
         if(memberLocalStore.getUserLoggedIn()) {
             btnEdit.setOnClickListener(this);
             btnAddPost.setOnClickListener(this);

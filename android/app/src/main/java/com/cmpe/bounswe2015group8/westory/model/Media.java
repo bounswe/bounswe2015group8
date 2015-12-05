@@ -4,12 +4,15 @@ package com.cmpe.bounswe2015group8.westory.model;
  * Created by xyllan on 23.10.2015.
  */
 public class Media {
+    public static final int IMAGE = 0;
+    public static final int AUDIO = 1;
+    public static final int VIDEO = 2;
+    public static final boolean POST = true;
+    public static final boolean HERITAGE = false;
     private long id;
     private long postOrHeritageId;
     private String mediaLink;
-    // 0 -> image, 1-> audio, 2-> video
     private int mediaType;
-    // true denotes post, false denotes heritage
     private boolean postOrHeritage;
 
     public Media() {
