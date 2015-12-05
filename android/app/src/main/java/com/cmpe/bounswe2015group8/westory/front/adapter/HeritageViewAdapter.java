@@ -1,7 +1,14 @@
 package com.cmpe.bounswe2015group8.westory.front.adapter;
 
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +35,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
     public static final int TAGS_VIEW_INDEX = 1;
     public static final int MEDIA_VIEW_INDEX = 2;
     private LayoutInflater inflater;
+    private MediaRecyclerAdapter mediaRecyclerAdapter;
     private FragmentActivity activity;
     private String[] groupNames;
     private List<Post> posts;
@@ -42,8 +50,12 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
         if(posts == null) this.posts = new ArrayList<>();
         if(tags == null) this.tags = new ArrayList<>();
         if(media == null) this.media = new ArrayList<>();
+        this.media.add(new Media(1, "http://antonioleiva.com/wp-content/uploads/2014/06/Screenshot_2014-06-29-21-04-43.png", 0, false));
+        this.media.add(new Media(2, "http://res.cloudinary.com/bounswe2015group8/video/upload/v1449171778/c4ldnee5uk7aqtyxqupa.mp3", 1, false));
+        this.media.add(new Media(3, "http://res.cloudinary.com/bounswe2015group8/video/upload/v1449171941/lqeaetbipmh8zgriwmqt.mp4", 2, false));
         inflater = activity.getLayoutInflater();
         groupNames = activity.getResources().getStringArray(R.array.heritage_view_list);
+        mediaRecyclerAdapter = new MediaRecyclerAdapter(this.media, null, activity);
     }
     @Override
     public int getGroupCount() {
@@ -58,7 +70,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
             case TAGS_VIEW_INDEX:
                 return tags.size();
             case MEDIA_VIEW_INDEX:
-                return media.size();
+                return 1;
             default:
                 return -1;
         }
@@ -86,7 +98,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
             case TAGS_VIEW_INDEX:
                 return tags.get(childPosition);
             case MEDIA_VIEW_INDEX:
-                return media.get(childPosition);
+                return media;
             default:
                 return null;
         }
@@ -129,7 +141,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
         View v = null;
         switch(groupPosition) {
             case POSTS_VIEW_INDEX:
-                v = convertView == null ? inflater.inflate(R.layout.post_small,parent,false) : convertView;
+                v = (convertView == null || convertView.getId() != R.id.rlPostSmall) ? inflater.inflate(R.layout.post_small,parent,false) : convertView;
                 final Post p = posts.get(childPosition);
                 TextView tvTitle = (TextView) v.findViewById(R.id.tvPostSmallTitle);
                 tvTitle.setText(p.getTitle());
@@ -155,6 +167,11 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 //TODO add tags here
                 break;
             case MEDIA_VIEW_INDEX:
+                v = (convertView == null || convertView.getId() != R.id.media_list) ? inflater.inflate(R.layout.media_list,parent,false) : convertView;
+                RecyclerView rv = (RecyclerView) v;
+                rv.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+                mediaRecyclerAdapter.setRecyclerView(rv);
+                rv.setAdapter(mediaRecyclerAdapter);
                 //TODO add media here
                 break;
             default:
