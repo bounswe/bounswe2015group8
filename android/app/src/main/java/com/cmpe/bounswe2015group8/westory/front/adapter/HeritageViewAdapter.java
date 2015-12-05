@@ -1,12 +1,7 @@
 package com.cmpe.bounswe2015group8.westory.front.adapter;
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -172,7 +167,6 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 rv.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
                 mediaRecyclerAdapter.setRecyclerView(rv);
                 rv.setAdapter(mediaRecyclerAdapter);
-                //TODO add media here
                 break;
             default:
                 return null;

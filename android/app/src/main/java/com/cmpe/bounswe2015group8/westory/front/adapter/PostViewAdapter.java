@@ -1,7 +1,8 @@
 package com.cmpe.bounswe2015group8.westory.front.adapter;
 
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.cmpe.bounswe2015group8.westory.R;
-import com.cmpe.bounswe2015group8.westory.front.MainActivity;
-import com.cmpe.bounswe2015group8.westory.front.NamedFragment;
-import com.cmpe.bounswe2015group8.westory.front.PostViewFragment;
 import com.cmpe.bounswe2015group8.westory.model.Comment;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Media;
-import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 
 import java.util.ArrayList;
@@ -30,6 +27,7 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
     public static final int TAGS_VIEW_INDEX = 2;
     public static final int MEDIA_VIEW_INDEX = 3;
     private LayoutInflater inflater;
+    private MediaRecyclerAdapter mediaRecyclerAdapter;
     private FragmentActivity activity;
     private String[] groupNames;
     private List<Comment> comments;
@@ -48,8 +46,12 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
         if(heritages == null) this.heritages = new ArrayList<>();
         if(tags == null) this.tags = new ArrayList<>();
         if(media == null) this.media = new ArrayList<>();
+        this.media.add(new Media(1, "http://antonioleiva.com/wp-content/uploads/2014/06/Screenshot_2014-06-29-21-04-43.png", 0, false));
+        this.media.add(new Media(2, "http://res.cloudinary.com/bounswe2015group8/video/upload/v1449171778/c4ldnee5uk7aqtyxqupa.mp3", 1, false));
+        this.media.add(new Media(3, "http://res.cloudinary.com/bounswe2015group8/video/upload/v1449171941/lqeaetbipmh8zgriwmqt.mp4", 2, false));
         inflater = activity.getLayoutInflater();
         groupNames = activity.getResources().getStringArray(R.array.post_view_list);
+        mediaRecyclerAdapter = new MediaRecyclerAdapter(this.media, null, activity);
     }
     @Override
     public int getGroupCount() {
@@ -66,7 +68,7 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
             case TAGS_VIEW_INDEX:
                 return tags.size();
             case MEDIA_VIEW_INDEX:
-                return media.size();
+                return 1;
             default:
                 return -1;
         }
@@ -98,7 +100,7 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
             case TAGS_VIEW_INDEX:
                 return tags.get(childPosition);
             case MEDIA_VIEW_INDEX:
-                return media.get(childPosition);
+                return media;
             default:
                 return null;
         }
@@ -143,7 +145,7 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
         View v = null;
         switch(groupPosition) {
             case COMMENTS_VIEW_INDEX:
-                v = convertView == null ? inflater.inflate(R.layout.comment_small,parent,false) : convertView;
+                v = (convertView == null || convertView.getId() != R.id.rlCommentSmall) ? inflater.inflate(R.layout.comment_small,parent,false) : convertView;
                 final Comment c = comments.get(childPosition);
                 TextView tvOwner = (TextView) v.findViewById(R.id.tvCommentSmallOwner);
                 tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, Long.toString(c.getOwnerId())));
@@ -165,7 +167,11 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 //TODO add tags here
                 break;
             case MEDIA_VIEW_INDEX:
-                //TODO add media here
+                v = (convertView == null || convertView.getId() != R.id.media_list) ? inflater.inflate(R.layout.media_list,parent,false) : convertView;
+                RecyclerView rv = (RecyclerView) v;
+                rv.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+                mediaRecyclerAdapter.setRecyclerView(rv);
+                rv.setAdapter(mediaRecyclerAdapter);
                 break;
             default:
                 return null;
