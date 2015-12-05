@@ -41,6 +41,7 @@ public class PostVote {
         this.voteType = voteType;
     }
 
+    /*
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,6 +63,7 @@ public class PostVote {
         result = 31 * result + (voteType ? 1 : 0);
         return result;
     }
+    */
 
     public Member getOwner() {
         return owner;
