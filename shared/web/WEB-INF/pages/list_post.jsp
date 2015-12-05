@@ -180,6 +180,14 @@
                                     </p>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-sm-offset-2 col-sm-5" role="group">
+                                    <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
+                                    <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." /> <br>
+                                </div>
+                            </div>
+
                             <c:forEach var="media" items="${medias}">
                                 <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage==false}">
                                     <div class="row">
@@ -209,12 +217,6 @@
                             --%>
                         </div>
 
-                        <div class="row">
-                            <div class="col-sm-offset-2 col-sm-5" role="group">
-                                <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
-                                <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." /> <br>
-                            </div>
-                        </div>
 
                         <c:forEach var="comment" items="${post.comments}">
                             <div class="row">

@@ -121,10 +121,8 @@
             </div>
             <div class="row">
                 <div class="col-sm-offset-2 col-sm-5" role="group">
-                    <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
-                    <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${heritage.id}">
-                        Add Tags
-                    </button>
+                    <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${heritage.id}">Add</button>
+                    <input style="width:85%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
                 </div>
             </div>
         </div>
