@@ -116,6 +116,10 @@
     });
 </script>
 
+<sec:authorize access="isAuthenticated()">
+    <sec:authentication var="principal" property="principal" />
+</sec:authorize>
+
 <c:if test="${allContent.heritages != null}">
     <div class="well">
         <div class="row">
@@ -233,11 +237,16 @@
                                         onclick="window.location.href='${contextPath}/comment/${post.id}'">
                                     Comment
                                 </button>
-                                <button type="button"
-                                        class="btn btn-default"
-                                        onclick="window.location.href='${contextPath}/edit_post/${post.id}'">
-                                    Edit Post
-                                </button>
+                                <sec:authorize access="isAuthenticated()">
+                                    <c:if test="${principal.username == post.owner.username}">
+                                        <button type="button"
+                                                class="btn btn-default"
+                                                onclick="window.location.href='${contextPath}/edit_post/${post.id}'">
+                                            Edit Post
+                                        </button>
+                                    </c:if>
+                                </sec:authorize>
+
                             </div>
                         </div>
                         <div class="row">
