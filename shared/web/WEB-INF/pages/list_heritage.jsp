@@ -152,7 +152,8 @@
                     <div class="col-sm-4" role="group">
                         <p id="tags_${heritage.id}">
                             <c:forEach items="${heritage.tags}" var="tag">
-                                <a href="${contextPath}/search/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
+                                <a href="${contextPath}/searchHeritageByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
+                                &lt;${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;
                             </c:forEach>
                         </p>
                     </div>
