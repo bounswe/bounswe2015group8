@@ -32,13 +32,20 @@
 
 <body>
 <nav class="navbar navbar-default navbar-static-top header">
+    <sec:authorize var="isAuthorized" access="isAuthenticated()" />
     <div class="container-fluid"  style="background-color: darkblue">
         <div class="navbar-header">
             <a class="navbar-brand" href="${contextPath}/index.jsp">&#x2655; WeStory</a>
         </div>
-        <sec:authorize access="isAuthenticated()">
-            <a style="float:right; margin-top:0.5%;" href="${contextPath}/logout" class="btn btn-default" role="button">Log Out</a>
-        </sec:authorize>
+        <c:if test="${isAuthorized}">
+            <a style="float:right; margin-top: 0.5%;" href="${contextPath}/logout" class="btn btn-default" role="button">Log Out</a>
+        </c:if>
+        <c:if test="${!isAuthorized}">
+            <a style="float:right; margin-top: 0.5%;" href="${contextPath}/login" class="btn btn-default" role="button">Log In</a>
+            <a style="float:right; margin-top: 0.5%; margin-right: 0.3%;" href="${contextPath}/signup" class="btn btn-default" role="button">Sign Up</a>
+        </c:if>
+
+
     </div>
 </nav>
 
