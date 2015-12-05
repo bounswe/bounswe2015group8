@@ -239,7 +239,7 @@ public class MainController {
                     Map uploadResult = CloudinaryController.getCloudinary().uploader().upload(toUpload, utilsMap);
                     int mediaType = CloudinaryController.getMediaType(mediaName);
                     logger.info("media type is " + mediaType);
-                    Media mediaObject = new Media(heritage.getId(), uploadResult.get("url").toString(), mediaType, true);
+                    Media mediaObject = new Media(post.getId(), uploadResult.get("url").toString(), mediaType, false);
                     session.save(mediaObject);
                     session.getTransaction().commit();
                 } catch (RuntimeException e) {
