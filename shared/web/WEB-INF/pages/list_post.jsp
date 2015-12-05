@@ -95,6 +95,10 @@
     });
 </script>
 
+    <sec:authorize access="isAuthenticated()">
+        <sec:authentication var="principal" property="principal" />
+    </sec:authorize>
+
 <c:if test="${allContent.heritages != null}">
     <div class="well">
         <div class="row">
@@ -166,6 +170,16 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="row">
+                                <label for="tags_${post.id}" class="col-sm-2 control-label">Tags:</label>
+                                <div class="col-sm-4" role="group">
+                                    <p id="tags_${post.id}">
+                                        <c:forEach items="${post.tags}" var="tag">
+                                            <a href="${contextPath}/search/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
+                                        </c:forEach>
+                                    </p>
+                                </div>
+                            </div>
                             <c:forEach var="media" items="${medias}">
                                 <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage==false}">
                                     <div class="row">
@@ -194,22 +208,11 @@
                             </c:forEach>
                             --%>
                         </div>
-                        <div class="row">
-                            <label for="tags_${post.id}" class="col-sm-2 control-label">Tags:</label>
-                            <div class="col-sm-4" role="group">
-                                <p id="tags_${post.id}">
-                                    <c:forEach items="${post.tags}" var="tag">
-                                        <a href="${contextPath}/search/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
-                                    </c:forEach>
-                                </p>
-                            </div>
-                        </div>
+
                         <div class="row">
                             <div class="col-sm-offset-2 col-sm-5" role="group">
-                                <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." />
-                                <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">
-                                    Add Tags
-                                </button>
+                                <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
+                                <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." /> <br>
                             </div>
                         </div>
 
@@ -218,20 +221,18 @@
                                 <div class="col-sm-offset-1 col-sm-1">
                                     <div class="row">
                                         <div class="col-sm-12 form-group pull-right">
-                                            <label for="upvote_comment_${comment.id}" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-top"></i></label>
-                                            <input id="upvote_comment_${comment.id}" type="button" name="${comment.id}" class="upvote-comment" style="display:none"/>
+
                                         </div>
                                     </div>
                                     <div class="row">
 
-                                        <div class="col-sm-12 form-group text-right" id="votecount_comment_${comment.id}">
+                                        <div class="col-sm-13 form-group text-right" id="votecount_comment_${comment.id}">
                                             Score: ?
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12 form-group pull-right">
-                                            <label for="downvote_comment_${comment.id}" class="btn btn-lg"><i class="glyphicon glyphicon-triangle-bottom"></i></label>
-                                            <input id="downvote_comment_${comment.id}" type="button" name="${comment.id}" class="downvote-comment" style="display:none"/>
+
                                         </div>
                                     </div>
                                 </div>
@@ -240,6 +241,11 @@
                                         <p><strong>by ${comment.owner.username}</strong></p>
                                         <p>"${comment.content}"</p>
                                         <footer>${comment.lastEditedDate}</footer>
+                                        <label for="upvote_comment_${comment.id}" class="btn btn-lg"><i class="glyphicon glyphicon-thumbs-up"></i></label>
+                                        <input id="upvote_comment_${comment.id}" type="button" name="${comment.id}" class="upvote-comment" style="display:none"/>
+                                        <label for="downvote_comment_${comment.id}" class="btn btn-lg"><i class="glyphicon glyphicon-thumbs-down"></i></label>
+                                        <input id="downvote_comment_${comment.id}" type="button" name="${comment.id}" class="downvote-comment" style="display:none"/>
+
                                     </blockquote>
                                 </div>
                             </div>
@@ -258,6 +264,15 @@
                             onclick="window.location.href='${contextPath}/comment/${post.id}'">
                         Comment
                     </button>
+                    <sec:authorize access="isAuthenticated()">
+                        <c:if test="${principal.username == post.owner.username}">
+                            <button type="button" style="float:right"
+                                    class="btn btn-default"
+                                    onclick="window.location.href='${contextPath}/edit_post/${post.id}'">
+                                Edit Post
+                            </button>
+                        </c:if>
+                    </sec:authorize>
                 </div>
             </div>
         </div>
