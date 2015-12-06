@@ -36,15 +36,12 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.comment_small,parent,false);
         TextView tvOwner = (TextView) v.findViewById(R.id.tvCommentSmallOwner);
-        TextView tvCreationDate = (TextView) v.findViewById(R.id.tvCommentSmallCreationDate);
         TextView tvCreationDateValue = (TextView) v.findViewById(R.id.tvCommentSmallCreationDate);
         TextView tvContent = (TextView) v.findViewById(R.id.tvCommentSmallContent);
         final TextView tvVoteCount = (TextView) v.findViewById(R.id.tvCommentVoteCount);
         c = getItem(position);
         tvOwner.setText(context.getResources().getString(R.string.generic_by) + " " + c.getOwnerId());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         String s  =c.getPostDate();
-        System.out.println(s);
         tvCreationDateValue.setText(s);
         tvContent.setText(c.getContent());
         btnDownVote = (ImageButton) v.findViewById(R.id.btnCommentDownVote);
@@ -60,7 +57,6 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
                 sr.voteComment(c, true, m.getId(), new Consumer<String>() {
                     @Override
                     public void accept(String vote) {
-                        System.out.println("mumu: " + vote + " - " + c.getVotes().size());
                         tvVoteCount.setText("" + vote);
 
                     }
@@ -79,7 +75,6 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
                 sr.voteComment(c, false, m.getId(), new Consumer<String>() {
                     @Override
                     public void accept(String vote) {
-                        System.out.println("mumu: " + vote + " - " + c.getVotes().size());
                         tvVoteCount.setText("" + vote);
                     }
                 });

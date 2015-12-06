@@ -45,12 +45,12 @@ public class PostAdapter extends ArrayAdapter<Post> {
         tvOwner.setText(context.getResources().getString(R.string.generic_by_username, Long.toString(p.getOwnerId())));
         tvCreationDate.setText(p.getPostDate());
 
-        tvContent.setText(p.getContent()+"- "+p.getId());
+        tvContent.setText(p.getContent());
         ImageButton btnDownVote = (ImageButton) v.findViewById(R.id.btnPostDownVote);
         ImageButton btnUpVote = (ImageButton) v.findViewById(R.id.btnPostUpVote);
 
 
-        tvVoteCount.setText("" + p.getVoteCount());
+        tvVoteCount.setText(Integer.toString(p.getVoteCount()));
         tvSeeMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,8 +70,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 sr.votePost(p, true, m.getId(), new Consumer<String>() {
                     @Override
                     public void accept(String vote) {
-                        System.out.println("mumu: " + vote);
-                        tvVoteCount.setText("" + vote);
+                        tvVoteCount.setText(vote);
                     }
                 });
             }
@@ -86,8 +85,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 sr.votePost(p, false, m.getId(), new Consumer<String>() {
                     @Override
                     public void accept(String vote) {
-                        System.out.println("mumu: " + vote);
-                        tvVoteCount.setText("" + vote);
+                        tvVoteCount.setText(vote);
                     }
                 });
             }

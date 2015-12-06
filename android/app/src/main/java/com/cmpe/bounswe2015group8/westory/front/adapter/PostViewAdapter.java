@@ -152,12 +152,10 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 TextView tvContent = (TextView) v.findViewById(R.id.tvCommentSmallContent);
                 tvContent.setText(c.getContent());
                 final TextView tvVoteCount = (TextView) v.findViewById(R.id.tvCommentVoteCount);
-                tvVoteCount.setText(""+c.getNetCount());
+                tvVoteCount.setText(Integer.toString(c.getNetCount()));
                 ImageButton btnDownVote = (ImageButton) v.findViewById(R.id.btnCommentDownVote);
                 ImageButton btnUpVote = (ImageButton) v.findViewById(R.id.btnCommentUpVote);
 
-
-                tvVoteCount.setText("" + c.getNetCount());
                 btnUpVote.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -167,8 +165,7 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                         sr.voteComment(c, true, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                System.out.println("mumu: " + vote+" - " +c.getVotes().size());
-                                tvVoteCount.setText("" + vote);
+                                tvVoteCount.setText(vote);
                             }
                         });
                     }
@@ -183,9 +180,7 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                         sr.voteComment(c, false, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                System.out.println("mumu: " + vote+" - " +c.getVotes().size()+" --" +c.getContent());
-
-                                tvVoteCount.setText("" + vote);
+                                tvVoteCount.setText(vote);
                             }
                         });
                     }

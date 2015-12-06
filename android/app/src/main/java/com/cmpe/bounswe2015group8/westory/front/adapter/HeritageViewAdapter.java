@@ -159,7 +159,6 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 tvVote.setText("" + netVoteCount);
                 ImageButton btnDownVote = (ImageButton) v.findViewById(R.id.btnPostDownVote);
                 ImageButton btnUpVote = (ImageButton) v.findViewById(R.id.btnPostUpVote);
-                final TextView tvVoteCount=(TextView) v.findViewById(R.id.tvPostVoteCount);
                 btnUpVote.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -169,8 +168,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                         sr.votePost(p, true, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                System.out.println("mumu: " + vote);
-                                tvVoteCount.setText("" + vote);
+                                tvVote.setText("" + vote);
                             }
                         });
                     }
@@ -185,8 +183,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                         sr.votePost(p, false, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                System.out.println("mumu: " + vote);
-                                tvVoteCount.setText("" + vote);
+                                tvVote.setText("" + vote);
                             }
                         });
                     }
