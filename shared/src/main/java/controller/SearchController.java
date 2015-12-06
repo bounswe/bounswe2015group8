@@ -1,6 +1,7 @@
 package controller;
 
 import dao.MemberDaoImpl;
+import model.Heritage;
 import model.Media;
 import model.Post;
 import model.Tag;
@@ -151,6 +152,25 @@ public class SearchController {
         Map<String, List> allContent = new HashMap<String, List>();
 
         allContent.put("posts", posts);
+        allContent.put("medias", medias);
+        allContent.put("allTags", allTags);
+        session.close();
+        return new ModelAndView("list_post", "allContent", allContent);
+    }
+
+    @RequestMapping(value = "/getRecentlyMostPopular/{heritageId}")
+    public ModelAndView recentPosts(@PathVariable long heritageId){
+        /* Gets the posts that are created within the last week and sorts them in terms of vote count */
+        final Session session = Main.getSession();
+        List heritages = new ArrayList<Heritage>();
+        heritages.add(heritageService.getHeritageById(heritageId));
+        List posts = postService.getRecentlyMostPopularPosts(heritageService.getHeritageById(heritageId));
+        List medias = session.createCriteria(Media.class).list();
+        List allTags = session.createCriteria(Tag.class).list();
+        Map<String, List> allContent = new HashMap<String, List>();
+
+        allContent.put("posts", posts);
+        allContent.put("heritages", heritages);
         allContent.put("medias", medias);
         allContent.put("allTags", allTags);
         session.close();

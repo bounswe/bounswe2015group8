@@ -25,6 +25,8 @@ public interface PostDao {
 
     List<Post> getPostsCreatedAfter(Timestamp date);
 
+    List<Post> getPostsCreatedAfter(Timestamp date, Heritage heritage);
+
     Post savePost(Post post, Heritage heritage);
 
     Post updatePost(Post post);

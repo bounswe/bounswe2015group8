@@ -101,11 +101,21 @@ public class PostService {
 
     public List<Post> getRecentlyMostPopularPosts(){
         long now = System.currentTimeMillis();
-        long nowMinusOneWeek = now - 7L * 24L * 3600L * 1000L;
+        long nowMinusOneWeek = now - 7L * 24L * 3600L * 1000L; // From last week up until now
         Timestamp nowMinusOneWeekTimestamp = new Timestamp(nowMinusOneWeek);
         logger.info("now  " + new Timestamp(now));
         logger.info("last week " + nowMinusOneWeekTimestamp);
         List<Post> recentPosts = postDao.getPostsCreatedAfter(nowMinusOneWeekTimestamp);
+        return sortByPopularity(recentPosts);
+    }
+
+    public List<Post> getRecentlyMostPopularPosts(Heritage heritage){
+        long now = System.currentTimeMillis();
+        long nowMinusOneWeek = now - 7L * 24L * 3600L * 1000L; // From last week up until now
+        Timestamp nowMinusOneWeekTimestamp = new Timestamp(nowMinusOneWeek);
+        logger.info("now  " + new Timestamp(now));
+        logger.info("last week " + nowMinusOneWeekTimestamp);
+        List<Post> recentPosts = postDao.getPostsCreatedAfter(nowMinusOneWeekTimestamp, heritage);
         return sortByPopularity(recentPosts);
     }
 }

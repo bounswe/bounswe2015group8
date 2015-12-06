@@ -1,9 +1,11 @@
 package dao;
 
 import model.*;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,7 +15,7 @@ import java.util.List;
  * Created by gokcan on 08.11.2015.
  */
 public class PostDaoImpl implements PostDao {
-
+    private Logger logger = Logger.getLogger(PostDaoImpl.class);
     private SessionFactory sessionFactory;
 
     public Post getPostById(long id) {
@@ -80,6 +82,25 @@ public class PostDaoImpl implements PostDao {
                 .createQuery("from Post where postDate > :date")
                 .setParameter("date", date).list();
 
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsCreatedAfter(Timestamp date, Heritage heritage){
+        Session s = getSessionFactory().openSession();
+        List<BigInteger> postIds = s
+                .createSQLQuery("select POST_ID from HERITAGE_POST where HERITAGE_ID=?")
+                .setParameter(0, heritage.getId()).list();
+        List<Long> postIdsLong = new ArrayList<>();
+        for(BigInteger postId : postIds){
+            postIdsLong.add(postId.longValue());
+        }
+        List<Post> posts = s
+                .createQuery("from Post where postDate > :date and id in :ids")
+                .setParameter("date", date)
+                .setParameterList("ids", postIdsLong).list();
+        logger.info("postIds: " + postIdsLong);
+        logger.info("posts: " + posts);
         return posts;
     }
 
