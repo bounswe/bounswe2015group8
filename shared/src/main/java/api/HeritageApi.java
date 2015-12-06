@@ -1,5 +1,7 @@
 package api;
 
+import adapter.HeritageAdapter;
+import adapter.MemberAdapter;
 import adapter.PostAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -7,7 +9,6 @@ import com.google.gson.reflect.TypeToken;
 import model.Heritage;
 import model.Member;
 import model.Post;
-import adapter.HeritageAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -15,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import service.VoteService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -58,6 +58,20 @@ public class HeritageApi implements ErrorCodes {
             }
         }
         return Integer.toString(POST_DOES_NOT_EXIST);
+    }
+
+    @RequestMapping(value = "/api/getMemberById",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getById(@RequestBody long id) {
+        ArrayList<Member> memberList = MemberUtility.getUserList();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.registerTypeAdapter(Member.class, new MemberAdapter()).create();
+        for (Member member : memberList) {
+            if (member.getId() == id) {
+                return gson.toJson(member);
+            }
+        }
+        return Integer.toString(-1);
     }
 
     @RequestMapping(value = "/api/getAllHeritages",
