@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rlPostSmall"
     android:layout_width="wrap_content" android:layout_height="match_parent"
-    android:background="@color/primary_light"
     android:padding="5dp">
 
     <TextView
@@ -61,7 +60,6 @@
         android:layout_margin="@dimen/relative_layout_margin_between"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/hint_heritage_description"/>
-        />
 
     <TextView
         android:id="@+id/tvPostSmallSeeMore"

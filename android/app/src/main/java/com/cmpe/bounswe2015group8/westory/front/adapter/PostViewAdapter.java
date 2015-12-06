@@ -7,8 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
@@ -54,6 +57,8 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
         this.media.add(new Media(1, "http://antonioleiva.com/wp-content/uploads/2014/06/Screenshot_2014-06-29-21-04-43.png", 0, false));
         this.media.add(new Media(2, "http://res.cloudinary.com/bounswe2015group8/video/upload/v1449171778/c4ldnee5uk7aqtyxqupa.mp3", 1, false));
         this.media.add(new Media(3, "http://res.cloudinary.com/bounswe2015group8/video/upload/v1449171941/lqeaetbipmh8zgriwmqt.mp4", 2, false));
+        this.tags.add(new Tag("asd","ccc"));
+        this.tags.add(new Tag("kekekekeke","ıeufısdsdufeıf"));
         inflater = activity.getLayoutInflater();
         groupNames = activity.getResources().getStringArray(R.array.post_view_list);
         mediaRecyclerAdapter = new MediaRecyclerAdapter(this.media, null, activity);
@@ -203,7 +208,49 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 //TODO add heritages here
                 break;
             case TAGS_VIEW_INDEX:
-                //TODO add tags here
+                v = (convertView == null || convertView.getId() != R.id.vsTagSmall) ? inflater.inflate(R.layout.tag_small,parent,false) : convertView;
+                final Tag t = tags.get(childPosition);
+                final ViewSwitcher viewSwitcher = (ViewSwitcher) v.findViewById(R.id.vsTagSmall);
+                final EditText etText = (EditText) v.findViewById(R.id.etTagSmallEditText);
+                final EditText etContext = (EditText) v.findViewById(R.id.etTagSmallEditContext);
+                etText.setText(t.getTagText());
+                etContext.setText(t.getTagContext());
+                final ImageView ivTagSmallAccept = (ImageView) v.findViewById(R.id.ivTagSmallEditAccept);
+                final ImageView ivTagSmallCancel = (ImageView) v.findViewById(R.id.ivTagSmallEditCancel);
+                final TextView tvText = (TextView) v.findViewById(R.id.tvTagSmallViewText);
+                tvText.setText(t.getTagText());
+                final TextView tvContext = (TextView) v.findViewById(R.id.tvTagSmallViewContext);
+                tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
+                final ImageView ivTagSmallEdit = (ImageView) v.findViewById(R.id.ivTagSmallViewEdit);
+                if(!new MemberLocalStore(activity).getUserLoggedIn()) ivTagSmallEdit.setVisibility(View.GONE);
+                ivTagSmallEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewSwitcher.showNext();
+                    }
+                });
+                ivTagSmallAccept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Tag newTag = new Tag(etText.getText().toString(),
+                                etContext.getText().toString());
+                        newTag.setId(t.getId());
+                        t.setTagText(newTag.getTagText());
+                        t.setTagContext(newTag.getTagContext());
+                        //TODO edit tag call to system. if successful, do the following
+                        tvText.setText(t.getTagText());
+                        tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
+                        viewSwitcher.showPrevious();
+                    }
+                });
+                ivTagSmallCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        etText.setText(t.getTagText());
+                        etContext.setText(t.getTagContext());
+                        viewSwitcher.showPrevious();
+                    }
+                });
                 break;
             case MEDIA_VIEW_INDEX:
                 v = (convertView == null || convertView.getId() != R.id.media_list) ? inflater.inflate(R.layout.media_list,parent,false) : convertView;
