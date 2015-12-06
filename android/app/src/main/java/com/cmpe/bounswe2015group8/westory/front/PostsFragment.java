@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cmpe.bounswe2015group8.westory.R;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * Created by xyllan on 17.11.2015.
  */
-public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class PostsFragment extends NamedFragment implements AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
     public static final String NAME = "All Posts";
     public static final String BUNDLE_INDEX = "index";
     public static final String BUNDLE_TOP = "top";
@@ -39,6 +40,7 @@ public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.O
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fabHeritages);
         fab.hide();
         swipeRefreshLayout.setOnRefreshListener(this);
+        listView.setOnItemClickListener(this);
         if(posts != null) {
             setAdapter(posts);
             return v;
@@ -109,6 +111,15 @@ public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.O
     private void manualRefresh() {
         swipeRefreshLayout.setRefreshing(true);
         onRefresh();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        NamedFragment nf = new PostViewFragment();
+        Bundle b = new Bundle();
+        b.putParcelable("post", posts[position]);
+        nf.setArguments(b);
+        MainActivity.beginFragment(getActivity(), nf);
     }
 }
 

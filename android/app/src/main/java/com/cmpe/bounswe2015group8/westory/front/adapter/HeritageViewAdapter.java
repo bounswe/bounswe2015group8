@@ -146,12 +146,12 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 tvTitle.setText(p.getTitle());
                 TextView tvOwner = (TextView) v.findViewById(R.id.tvPostSmallOwner);
                 tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, Long.toString(p.getOwnerId())));
+                //tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, p.getOwner().getUsername()));
                 TextView tvCreationDate = (TextView) v.findViewById(R.id.tvPostSmallCreationDateValue);
                 tvCreationDate.setText(p.getPostDate());
                 TextView tvContent = (TextView) v.findViewById(R.id.tvPostSmallContent);
                 tvContent.setText(p.getContent());
-                TextView tvSeeMore = (TextView) v.findViewById(R.id.tvPostSmallSeeMore);
-                tvSeeMore.setOnClickListener(new View.OnClickListener() {
+                v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         NamedFragment nf = new PostViewFragment();

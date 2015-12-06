@@ -154,6 +154,14 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 heritage.setPosts(Arrays.asList(posts));
             }
         });
+//        sr.getHeritageById(heritage.getId(), new Consumer<Heritage>() {
+//            @Override
+//            public void accept(Heritage h) {
+//                elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()), new ArrayList<>(h.getTags()), null));
+//                heritage.setPosts(h.getPosts());
+//                heritage.setTags(h.getTags());
+//            }
+//        });
     }
     private void manualRefresh() {
         swipeRefreshLayout.setRefreshing(true);
