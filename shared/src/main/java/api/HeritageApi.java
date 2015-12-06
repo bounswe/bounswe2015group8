@@ -13,10 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import service.VoteService;
 
@@ -148,5 +145,10 @@ public class HeritageApi implements ErrorCodes {
         return HeritageUtility.getVoteService().getPostOverallVote(post);
     }
 
+    @RequestMapping(value = "/api/getOverallPostVoteById/{postId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public long getOverallPostVoteById(@PathVariable long postId){
+        Post post = HeritageUtility.getPostService().getPostById(postId);
+        return HeritageUtility.getVoteService().getPostOverallVote(post);
+    }
 
 }
