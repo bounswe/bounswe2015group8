@@ -1,13 +1,16 @@
 package api;
 
+import adapter.HeritageAdapter;
+import adapter.MemberAdapter;
 import adapter.PostAdapter;
+import adapter.TagAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import model.Heritage;
 import model.Member;
 import model.Post;
-import adapter.HeritageAdapter;
+import model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -15,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import service.VoteService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -58,6 +60,20 @@ public class HeritageApi implements ErrorCodes {
             }
         }
         return Integer.toString(POST_DOES_NOT_EXIST);
+    }
+
+    @RequestMapping(value = "/api/getMemberById",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getById(@RequestBody long id) {
+        ArrayList<Member> memberList = MemberUtility.getUserList();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.registerTypeAdapter(Member.class, new MemberAdapter()).create();
+        for (Member member : memberList) {
+            if (member.getId() == id) {
+                return gson.toJson(member);
+            }
+        }
+        return Integer.toString(-1);
     }
 
     @RequestMapping(value = "/api/getAllHeritages",
@@ -149,6 +165,30 @@ public class HeritageApi implements ErrorCodes {
     public long getOverallPostVoteById(@PathVariable long postId){
         Post post = HeritageUtility.getPostService().getPostById(postId);
         return HeritageUtility.getVoteService().getPostOverallVote(post);
+    }
+
+    @RequestMapping(value = "/api/getAllTags",
+            method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getAllTags() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.registerTypeAdapter(Tag.class, new TagAdapter()).create();
+        ArrayList<Tag> tags = TagUtility.getTagList();
+        return gson.toJson(tags);
+    }
+
+    @RequestMapping(value = "/api/getTagsStartingWith",
+            method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getAllTags(@RequestBody String startingPart) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.registerTypeAdapter(Tag.class, new TagAdapter()).create();
+        ArrayList<Tag> tags = TagUtility.getTagList();
+        ArrayList<Tag> startsWith = new ArrayList<>();
+        for (Tag tag : tags) {
+            if (tag.getTagText().toLowerCase().startsWith(startingPart.toLowerCase())) {
+                startsWith.add(tag);
+            }
+        }
+        return gson.toJson(startsWith);
     }
 
 }
