@@ -20,6 +20,7 @@ public class Post implements Parcelable{
     private String lastEditedDate;
     private String title;
     private String content;
+    private String place;
     private Collection<Comment> comments;
     private Collection<Heritage> heritages;
     private Collection<PostVote> votes;
@@ -32,12 +33,13 @@ public class Post implements Parcelable{
         tags = new HashSet<Tag>();
     }
 
-    public Post(Member owner, int type, String postDate, String title, String content) {
+    public Post(Member owner, int type, String postDate, String title, String content, String place) {
         this.owner = owner;
         this.type = type;
         this.postDate = postDate;
         this.title = title;
         this.content = content;
+        this.place = place;
         comments = new HashSet<Comment>();
         heritages = new HashSet<Heritage>();
         votes = new HashSet<PostVote>();
@@ -51,6 +53,7 @@ public class Post implements Parcelable{
         lastEditedDate = in.readString();
         title = in.readString();
         content = in.readString();
+        place = in.readString();
         //TODO fix comments
         this.comments = new HashSet<>();
         this.heritages = new HashSet<>();
@@ -105,6 +108,13 @@ public class Post implements Parcelable{
         this.content = content;
     }
 
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -195,6 +205,7 @@ public class Post implements Parcelable{
         dataToSend.put("ownerId", Long.toString(owner.getId()));
         dataToSend.put("title", title);
         dataToSend.put("content", content);
+        dataToSend.put("place",place);
         return new Requestable<Long>("/api/createPost",dataToSend,Long.class);
     }
 
@@ -230,6 +241,7 @@ public class Post implements Parcelable{
         dest.writeString(lastEditedDate);
         dest.writeString(title);
         dest.writeString(content);
+        dest.writeString(place);
         //TODO save owner and other fields
     }
     public static final Parcelable.Creator<Post> CREATOR

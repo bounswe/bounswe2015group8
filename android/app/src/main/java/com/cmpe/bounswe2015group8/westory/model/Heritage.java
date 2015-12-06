@@ -19,9 +19,11 @@ public class Heritage implements Parcelable{
     private String description;
     private Collection<Post> posts;
     private Collection<Tag> tags;
+    private Collection<Member> followers;
     public Heritage() {
         this.posts = new HashSet<Post>();
         this.tags = new HashSet<Tag>();
+        this.followers = new HashSet<Member>();
     }
 
     public Heritage(String name, String place, String description, String postDate) {
@@ -31,6 +33,7 @@ public class Heritage implements Parcelable{
         this.postDate = postDate;
         this.posts = new HashSet<Post>();
         this.tags = new HashSet<Tag>();
+        this.followers = new HashSet<Member>();
     }
     public Heritage(Parcel in) {
         id = in.readLong();
@@ -41,6 +44,7 @@ public class Heritage implements Parcelable{
         //TODO fix posts
         this.posts = new HashSet<Post>();
         this.tags = new HashSet<Tag>();
+        this.followers = new HashSet<Member>();
     }
     public long getId() {
         return id;
@@ -124,6 +128,10 @@ public class Heritage implements Parcelable{
     public void setTags(Collection<Tag> tags) {
         this.tags = tags;
     }
+
+    public Collection<Member> getFollowers(){ return followers; }
+
+    public void setFollowers(Collection<Member> followers){ this.followers = followers; }
 
     public void addTags(Tag... tags) {
         for(Tag t : tags) {
