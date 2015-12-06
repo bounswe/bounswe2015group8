@@ -28,7 +28,6 @@ public class PostDaoImpl implements PostDao {
         List<Post> posts = s
                 .createQuery("from Post where owner=?")
                 .setParameter(0, owner).list();
-        s.close();
         return posts;
     }
 
@@ -78,6 +77,15 @@ public class PostDaoImpl implements PostDao {
         s.update(post);
         s.getTransaction().commit();
         return post;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsContainTitle(String title){
+        Session s = getSessionFactory().openSession();
+        List<Post> posts = s
+                .createQuery("from Post where title like ?")
+                .setString(0, "%"+title+"%").list();
+        return posts;
     }
 
     public SessionFactory getSessionFactory() {

@@ -106,6 +106,39 @@ public class SearchController {
         return tagService.getTagContextsByText(tagText);
     }
 
+    @RequestMapping(value = "/searchByMember/{username}")
+    public ModelAndView searchByMember(@PathVariable String username){
+        final Session session = Main.getSession();
+        List posts = postService.getPostsByMember(memberService.getMemberByUsername(username));
+        List medias = session.createCriteria(Media.class).list();
+        List allTags = session.createCriteria(Tag.class).list();
+        Map<String, List> allContent = new HashMap<String, List>();
+        List members = new ArrayList<String>();
+        members.add(username);
 
+        allContent.put("posts", posts);
+        allContent.put("medias", medias);
+        allContent.put("allTags", allTags);
+        allContent.put("searchedMembers", members);
+        session.close();
+        return new ModelAndView("list_post", "allContent", allContent);
+    }
+
+    @RequestMapping(value = "/searchByTitle/{title}")
+    public ModelAndView searchByTitle(@PathVariable String title){
+        final Session session = Main.getSession();
+        List posts = postService.getPostsContainTitle(title);
+        List medias = session.createCriteria(Media.class).list();
+        List allTags = session.createCriteria(Tag.class).list();
+        Map<String, List> allContent = new HashMap<String, List>();
+        List members = new ArrayList<String>();
+
+        allContent.put("posts", posts);
+        allContent.put("medias", medias);
+        allContent.put("allTags", allTags);
+        allContent.put("searchedMembers", members);
+        session.close();
+        return new ModelAndView("list_post", "allContent", allContent);
+    }
 
 }

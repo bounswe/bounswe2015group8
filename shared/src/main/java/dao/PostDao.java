@@ -20,6 +20,8 @@ public interface PostDao {
 
     List<Post> getPostsByTag(Tag tag);
 
+    List<Post> getPostsContainTitle(String title);
+
     Post savePost(Post post, Heritage heritage);
 
     Post updatePost(Post post);
