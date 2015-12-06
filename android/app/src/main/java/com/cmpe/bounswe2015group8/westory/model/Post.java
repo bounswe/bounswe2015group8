@@ -24,6 +24,7 @@ public class Post implements Parcelable{
     private Collection<Heritage> heritages;
     private Collection<PostVote> votes;
     private Collection<Tag> tags;
+    private int netCount;
     public Post() {
         comments = new HashSet<Comment>();
         heritages = new HashSet<Heritage>();
@@ -177,6 +178,10 @@ public class Post implements Parcelable{
         this.tags = tags;
     }
 
+    public void setNetCount(int netCount){this.netCount=netCount;}
+
+    public int getNetCount (){return netCount;}
+
     public void addTags(Tag... tags) {
         for(Tag t : tags) {
             this.tags.add(t);
@@ -193,9 +198,29 @@ public class Post implements Parcelable{
         return new Requestable<Long>("/api/createPost",dataToSend,Long.class);
     }
 
+    public Requestable<String> getVoteRequestable(boolean voteType,Long ownerId) {
+        Map<String,String> dataToSend = new HashMap<>();
+
+        dataToSend.put("postId", Long.toString(getId()));
+        dataToSend.put("ownerId", Long.toString(ownerId));
+        dataToSend.put("voteType", Boolean.toString(voteType));
+        return new Requestable<String>("/api/votePost",dataToSend,String.class);
+    }
     @Override
     public int describeContents() {
         return 0;
+    }
+    public int getVoteCount(){
+        int netVoteCount=0;
+        Collection<PostVote> votes = getVotes();
+        for(PostVote cv: votes){
+            if(cv.getVoteType()){
+                netVoteCount++;
+            } else{
+                netVoteCount--;
+            }
+        }
+        return netVoteCount;
     }
 
     @Override
