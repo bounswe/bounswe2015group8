@@ -36,23 +36,25 @@
     });
 </script>
 
-<div class="well">
-    <div class="row">
-        <div class="col-xs-12">
-            Why don't you add a new cultural heritage?
-        </div>
-        <div class="col-xs-12" style="height:20px;"></div>
-        <div class="col-sm-12">
-            <div class="btn-group pull-right" role="group">
-                <button type="button"
-                        class="btn btn-default"
-                        onclick="window.location.href='${contextPath}/heritage'">
-                    Add a cultural heritage!
-                </button>
+<sec:authorize access="isAuthenticated()">
+    <div class="well">
+        <div class="row">
+            <div class="col-xs-12">
+                Why don't you add a new cultural heritage?
+            </div>
+            <div class="col-xs-12" style="height:20px;"></div>
+            <div class="col-sm-12">
+                <div class="btn-group pull-right" role="group">
+                    <button type="button"
+                            class="btn btn-default"
+                            onclick="window.location.href='${contextPath}/heritage'">
+                        Add a cultural heritage!
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</sec:authorize>
 
 <c:forEach items="${allHeritages}" var="heritage">
     <div class="row">
@@ -96,15 +98,20 @@
 
                     <c:forEach var="media" items="${medias}">
                         <c:if test="${media.postOrHeritageId == heritage.id && media.postOrHeritage==true}">
-                            <div class="row">
-                                <label class="col-sm-2 control-label">Media</label>
-
-                                <div class="media col-sm-10">
-                                    <div class="media-left">
-                                        <img src="${contextPath}/static/${media.mediaLink}" height="240px;" width="360px;">
-                                    </div>
-                                </div>
-                            </div>
+                            <c:if test="${media.mediaType == 0}">
+                                <img src="${media.mediaLink}" height="240px;" width="360px;">
+                            </c:if>
+                            <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
+                                <div id="container"></div>
+                                <script type="text/javascript">
+                                    jwplayer("container").setup({
+                                        file: "${media.mediaLink}",
+                                        height: 300,
+                                        width: 520,
+                                        autostart: false
+                                    });
+                                </script>
+                            </c:if>
                         </c:if>
                     </c:forEach>
                 </div>
@@ -119,32 +126,35 @@
                     </p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-offset-2 col-sm-5" role="group">
-                    <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${heritage.id}">Add</button>
-                    <input style="width:88%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
+
+            <sec:authorize access="isAuthenticated()">
+                <div class="row">
+                    <div class="col-sm-offset-2 col-sm-5" role="group">
+                        <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${heritage.id}">Add</button>
+                        <input style="width:88%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
+                    </div>
                 </div>
-            </div>
+            </sec:authorize>
         </div>
 
-        <div class="panel-footer">
-            <div class="row">
-                <div class="col-sm-offset-8 col-sm-4" role="group">
-                    <button type="button" style="float:right;"
-                            class="btn btn-default"
-                            onclick="window.location.href='${contextPath}/post/${heritage.id}'">
-                        Add Post
-                    </button>
-                    <button type="button" style="float:right; margin-right: 4%;"
-                            class="btn btn-default"
-                            onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
-                        See Posts
-                    </button>
+        <sec:authorize access="isAuthenticated()">
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-sm-offset-8 col-sm-4" role="group">
+                        <button type="button" style="float:right;"
+                                class="btn btn-default"
+                                onclick="window.location.href='${contextPath}/post/${heritage.id}'">
+                            Add Post
+                        </button>
+                        <button type="button" style="float:right; margin-right: 4%;"
+                                class="btn btn-default"
+                                onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
+                            See Posts
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-
-
+        </sec:authorize>
     </div>
 </c:forEach>
     <div class="row">

@@ -170,6 +170,34 @@
                                     </p>
                                 </div>
                             </div>
+
+                            <c:forEach var="media" items="${medias}">
+                                <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage!=true}">
+                                    <c:if test="${media.mediaType == 0}">
+                                        <div class="row">
+                                            <label class="col-sm-2 control-label">Media</label>
+
+                                            <div class="media col-sm-10">
+                                                <div class="media-left">
+                                                    <img src="${media.mediaLink}" height="240px;" width="360px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
+                                        <div id="container"></div>
+                                        <script type="text/javascript">
+                                            jwplayer("container").setup({
+                                                file: "${media.mediaLink}",
+                                                height: 300,
+                                                width: 520,
+                                                autostart: false
+                                            });
+                                        </script>
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
+
                             <div class="row">
                                 <label for="tags_${post.id}" class="col-sm-2 control-label">Tags:</label>
                                 <div class="col-sm-4" role="group">
@@ -181,40 +209,15 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-sm-offset-2 col-sm-5" role="group">
-                                    <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
-                                    <input style="width:85%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." /> <br>
-                                </div>
-                            </div>
 
-                            <c:forEach var="media" items="${medias}">
-                                <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage==false}">
-                                    <div class="row">
-                                        <label class="col-sm-2 control-label">Media</label>
-
-                                        <div class="media col-sm-10">
-                                            <div class="media-left">
-                                                <img src="${contextPath}/static/${media.mediaLink}" height="240px;" width="360px;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </c:if>
-                            </c:forEach>
-
-                            <%--
-                            <c:forEach var="comment" items="${post.comments}">
+                            <sec:authorize access="isAuthenticated()">
                                 <div class="row">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <blockquote>
-                                            <p><strong>by ${comment.owner.username}</strong></p>
-                                            <p>"${comment.content}"</p>
-                                            <footer>${comment.lastEditedDate}</footer>
-                                        </blockquote>
+                                    <div class="col-sm-offset-2 col-sm-5" role="group">
+                                        <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
+                                        <input style="width:85%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." /> <br>
                                     </div>
                                 </div>
-                            </c:forEach>
-                            --%>
+                            </sec:authorize>
                         </div>
 
 
@@ -258,7 +261,8 @@
 
         </div>
 
-        <div class="panel-footer">
+        <sec:authorize access="isAuthenticated()">
+            <div class="panel-footer">
             <div class="row">
                 <div class="col-sm-offset-8 col-sm-4" role="group">
                     <button type="button" style="float:right"
@@ -266,18 +270,17 @@
                             onclick="window.location.href='${contextPath}/comment/${post.id}'">
                         Comment
                     </button>
-                    <sec:authorize access="isAuthenticated()">
-                        <c:if test="${principal.username == post.owner.username}">
-                            <button type="button" style="float:right; margin-right: 4%;"
-                                    class="btn btn-default"
-                                    onclick="window.location.href='${contextPath}/edit_post/${post.id}'">
-                                Edit
-                            </button>
-                        </c:if>
-                    </sec:authorize>
+                    <c:if test="${principal.username == post.owner.username}">
+                        <button type="button" style="float:right; margin-right: 4%;"
+                                class="btn btn-default"
+                                onclick="window.location.href='${contextPath}/edit_post/${post.id}'">
+                            Edit
+                        </button>
+                    </c:if>
                 </div>
             </div>
         </div>
+        </sec:authorize>
     </div>
 </c:forEach>
     <div class="row">

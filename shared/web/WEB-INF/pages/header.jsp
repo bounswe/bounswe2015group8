@@ -17,6 +17,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <script src="https://content.jwplatform.com/libraries/s5hFO93v.js"></script>
+
     <link rel="stylesheet" href="${contextPath}/static/css/bootstrap.css">
     <link rel="stylesheet" href="${contextPath}/static/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="${contextPath}/static/css/bootstrap-tokenfield.css"/>
