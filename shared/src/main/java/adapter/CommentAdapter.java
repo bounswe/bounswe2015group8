@@ -1,11 +1,8 @@
 package adapter;
 
-import api.CommentUtility;
 import com.google.gson.*;
 import model.Comment;
 import model.CommentVote;
-import model.Post;
-import org.hibernate.Session;
 
 import java.lang.reflect.Type;
 
@@ -16,29 +13,29 @@ public class CommentAdapter implements JsonSerializer<Comment>{
 
     @Override
     public JsonElement serialize(Comment comment, Type type,JsonSerializationContext jsc){
-        JsonObject jsonObjectHeritage = new JsonObject();
-        jsonObjectHeritage.addProperty("id", comment.getId());
-        jsonObjectHeritage.addProperty("content", comment.getContent());
-        jsonObjectHeritage.addProperty("ownerId", comment.getOwner().getId());
-        jsonObjectHeritage.addProperty("postId", comment.getPost().getId());
-        jsonObjectHeritage.addProperty("postDate", comment.getPostDate().toString());
-        jsonObjectHeritage.addProperty("lastEditedDate", comment.getLastEditedDate().toString());
+        JsonObject jsonObjectComment = new JsonObject();
+        jsonObjectComment.addProperty("id", comment.getId());
+        jsonObjectComment.addProperty("content", comment.getContent());
+        jsonObjectComment.addProperty("ownerId", comment.getOwner().getId());
+        jsonObjectComment.addProperty("postId", comment.getPost().getId());
+        jsonObjectComment.addProperty("postDate", comment.getPostDate().toString());
+        jsonObjectComment.addProperty("lastEditedDate", comment.getLastEditedDate().toString());
         int voteCount = 0;
         JsonArray votes = new JsonArray();
         for(CommentVote commentVote : comment.getVotes()){
-            JsonObject jsonObjectPost = new JsonObject();
-            jsonObjectPost.addProperty("ownerId", commentVote.getOwner().getId());
-            jsonObjectPost.addProperty("voteType", commentVote.getVoteType());
+            JsonObject jsonObjectVote = new JsonObject();
+            jsonObjectVote.addProperty("ownerId", commentVote.getOwner().getId());
+            jsonObjectVote.addProperty("voteType", commentVote.getVoteType());
             if(commentVote.getVoteType()){
                 voteCount++;
             }
             else{
                 voteCount--;
             }
-            votes.add(jsonObjectPost);
+            votes.add(jsonObjectVote);
         }
-        jsonObjectHeritage.addProperty("netCount", voteCount);
-        jsonObjectHeritage.add("votes", votes);
-        return jsonObjectHeritage;
+        jsonObjectComment.addProperty("netCount", voteCount);
+        jsonObjectComment.add("votes", votes);
+        return jsonObjectComment;
     }
 }

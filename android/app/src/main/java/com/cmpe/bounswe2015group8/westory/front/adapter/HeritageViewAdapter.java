@@ -6,16 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.back.Consumer;
+import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
+import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.MainActivity;
 import com.cmpe.bounswe2015group8.westory.front.NamedFragment;
 import com.cmpe.bounswe2015group8.westory.front.PostViewFragment;
 import com.cmpe.bounswe2015group8.westory.model.Media;
+import com.cmpe.bounswe2015group8.westory.model.Member;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,6 +152,40 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                         b.putParcelable("post", p);
                         nf.setArguments(b);
                         MainActivity.beginFragment(activity, nf);
+                    }
+                });
+                final TextView tvVote= (TextView) v.findViewById(R.id.tvPostVoteCount);
+                int netVoteCount=p.getVoteCount();
+                tvVote.setText("" + netVoteCount);
+                ImageButton btnDownVote = (ImageButton) v.findViewById(R.id.btnPostDownVote);
+                ImageButton btnUpVote = (ImageButton) v.findViewById(R.id.btnPostUpVote);
+                btnUpVote.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ServerRequests sr = new ServerRequests(activity);
+                        MemberLocalStore memberLocalStore = new MemberLocalStore(activity);
+                        Member m = memberLocalStore.getLoggedInMember();
+                        sr.votePost(p, true, m.getId(), new Consumer<String>() {
+                            @Override
+                            public void accept(String vote) {
+                                tvVote.setText("" + vote);
+                            }
+                        });
+                    }
+                });
+
+                btnDownVote.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ServerRequests sr = new ServerRequests(activity);
+                        MemberLocalStore memberLocalStore = new MemberLocalStore(activity);
+                        Member m = memberLocalStore.getLoggedInMember();
+                        sr.votePost(p, false, m.getId(), new Consumer<String>() {
+                            @Override
+                            public void accept(String vote) {
+                                tvVote.setText("" + vote);
+                            }
+                        });
                     }
                 });
                 break;

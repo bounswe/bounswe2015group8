@@ -92,4 +92,10 @@ public class CommentApi implements ErrorCodes {
         return CommentUtility.getVoteService().getCommentOverallVote(comment);
     }
 
+    @RequestMapping(value = "/api/getOverallCommentVoteById/{commentId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public long getOverallCommentVoteById(@PathVariable long commentId){
+        Comment comment = CommentUtility.getCommentService().getCommentById(commentId);
+        return CommentUtility.getVoteService().getCommentOverallVote(comment);
+    }
+
 }
