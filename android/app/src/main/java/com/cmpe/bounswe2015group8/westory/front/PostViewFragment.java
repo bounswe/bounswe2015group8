@@ -18,6 +18,7 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.CloudinaryAPI;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
+import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.PostViewAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Comment;
@@ -37,7 +38,7 @@ import java.util.Arrays;
 public class PostViewFragment extends NamedFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
     public static final String NAME = "POST_VIEW";
     private Button btnEdit, btnComment, btnPostNewMedia;
-    private TextView tvOwner, tvCreationDate, tvLastEditDate, tvContent;
+    private TextView tvOwner, tvCreationDate, tvLastEditDate, tvContent, tvVote;
     private Post post;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ExpandableListView elvData;
@@ -55,6 +56,7 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         tvCreationDate = (TextView) header.findViewById(R.id.tvPostViewCreationDateValue);
         tvLastEditDate = (TextView) header.findViewById(R.id.tvPostViewLastEditDateValue);
         tvContent = (TextView) header.findViewById(R.id.tvPostViewContentValue);
+        tvVote = (TextView) header.findViewById(R.id.tvPostVoteCount);
         btnEdit = (Button) header.findViewById(R.id.btnPostViewEdit);
 		btnComment = (Button) header.findViewById(R.id.btnPostViewNewComment);
         btnPostNewMedia = (Button) header.findViewById(R.id.btnPostNewMedia);

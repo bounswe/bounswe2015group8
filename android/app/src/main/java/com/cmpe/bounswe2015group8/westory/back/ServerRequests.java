@@ -54,6 +54,14 @@ public class ServerRequests{
         progressDialog.show();
         new RestAsyncTask<Comment[]>(callback, HttpMethod.GET).execute(new Requestable<Comment[]>("/api/getCommentsByPostId/"+id, id, Comment[].class));
     }
+    public void getPostVoteCount(long id, Consumer<Long> callback) {
+        progressDialog.show();
+        new RestAsyncTask<Long>(callback, HttpMethod.GET).execute(new Requestable<Long>("/api/getOverallPostVoteById/" + id, null, Long.class));
+    }
+    public void getCommentVoteCount(long id, Consumer<Long> callback) {
+        progressDialog.show();
+        new RestAsyncTask<Long>(callback, HttpMethod.GET).execute(new Requestable<Long>("/api/getOverallCommentVoteById/" + id, null, Long.class));
+    }
     public void getAllPosts(Consumer<Post[]> callback) {
         if(display) progressDialog.show();
         new RestAsyncTask<Post[]>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/getAllPosts",null,Post[].class) );
@@ -70,7 +78,14 @@ public class ServerRequests{
         progressDialog.show();
         new RestAsyncTask<String>(callback, HttpMethod.POST).execute(c.getCreateRequestable(postId));
     }
-
+    public void voteComment(Comment c,boolean voteType,Long ownerId, Consumer<String> callback){
+        progressDialog.show();
+        new RestAsyncTask<String>(callback, HttpMethod.POST).execute(c.getVoteRequestable(voteType, ownerId));
+    }
+    public void votePost(Post p,boolean voteType,Long ownerId, Consumer<String> callback){
+        progressDialog.show();
+        new RestAsyncTask<String>(callback, HttpMethod.POST).execute(p.getVoteRequestable(voteType,ownerId));
+    }
     public void getHeritageById(long id, Consumer<Heritage> callback) {
         if(display) progressDialog.show();
         Map<String,String> m = new HashMap<>();

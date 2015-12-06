@@ -2,20 +2,6 @@
 <items version="2" >
 
     <item
-        jar="/home/xyllan/bounswe2015group8/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3f151e49c316a5ab2c065969a3b3b55ef9b393fc">
-        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/classes-f37c183ca4dc499645afad176bf879173da8d25a.jar" />
-    </item>
-    <item
-        jar="/home/xyllan/.gradle/caches/modules-2/files-2.1/com.cloudinary/cloudinary-android/1.2.2/2026ce27a1f4afcc0488e3bc3a965ca9cdf9efe9/cloudinary-android-1.2.2.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="2026ce27a1f4afcc0488e3bc3a965ca9cdf9efe9">
-        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/cloudinary-android-1.2.2-401a362988f0c0554895d14e8eb474aa514cb80f.jar" />
-    </item>
-    <item
         jar="/home/xyllan/.gradle/caches/modules-2/files-2.1/com.cloudinary/cloudinary-core/1.2.2/1f9cdf1e3635c9a728c71bd7aaf58e306d001465/cloudinary-core-1.2.2.jar"
         jumboMode="false"
         revision="23.0.1"
@@ -28,6 +14,20 @@
         revision="23.0.1"
         sha1="19026d31f5d3ae868db81319671a642be5fbba08">
         <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/classes-92eab8aa84fb5a0671596e90619ae7df5892d9c5.jar" />
+    </item>
+    <item
+        jar="/home/xyllan/.gradle/caches/modules-2/files-2.1/com.cloudinary/cloudinary-android/1.2.2/2026ce27a1f4afcc0488e3bc3a965ca9cdf9efe9/cloudinary-android-1.2.2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2026ce27a1f4afcc0488e3bc3a965ca9cdf9efe9">
+        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/cloudinary-android-1.2.2-401a362988f0c0554895d14e8eb474aa514cb80f.jar" />
+    </item>
+    <item
+        jar="/home/xyllan/bounswe2015group8/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3f151e49c316a5ab2c065969a3b3b55ef9b393fc">
+        <dex dex="/home/xyllan/bounswe2015group8/android/app/build/intermediates/pre-dexed/debug/classes-f37c183ca4dc499645afad176bf879173da8d25a.jar" />
     </item>
 
 </items>
