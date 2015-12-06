@@ -153,6 +153,12 @@
             </key>
             <many-to-many not-found="ignore" class="model.Heritage" column="HERITAGE_ID"/>
         </set>
+        <set name="followedTags" table="FOLLOW_TAG" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="FOLLOWER_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Tag" column="TAG_ID"/>
+        </set>
         <set name="followedMembers" table="FOLLOW" cascade="save-update" fetch="select" lazy="true">
             <key>
                 <column name="FOLLOWER_ID" not-null="true"/>
@@ -280,6 +286,12 @@
             </key>
             <many-to-many not-found="ignore" class="model.Post" column="POST_ID"/>
         </set>
+        <set name="followers" table="FOLLOW_HERITAGE" cascade="save-update" fetch="select" lazy="true">
+            <key>
+                <column name="TAG_ID" not-null="true"/>
+            </key>
+            <many-to-many not-found="ignore" class="model.Member" column="FOLLOWER_ID"/>
+        </set>
     </class>
     <class name="model.TagHeritage" table="TAG_HERITAGE" schema="cmpe451_db" >
         <composite-id mapped="true" class="model.TagHeritagePK">
@@ -305,6 +317,12 @@
         <composite-id mapped="true" class="model.FollowHeritagePK">
             <key-property name="followerId" column="FOLLOWER_ID"/>
             <key-property name="heritageId" column="HERITAGE_ID"/>
+        </composite-id>
+    </class>
+    <class name="model.FollowTag" table="follow_tag" schema="" catalog="cmpe451_db">
+        <composite-id mapped="true" class="model.FollowTagPK">
+            <key-property name="followerId" column="FOLLOWER_ID"/>
+            <key-property name="tagId" column="TAG_ID"/>
         </composite-id>
     </class>
 </hibernate-mapping>

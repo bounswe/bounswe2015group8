@@ -12,10 +12,12 @@ public class Tag {
     private String tagContext;
     private Collection<Heritage> heritages;
     private Collection<Post> posts;
+    private Collection<Member> followers;
 
     public Tag() {
         this.heritages = new HashSet<Heritage>();
         this.posts = new HashSet<Post>();
+        this.followers = new HashSet<Member>();
     }
 
     public Tag(String tagText, String tagContext) {
@@ -23,6 +25,7 @@ public class Tag {
         this.tagContext = tagContext;
         this.heritages = new HashSet<Heritage>();
         this.posts = new HashSet<Post>();
+        this.followers = new HashSet<Member>();
     }
 
     public long getId() {
@@ -84,4 +87,8 @@ public class Tag {
     public void setPosts(Collection<Post> posts) {
         this.posts = posts;
     }
+
+    public Collection<Member> getFollowers() { return followers; }
+
+    public void setFollowers(Collection<Member> follwoers) { this.followers = follwoers; }
 }
