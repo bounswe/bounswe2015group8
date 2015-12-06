@@ -50,6 +50,20 @@ public class PostDaoImpl implements PostDao {
         return post;
     }
 
+    public HeritagePost linkPostWithHeritage(Post post, Heritage heritage){
+        Session s = getSessionFactory().openSession();
+        s.getTransaction().begin();
+
+        HeritagePost hp = new HeritagePost();
+        hp.setHeritage(heritage);
+        hp.setPost(post);
+        s.save(hp);
+
+        s.getTransaction().commit();
+        s.close();
+        return hp;
+    }
+
     public List<Post> getPostsByHeritage(Heritage heritage) {
         Session s = getSessionFactory().openSession();
         List<HeritagePost> heritageposts = s

@@ -2,10 +2,7 @@ package service;
 
 import dao.PostDao;
 import dao.PostDaoImpl;
-import model.Heritage;
-import model.Member;
-import model.Post;
-import model.Tag;
+import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 
@@ -51,6 +48,10 @@ public class PostService {
     public Post savePost(Member member, int type, Timestamp timestamp, String title, String content, String place, Heritage heritage) {
         Post post = new Post(member, type, timestamp, title, content, place);
         return postDao.savePost(post, heritage);
+    }
+
+    public HeritagePost linkPostWithHeritage(long postId, Heritage heritage) {
+        return postDao.linkPostWithHeritage(getPostById(postId), heritage);
     }
     public Post updatePost(long postId, String newTitle, String newContent, String newPlace, Timestamp lastEditDate){
 

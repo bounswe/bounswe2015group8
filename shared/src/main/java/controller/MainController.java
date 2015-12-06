@@ -570,4 +570,30 @@ public class MainController {
         return new ModelAndView("google_map");
     }
 
+    @RequestMapping(value = "/linkPostWithHeritage/{heritageName}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long linkPost(@PathVariable String heritageName,
+                         @RequestParam(value = "postId") long postId){
+
+        if(heritageService.getHeritageByName(heritageName) == null){
+            return -2;
+        }
+        Heritage heritage = heritageService.getHeritageByName(heritageName);
+        if(heritageService.doesHeritageHavePost(heritage.getId(), postService.getPostById(postId))){
+            return -1;
+        }
+        postService.linkPostWithHeritage(postId, heritage);
+        return 1;
+    }
+
+    @RequestMapping(value = "/linkPostWithHeritage/{postId}", method = RequestMethod.GET)
+    public ModelAndView linkPostPage(@PathVariable long postId){
+        List<Post> posts = new ArrayList<>();
+        posts.add(postService.getPostById(postId));
+        Map<String, List> allContent = new HashMap<String, List>();
+        allContent.put("posts", posts);
+        allContent.put("heritages", heritageService.getAllHeritages());
+        return new ModelAndView("link_post", "allContent", allContent);
+    }
+
 }

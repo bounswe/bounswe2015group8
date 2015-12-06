@@ -24,6 +24,20 @@ public class HeritageDaoImpl implements HeritageDao {
         return heritage;
     }
 
+    @SuppressWarnings("unchecked")
+    public Heritage getHeritageByName(String name){
+        Session s = getSessionFactory().openSession();
+        List<Heritage> heritages = s
+                .createQuery("from Heritage where name=?")
+                .setParameter(0, name).list();
+        if(heritages.size() == 0){
+            return null;
+        }
+        else{
+            return heritages.get(0);
+        }
+    }
+
     public List<Heritage> getAllHeritages() {
         Session s = getSessionFactory().openSession();
         List<Heritage> heritages = s.createQuery("from Heritage").list();
@@ -45,6 +59,19 @@ public class HeritageDaoImpl implements HeritageDao {
             heritages.add(heritageposts.get(i).getHeritage());
         }
         return heritages;
+    }
+
+    public boolean doesHeritageHavaPost(Heritage heritage, Post post){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from HeritagePost where heritage=? and post=?")
+                .setParameter(0, heritage)
+                .setParameter(1, post).list().size();
+        s.close();
+        if(count == 0)
+            return false;
+        else
+            return true;
     }
 
     @SuppressWarnings("unchecked")

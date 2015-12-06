@@ -25,11 +25,17 @@ public class HeritageService {
         return heritageDao.getHeritageById(id);
     }
 
+    public Heritage getHeritageByName(String name) { return heritageDao.getHeritageByName(name); }
+
     public List<Heritage> getAllHeritages() {
         return heritageDao.getAllHeritages();
     }
 
     public List<Heritage> getHeritagesByPost(Post post){ return heritageDao.getHeritagesByPost(post); }
+
+    public boolean doesHeritageHavePost(long heritageId, Post post){
+        return heritageDao.doesHeritageHavaPost(getHeritageById(heritageId), post);
+    }
 
     public List<Heritage> getHeritagesByTag(Tag tag){ return heritageDao.getHeritagesByTag(tag); }
 

@@ -13,6 +13,8 @@ import java.util.List;
 public interface HeritageDao {
     Heritage getHeritageById(long id);
 
+    Heritage getHeritageByName(String name);
+
     List<Heritage> getAllHeritages();
 
     List<Heritage> getHeritagesByPost(Post post);
@@ -20,6 +22,8 @@ public interface HeritageDao {
     List<Heritage> getHeritagesByTag(Tag tag);
 
     Heritage saveHeritage(Heritage heritage);
+
+    boolean doesHeritageHavaPost(Heritage heritage, Post post);
 
     SessionFactory getSessionFactory();
 
