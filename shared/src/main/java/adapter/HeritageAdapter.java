@@ -15,6 +15,7 @@ import java.util.ArrayList;
  */
 public class HeritageAdapter implements JsonSerializer<Heritage> {
     private MediaAdapter mediaAdapter = new MediaAdapter();
+    private TagAdapter tagAdapter = new TagAdapter();
 
     @Override
     public JsonElement serialize(Heritage heritage, Type type,JsonSerializationContext jsc){
@@ -52,10 +53,7 @@ public class HeritageAdapter implements JsonSerializer<Heritage> {
         jsonObjectHeritage.add("posts", posts);
         JsonArray tags = new JsonArray();
         for (Tag tag : heritage.getTags()) {
-            JsonObject jsonObjectTag = new JsonObject();
-            jsonObjectTag.addProperty("id", tag.getId());
-            jsonObjectTag.addProperty("tagText", tag.getTagText());
-            tags.add(jsonObjectTag);
+            tags.add(tagAdapter.serialize(tag, type, jsc));
         }
         jsonObjectHeritage.add("tags", tags);
         return jsonObjectHeritage;
