@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -74,5 +75,37 @@ public class PostService {
             }
         }
         return posts;
+    }
+
+    public List<Post> sortByPopularity(List<Post> posts){
+        VoteService voteService = new VoteService(postDao.getSessionFactory());
+        int size = posts.size();
+        List<Post> sortedPosts = new ArrayList<>();
+
+        for(int i = 0; i < size; i++){
+            long maxVotePoint = -99999;
+            Post mostPopular = null;
+            for(int j = 0; j < posts.size(); j++){
+                Post currentPost = posts.get(j);
+                long currentVotePoint = voteService.getPostOverallVote(currentPost);
+                if(currentVotePoint > maxVotePoint){
+                    mostPopular = currentPost;
+                    maxVotePoint = currentVotePoint;
+                }
+            }
+            sortedPosts.add(mostPopular);
+            posts.remove(mostPopular);
+        }
+        return sortedPosts;
+    }
+
+    public List<Post> getRecentlyMostPopularPosts(){
+        long now = System.currentTimeMillis();
+        long nowMinusOneWeek = now - 7L * 24L * 3600L * 1000L;
+        Timestamp nowMinusOneWeekTimestamp = new Timestamp(nowMinusOneWeek);
+        logger.info("now  " + new Timestamp(now));
+        logger.info("last week " + nowMinusOneWeekTimestamp);
+        List<Post> recentPosts = postDao.getPostsCreatedAfter(nowMinusOneWeekTimestamp);
+        return sortByPopularity(recentPosts);
     }
 }

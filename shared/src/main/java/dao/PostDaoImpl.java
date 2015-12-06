@@ -4,7 +4,9 @@ import model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -68,6 +70,16 @@ public class PostDaoImpl implements PostDao {
         for (int i = 0; i < tagposts.size(); i++) {
             posts.add(tagposts.get(i).getPost());
         }
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsCreatedAfter(Timestamp date){
+        Session s = getSessionFactory().openSession();
+        List<Post> posts = s
+                .createQuery("from Post where postDate > :date")
+                .setParameter("date", date).list();
+
         return posts;
     }
 

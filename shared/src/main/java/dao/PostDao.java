@@ -6,6 +6,7 @@ import model.Post;
 import model.Tag;
 import org.hibernate.SessionFactory;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -21,6 +22,8 @@ public interface PostDao {
     List<Post> getPostsByTag(Tag tag);
 
     List<Post> getPostsContainTitle(String title);
+
+    List<Post> getPostsCreatedAfter(Timestamp date);
 
     Post savePost(Post post, Heritage heritage);
 
