@@ -2,6 +2,7 @@ package dao;
 
 import model.FollowHeritage;
 import model.Heritage;
+import model.Member;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -38,6 +39,19 @@ public class FollowHeritageDaoImpl implements FollowHeritageDao{
             heritageIds.add(followHeritages.get(i).getHeritageId());
         }
         return heritageIds;
+    }
+
+    public boolean doesMemberFollowHeritage(long memberId, long heritageId){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from FollowHeritage where heritageId=? and followerId=?")
+                .setParameter(0, heritageId)
+                .setParameter(1, memberId).list().size();
+        s.close();
+        if(count == 0)
+            return false;
+        else
+            return true;
     }
 
     public FollowHeritage saveFollowHeritage (FollowHeritage followHeritage) {

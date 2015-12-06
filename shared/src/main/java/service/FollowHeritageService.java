@@ -42,7 +42,13 @@ public class FollowHeritageService {
         return heritages;
     }
 
+    public boolean doesMemberFollowHeritage(long memberId, long heritageId){
+        return followHeritageDao.doesMemberFollowHeritage(memberId, heritageId);
+    }
+
     public FollowHeritage saveFollowHeritage(long followerId, long heritageId) {
+        if(doesMemberFollowHeritage(followerId, heritageId))
+            return null;
         FollowHeritage followHeritage = new FollowHeritage(followerId, heritageId);
         return followHeritageDao.saveFollowHeritage(followHeritage);
     }

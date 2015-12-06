@@ -3,6 +3,7 @@
 <c:set var="medias" value="${allContent.medias}"/>
 <c:set var="allTags" value="${allContent.allTags}"/>
 
+<script type="text/javascript" src="${contextPath}/static/js/notify.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         var tags = [];
@@ -57,6 +58,20 @@
             });
         });
     });
+    function followHeritage(heritageId){
+        $.ajax({
+            url: "${contextPath}/followHeritage/" + heritageId,
+            type: "POST",
+            success: function(response) {
+                if(response == -1){
+                    $.notify("You are already following this heritage", "warn");
+                }
+                else{
+                    $.notify("You are now following this heritage", "success");
+                }
+            }
+        });
+    }
 </script>
 
 <sec:authorize access="isAuthenticated()">
@@ -156,6 +171,11 @@
                                     onclick="window.location.href='${contextPath}/post/${heritage.id}'">
                                 Add Post
                             </button>
+                            <button type="button"
+                                    class="btn btn-info"
+                                    onclick="followHeritage(${heritage.id});">
+                                Follow Heritage
+                            </button>
                         </sec:authorize>
                         <button type="button"
                                 class="btn btn-default"
@@ -171,7 +191,7 @@
                         <p id="tags_${heritage.id}">
                             <c:forEach items="${heritage.tags}" var="tag">
                                 <a href="${contextPath}/searchHeritageByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
-                                &lt;${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;
+                                &lt;${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;</a>
                             </c:forEach>
                         </p>
                     </div>

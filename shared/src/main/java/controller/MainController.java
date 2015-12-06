@@ -54,6 +54,7 @@ public class MainController {
     VoteService voteService;
     TagService tagService;
     FollowService followService;
+    FollowHeritageService followHeritageService;
 
     public MainController() {
         memberService = new MemberDetailsService();
@@ -66,6 +67,7 @@ public class MainController {
         voteService = new VoteService(Main.getSessionFactory());
         tagService = new TagService(Main.getSessionFactory());
         followService = new FollowService(Main.getSessionFactory());
+        followHeritageService = new FollowHeritageService(Main.getSessionFactory());
     }
 
     @RequestMapping(value = "/")
@@ -595,5 +597,18 @@ public class MainController {
         allContent.put("heritages", heritageService.getAllHeritages());
         return new ModelAndView("link_post", "allContent", allContent);
     }
+
+    @RequestMapping(value = "/followHeritage/{heritageId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long followHeritage(@PathVariable long heritageId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        long memberId = memberService.getMemberByUsername(username).getId();
+        FollowHeritage fh = followHeritageService.saveFollowHeritage(memberId, heritageId);
+        if(fh == null)
+            return -1;
+        return 1;
+    }
+
 
 }

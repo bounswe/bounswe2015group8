@@ -12,6 +12,10 @@ public class FollowHeritage {
     private long followerId;
     private long heritageId;
 
+    public FollowHeritage(){
+
+    }
+
     public FollowHeritage(long followerId, long heritageId) {
         this.followerId = followerId;
         this.heritageId = heritageId;

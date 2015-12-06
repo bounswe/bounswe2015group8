@@ -2,6 +2,7 @@ package dao;
 
 import model.FollowHeritage;
 import model.Heritage;
+import model.Member;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
@@ -10,14 +11,16 @@ import java.util.List;
  * Created by coldwhistle on 12/6/15.
  */
 public interface FollowHeritageDao {
-    public List<Long> getHeritageFollowersByHeritage(Heritage heritage);
+    List<Long> getHeritageFollowersByHeritage(Heritage heritage);
 
-    public List<Long> getFollowedHeritagesByMemberId (long id);
+    List<Long> getFollowedHeritagesByMemberId (long id);
 
-    public FollowHeritage saveFollowHeritage (FollowHeritage followHeritage);
+    boolean doesMemberFollowHeritage(long memberId, long heritageId);
 
-    public SessionFactory getSessionFactory();
+    FollowHeritage saveFollowHeritage (FollowHeritage followHeritage);
 
-    public void setSessionFactory(SessionFactory sessionFactory);
+    SessionFactory getSessionFactory();
+
+    void setSessionFactory(SessionFactory sessionFactory);
 
 }
