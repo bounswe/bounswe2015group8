@@ -93,8 +93,15 @@ public class Comment {
         dataToSend.put("postId", Long.toString(postId));
         dataToSend.put("ownerId", Long.toString(owner.getId()));
         dataToSend.put("content", content);
-        System.out.println("\n----mumu---- "+postId+" - "+owner.getId()+ " --- "+content+" ----------------");
         return new Requestable<String>("/api/postComment",dataToSend,String.class);
+    }
+    public Requestable<String> getVoteRequestable(boolean voteType,Long ownerId) {
+        Map<String,String> dataToSend = new HashMap<>();
+
+        dataToSend.put("commentId", Long.toString(getId()));
+        dataToSend.put("ownerId", Long.toString(ownerId));
+        dataToSend.put("voteType", Boolean.toString(voteType));
+        return new Requestable<String>("/api/voteComment",dataToSend,String.class);
     }
 
 
@@ -118,7 +125,20 @@ public class Comment {
 
     public void setPostId(long postId) { this.postId = postId; }
 
-    public int getNetCount() { return netCount; }
+    public int getNetCount() {
+        int netVoteCount=0;
+        Collection<CommentVote> votes = getVotes();
+        for(CommentVote cv: votes){
+            System.out.println("mumu "+votes.size()+" comment: "+ cv.getVoteType() );
+            if(cv.getVoteType()){
+                netVoteCount++;
+            } else{
+                netVoteCount--;
+            }
+
+        }
+        return netVoteCount;
+    }
 
     public void setNetCount(int netCount) { this.netCount = netCount; }
 
