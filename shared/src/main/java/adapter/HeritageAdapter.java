@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * Created by gokcan on 15.11.2015.
  */
 public class HeritageAdapter implements JsonSerializer<Heritage> {
+    private MediaAdapter mediaAdapter = new MediaAdapter();
 
     @Override
     public JsonElement serialize(Heritage heritage, Type type,JsonSerializationContext jsc){
@@ -27,13 +28,7 @@ public class HeritageAdapter implements JsonSerializer<Heritage> {
         JsonArray mediasJsonArray = new JsonArray();
         ArrayList<Media> medias = MediaUtility.getMedias(heritage.getId(), true);
         for (Media media : medias) {
-            JsonObject mediaObject = new JsonObject();
-            mediaObject.addProperty("id", media.getId());
-            mediaObject.addProperty("postOrHeritageId", media.getPostOrHeritageId());
-            mediaObject.addProperty("mediaLink", media.getMediaLink());
-            mediaObject.addProperty("mediaType", media.getMediaType());
-            mediaObject.addProperty("postOrHeritage", media.getPostOrHeritage());
-            mediasJsonArray.add(mediaObject);
+            mediasJsonArray.add(mediaAdapter.serialize(media, type, jsc));
         }
         jsonObjectHeritage.add("media", mediasJsonArray);
         JsonArray posts = new JsonArray();
@@ -49,13 +44,7 @@ public class HeritageAdapter implements JsonSerializer<Heritage> {
             JsonArray postMediasJsonArray = new JsonArray();
             ArrayList<Media> postMedias = MediaUtility.getMedias(post.getId(), false);
             for (Media media : postMedias) {
-                JsonObject mediaObject = new JsonObject();
-                mediaObject.addProperty("id", media.getId());
-                mediaObject.addProperty("postOrHeritageId", media.getPostOrHeritageId());
-                mediaObject.addProperty("mediaLink", media.getMediaLink());
-                mediaObject.addProperty("mediaType", media.getMediaType());
-                mediaObject.addProperty("postOrHeritage", media.getPostOrHeritage());
-                postMediasJsonArray.add(mediaObject);
+                postMediasJsonArray.add(mediaAdapter.serialize(media, type, jsc));
             }
             jsonObjectPost.add("media", postMediasJsonArray);
             posts.add(jsonObjectPost);
