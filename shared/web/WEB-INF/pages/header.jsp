@@ -29,12 +29,44 @@
     <script src="${contextPath}/static/js/jquery-ui.min.js"></script>
     <script src="${contextPath}/static/js/bootstrap/bootstrap.js"></script>
     <script src="${contextPath}/static/js/bootstrap/bootstrap-tokenfield.js"></script>
+    <script src="${contextPath}/static/js/notify.js"></script>
 </head>
 
 <script type="text/javascript">
     function searchByTag(){
         var tag = document.getElementById("search").value;
         window.location.href = "${contextPath}/searchByTag/" + tag;
+    }
+
+    function recommendHeritage(){
+        $.ajax({
+            url: "${contextPath}/recommendHeritage",
+            type: "POST",
+            success: function(response) {
+                if(response.length == 0){
+                    $.notify("We don't have any recommendation for you, sorry :(", "info");
+                }
+                else{
+                    var html = "<h3 style='color:orangered;'>Would you like to see posts of the following heritages?</h3>";
+                    console.log(response);
+                    for(var i = 0; i < response.length; i++){
+                        html += "Name: <a style='color:black; font-weight:bold;' href='${contextPath}/show_posts/"+response[i]['id']+"'>"+response[i]['title']+"</a>";
+                        html += "<br>";
+                    }
+                    $.notify.addStyle('recommend', {
+                        html: "<div><span data-notify-html/></div>",
+                        classes: {
+                            base: {
+                                "white-space": "nowrap",
+                                "background-color": "lightblue",
+                                "padding": "5px"
+                            }
+                        }
+                    });
+                    $.notify(html, {style: 'recommend'});
+                }
+            }
+        });
     }
 </script>
 
@@ -59,6 +91,11 @@
             <input style="color:black;" id="search" type="text" placeholder="Search Posts by Tags...">
             <button class="glyphicon glyphicon-search" onclick="searchByTag();"></button>
         </div>
+        <sec:authorize access="isAuthenticated()">
+            <div class="navbar-header" style="margin-left:85%; margin-top:-2.5%; width:10%;">
+                <button class="btn btn-info" onclick="recommendHeritage();">Recommend</button>
+            </div>
+        </sec:authorize>
     </div>
 </nav>
 

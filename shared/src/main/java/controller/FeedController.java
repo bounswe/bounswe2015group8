@@ -1,12 +1,16 @@
 package controller;
 
+import adapter.CommentAdapter;
+import adapter.HeritageAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import dao.MemberDaoImpl;
-import model.Heritage;
-import model.Media;
-import model.Post;
-import model.Tag;
+import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -32,6 +36,7 @@ public class FeedController {
     HeritageService heritageService;
     VoteService voteService;
     TagService tagService;
+    FollowService followService;
     FollowHeritageService followHeritageService;
 
     public FeedController(){
@@ -43,6 +48,7 @@ public class FeedController {
         heritageService = new HeritageService(Main.getSessionFactory());
         voteService = new VoteService(Main.getSessionFactory());
         tagService = new TagService(Main.getSessionFactory());
+        followService = new FollowService(Main.getSessionFactory());
         followHeritageService = new FollowHeritageService(Main.getSessionFactory());
     }
 
@@ -105,6 +111,36 @@ public class FeedController {
         allContent.put("allTags", session.createCriteria(Tag.class).list());
         session.close();
         return new ModelAndView("list_heritage", "allContent", allContent);
+    }
+
+    @RequestMapping(value = "/recommendHeritage", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String getRecommendedHeritage(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        long memberId = memberService.getMemberByUsername(username).getId();
+
+        List<Heritage> myHeritages = followHeritageService.getFollowedHeritagesByMemberId(memberId);
+        List<Heritage> heritagesToRecommend = new ArrayList<>();
+        List<Member> followingMembers = followService.getFollowingById(memberId);
+        for(int i = 0; i < followingMembers.size(); i++){
+            Member followee = followingMembers.get(i);
+            for(Heritage heritage : followHeritageService.getFollowedHeritagesByMemberId(followee.getId())){
+                if(!myHeritages.contains(heritage)){
+                    heritagesToRecommend.add(heritage);
+                }
+            }
+        }
+
+        heritagesToRecommend = heritageService.sortByPopularity(heritagesToRecommend);
+        JsonArray jsonHeritagesRecommend = new JsonArray();
+        for(int i = 0; i < heritagesToRecommend.size(); i++){
+            JsonObject jsonHeritage = new JsonObject();
+            jsonHeritage.addProperty("id", heritagesToRecommend.get(i).getId());
+            jsonHeritage.addProperty("title", heritagesToRecommend.get(i).getName());
+            jsonHeritagesRecommend.add(jsonHeritage);
+        }
+        return jsonHeritagesRecommend.toString();
     }
 
 }

@@ -5,7 +5,6 @@
 <c:set var="medias" value="${allContent.medias}"/>
 <c:set var="allTags" value="${allContent.allTags}"/>
 
-<script type="text/javascript" src="${contextPath}/static/js/notify.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         var tags = [];
@@ -74,6 +73,8 @@
             }
         });
     }
+
+
 </script>
 
 <sec:authorize access="isAuthenticated()">

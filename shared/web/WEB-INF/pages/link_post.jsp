@@ -8,7 +8,6 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 <c:set var="allHeritages" value="${allContent.heritages}"/>
 <c:set var="post" value="${allContent.posts[0]}"/>
-<script type="text/javascript" src="${contextPath}/static/js/notify.js"></script>>
 <script>
     $(document).ready(function(){
         heritageTitles = [];
