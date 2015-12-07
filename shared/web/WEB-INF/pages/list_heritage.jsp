@@ -180,20 +180,22 @@
 
         <div class="panel-footer">
             <div class="row">
-                <div class="col-sm-offset-8 col-sm-4" role="group">
+
                     <sec:authorize access="isAuthenticated()">
-                        <button type="button" style="float:right;"
+                        <button type="button" style="float:right; margin-right: 0.5%"
                                 class="btn btn-default"
                                 onclick="window.location.href='${contextPath}/post/${heritage.id}'">
                             Add Post
                         </button>
                     </sec:authorize>
-                    <button type="button" style="float:right; margin-right: 4%;"
+                    <button type="button" style="float:right; margin-right: 0.5%;"
                             class="btn btn-default"
                             onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
                         See Posts
                     </button>
-                </div>
+
+                    <button style="float:left; margin-left:0.5%" type="button" class="btn btn-success followbutton" id="followbutton_${heritage.id}">Follow</button>
+
             </div>
         </div>
 

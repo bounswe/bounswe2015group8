@@ -59,18 +59,7 @@
 
         </div>
     </div>
-    <div class="form-group">
-        <label for="media" class="col-sm-1 control-label">Media</label>
-        <div class="col-sm-9">
-            <label for="media" class="btn btn-lg"><i class="glyphicon glyphicon-paperclip"></i></label>
-            <input type="file" name="media" id="media" style="display:none"/>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-1 col-sm-9">
-            <button type="submit" class="btn btn-default btn-block">Post</button>
-        </div>
-    </div>
+
 </form>
 <script type="text/javascript">
     function fillPlaceFromGoogleMap(){
