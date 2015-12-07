@@ -32,7 +32,7 @@ public class MemberAdapter implements JsonSerializer<Member> {
 
         JsonArray commentVotes = new JsonArray();
         for(CommentVote commentVote : member.getCommentVotes()){
-            comments.add(commentVoteAdapter.serialize(commentVote, type, jsonSerializationContext));
+            commentVotes.add(commentVoteAdapter.serialize(commentVote, type, jsonSerializationContext));
         }
         memberObject.add("commentVotes", commentVotes);
 
@@ -59,6 +59,9 @@ public class MemberAdapter implements JsonSerializer<Member> {
             postVotes.add(postVoteAdapter.serialize(postVote, type, jsonSerializationContext));
         }
         memberObject.add("postVotes", postVotes);
+
+        memberObject.addProperty("followers", gson.toJson(member.getFollowers()));
+        memberObject.addProperty("followedMembers", gson.toJson(member.getFollowedMembers()));
 
         return memberObject;
     }
