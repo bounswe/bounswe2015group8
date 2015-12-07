@@ -5,6 +5,7 @@ import model.Post;
 import model.Tag;
 import org.hibernate.SessionFactory;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -20,6 +21,10 @@ public interface HeritageDao {
     List<Heritage> getHeritagesByPost(Post post);
 
     List<Heritage> getHeritagesByTag(Tag tag);
+
+    List<Heritage> getHeritagesCreatedAfter(Timestamp date);
+
+    int countPostsInHeritage(Heritage heritage);
 
     Heritage saveHeritage(Heritage heritage);
 

@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,15 @@ public class HeritageDaoImpl implements HeritageDao {
         return heritages;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Heritage> getHeritagesCreatedAfter(Timestamp date){
+        Session s = getSessionFactory().openSession();
+        List<Heritage> heritages = s
+                .createQuery("from Heritage where postDate > :date")
+                .setParameter("date", date).list();
+        return heritages;
+    }
+
     public boolean doesHeritageHavaPost(Heritage heritage, Post post){
         Session s = getSessionFactory().openSession();
         int count = s
@@ -72,6 +82,15 @@ public class HeritageDaoImpl implements HeritageDao {
             return false;
         else
             return true;
+    }
+
+    public int countPostsInHeritage(Heritage heritage){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from HeritagePost where heritage=?")
+                .setParameter(0, heritage).list().size();
+        s.close();
+        return count;
     }
 
     @SuppressWarnings("unchecked")

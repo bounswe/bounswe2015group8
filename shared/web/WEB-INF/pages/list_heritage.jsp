@@ -129,7 +129,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label for="postDate" class="col-sm-2 control-label">Description</label>
+                    <label for="postDate" class="col-sm-2 control-label">Created At</label>
 
                     <div class="col-sm-10">
                         <p name="postDate" id="postDate">
@@ -151,15 +151,18 @@
                             </div>
                         </c:if>
                         <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
-                            <div id="container"></div>
-                            <script type="text/javascript">
-                                jwplayer("container").setup({
-                                    file: "${media.mediaLink}",
-                                    height: 300,
-                                    width: 520,
-                                    autostart: false
-                                });
-                            </script>
+                            <div class="row">
+                            <label class="col-sm-2 control-label">Media</label>
+                                <div id="container"></div>
+                                <script type="text/javascript">
+                                    jwplayer("container").setup({
+                                        file: "${media.mediaLink}",
+                                        height: 300,
+                                        width: 520,
+                                        autostart: false
+                                    });
+                                </script>
+                            </div>
                         </c:if>
                     </c:if>
                 </c:forEach>

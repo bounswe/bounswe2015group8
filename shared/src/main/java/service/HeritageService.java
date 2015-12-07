@@ -8,6 +8,7 @@ import model.Tag;
 import org.hibernate.SessionFactory;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,5 +45,34 @@ public class HeritageService {
     public Heritage saveHeritage(String name, String place, String description, Timestamp postDate) {
         Heritage heritage = new Heritage(name, place, description, postDate);
         return heritageDao.saveHeritage(heritage);
+    }
+
+    public List<Heritage> sortByPopularity(List<Heritage> heritages){
+        List<Heritage> sortedHeritages = new ArrayList<>();
+        int size = heritages.size();
+
+        for(int i = 0; i < size; i++){
+            int maxPostNum = -1;
+            Heritage mostPopular = null;
+            for(int j = 0; j < heritages.size(); j++){
+                Heritage currentHeritage = heritages.get(j);
+                int currentPostNum = heritageDao.countPostsInHeritage(currentHeritage);
+                if(currentPostNum > maxPostNum){
+                    maxPostNum = currentPostNum;
+                    mostPopular = currentHeritage;
+                }
+            }
+            sortedHeritages.add(mostPopular);
+            heritages.remove(mostPopular);
+        }
+        return sortedHeritages;
+    }
+
+    public List<Heritage> getRecentlyMostPopularHeritages(){
+        long now = System.currentTimeMillis();
+        long nowMinusOneWeek = now - 7L * 24L * 3600L * 1000L; // From last week up until now
+        Timestamp nowMinusOneWeekTimestamp = new Timestamp(nowMinusOneWeek);
+        List<Heritage> recentHeritages = heritageDao.getHeritagesCreatedAfter(nowMinusOneWeekTimestamp);
+        return sortByPopularity(recentHeritages);
     }
 }
