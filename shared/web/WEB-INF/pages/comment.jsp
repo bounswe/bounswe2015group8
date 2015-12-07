@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+<div class="page-content container">
 <form class="form-horizontal"
       id="postForm"
       action="${contextPath}/post_comment"

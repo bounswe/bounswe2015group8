@@ -38,22 +38,27 @@
     }
 </script>
 
-<body style="background-color: #265a88">
+<body>
 <nav class="navbar navbar-default navbar-static-top header">
-    <div class="container-fluid">
+    <sec:authorize var="isAuthorized" access="isAuthenticated()" />
+    <div class="container-fluid"  style="background-color: darkblue">
         <div class="navbar-header">
-            <a class="navbar-brand" href="${contextPath}/index.jsp">&#x2655; WeStory</a>
+            <a class="navbar-brand" href="${contextPath}/show_heritages" style="color: floralwhite">&#x2655; WeStory</a>
         </div>
+        <c:if test="${isAuthorized}">
+            <a style="float:right; margin-top: 0.5%;" href="${contextPath}/logout" class="btn btn-default" role="button">Log Out</a>
+            <a style="float:right; margin-top: 0.5%; margin-right: 0.5%; font-size: 30px; color: floralwhite" href="${contextPath}/profile.jsp"><span class="glyphicon glyphicon-user"></span></a>
+        </c:if>
+        <c:if test="${!isAuthorized}">
+            <a style="float:right; margin-top: 0.5%;" href="${contextPath}/login" class="btn btn-default" role="button">Log In</a>
+            <a style="float:right; margin-top: 0.5%; margin-right: 0.3%;" href="${contextPath}/signup" class="btn btn-default" role="button">Sign Up</a>
+        </c:if>
+
 
         <div class="navbar-header" style="margin-left:35%; margin-top:0.5%; width:25%;">
             <input style="color:black;" id="search" type="text" placeholder="Search Posts by Tags...">
             <button class="glyphicon glyphicon-search" onclick="searchByTag();"></button>
         </div>
-
-        <sec:authorize access="isAuthenticated()">
-            <a style="float:right; margin-top:0.5%;" href="${contextPath}/logout" class="btn btn-danger" role="button">Log Out</a>
-        </sec:authorize>
     </div>
 </nav>
 
-<div class="page-content container" >

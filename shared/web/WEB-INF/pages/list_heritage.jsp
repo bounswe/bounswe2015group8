@@ -1,4 +1,6 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+
+<div class="page-content container">
 <c:set var="allHeritages" value="${allContent.heritages}"/>
 <c:set var="medias" value="${allContent.medias}"/>
 <c:set var="allTags" value="${allContent.allTags}"/>
@@ -98,61 +100,48 @@
     <div class="row">
         <div class="col-xs-12" style="height:20px;"></div>
     </div>
-    <div class="well">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="row">
-                    <label for="name" class="col-sm-2 control-label">Name</label>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title" name="name" id="name">${heritage.name}</h3>
+        </div>
 
-                    <div class="col-sm-10">
-                        <p name="name" id="name">
-                                ${heritage.name}
-                        </p>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <label for="place" class="col-sm-2 control-label">Place</label>
+
+                        <div class="col-sm-10">
+                            <p name="place" id="place">
+                                    ${heritage.place}
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label for="place" class="col-sm-2 control-label">Place</label>
+                    <div class="row">
+                        <label for="description" class="col-sm-2 control-label">Description</label>
 
-                    <div class="col-sm-10">
-                        <p name="place" id="place">
-                                ${heritage.place}
-                        </p>
+                        <div class="col-sm-10">
+                            <p name="description" id="description">
+                                    ${heritage.description}
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label for="description" class="col-sm-2 control-label">Description</label>
+                    <div class="row">
+                        <label for="postDate" class="col-sm-2 control-label">Date</label>
 
-                    <div class="col-sm-10">
-                        <p name="description" id="description">
-                                ${heritage.description}
-                        </p>
+                        <div class="col-sm-10">
+                            <p name="postDate" id="postDate">
+                                    ${heritage.postDate}
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <label for="postDate" class="col-sm-2 control-label">Created At</label>
 
-                    <div class="col-sm-10">
-                        <p name="postDate" id="postDate">
-                                ${heritage.postDate}
-                        </p>
-                    </div>
-                </div>
-                <c:forEach var="media" items="${medias}">
-                    <c:if test="${media.postOrHeritageId == heritage.id && media.postOrHeritage==true}">
-                        <c:if test="${media.mediaType == 0}">
-                            <div class="row">
-                                <label class="col-sm-2 control-label">Media</label>
-
-                                <div class="media col-sm-10">
-                                    <div class="media-left">
-                                        <img src="${media.mediaLink}" height="240px;" width="360px;">
-                                    </div>
-                                </div>
-                            </div>
-                        </c:if>
-                        <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
-                            <div class="row">
-                            <label class="col-sm-2 control-label">Media</label>
+                    <c:forEach var="media" items="${medias}">
+                        <c:if test="${media.postOrHeritageId == heritage.id && media.postOrHeritage==true}">
+                            <c:if test="${media.mediaType == 0}">
+                                <img src="${media.mediaLink}" height="240px;" width="360px;">
+                            </c:if>
+                            <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
                                 <div id="container"></div>
                                 <script type="text/javascript">
                                     jwplayer("container").setup({
@@ -162,56 +151,58 @@
                                         autostart: false
                                     });
                                 </script>
-                            </div>
+                            </c:if>
                         </c:if>
-                    </c:if>
-                </c:forEach>
-                <div class="row">
-                    <div class="col-sm-offset-8 col-sm-4" role="group">
-                        <sec:authorize access="isAuthenticated()">
-                            <button type="button"
-                                    class="btn btn-default"
-                                    onclick="window.location.href='${contextPath}/post/${heritage.id}'">
-                                Add Post
-                            </button>
-                            <button type="button"
-                                    class="btn btn-info"
-                                    onclick="followHeritage(${heritage.id});">
-                                Follow Heritage
-                            </button>
-                        </sec:authorize>
-                        <button type="button"
-                                class="btn btn-default"
-                                onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
-                            See Posts
-                        </button>
-                    </div>
+                    </c:forEach>
                 </div>
+            </div>
+            <div class="row">
+                <label for="tags_${heritage.id}" class="col-sm-2 control-label">Tags:</label>
+                <div class="col-sm-4" role="group">
+                    <p id="tags_${heritage.id}">
+                        <c:forEach items="${heritage.tags}" var="tag">
+                            <a href="${contextPath}/search/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
+                        </c:forEach>
+                    </p>
+                </div>
+            </div>
 
+            <sec:authorize access="isAuthenticated()">
                 <div class="row">
-                    <label for="tags_${heritage.id}" class="col-sm-2 control-label">Tags:</label>
-                    <div class="col-sm-4" role="group">
-                        <p id="tags_${heritage.id}">
-                            <c:forEach items="${heritage.tags}" var="tag">
-                                <a href="${contextPath}/searchHeritageByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
-                                &lt;${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;</a>
-                            </c:forEach>
-                        </p>
+                    <div class="col-sm-offset-2 col-sm-5" role="group">
+                        <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${heritage.id}">Add</button>
+                        <input style="width:88%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
                     </div>
                 </div>
-                <sec:authorize access="isAuthenticated()">
-                    <div class="row">
-                        <div class="col-sm-offset-2 col-sm-5" role="group">
-                            <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
-                            <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${heritage.id}">
-                                Add Tags
-                            </button>
-                        </div>
-                    </div>
-                </sec:authorize>
+            </sec:authorize>
+        </div>
+
+
+        <div class="panel-footer">
+            <div class="row">
+
+                    <sec:authorize access="isAuthenticated()">
+                        <button type="button" style="float:right; margin-right: 0.5%"
+                                class="btn btn-default"
+                                onclick="window.location.href='${contextPath}/post/${heritage.id}'">
+                            Add Post
+                        </button>
+                    </sec:authorize>
+                    <button type="button" style="float:right; margin-right: 0.5%;"
+                            class="btn btn-default"
+                            onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
+                        See Posts
+                    </button>
+
+                    <button style="float:left; margin-left:0.5%" type="button" class="btn btn-success followbutton" id="followbutton_${heritage.id}">Follow</button>
+
             </div>
         </div>
+
     </div>
 </c:forEach>
+    <div class="row">
+        <div class="col-xs-12" style="height:40px;"></div>
+    </div>
 
 <%@ include file="/WEB-INF/pages/footer.jsp" %>

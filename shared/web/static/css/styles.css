@@ -9,10 +9,15 @@
     height: 50px;
 }
 
-.page-content {
-    /* margin-top: 70px; */
-    margin: 0px auto 70px auto;
-    width: 80%
+div.roundbox {
+    border: 2px solid #00f ;
+    border-radius: 20px ;
+    padding: 20px ;
+    background-color: #c4e8f3 ;
+    color: #000 ;
+    width: 100% ;
+    margin-left: auto ;
+    margin-right: auto ;
 }
 
 .footer {
