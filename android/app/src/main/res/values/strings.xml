@@ -21,6 +21,8 @@
     <string name="hint_heritage_name">Lokum</string>
     <string name="hint_heritage_place">Middle East</string>
     <string name="hint_heritage_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vitae vehicula nibh, et tempor mi. Vivamus malesuada tincidunt risus, quis dapibus nibh mattis ut. Morbi gravida neque ac ligula malesuada fermentum. Pellentesque nec consequat ligula. Sed iaculis metus eu arcu venenatis malesuada.</string>
+    <string name="hint_tag_text">Tag Text</string>
+    <string name="hint_tag_context">Tag Context</string>
     <string name="comment_hint">Type your comment here</string>
     <string name="placeholder_short">WeStory</string>
     <string name="placeholder_mid">Cultural Heritage Story</string>
@@ -34,6 +36,7 @@
     <string name="btn_new_post">Add Post</string>
     <string name="btn_new_comment">Add Comment</string>
     <string name="btn_new_media">Add Media</string>
+    <string name="generic_add">Add…</string>
     <string name="generic_description">Description:</string>
     <string name="generic_owner">Creator:</string>
     <string name="generic_title">Title:</string>
@@ -68,6 +71,17 @@
         <item>Comments</item>
         <item>Heritages</item>
         <item>Tags</item>
+        <item>Media</item>
+    </string-array>
+    <string-array name="heritage_view_singular_list">
+        <item>Post</item>
+        <item>Tag</item>
+        <item>Media</item>
+    </string-array>
+    <string-array name="post_view_singular_list">
+        <item>Comment</item>
+        <item>Heritage</item>
+        <item>Tag</item>
         <item>Media</item>
     </string-array>
     <string-array name="media_types">

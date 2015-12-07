@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/relative_layout_margin">
+
+    <EditText
+        android:id="@+id/etPopupTagAddText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/primary_light"
+        android:hint="@string/hint_tag_text"
+        android:textColorHint="@color/secondary_text"
+        android:inputType="text"
+        android:padding="@dimen/relative_layout_margin_between"
+        android:singleLine="true"
+        android:elevation="@dimen/btn_elevation"/>
+    <EditText
+        android:id="@+id/etPopupTagAddContext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/primary_light"
+        android:hint="@string/hint_tag_context"
+        android:inputType="textPassword"
+        android:padding="@dimen/relative_layout_margin_between"
+        android:singleLine="true"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/secondary_text"
+        android:elevation="@dimen/btn_elevation"/>
+</LinearLayout>
+

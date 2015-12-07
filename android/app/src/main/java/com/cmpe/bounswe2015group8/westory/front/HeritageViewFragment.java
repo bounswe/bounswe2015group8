@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.cmpe.bounswe2015group8.westory.front.adapter.HeritageViewAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Post;
+import com.cmpe.bounswe2015group8.westory.model.Tag;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,10 +44,12 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     private Heritage heritage;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ExpandableListView elvData;
+    private LayoutInflater inflater;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.inflater = inflater;
         MemberLocalStore memberLocalStore = new MemberLocalStore(getActivity());
         View v = inflater.inflate(R.layout.fragment_heritage_view,container,false);
         swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.srlHeritageView);
@@ -55,17 +59,14 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         tvPlace = (TextView) header.findViewById(R.id.tvHeritageViewPlaceValue);
         tvCreationDate = (TextView) header.findViewById(R.id.tvHeritageViewCreationDateValue);
         tvDescription = (TextView) header.findViewById(R.id.tvHeritageViewDescriptionValue);
-        Button btnEdit = (Button) header.findViewById(R.id.btnHeritageEdit);
-        Button btnAddPost = (Button) header.findViewById(R.id.btnHeritageNewPost);
-        Button btnHeritageNewMedia = (Button) header.findViewById(R.id.btnHeritageNewMedia);
+        Button btnEdit = (Button) header.findViewById(R.id.btnHeritageViewEdit);
+        Button btnAdd = (Button) header.findViewById(R.id.btnHeritageViewAdd);
         if(memberLocalStore.getUserLoggedIn()) {
             btnEdit.setOnClickListener(this);
-            btnAddPost.setOnClickListener(this);
-            btnHeritageNewMedia.setOnClickListener(this);
+            btnAdd.setOnClickListener(this);
         } else {
             btnEdit.setVisibility(View.GONE);
-            btnAddPost.setVisibility(View.GONE);
-            btnHeritageNewMedia.setVisibility(View.GONE);
+            btnAdd.setVisibility(View.GONE);
         }
         initViews(this.getArguments());
         elvData.addHeaderView(header);
@@ -81,7 +82,7 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.btnHeritageEdit:
+            case R.id.btnHeritageViewEdit:
                 NamedFragment nf = new HeritageEditFragment();
                 Bundle b = new Bundle();
                 b.putBoolean("isNew", false);
@@ -89,17 +90,63 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 nf.setArguments(b);
                 MainActivity.beginFragment(getActivity(),nf);
                 break;
-            case R.id.btnHeritageNewPost:
-                NamedFragment pef = new PostEditFragment();
-                Bundle b2 = new Bundle();
-                b2.putLong("heritageId",heritage.getId());
-                pef.setArguments(b2);
-                MainActivity.beginFragment(getActivity(),pef);
-                break;
-            case R.id.btnHeritageNewMedia:
-                uploadMedia();
+            case R.id.btnHeritageViewAdd:
+                add();
                 break;
         }
+    }
+    private void add() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Add...");
+        final String[] mediaTypes = getResources().getStringArray(R.array.heritage_view_singular_list);
+        builder.setItems(mediaTypes,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                addPost();
+                                break;
+                            case 1:
+                                addTag();
+                                break;
+                            case 2:
+                                uploadMedia();
+                                break;
+                        }
+                    }
+                });
+        builder.show();
+    }
+    private void addPost() {
+        NamedFragment pef = new PostEditFragment();
+        Bundle b2 = new Bundle();
+        b2.putLong("heritageId",heritage.getId());
+        pef.setArguments(b2);
+        MainActivity.beginFragment(getActivity(),pef);
+    }
+    private void addTag() {
+        View v = inflater.inflate(R.layout.popup_tag_add,null,false);
+        final EditText tagText = (EditText) v.findViewById(R.id.etPopupTagAddText);
+        final EditText tagContext = (EditText) v.findViewById(R.id.etPopupTagAddContext);
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Add Tag")
+                .setView(v)
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Tag t = new Tag(tagText.getText().toString(),
+                                tagContext.getText().toString());
+                        //TODO add tag
+                        heritage.addTags(t);
+                        updateAdapter();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
     private void uploadMedia() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -158,12 +205,16 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         sr.getHeritageById(heritage.getId(), new Consumer<Heritage>() {
             @Override
             public void accept(Heritage h) {
-                elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()), new ArrayList<>(h.getTags()), new ArrayList<>(h.getMedia())));
+                updateAdapter(h);
                 heritage.setPosts(h.getPosts());
                 heritage.setTags(h.getTags());
                 heritage.setMedia(h.getMedia());
             }
         });
+    }
+    private void updateAdapter() { updateAdapter(heritage); }
+    private void updateAdapter(Heritage h) {
+        elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()), new ArrayList<>(h.getTags()), new ArrayList<>(h.getMedia())));
     }
     private void manualRefresh() {
         swipeRefreshLayout.setRefreshing(true);
