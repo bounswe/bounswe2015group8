@@ -1,6 +1,7 @@
 package api;
 
 import controller.Main;
+import model.Heritage;
 import model.HeritagePost;
 
 import java.util.ArrayList;
@@ -19,14 +20,14 @@ public class HeritagePostUtility {
         return heritagePostList;
     }
 
-    public static ArrayList<Long> getHeritageIdOfPost(long postId) {
-        ArrayList<Long> heritageIds = new ArrayList<>();
+    public static ArrayList<Heritage> getHeritageIdOfPost(long postId) {
+        ArrayList<Heritage> heritages = new ArrayList<>();
         heritagePostList = getHeritagePostList();
         for (HeritagePost heritagePost : heritagePostList) {
             if (heritagePost.getPost().getId() == postId) {
-                heritageIds.add(heritagePost.getHeritage().getId());
+                heritages.add(heritagePost.getHeritage());
             }
         }
-        return heritageIds;
+        return heritages;
     }
 }

@@ -4,7 +4,6 @@ import com.google.gson.*;
 import model.*;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 /**
  * Created by Goktug on 16.11.2015.
@@ -32,21 +31,27 @@ public class MemberAdapter implements JsonSerializer<Member> {
 
         JsonArray commentVotes = new JsonArray();
         for(CommentVote commentVote : member.getCommentVotes()){
-            comments.add(commentVoteAdapter.serialize(commentVote, type, jsonSerializationContext));
+            commentVotes.add(commentVoteAdapter.serialize(commentVote, type, jsonSerializationContext));
         }
         memberObject.add("commentVotes", commentVotes);
 
-        ArrayList<Long> followedMemberIds = new ArrayList<>();
+        JsonArray followedMembers = new JsonArray();
         for (Member followed : member.getFollowedMembers()) {
-            followedMemberIds.add(followed.getId());
+            JsonObject memberJson = new JsonObject();
+            memberJson.addProperty("id", followed.getId());
+            memberJson.addProperty("username", followed.getUsername());
+            followedMembers.add(memberJson);
         }
-        memberObject.addProperty("followedMembers", gson.toJson(followedMemberIds));
+        memberObject.add("followedMembers", followedMembers);
 
-        ArrayList<Long> followerIds = new ArrayList<>();
+        JsonArray followers = new JsonArray();
         for (Member follower : member.getFollowers()) {
-            followerIds.add(follower.getId());
+            JsonObject memberJson = new JsonObject();
+            memberJson.addProperty("id", follower.getId());
+            memberJson.addProperty("username", follower.getUsername());
+            followers.add(memberJson);
         }
-        memberObject.addProperty("followerMembers", gson.toJson(followerIds));
+        memberObject.add("followers", followers);
 
         JsonArray posts = new JsonArray();
         for (Post post : member.getPosts()) {
