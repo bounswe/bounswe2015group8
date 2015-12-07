@@ -21,7 +21,18 @@ public class PostAdapter implements JsonSerializer<Post> {
         Gson gson = new Gson();
         JsonObject jsonObjectPost = new JsonObject();
         jsonObjectPost.addProperty("id", post.getId());
-        jsonObjectPost.addProperty("heritage_id", gson.toJson(HeritagePostUtility.getHeritageIdOfPost(post.getId())));
+        ArrayList<Heritage> heritages = HeritagePostUtility.getHeritageIdOfPost(post.getId());
+        JsonArray jsonHeritages = new JsonArray();
+        for (Heritage heritage : heritages) {
+            JsonObject jsonObjectHeritage = new JsonObject();
+            jsonObjectHeritage.addProperty("id", heritage.getId());
+            jsonObjectHeritage.addProperty("name", heritage.getName());
+            jsonObjectHeritage.addProperty("place", heritage.getPlace());
+            jsonObjectHeritage.addProperty("postDate", heritage.getPostDate().toString());
+            jsonObjectHeritage.addProperty("description", heritage.getDescription());
+            jsonHeritages.add(jsonObjectHeritage);
+        }
+        jsonObjectPost.add("heritages", jsonHeritages);
         jsonObjectPost.addProperty("ownerId", post.getOwner().getId());
         jsonObjectPost.addProperty("type", post.getType());
         jsonObjectPost.addProperty("postDate", post.getPostDate().toString());
