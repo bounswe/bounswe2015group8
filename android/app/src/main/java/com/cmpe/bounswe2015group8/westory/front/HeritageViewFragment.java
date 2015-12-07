@@ -158,9 +158,10 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         sr.getHeritageById(heritage.getId(), new Consumer<Heritage>() {
             @Override
             public void accept(Heritage h) {
-                elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()), new ArrayList<>(h.getTags()), null));
+                elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()), new ArrayList<>(h.getTags()), new ArrayList<>(h.getMedia())));
                 heritage.setPosts(h.getPosts());
                 heritage.setTags(h.getTags());
+                heritage.setMedia(h.getMedia());
             }
         });
     }

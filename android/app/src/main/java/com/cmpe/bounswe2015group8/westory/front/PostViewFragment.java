@@ -25,6 +25,7 @@ import com.cmpe.bounswe2015group8.westory.model.Comment;
 import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -159,13 +160,24 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
     @Override
     public void onRefresh() {
         ServerRequests sr = new ServerRequests(getActivity());
-        sr.getCommentsByPostId(post.getId(), new Consumer<Comment[]>() {
+        sr.getPostById(post.getId(), new Consumer<Post>() {
             @Override
-            public void accept(Comment[] comments) {
-                elvData.setAdapter(new PostViewAdapter(getActivity(),Arrays.asList(comments),null,null,null));
-                post.setComments(Arrays.asList(comments));
+            public void accept(Post p) {
+                elvData.setAdapter(new PostViewAdapter(getActivity(), new ArrayList<>(p.getComments()),
+                        new ArrayList<>(p.getHeritages()), new ArrayList<>(p.getTags()), new ArrayList<>(p.getMedia())));
+                post.setComments(p.getComments());
+                post.setHeritages(p.getHeritages());
+                post.setTags(p.getTags());
+                post.setMedia(p.getMedia());
             }
         });
+//        sr.getCommentsByPostId(post.getId(), new Consumer<Comment[]>() {
+//            @Override
+//            public void accept(Comment[] comments) {
+//                elvData.setAdapter(new PostViewAdapter(getActivity(),Arrays.asList(comments),null,null,null));
+//                post.setComments(Arrays.asList(comments));
+//            }
+//        });
     }
     private void manualRefresh() {
         swipeRefreshLayout.setRefreshing(true);

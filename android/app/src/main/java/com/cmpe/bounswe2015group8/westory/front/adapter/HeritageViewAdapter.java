@@ -52,11 +52,6 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
         if(posts == null) this.posts = new ArrayList<>();
         if(tags == null) this.tags = new ArrayList<>();
         if(media == null) this.media = new ArrayList<>();
-        this.media.add(new Media(1, "http://antonioleiva.com/wp-content/uploads/2014/06/Screenshot_2014-06-29-21-04-43.png", 0, false));
-        this.media.add(new Media(2, "http://res.cloudinary.com/bounswe2015group8/video/upload/v1449171778/c4ldnee5uk7aqtyxqupa.mp3", 1, false));
-        this.media.add(new Media(3, "http://res.cloudinary.com/bounswe2015group8/video/upload/v1449171941/lqeaetbipmh8zgriwmqt.mp4", 2, false));
-        this.tags.add(new Tag("asd","ccc"));
-        this.tags.add(new Tag("kekekekeke","ıeufısdsdufeıf"));
         inflater = activity.getLayoutInflater();
         groupNames = activity.getResources().getStringArray(R.array.heritage_view_list);
         mediaRecyclerAdapter = new MediaRecyclerAdapter(this.media, null, activity);
