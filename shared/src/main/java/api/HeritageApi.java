@@ -7,10 +7,8 @@ import adapter.TagAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import model.Heritage;
-import model.Member;
-import model.Post;
-import model.Tag;
+import controller.Main;
+import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
@@ -18,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import service.FollowService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -32,6 +31,8 @@ public class HeritageApi implements ErrorCodes {
     @Autowired
     private ApplicationContext appContext;
     Gson gson = new Gson();
+
+    FollowService followService = new FollowService(Main.getSessionFactory());
 
     @RequestMapping(value = "/api/getHeritageById",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -189,6 +190,18 @@ public class HeritageApi implements ErrorCodes {
             }
         }
         return gson.toJson(startsWith);
+    }
+
+
+    @RequestMapping(value = "/api/follow",
+            method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String followApi(@RequestBody String followString) {
+        long followerId = Long.parseLong(followString.substring(0, followString.lastIndexOf('-')));
+        long followeeId = Long.parseLong(followString.substring(followString.lastIndexOf('-') + 1));
+        Follow follow = followService.saveFollow(followerId, followeeId);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.registerTypeAdapter(Member.class, new MemberAdapter()).create();
+        return gson.toJson(follow.getFollowee());
     }
 
 }
