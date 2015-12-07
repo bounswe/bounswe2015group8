@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/accent"
+    android:padding="@dimen/relative_layout_margin_between"
+    android:elevation="@dimen/btn_elevation">
+
+    <TextView
+        android:id="@+id/tvHeritageViewGroupItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/relative_layout_margin_between"
+        android:paddingStart="@dimen/relative_layout_margin_between"
+        android:paddingRight="@dimen/relative_layout_margin_between"
+        android:paddingEnd="@dimen/relative_layout_margin_between"
+        android:text="@string/app_name"
+        android:textColor="@color/primary_light"
+        android:textSize="20sp"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/ic_expand_more_white_24dp"
+        android:drawableStart="@drawable/ic_expand_more_white_24dp"
+        />
+</LinearLayout>

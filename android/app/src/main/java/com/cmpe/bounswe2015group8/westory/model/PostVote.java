@@ -9,6 +9,7 @@ public class PostVote {
     private boolean voteType;
     private Member owner;
     private Post post;
+    private int ownerId;
     public PostVote() {
 
     }
@@ -78,4 +79,8 @@ public class PostVote {
     public void setPost(Post post) {
         this.post = post;
     }
+
+    public void setOwnerId(int ownerId){this.ownerId=ownerId;}
+
+    public int getOwnerId (){return ownerId;}
 }

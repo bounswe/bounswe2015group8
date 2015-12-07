@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/tvCommentSmallContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/hint_heritage_description"
+        android:layout_margin="10dp" />
+    <TextView
+        android:id="@+id/tvCommentSmallOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvCommentSmallContent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/generic_by_username"
+        android:gravity="end"
+        android:textStyle="italic" />
+    <TextView
+        android:id="@+id/tvCommentSmallCreationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/generic_created_at"
+        android:textStyle="italic"
+        android:layout_alignTop="@+id/tvCommentSmallOwner"
+        android:layout_alignLeft="@+id/tvCommentSmallContent"
+        android:layout_alignStart="@+id/tvCommentSmallContent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="vote count"
+        android:id="@+id/tvCommentVoteCount"
+        android:layout_alignTop="@+id/tvCommentSmallOwner"
+        android:layout_toLeftOf="@+id/tvCommentSmallOwner"
+        android:layout_toStartOf="@+id/tvCommentSmallOwner"
+        android:layout_marginRight="60dp"
+        android:layout_marginEnd="60dp" />
+
+    <ImageButton
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/btnCommentUpVote"
+        android:layout_alignBottom="@+id/tvCommentVoteCount"
+        android:layout_toLeftOf="@+id/tvCommentVoteCount"
+
+        android:src="@drawable/ic_arrow_drop_up_black_24dp" />
+
+    <ImageButton
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/btnCommentDownVote"
+        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/ic_arrow_drop_down_black_24dp"
+        android:layout_alignBottom="@+id/tvCommentVoteCount"
+        android:layout_toLeftOf="@+id/tvCommentSmallOwner"
+        android:layout_toStartOf="@+id/tvCommentSmallOwner" />
+
+</RelativeLayout>

@@ -1,12 +1,11 @@
 package dao;
 
-import model.Heritage;
-import model.HeritagePost;
-import model.Post;
+import model.*;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +23,20 @@ public class HeritageDaoImpl implements HeritageDao {
         Hibernate.initialize(heritage.getTags());
         s.close();
         return heritage;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Heritage getHeritageByName(String name){
+        Session s = getSessionFactory().openSession();
+        List<Heritage> heritages = s
+                .createQuery("from Heritage where name=?")
+                .setParameter(0, name).list();
+        if(heritages.size() == 0){
+            return null;
+        }
+        else{
+            return heritages.get(0);
+        }
     }
 
     public List<Heritage> getAllHeritages() {
@@ -45,6 +58,50 @@ public class HeritageDaoImpl implements HeritageDao {
         List<Heritage> heritages = new ArrayList<Heritage>();
         for (int i = 0; i < heritageposts.size(); i++) {
             heritages.add(heritageposts.get(i).getHeritage());
+        }
+        return heritages;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Heritage> getHeritagesCreatedAfter(Timestamp date){
+        Session s = getSessionFactory().openSession();
+        List<Heritage> heritages = s
+                .createQuery("from Heritage where postDate > :date")
+                .setParameter("date", date).list();
+        return heritages;
+    }
+
+    public boolean doesHeritageHavaPost(Heritage heritage, Post post){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from HeritagePost where heritage=? and post=?")
+                .setParameter(0, heritage)
+                .setParameter(1, post).list().size();
+        s.close();
+        if(count == 0)
+            return false;
+        else
+            return true;
+    }
+
+    public int countPostsInHeritage(Heritage heritage){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from HeritagePost where heritage=?")
+                .setParameter(0, heritage).list().size();
+        s.close();
+        return count;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Heritage> getHeritagesByTag(Tag tag) {
+        Session s = getSessionFactory().openSession();
+        List<TagHeritage> tagheritages = s
+                .createQuery("from TagHeritage where tag=?")
+                .setParameter(0, tag).list();
+        List<Heritage> heritages = new ArrayList<Heritage>();
+        for (int i = 0; i < tagheritages.size(); i++) {
+            heritages.add(tagheritages.get(i).getHeritage());
         }
         return heritages;
     }

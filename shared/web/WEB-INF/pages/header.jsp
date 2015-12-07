@@ -31,6 +31,12 @@
     <script src="${contextPath}/static/js/bootstrap/bootstrap-tokenfield.js"></script>
 </head>
 
+<script type="text/javascript">
+    function searchByTag(){
+        var tag = document.getElementById("search").value;
+        window.location.href = "${contextPath}/searchByTag/" + tag;
+    }
+</script>
 
 <body>
 <nav class="navbar navbar-default navbar-static-top header">
@@ -49,6 +55,10 @@
         </c:if>
 
 
+        <div class="navbar-header" style="margin-left:35%; margin-top:0.5%; width:25%;">
+            <input style="color:black;" id="search" type="text" placeholder="Search Posts by Tags...">
+            <button class="glyphicon glyphicon-search" onclick="searchByTag();"></button>
+        </div>
     </div>
 </nav>
 

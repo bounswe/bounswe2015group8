@@ -45,12 +45,13 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
     }
     private void initViews(Bundle args) {
         isNew = args.getBoolean("isNew",true);
-        if(isNew) {
-            post = new Post();
-        } else {
+        if(!isNew) {
             post = args.getParcelable("post");
             etTitle.setText(post.getTitle());
             etContent.setText(post.getContent());
+
+        } else {
+            post = new Post();
         }
         post.setOwner(memberLocalStore.getLoggedInMember());
         heritageId = args.getLong("heritageId");
@@ -62,17 +63,32 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
                 post.setTitle(etTitle.getText().toString());
                 post.setContent(etContent.getText().toString());
                 ServerRequests sr = new ServerRequests(getActivity());
-                sr.createPost(post, heritageId, new Consumer<Long>() {
-                    @Override
-                    public void accept(Long id) {
-                        post.setId(id);
-                        NamedFragment nf = new PostViewFragment();
-                        Bundle b = new Bundle();
-                        b.putParcelable("post",post);
-                        nf.setArguments(b);
-                        MainActivity.beginFragment(getActivity(),nf);
-                    }
-                });
+                if(isNew) {
+
+                    sr.createPost(post, heritageId, new Consumer<Long>() {
+                        @Override
+                        public void accept(Long id) {
+                            post.setId(id);
+                            NamedFragment nf = new PostViewFragment();
+                            Bundle b = new Bundle();
+                            b.putParcelable("post", post);
+                            nf.setArguments(b);
+                            MainActivity.beginFragment(getActivity(), nf);
+                        }
+                    });
+                } else {
+                    sr.createPost(post, heritageId, new Consumer<Long>() {
+                        @Override
+                        public void accept(Long id) {
+                            post.setId(id);
+                            NamedFragment nf = new PostViewFragment();
+                            Bundle b = new Bundle();
+                            b.putParcelable("post", post);
+                            nf.setArguments(b);
+                            MainActivity.beginFragment(getActivity(), nf);
+                        }
+                    });
+                }
                 break;
         }
     }

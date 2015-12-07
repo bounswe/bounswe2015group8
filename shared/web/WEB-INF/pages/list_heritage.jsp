@@ -5,6 +5,7 @@
 <c:set var="medias" value="${allContent.medias}"/>
 <c:set var="allTags" value="${allContent.allTags}"/>
 
+<script type="text/javascript" src="${contextPath}/static/js/notify.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         var tags = [];
@@ -13,8 +14,33 @@
         </c:forEach>
         $(".tokenfield").tokenfield({
             autocomplete: {
-                source: tags,
+                source: [],
                 delay: 100
+            }
+        });
+        $(".tokenfield").on('keypress', function (e) {
+            if(e.which == 41){ // If it is a closing paranthesis ")"
+                var inputField = $(this).find("input.token-input");
+                var newToken = $(inputField).val() + ")";
+                $(inputField).parent().find("input.tokenfield").tokenfield('createToken', newToken);
+                $(inputField).val("");
+                $(inputField).autocomplete('option', 'source', []);
+                e.preventDefault();
+            }
+            else if(e.which == 40){ // If it is an opening paranthesis "("
+                var inputField = $(this).find("input.token-input");
+                var tagText = $(inputField).val();
+                $.ajax({
+                    url: "${contextPath}/suggestTagContexts",
+                    data:{tagText: tagText},
+                    type: "POST",
+                    success: function(response) {
+                        var tagSuggestions = response.map(function(suggestion){
+                            return tagText + "(" + suggestion + ")";
+                        })
+                        $(inputField).autocomplete('option', 'source', tagSuggestions);
+                    }
+                });
             }
         });
         $(".tagbutton").click(function(){
@@ -34,6 +60,20 @@
             });
         });
     });
+    function followHeritage(heritageId){
+        $.ajax({
+            url: "${contextPath}/followHeritage/" + heritageId,
+            type: "POST",
+            success: function(response) {
+                if(response == -1){
+                    $.notify("You are already following this heritage", "warn");
+                }
+                else{
+                    $.notify("You are now following this heritage", "success");
+                }
+            }
+        });
+    }
 </script>
 
 <sec:authorize access="isAuthenticated()">

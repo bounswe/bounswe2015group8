@@ -11,6 +11,9 @@ import java.util.List;
 public interface TagDao {
     Tag getTagById(long id);
     Tag getTagByText(String tagText);
+    Tag getTagByTextAndContext(String tagText, String tagContext);
+    String[] getTagContextsByText(String text);
+    List<Tag> getTagsByContext(String context);
 
     List<Tag> getTagsByHeritage(Heritage heritage);
     List<Tag> getTagsByPost(Post post);
@@ -24,6 +27,9 @@ public interface TagDao {
     Tag saveTag(Tag tag);
     TagHeritage saveTagHeritage(Tag tag, Heritage heritage);
     TagPost saveTagPost(Tag tag, Post post);
+
+    int countHeritagesForTag(Tag tag);
+    int countPostsForTag(Tag tag);
 
     SessionFactory getSessionFactory();
     void setSessionFactory(SessionFactory sessionFactory);

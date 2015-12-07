@@ -1,46 +1,41 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
-import android.app.Activity;
-
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
-import com.cmpe.bounswe2015group8.westory.model.Heritage;
-import com.cmpe.bounswe2015group8.westory.model.Post;
-
-import java.sql.Timestamp;
 /**
  * Main activity overviewing all operations. Contains an action bar and navigation sidebar.
  * Is responsible for fragment management and all operations related to action bar and sidebar.
  * @author xyllan
  * Date: 01.11.2015.
  */
-public class MainActivity extends Activity{
-    public static void beginFragment(Activity a, NamedFragment f) {
+public class MainActivity extends AppCompatActivity {
+    public static void beginFragment(FragmentActivity a, NamedFragment f) {
         beginFragment(a,f,true);
     }
-    public static void beginFragment(Activity a, NamedFragment f, boolean addToBackstack) {
-        FragmentTransaction ft = a.getFragmentManager().beginTransaction().replace(R.id.fragmentFrame, f, f.getName());
+    public static void beginFragment(FragmentActivity a, NamedFragment f, boolean addToBackstack) {
+        FragmentTransaction ft = a.getSupportFragmentManager().beginTransaction().replace(R.id.fragmentFrame, f, f.getName());
         if(addToBackstack) ft.addToBackStack(f.getName());
         ft.commit();
     }
-    MemberLocalStore memberLocalStore;
-    FragmentManager fm;
-    ListView navBarView;
-    ArrayAdapter<String> navBarAdapter;
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle drawerToggle;
+    private MemberLocalStore memberLocalStore;
+    private FragmentManager fm;
+    private NavigationView navBarView;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,23 +43,29 @@ public class MainActivity extends Activity{
         setContentView(R.layout.activity_main);
 
         memberLocalStore = new MemberLocalStore(this);
-        fm = this.getFragmentManager();
-        navBarView = (ListView) findViewById(R.id.drawer_list);
+        fm = this.getSupportFragmentManager();
+        navBarView = (NavigationView) findViewById(R.id.navigation);
         setOnItemClickListener(navBarView);
         resetNavbar();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
         drawerToggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.generic_description,R.string.generic_description);
         drawerLayout.setDrawerListener(drawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        Toolbar t = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(t);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        if(savedInstanceState == null || !savedInstanceState.containsKey("curFragment")) {
+            MainActivity.beginFragment(this, new HomeFragment());
+        } else {
+            MainActivity.beginFragment(this,
+                    (NamedFragment)getSupportFragmentManager().getFragment(savedInstanceState, "curFragment"));
+        }
     }
-
     @Override
-    protected void onStart() {
-        super.onStart();
-        //MainActivity.beginFragment(this, new HomeFragment());
-        MainActivity.beginFragment(this, new HeritagesFragment());
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, "curFragment", getSupportFragmentManager().findFragmentById(R.id.fragmentFrame));
     }
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -84,49 +85,69 @@ public class MainActivity extends Activity{
         return super.onOptionsItemSelected(item);
     }
     public void resetNavbar() {
-        String[] navbarItems = getResources().getStringArray(R.array.nav_drawer_items);
-        if(authenticated()) navbarItems[navbarItems.length-1] = getResources().getString(R.string.btn_logout);
-        navBarAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navbarItems);
-        navBarView.setAdapter(navBarAdapter);
+        Menu menu = navBarView.getMenu();
+        MenuItem item = menu.getItem(menu.size() - 1);
+        boolean authenticated = authenticated();
+        if(authenticated) item.setTitle(getResources().getString(R.string.nav_logout));
+        else item.setTitle(getResources().getString(R.string.nav_login));
+        for(int i=0;i<menu.size();i++) {
+            MenuItem cur = menu.getItem(i);
+            if(cur.getItemId() == R.id.navAddHeritage) {
+                cur.setVisible(authenticated);
+                break;
+            }
+        }
     }
     private boolean authenticated() {
         return memberLocalStore.getUserLoggedIn();
     }
-    private void setOnItemClickListener(ListView lv) {
+    private void setOnItemClickListener(NavigationView nv) {
         final MainActivity a = this;
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onNavigationItemSelected(MenuItem item) {
                 drawerLayout.closeDrawer(navBarView);
+                Fragment f = null;
                 NamedFragment nf = null;
-                switch(position) {
-                    case 0:
-                        nf = new HomeFragment();
+                switch (item.getItemId()) {
+                    case R.id.navHome:
+                        f = getSupportFragmentManager().findFragmentByTag(HomeFragment.NAME);
+                        nf = (f == null) ? new HomeFragment(): (NamedFragment)f;
                         break;
-                    case 1:
-                        nf = new HeritagesFragment();
+                    case R.id.navHeritages:
+                        f = getSupportFragmentManager().findFragmentByTag(HeritagesFragment.NAME);
+                        nf = (f == null) ? new HeritagesFragment(): (NamedFragment)f;
                         break;
-                    case 2:
+                    case R.id.navAddHeritage:
                         nf = new HeritageEditFragment();
                         break;
-                    case 3:
-                        nf = new PostsFragment();
+                    case R.id.navPosts:
+                        f = getSupportFragmentManager().findFragmentByTag(PostsFragment.NAME);
+                        nf = (f == null) ? new PostsFragment(): (NamedFragment)f;
                         break;
-                    case 4:
-                        if(authenticated()) {
-                            memberLocalStore.clearMemberData();
+                    case R.id.navLogin:
+                        if (authenticated()) {
+                             memberLocalStore.clearMemberData();
                             nf = new HomeFragment();
                         } else {
                             nf = new LoginFragment();
                         }
                         resetNavbar();
                         break;
+                    case R.id.navProfile:
+                        f = getSupportFragmentManager().findFragmentByTag(ProfileFragment.NAME);
+                        nf = (f == null) ? new ProfileFragment(): (NamedFragment)f;
+                        break;
+                    case R.id.navComments:
+                        f = getSupportFragmentManager().findFragmentByTag(CommentsFragment.NAME);
+                        nf = (f == null) ? new CommentsFragment(): (NamedFragment)f;
+                        break;
                     default:
                         break;
                 }
-                MainActivity.beginFragment(a,nf);
+                MainActivity.beginFragment(a, nf);
+                return true;
             }
         });
     }
-
 }
