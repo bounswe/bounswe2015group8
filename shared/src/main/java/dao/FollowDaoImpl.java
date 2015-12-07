@@ -2,6 +2,7 @@ package dao;
 
 import model.Follow;
 import model.Member;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -38,6 +39,12 @@ public class FollowDaoImpl implements FollowDao {
         List<Follow> follows = s.createQuery("from Follow").list();
         s.close();
         return follows;
+    }
+
+    public void unfollow(Follow follow) {
+        Session s = getSessionFactory().openSession();
+//        Query query = s.createQuery("from Follow where followerId=? and followeeId=?");
+        s.close();
     }
 
     public Follow saveFollow(Follow follow) {

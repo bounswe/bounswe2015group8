@@ -32,6 +32,10 @@ public class FollowService {
         return followDao.getAllFollows();
     }
 
+    public void unfollow(Follow follow) {
+        followDao.unfollow(follow);
+    }
+
     public Follow saveFollow(long followerId, long followeeId) {
         Follow follow = new Follow(followerId, followeeId);
         return followDao.saveFollow(follow);
