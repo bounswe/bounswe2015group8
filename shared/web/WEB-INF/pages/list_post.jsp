@@ -229,8 +229,6 @@
                                 </c:if>
                             </c:if>
                         </c:forEach>
-
-
                         <div class="row">
                             <label for="tags_${post.id}" class="col-sm-2 control-label">Tags:</label>
                             <div class="col-sm-4" role="group">
@@ -245,34 +243,12 @@
                         </div>
                         <sec:authorize access="isAuthenticated()">
                             <div class="row">
-                                <div class="col-sm-offset-8 col-sm-4" role="group">
-                                    <button type="button"
-                                            class="btn btn-default"
-                                            onclick="window.location.href='${contextPath}/comment/${post.id}'">
-                                        Comment
-                                    </button>
-                                    <c:if test="${principal.username == post.owner.username}">
-                                        <button type="button"
-                                                class="btn btn-default"
-                                                onclick="window.location.href='${contextPath}/edit_post/${post.id}'">
-                                            Edit Post
-                                        </button>
-                                    </c:if>
-                                </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col-sm-offset-2 col-sm-5" role="group">
-                                    <input style="width:80%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." />
-                                    <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">
-                                        Add Tags
-                                    </button>
+                                    <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
+                                    <input style="width:86%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." />
                                 </div>
                             </div>
                         </sec:authorize>
-
-
-
                         <c:forEach var="comment" items="${post.comments}">
                             <div class="row">
                                 <div class="col-sm-offset-1 col-sm-1">

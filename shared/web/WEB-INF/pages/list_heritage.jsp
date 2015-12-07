@@ -177,24 +177,26 @@
             </sec:authorize>
         </div>
 
-        <sec:authorize access="isAuthenticated()">
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col-sm-offset-8 col-sm-4" role="group">
+
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-sm-offset-8 col-sm-4" role="group">
+                    <sec:authorize access="isAuthenticated()">
                         <button type="button" style="float:right;"
                                 class="btn btn-default"
                                 onclick="window.location.href='${contextPath}/post/${heritage.id}'">
                             Add Post
                         </button>
-                        <button type="button" style="float:right; margin-right: 4%;"
-                                class="btn btn-default"
-                                onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
-                            See Posts
-                        </button>
-                    </div>
+                    </sec:authorize>
+                    <button type="button" style="float:right; margin-right: 4%;"
+                            class="btn btn-default"
+                            onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
+                        See Posts
+                    </button>
                 </div>
             </div>
-        </sec:authorize>
+        </div>
+
     </div>
 </c:forEach>
     <div class="row">
