@@ -58,8 +58,8 @@
         <div class="navbar-form navbar-header" role="search" style="margin-left:30%;">
             <div class="form-group">
                 <input style="color:black; width:300px;" id="search" type="text" placeholder="Search Posts by Tags..." class="form-control">
+                <button class="btn btn-default" type="submit" onclick="searchByTag();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
             </div>
-            <button class="btn btn-default" style="display:inline" onclick="searchByTag();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
         </div>
     </div>
 </nav>
