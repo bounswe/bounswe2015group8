@@ -16,6 +16,7 @@ public class Post implements Parcelable{
     private int type;
     private Member owner;
     private long ownerId;
+    private String heritage_id;
     private String postDate;
     private String lastEditedDate;
     private String title;
@@ -25,12 +26,14 @@ public class Post implements Parcelable{
     private Collection<Heritage> heritages;
     private Collection<PostVote> votes;
     private Collection<Tag> tags;
+    private Collection<Media> media;
     private int netCount;
     public Post() {
         comments = new HashSet<Comment>();
         heritages = new HashSet<Heritage>();
         votes = new HashSet<PostVote>();
         tags = new HashSet<Tag>();
+        media = new HashSet<>();
     }
 
     public Post(Member owner, int type, String postDate, String title, String content, String place) {
@@ -44,6 +47,7 @@ public class Post implements Parcelable{
         heritages = new HashSet<Heritage>();
         votes = new HashSet<PostVote>();
         tags = new HashSet<Tag>();
+        media = new HashSet<>();
     }
     public Post(Parcel in) {
         id = in.readLong();
@@ -59,6 +63,7 @@ public class Post implements Parcelable{
         this.heritages = new HashSet<>();
         this.votes = new HashSet<>();
         this.tags = new HashSet<>();
+        this.media = new HashSet<>();
     }
     public long getId() {
         return id;
@@ -170,6 +175,12 @@ public class Post implements Parcelable{
 
     public long getOwnerId() { return ownerId; }
 
+    public void setHeritage_id(String heritage_id) {
+        this.heritage_id = heritage_id;
+    }
+
+    public String getHeritage_id() { return heritage_id; }
+
     public void setOwnerId(long ownerId) { this.ownerId = ownerId; }
 
     public Collection<PostVote> getVotes() {
@@ -191,6 +202,14 @@ public class Post implements Parcelable{
     public void setNetCount(int netCount){this.netCount=netCount;}
 
     public int getNetCount (){return netCount;}
+
+    public Collection<Media> getMedia() {
+        return media;
+    }
+
+    public void setMedia(Collection<Media> media) {
+        this.media = media;
+    }
 
     public void addTags(Tag... tags) {
         for(Tag t : tags) {

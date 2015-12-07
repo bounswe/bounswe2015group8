@@ -42,9 +42,7 @@ public class ServerRequests{
     }
     public void getPostById(long id, Consumer<Post> callback) {
         if(display) progressDialog.show();
-        Map<String,String> m = new HashMap<>();
-        m.put("id", Long.toString(id));
-        new RestAsyncTask<Post>(callback, HttpMethod.POST).execute(new Requestable<Post>("/api/getPostById", m, Post.class));
+        new RestAsyncTask<Post>(callback, HttpMethod.POST).execute(new Requestable<Post>("/api/getPostById", id, Post.class));
     }
     public void getPostsByHeritageId(long id, Consumer<Post[]> callback) {
         if(display) progressDialog.show();
@@ -88,9 +86,7 @@ public class ServerRequests{
     }
     public void getHeritageById(long id, Consumer<Heritage> callback) {
         if(display) progressDialog.show();
-        Map<String,String> m = new HashMap<>();
-        m.put("id", Long.toString(id));
-        new RestAsyncTask<Heritage>(callback, HttpMethod.POST).execute(new Requestable<Heritage>("/api/getHeritageById", m, Heritage.class));
+        new RestAsyncTask<Heritage>(callback, HttpMethod.POST).execute(new Requestable<Heritage>("/api/getHeritageById", id, Heritage.class));
     }
     public void getAllHeritages(Consumer<Heritage[]> callback) {
         if(display) progressDialog.show();

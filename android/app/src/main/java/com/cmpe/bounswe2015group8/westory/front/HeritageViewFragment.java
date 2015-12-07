@@ -24,6 +24,7 @@ import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -114,7 +115,7 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         builder.show();
     }
     private void uploadMedia(int type) {
-        startActivityForResult(CloudinaryAPI.getMediaIntent(type),type);
+        startActivityForResult(CloudinaryAPI.getMediaIntent(type), type);
     }
 
     @Override
@@ -147,21 +148,21 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     @Override
     public void onRefresh() {
         ServerRequests sr = new ServerRequests(getActivity());
-        sr.getPostsByHeritageId(heritage.getId(), new Consumer<Post[]>() {
-            @Override
-            public void accept(Post[] posts) {
-                elvData.setAdapter(new HeritageViewAdapter(getActivity(),Arrays.asList(posts),null,null));
-                heritage.setPosts(Arrays.asList(posts));
-            }
-        });
-//        sr.getHeritageById(heritage.getId(), new Consumer<Heritage>() {
+//        sr.getPostsByHeritageId(heritage.getId(), new Consumer<Post[]>() {
 //            @Override
-//            public void accept(Heritage h) {
-//                elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()), new ArrayList<>(h.getTags()), null));
-//                heritage.setPosts(h.getPosts());
-//                heritage.setTags(h.getTags());
+//            public void accept(Post[] posts) {
+//                elvData.setAdapter(new HeritageViewAdapter(getActivity(),Arrays.asList(posts),null,null));
+//                heritage.setPosts(Arrays.asList(posts));
 //            }
 //        });
+        sr.getHeritageById(heritage.getId(), new Consumer<Heritage>() {
+            @Override
+            public void accept(Heritage h) {
+                elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()), new ArrayList<>(h.getTags()), null));
+                heritage.setPosts(h.getPosts());
+                heritage.setTags(h.getTags());
+            }
+        });
     }
     private void manualRefresh() {
         swipeRefreshLayout.setRefreshing(true);
