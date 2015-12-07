@@ -9,11 +9,15 @@ import model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -66,13 +70,21 @@ public class HeritageApi implements ErrorCodes {
         return Integer.toString(HERITAGE_DOES_NOT_EXIST);
     }
 
-    @RequestMapping(value = "/api/getAllPosts",
-            method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getAllPosts() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
-        ArrayList<Post> posts = HeritageUtility.getPostList();
-        return gson.toJson(posts);
+    @RequestMapping(value = "/api/createHeritage",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public long createHeritage(@RequestBody Heritage apiHeritage) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        java.util.Date now = new java.util.Date();
+
+        String name = apiHeritage.getName();
+        String place = apiHeritage.getPlace();
+        String description = apiHeritage.getDescription();
+        MultipartFile media = null;
+        Heritage heritage = HeritageUtility.getHeritageService().saveHeritage(name, place, description, new Timestamp(now.getTime()));
+
+        return heritage.getId();
     }
 
 }

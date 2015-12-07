@@ -13,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -41,23 +40,6 @@ public class PostApi implements ErrorCodes {
             }
         }
         return Integer.toString(POST_DOES_NOT_EXIST);
-    }
-
-    @RequestMapping(value = "/api/createHeritage",
-            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public long createHeritage(@RequestBody Heritage apiHeritage) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
-        java.util.Date now = new java.util.Date();
-
-        String name = apiHeritage.getName();
-        String place = apiHeritage.getPlace();
-        String description = apiHeritage.getDescription();
-        MultipartFile media = null;
-        Heritage heritage = HeritageUtility.getHeritageService().saveHeritage(name, place, description, new Timestamp(now.getTime()));
-
-        return heritage.getId();
     }
 
     @RequestMapping(value="/api/createPost",
@@ -97,5 +79,14 @@ public class PostApi implements ErrorCodes {
     public long getOverallPostVoteById(@PathVariable long postId){
         Post post = HeritageUtility.getPostService().getPostById(postId);
         return HeritageUtility.getVoteService().getPostOverallVote(post);
+    }
+
+    @RequestMapping(value = "/api/getAllPosts",
+            method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getAllPosts() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
+        ArrayList<Post> posts = HeritageUtility.getPostList();
+        return gson.toJson(posts);
     }
 }
