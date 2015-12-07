@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -74,5 +75,18 @@ public class HeritageService {
         Timestamp nowMinusOneWeekTimestamp = new Timestamp(nowMinusOneWeek);
         List<Heritage> recentHeritages = heritageDao.getHeritagesCreatedAfter(nowMinusOneWeekTimestamp);
         return sortByPopularity(recentHeritages);
+    }
+
+    public List<Heritage> removeDuplicates(List<Heritage> heritages){
+        HashSet<Long> heritageIds = new HashSet<>();
+        for(int i = 0; i < heritages.size(); i++){
+            if(!heritageIds.contains(heritages.get(i).getId())){
+                heritageIds.add(heritages.get(i).getId());
+            }
+            else{
+                heritages.remove(i);
+            }
+        }
+        return heritages;
     }
 }

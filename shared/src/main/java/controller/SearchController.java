@@ -77,6 +77,7 @@ public class SearchController {
         allContent.put("posts", posts);
         allContent.put("medias", medias);
         allContent.put("allTags", allTags);
+        session.close();
         return new ModelAndView("list_post", "allContent", allContent);
     }
 
@@ -86,18 +87,34 @@ public class SearchController {
 
         String[] tagPieces = tagService.extractTextAndContext(wholetag);
         Tag tag = tagService.getTagByText(tagPieces[0], tagPieces[1]);
-        List heritages = heritageService.getHeritagesByTag(tag);
+        List<Heritage> heritages = heritageService.getHeritagesByTag(tag);
         List medias = session.createCriteria(Media.class).list();
         List allTags = session.createCriteria(Tag.class).list();
 
         List tags = new ArrayList<Tag>();
         tags.add(tag);
 
+        // Check whether there are enough results
+        if(heritages.size() < MIN_LIMIT){
+            List<Tag> additionalTags = tagService.sortByCount(tagService.getSemanticallyRelatedTags(tag));
+            for(Tag additionalTag : additionalTags){
+                List<Heritage> additionalHeritages = heritageService.getHeritagesByTag(additionalTag);
+                for(int i = 0; i < additionalHeritages.size(); i++){
+                    heritages.addAll(additionalHeritages);
+                }
+                if(heritages.size() >= MIN_LIMIT)
+                    break;
+            }
+        }
+
+        heritages = heritageService.removeDuplicates(heritages);
+
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("searchedTags", tags);
         allContent.put("heritages", heritages);
         allContent.put("medias", medias);
         allContent.put("allTags", allTags);
+        session.close();
         return new ModelAndView("list_heritage", "allContent", allContent);
     }
 
