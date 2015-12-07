@@ -1,5 +1,6 @@
 package service;
 
+import api.MemberUtility;
 import dao.FollowDao;
 import dao.FollowDaoImpl;
 import model.Follow;
@@ -32,8 +33,10 @@ public class FollowService {
         return followDao.getAllFollows();
     }
 
-    public void unfollow(Follow follow) {
-        followDao.unfollow(follow);
+    public void deleteFollow(long followerId, long followeeId) {
+        MemberDetailsService memberDetailsService = new MemberDetailsService();
+        followDao.unfollow(memberDetailsService.getMemberById(followerId),
+                memberDetailsService.getMemberById(followeeId));
     }
 
     public Follow saveFollow(long followerId, long followeeId) {
@@ -41,3 +44,4 @@ public class FollowService {
         return followDao.saveFollow(follow);
     }
 }
+

@@ -1,13 +1,16 @@
 package dao;
 
+import api.MemberUtility;
 import model.Follow;
 import model.Member;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.common.util.impl.Log;
 
 import java.util.Collection;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  * Created by Goktug on 03.12.2015.
@@ -41,9 +44,15 @@ public class FollowDaoImpl implements FollowDao {
         return follows;
     }
 
-    public void unfollow(Follow follow) {
+    public void unfollow(Member follower, Member followee) {
         Session s = getSessionFactory().openSession();
-//        Query query = s.createQuery("from Follow where followerId=? and followeeId=?");
+        Query q = s.createQuery("delete Follow where follower=:fer and followee=:fee")
+                .setParameter("fer", follower)
+                .setParameter("fee", followee);
+        Follow f = (Follow)q.uniqueResult();
+        s.getTransaction().begin();
+        s.delete(f);
+        s.getTransaction().commit();
         s.close();
     }
 

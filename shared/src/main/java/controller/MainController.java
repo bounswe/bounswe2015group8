@@ -386,6 +386,15 @@ public class MainController {
         return new ModelAndView("redirect:/show_heritages");
     }
 
+    @RequestMapping(value = "/unfollow/{followeeId}")
+    public ModelAndView unfollow(@PathVariable long followeeId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Member m = memberService.getMemberByUsername(username);
+        followService.deleteFollow(m.getId(), followeeId);
+        return new ModelAndView("redirect:/show_heritages");
+    }
+
     @RequestMapping(value = "/update_post" , method = RequestMethod.POST)
     public ModelAndView update_post( @RequestParam("title") String title,
                                      @RequestParam("content") String content,
