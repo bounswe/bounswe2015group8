@@ -87,9 +87,11 @@
         </c:if>
 
 
-        <div class="navbar-header" style="margin-left:35%; margin-top:0.5%; width:25%;">
-            <input style="color:black;" id="search" type="text" placeholder="Search Posts by Tags...">
-            <button class="glyphicon glyphicon-search" onclick="searchByTag();"></button>
+        <div class="navbar-form navbar-header" role="search" style="margin-left:30%;">
+            <div class="form-group">
+                <input style="color:black; width:300px;" id="search" type="text" placeholder="Search Posts by Tags..." class="form-control">
+                <button class="btn btn-default" type="submit" onclick="searchByTag();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </div>
         </div>
         <sec:authorize access="isAuthenticated()">
             <div class="navbar-header" style="margin-left:85%; margin-top:-2.5%; width:10%;">

@@ -65,10 +65,10 @@
             type: "POST",
             success: function(response) {
                 if(response == -1){
-                    $.notify("You are already following this heritage", "warn");
+                    $.notify("You are already following this heritage", "warn", {position:"top center"});
                 }
                 else{
-                    $.notify("You are now following this heritage", "success");
+                    $.notify("You are now following this heritage", "success", {position:"top center"});
                 }
             }
         });
@@ -103,7 +103,13 @@
     </div>
     <div class="panel panel-success">
         <div class="panel-heading">
-            <h3 class="panel-title" name="name" id="name">${heritage.name}</h3>
+            <div class="row">
+                <b><h class="panel-title" style="margin-left:0.5% " name="name" id="name">${heritage.name}</h></b>
+                <sec:authorize access="isAuthenticated()">
+                    <button style="float:right; margin-right:1%" type="button" class="btn btn-success followbutton"
+                            onclick="followHeritage(${heritage.id})" id="followbutton_${heritage.id}">Follow</button>
+                </sec:authorize>
+            </div>
         </div>
 
         <div class="panel-body">
@@ -158,7 +164,7 @@
                 </div>
             </div>
             <div class="row">
-                <label for="tags_${heritage.id}" class="col-sm-2 control-label">Tags:</label>
+                <label for="tags_${heritage.id}" class="col-sm-2 control-label">Tags</label>
                 <div class="col-sm-4" role="group">
                     <p id="tags_${heritage.id}">
                         <c:forEach items="${heritage.tags}" var="tag">
@@ -194,9 +200,6 @@
                             onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
                         See Posts
                     </button>
-
-                    <button style="float:left; margin-left:0.5%" type="button" class="btn btn-success followbutton" id="followbutton_${heritage.id}">Follow</button>
-
             </div>
         </div>
 

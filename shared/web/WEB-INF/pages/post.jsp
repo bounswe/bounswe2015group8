@@ -1,6 +1,12 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 <div class="page-content container">
-<form class="form-horizontal"
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h>Add a story</h>
+        </div>
+        <div class="panel-body">
+
+    <form class="form-horizontal"
       id="postForm"
       action="${contextPath}/upload_post"
       method="post"
@@ -19,8 +25,8 @@
         <div class="col-sm-9">
             <input type="text" class="form-control" name="place" id="place" placeholder="Place">
         </div>
-        <button class="col-sm-2" type="button" style="background-color: #8a4ce2;" onclick="window.open('/google_map');">
-            Choose from Google Maps
+        <button class="btn btn-default" type="button" style="float:right; margin-right:1.7%; background-color: #8a4ce2; color: #8a4ce2" onclick="window.open('/google_map');">
+            Choose
             <span style="float:left; font-size: 20px;" class="col-sm-1 glyphicon glyphicon-map-marker"></span>
         </button>
     </div>
@@ -39,13 +45,17 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-1 col-sm-9">
-            <button type="submit" class="btn btn-default btn-block">Post</button>
+        <div class="col-sm-offset-2 col-sm-1" style="float:right">
+            <button type="submit" class="btn btn-default">Post</button>
         </div>
     </div>
 </form>
 
-<script type="text/javascript">
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
     function fillPlaceFromGoogleMap(){
         $("#place").val(window['place']);
     }
