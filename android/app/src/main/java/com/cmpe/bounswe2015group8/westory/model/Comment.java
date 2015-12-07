@@ -129,7 +129,6 @@ public class Comment {
         int netVoteCount=0;
         Collection<CommentVote> votes = getVotes();
         for(CommentVote cv: votes){
-            System.out.println("mumu "+votes.size()+" comment: "+ cv.getVoteType() );
             if(cv.getVoteType()){
                 netVoteCount++;
             } else{

@@ -1,5 +1,6 @@
 package com.cmpe.bounswe2015group8.westory.front.adapter;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,9 @@ import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
+import com.cmpe.bounswe2015group8.westory.front.HeritageViewFragment;
+import com.cmpe.bounswe2015group8.westory.front.MainActivity;
+import com.cmpe.bounswe2015group8.westory.front.NamedFragment;
 import com.cmpe.bounswe2015group8.westory.model.Comment;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Media;
@@ -200,7 +204,26 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 });
                 break;
             case HERITAGES_VIEW_INDEX:
-                //TODO add heritages here
+                v = (convertView == null || convertView.getId() != R.id.rlHeritageSmall) ? inflater.inflate(R.layout.heritage_small,parent,false) : convertView;
+                TextView tvName = (TextView) v.findViewById(R.id.tvHeritageSmallName);
+                TextView tvPlace = (TextView) v.findViewById(R.id.tvHeritageSmallPlace);
+                TextView tvCreationDate2 = (TextView) v.findViewById(R.id.tvHeritageSmallCreationDateValue);
+                TextView tvDescription = (TextView) v.findViewById(R.id.tvHeritageSmallDescription);
+                final Heritage h = heritages.get(childPosition);
+                tvName.setText(h.getName());
+                tvPlace.setText(h.getPlace());
+                tvCreationDate2.setText(h.getPostDate());
+                tvDescription.setText(h.getDescription());
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NamedFragment nf = new HeritageViewFragment();
+                        Bundle b = new Bundle();
+                        b.putParcelable("heritage", h);
+                        nf.setArguments(b);
+                        MainActivity.beginFragment(activity, nf);
+                    }
+                });
                 break;
             case TAGS_VIEW_INDEX:
                 v = (convertView == null || convertView.getId() != R.id.vsTagSmall) ? inflater.inflate(R.layout.tag_small,parent,false) : convertView;
