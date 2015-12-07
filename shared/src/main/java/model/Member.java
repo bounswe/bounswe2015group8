@@ -18,6 +18,7 @@ public class Member {
     private transient Collection<Member> followers;
     private transient Collection<Post> posts;
     private transient Collection<PostVote> postVotes;
+    private transient String interest;
     public Member() {
         comments = new HashSet<Comment>();
         commentVotes = new HashSet<CommentVote>();
@@ -61,6 +62,9 @@ public class Member {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public void saveInterest(String interest) {
+        this.interest = interest;
     }
 
     public String getEmail() {

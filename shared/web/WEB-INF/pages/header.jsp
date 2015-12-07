@@ -38,6 +38,7 @@
         </div>
         <sec:authorize access="isAuthenticated()">
             <a style="float:right; margin-top:0.5%;" href="${contextPath}/logout" class="btn btn-danger" role="button">Log Out</a>
+            <a style="float:right; margin-top:0.5%;" onclick="window.location.href='${contextPath}/pages/profile_page'" class="btn btn-danger" role="button">Profile</a>
         </sec:authorize>
     </div>
 </nav>

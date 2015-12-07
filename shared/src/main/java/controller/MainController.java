@@ -26,10 +26,7 @@ import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -517,5 +514,32 @@ public class MainController {
         session.close();
         return tags;
     }
+
+    @RequestMapping(value = "/profile")
+    public ModelAndView profile_page() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Member m = memberService.getMemberByUsername(username);
+        return new ModelAndView("profile" + m);
+    }
+    @RequestMapping(value = "/save_interest", method = RequestMethod.POST)
+    public ModelAndView save_interest(@RequestParam(value = "username") String username,
+                                       @RequestParam(value = "interest") Collection<String> interest) {
+        logger.info("username " + username);
+        for(String i : interest) {
+            logger.info("interest " + i);
+            memberService.saveInterest(username, i);
+        }
+        return new ModelAndView("redirect:/profile?saveInterest=true");
+    }
+    @RequestMapping(value = "/followed_user", method = RequestMethod.POST)
+    public ModelAndView followed_user() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Member m = memberService.getMemberByUsername(username);
+        Collection<Member> followedUsers = m.getFollowedMembers();
+        return new ModelAndView("profile" + followedUsers);
+    }
+
 
 }
