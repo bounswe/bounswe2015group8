@@ -202,6 +202,27 @@
                                     </p>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <label for="tags_${post.id}" class="col-sm-2 control-label">Tags</label>
+                                <div class="col-sm-4" role="group">
+                                    <p id="tags_${post.id}">
+                                        <c:forEach items="${post.tags}" var="tag">
+                                            <a href="${contextPath}/searchByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
+                                                &lt;${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;
+                                            </a>
+                                        </c:forEach>
+                                    </p>
+                                </div>
+                            </div>
+                            <sec:authorize access="isAuthenticated()">
+                                <div class="row">
+                                    <div class="col-sm-offset-2 col-sm-5" role="group">
+                                        <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
+                                        <input style="width:86%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." />
+                                    </div>
+                                </div>
+                            </sec:authorize>
                         </div>
                         <c:forEach var="media" items="${medias}">
                             <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage!=true}">
@@ -229,26 +250,7 @@
                                 </c:if>
                             </c:if>
                         </c:forEach>
-                        <div class="row">
-                            <label for="tags_${post.id}" class="col-sm-2 control-label">Tags:</label>
-                            <div class="col-sm-4" role="group">
-                                <p id="tags_${post.id}">
-                                    <c:forEach items="${post.tags}" var="tag">
-                                        <a href="${contextPath}/searchByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
-                                            &lt;${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;
-                                        </a>
-                                    </c:forEach>
-                                </p>
-                            </div>
-                        </div>
-                        <sec:authorize access="isAuthenticated()">
-                            <div class="row">
-                                <div class="col-sm-offset-2 col-sm-5" role="group">
-                                    <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
-                                    <input style="width:86%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." />
-                                </div>
-                            </div>
-                        </sec:authorize>
+
                         <c:forEach var="comment" items="${post.comments}">
                             <div class="row">
                                 <div class="col-sm-offset-1 col-sm-1">
