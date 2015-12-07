@@ -2,12 +2,17 @@ package com.cmpe.bounswe2015group8.westory.front.adapter;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
@@ -32,6 +37,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
     public static final int TAGS_VIEW_INDEX = 1;
     public static final int MEDIA_VIEW_INDEX = 2;
     private LayoutInflater inflater;
+    private MediaRecyclerAdapter mediaRecyclerAdapter;
     private FragmentActivity activity;
     private String[] groupNames;
     private List<Post> posts;
@@ -48,6 +54,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
         if(media == null) this.media = new ArrayList<>();
         inflater = activity.getLayoutInflater();
         groupNames = activity.getResources().getStringArray(R.array.heritage_view_list);
+        mediaRecyclerAdapter = new MediaRecyclerAdapter(this.media, null, activity);
     }
     @Override
     public int getGroupCount() {
@@ -62,7 +69,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
             case TAGS_VIEW_INDEX:
                 return tags.size();
             case MEDIA_VIEW_INDEX:
-                return media.size();
+                return 1;
             default:
                 return -1;
         }
@@ -90,7 +97,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
             case TAGS_VIEW_INDEX:
                 return tags.get(childPosition);
             case MEDIA_VIEW_INDEX:
-                return media.get(childPosition);
+                return media;
             default:
                 return null;
         }
@@ -129,22 +136,22 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View v = null;
         switch(groupPosition) {
             case POSTS_VIEW_INDEX:
-                v = convertView == null ? inflater.inflate(R.layout.post_small,parent,false) : convertView;
+                v = (convertView == null || convertView.getId() != R.id.rlPostSmall) ? inflater.inflate(R.layout.post_small,parent,false) : convertView;
                 final Post p = posts.get(childPosition);
                 TextView tvTitle = (TextView) v.findViewById(R.id.tvPostSmallTitle);
                 tvTitle.setText(p.getTitle());
                 TextView tvOwner = (TextView) v.findViewById(R.id.tvPostSmallOwner);
                 tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, Long.toString(p.getOwnerId())));
+                //tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, p.getOwner().getUsername()));
                 TextView tvCreationDate = (TextView) v.findViewById(R.id.tvPostSmallCreationDateValue);
                 tvCreationDate.setText(p.getPostDate());
                 TextView tvContent = (TextView) v.findViewById(R.id.tvPostSmallContent);
                 tvContent.setText(p.getContent());
-                TextView tvSeeMore = (TextView) v.findViewById(R.id.tvPostSmallSeeMore);
-                tvSeeMore.setOnClickListener(new View.OnClickListener() {
+                v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         NamedFragment nf = new PostViewFragment();
@@ -190,10 +197,56 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 });
                 break;
             case TAGS_VIEW_INDEX:
-                //TODO add tags here
+                v = (convertView == null || convertView.getId() != R.id.vsTagSmall) ? inflater.inflate(R.layout.tag_small,parent,false) : convertView;
+                final Tag t = tags.get(childPosition);
+                final ViewSwitcher viewSwitcher = (ViewSwitcher) v.findViewById(R.id.vsTagSmall);
+                final EditText etText = (EditText) v.findViewById(R.id.etTagSmallEditText);
+                final EditText etContext = (EditText) v.findViewById(R.id.etTagSmallEditContext);
+                etText.setText(t.getTagText());
+                etContext.setText(t.getTagContext());
+                final ImageView ivTagSmallAccept = (ImageView) v.findViewById(R.id.ivTagSmallEditAccept);
+                final ImageView ivTagSmallCancel = (ImageView) v.findViewById(R.id.ivTagSmallEditCancel);
+                final TextView tvText = (TextView) v.findViewById(R.id.tvTagSmallViewText);
+                tvText.setText(t.getTagText());
+                final TextView tvContext = (TextView) v.findViewById(R.id.tvTagSmallViewContext);
+                tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
+                final ImageView ivTagSmallEdit = (ImageView) v.findViewById(R.id.ivTagSmallViewEdit);
+                if(!new MemberLocalStore(activity).getUserLoggedIn()) ivTagSmallEdit.setVisibility(View.GONE);
+                ivTagSmallEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        viewSwitcher.showNext();
+                    }
+                });
+                ivTagSmallAccept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Tag newTag = new Tag(etText.getText().toString(),
+                                etContext.getText().toString());
+                        newTag.setId(t.getId());
+                        t.setTagText(newTag.getTagText());
+                        t.setTagContext(newTag.getTagContext());
+                        //TODO edit tag call to system. if successful, do the following
+                        tvText.setText(t.getTagText());
+                        tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
+                        viewSwitcher.showPrevious();
+                    }
+                });
+                ivTagSmallCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        etText.setText(t.getTagText());
+                        etContext.setText(t.getTagContext());
+                        viewSwitcher.showPrevious();
+                    }
+                });
                 break;
             case MEDIA_VIEW_INDEX:
-                //TODO add media here
+                v = (convertView == null || convertView.getId() != R.id.media_list) ? inflater.inflate(R.layout.media_list,parent,false) : convertView;
+                RecyclerView rv = (RecyclerView) v;
+                rv.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+                mediaRecyclerAdapter.setRecyclerView(rv);
+                rv.setAdapter(mediaRecyclerAdapter);
                 break;
             default:
                 return null;

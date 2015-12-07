@@ -48,49 +48,59 @@ public class PostAdapter extends ArrayAdapter<Post> {
         tvContent.setText(p.getContent());
         ImageButton btnDownVote = (ImageButton) v.findViewById(R.id.btnPostDownVote);
         ImageButton btnUpVote = (ImageButton) v.findViewById(R.id.btnPostUpVote);
-
-
         tvVoteCount.setText(Integer.toString(p.getVoteCount()));
-        tvSeeMore.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NamedFragment nf = new PostViewFragment();
-                Bundle b = new Bundle();
-                b.putParcelable("post", p);
-                nf.setArguments(b);
-                MainActivity.beginFragment(context, nf);
+                switch(v.getId()) {
+                    case R.id.tvPostSmallTitle:
+                    case R.id.tvPostSmallCreationDateValue:
+                    case R.id.tvPostSmallContent:
+                    case R.id.tvPostSmallSeeMore:
+                        NamedFragment nf = new PostViewFragment();
+                        Bundle b = new Bundle();
+                        b.putParcelable("post", p);
+                        nf.setArguments(b);
+                        MainActivity.beginFragment(context, nf);
+                        break;
+                    case R.id.tvPostSmallOwner:
+                        break;
+                    case R.id.btnPostUpVote:
+                        ServerRequests sr = new ServerRequests(getContext());
+                        MemberLocalStore memberLocalStore = new MemberLocalStore(getContext());
+                        Member m = memberLocalStore.getLoggedInMember();
+                        sr.votePost(p, true, m.getId(), new Consumer<String>() {
+                            @Override
+                            public void accept(String vote) {
+                                tvVoteCount.setText(vote);
+                            }
+                        });
+                        break;
+                    case R.id.btnPostDownVote:
+                        ServerRequests sr2 = new ServerRequests(getContext());
+                        MemberLocalStore memberLocalStore2 = new MemberLocalStore(getContext());
+                        Member m2= memberLocalStore2.getLoggedInMember();
+                        sr2.votePost(p, false, m2.getId(), new Consumer<String>() {
+                            @Override
+                            public void accept(String vote) {
+                                tvVoteCount.setText(vote);
+                            }
+                        });
+                        break;
+                }
             }
-        });
-        btnUpVote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ServerRequests sr = new ServerRequests(getContext());
-                MemberLocalStore memberLocalStore = new MemberLocalStore(getContext());
-                Member m = memberLocalStore.getLoggedInMember();
-                sr.votePost(p, true, m.getId(), new Consumer<String>() {
-                    @Override
-                    public void accept(String vote) {
-                        tvVoteCount.setText(vote);
-                    }
-                });
-            }
-        });
-
-        btnDownVote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ServerRequests sr = new ServerRequests(getContext());
-                MemberLocalStore memberLocalStore = new MemberLocalStore(getContext());
-                Member m= memberLocalStore.getLoggedInMember();
-                sr.votePost(p, false, m.getId(), new Consumer<String>() {
-                    @Override
-                    public void accept(String vote) {
-                        tvVoteCount.setText(vote);
-                    }
-                });
-            }
-        });
+        };
+        tvTitle.setOnClickListener(listener);
+        tvOwner.setOnClickListener(listener);
+        tvCreationDate.setOnClickListener(listener);
+        tvContent.setOnClickListener(listener);
+        tvSeeMore.setOnClickListener(listener);
+        btnUpVote.setOnClickListener(listener);
+        btnDownVote.setOnClickListener(listener);
         return v;
     }
 
+    public void onClick(View v) {
+
+    }
 }
