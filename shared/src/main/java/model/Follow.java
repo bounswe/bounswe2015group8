@@ -13,6 +13,10 @@ public class Follow {
     private Member follower;
     private Member followee;
 
+    public Follow(){
+
+    }
+
     public Follow(long followerId, long followeeId) {
         this.followerId = followerId;
         this.followeeId = followeeId;

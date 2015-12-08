@@ -46,7 +46,7 @@ public class FollowDaoImpl implements FollowDao {
 
     public void unfollow(Member follower, Member followee) {
         Session s = getSessionFactory().openSession();
-        Query q = s.createQuery("delete Follow where follower=:fer and followee=:fee")
+        Query q = s.createQuery("from Follow where follower=:fer and followee=:fee")
                 .setParameter("fer", follower)
                 .setParameter("fee", followee);
         Follow f = (Follow)q.uniqueResult();

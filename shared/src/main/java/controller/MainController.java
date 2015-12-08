@@ -391,7 +391,7 @@ public class MainController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Member m = memberService.getMemberByUsername(username);
-        followService.deleteFollow(m.getId(), followeeId);
+        followService.deleteFollow(m, memberService.getMemberById(followeeId));
         return new ModelAndView("redirect:/show_heritages");
     }
 

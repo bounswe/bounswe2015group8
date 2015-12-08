@@ -33,10 +33,8 @@ public class FollowService {
         return followDao.getAllFollows();
     }
 
-    public void deleteFollow(long followerId, long followeeId) {
-        MemberDetailsService memberDetailsService = new MemberDetailsService();
-        followDao.unfollow(memberDetailsService.getMemberById(followerId),
-                memberDetailsService.getMemberById(followeeId));
+    public void deleteFollow(Member follower, Member followee) {
+        followDao.unfollow(follower,followee);
     }
 
     public Follow saveFollow(long followerId, long followeeId) {
