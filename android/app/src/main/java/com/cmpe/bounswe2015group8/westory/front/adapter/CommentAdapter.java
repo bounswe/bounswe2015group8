@@ -40,7 +40,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         TextView tvContent = (TextView) v.findViewById(R.id.tvCommentSmallContent);
         final TextView tvVoteCount = (TextView) v.findViewById(R.id.tvCommentVoteCount);
         c = getItem(position);
-        tvOwner.setText(context.getResources().getString(R.string.generic_by) + " " + c.getOwnerId());
+        tvOwner.setText(context.getResources().getString(R.string.generic_by_username,c.getUsername()));
         String s  =c.getPostDate();
         tvCreationDateValue.setText(s);
         tvContent.setText(c.getContent());

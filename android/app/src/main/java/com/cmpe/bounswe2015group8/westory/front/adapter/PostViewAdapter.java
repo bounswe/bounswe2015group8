@@ -157,7 +157,7 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 v = (convertView == null || convertView.getId() != R.id.rlCommentSmall) ? inflater.inflate(R.layout.comment_small,parent,false) : convertView;
                 final Comment c = comments.get(childPosition);
                 TextView tvOwner = (TextView) v.findViewById(R.id.tvCommentSmallOwner);
-                tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, Long.toString(c.getOwnerId())));
+                tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, c.getUsername()));
                 TextView tvCreationDate = (TextView) v.findViewById(R.id.tvCommentSmallCreationDate);
                 tvCreationDate.setText(activity.getResources().getString(R.string.generic_created_at, c.getPostDate()));
                 TextView tvContent = (TextView) v.findViewById(R.id.tvCommentSmallContent);

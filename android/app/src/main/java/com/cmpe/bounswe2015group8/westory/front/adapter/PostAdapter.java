@@ -42,7 +42,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         final TextView tvVoteCount = (TextView) v.findViewById(R.id.tvPostVoteCount);
         final Post p = getItem(position);
         tvTitle.setText(p.getTitle());
-        tvOwner.setText(context.getResources().getString(R.string.generic_by_username, Long.toString(p.getOwnerId())));
+        tvOwner.setText(context.getResources().getString(R.string.generic_by_username, p.getUsername()));
         tvCreationDate.setText(p.getPostDate());
 
         tvContent.setText(p.getContent());
