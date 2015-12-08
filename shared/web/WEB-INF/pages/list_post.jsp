@@ -144,11 +144,11 @@
     </div>
 </c:if>
 
-<c:if test="${allContent.searchedTags != null}">
+<c:if test="${allContent.wholeTags != null}">
     <div class="well">
         <div class="row">
             <div class="col-sm-12 form-group text-right" style="text-align:center; font-size:16px">
-                <strong>Searched Tag: ${allContent.searchedTags[0].tagText}</strong>
+                <strong>Searched Tag: ${allContent.wholeTags[0]}</strong>
             </div>
         </div>
     </div>

@@ -50,16 +50,22 @@ public class SearchController {
 
         String[] tagPieces = tagService.extractTextAndContext(wholetag);
         Tag tag = tagService.getTagByText(tagPieces[0], tagPieces[1]);
-        List<Post> posts = postService.getPostsByTag(tag);
+        List<Post> posts;
+        if(tag != null)
+            posts = postService.getPostsByTag(tag);
+        else
+            posts = new ArrayList<>();
         List medias = session.createCriteria(Media.class).list();
         List allTags = session.createCriteria(Tag.class).list();
 
         List tags = new ArrayList<Tag>();
+        List wholetags = new ArrayList<String>();
         tags.add(tag);
+        wholetags.add(wholetag);
 
         // Check whether there are enough results
         if(posts.size() < MIN_LIMIT){
-            List<Tag> additionalTags = tagService.sortByCount(tagService.getSemanticallyRelatedTags(tag));
+            List<Tag> additionalTags = tagService.sortByCount(tagService.getSemanticallyRelatedTags(tagPieces[0], tagPieces[1]));
             for(Tag additionalTag : additionalTags){
                 List<Post> additionalPosts = postService.getPostsByTag(additionalTag);
                 for(int i = 0; i < additionalPosts.size(); i++){
@@ -74,6 +80,7 @@ public class SearchController {
 
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("searchedTags", tags);
+        allContent.put("wholeTags", wholetags);
         allContent.put("posts", posts);
         allContent.put("medias", medias);
         allContent.put("allTags", allTags);
@@ -85,18 +92,25 @@ public class SearchController {
     public ModelAndView searchHeritageByTag(@PathVariable String wholetag){
         final Session session = Main.getSession();
 
+
+        List tags = new ArrayList<Tag>();
+        List wholetags = new ArrayList<String>();
         String[] tagPieces = tagService.extractTextAndContext(wholetag);
         Tag tag = tagService.getTagByText(tagPieces[0], tagPieces[1]);
-        List<Heritage> heritages = heritageService.getHeritagesByTag(tag);
+        List<Heritage> heritages;
+        if(tag != null)
+            heritages = heritageService.getHeritagesByTag(tag);
+        else
+            heritages = new ArrayList<>();
         List medias = session.createCriteria(Media.class).list();
         List allTags = session.createCriteria(Tag.class).list();
 
-        List tags = new ArrayList<Tag>();
         tags.add(tag);
+        wholetags.add(wholetag);
 
         // Check whether there are enough results
         if(heritages.size() < MIN_LIMIT){
-            List<Tag> additionalTags = tagService.sortByCount(tagService.getSemanticallyRelatedTags(tag));
+            List<Tag> additionalTags = tagService.sortByCount(tagService.getSemanticallyRelatedTags(tagPieces[0], tagPieces[1]));
             for(Tag additionalTag : additionalTags){
                 List<Heritage> additionalHeritages = heritageService.getHeritagesByTag(additionalTag);
                 for(int i = 0; i < additionalHeritages.size(); i++){
@@ -111,6 +125,7 @@ public class SearchController {
 
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("searchedTags", tags);
+        allContent.put("wholeTags", wholetags);
         allContent.put("heritages", heritages);
         allContent.put("medias", medias);
         allContent.put("allTags", allTags);

@@ -350,6 +350,7 @@ public class MainController {
                     Map uploadResult = CloudinaryController.getCloudinary().uploader().upload(toUpload, utilsMap);
                     int mediaType = CloudinaryController.getMediaType(mediaName);
                     Media mediaObject = new Media(heritage.getId(), uploadResult.get("url").toString(), mediaType, true);
+                    logger.info("WHAT IS IT? " + uploadResult.get("url").toString());
                     session.save(mediaObject);
                     session.getTransaction().commit();
                 }  catch (RuntimeException e) {

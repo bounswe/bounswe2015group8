@@ -313,13 +313,13 @@
             </key-many-to-one>
         </composite-id>
     </class>
-    <class name="model.FollowHeritage" table="follow_heritage" schema="" catalog="cmpe451_db">
+    <class name="model.FollowHeritage" table="FOLLOW_HERITAGE" schema="" catalog="cmpe451_db">
         <composite-id mapped="true" class="model.FollowHeritagePK">
             <key-property name="followerId" column="FOLLOWER_ID"/>
             <key-property name="heritageId" column="HERITAGE_ID"/>
         </composite-id>
     </class>
-    <class name="model.FollowTag" table="follow_tag" schema="" catalog="cmpe451_db">
+    <class name="model.FollowTag" table="FOLLOW_TAG" schema="" catalog="cmpe451_db">
         <composite-id mapped="true" class="model.FollowTagPK">
             <key-property name="followerId" column="FOLLOWER_ID"/>
             <key-property name="tagId" column="TAG_ID"/>

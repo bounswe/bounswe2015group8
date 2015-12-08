@@ -66,14 +66,18 @@ public class PostService {
     }
 
     public List<Post> removeDuplicates(List<Post> posts){
+        List<Integer> toRemoved = new ArrayList<>();
         HashSet<Long> postIds = new HashSet<>();
         for(int i = 0; i < posts.size(); i++){
             if(!postIds.contains(posts.get(i).getId())){
                 postIds.add(posts.get(i).getId());
             }
             else{
-                posts.remove(i);
+                toRemoved.add(i);
             }
+        }
+        for(int i = toRemoved.size()-1; i >= 0; i--){
+            posts.remove((int)toRemoved.get(i));
         }
         return posts;
     }

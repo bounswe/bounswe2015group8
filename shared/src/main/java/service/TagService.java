@@ -99,13 +99,16 @@ public class TagService {
         return tagDao.saveTagPost(tag, post);
     }
 
-    public List<Tag> getSemanticallyRelatedTags(Tag tag){
-        String tagText = tag.getTagText();
-        String tagContext = tag.getTagContext();
+    public List<Tag> getSemanticallyRelatedTags(String tagText, String tagContext){
+        //String tagText = tag.getTagText();
+        //String tagContext = tag.getTagContext();
         List<Tag> relatedTags = new ArrayList<Tag>();
-
-        for(Tag relatedTag : tagDao.getTagsByContext(tagContext)){
-            if(!tag.equals(relatedTag) && !relatedTags.contains(relatedTag)){
+        List<Tag> tagsSameContext = tagDao.getTagsByContext(tagContext);
+        if(tagsSameContext == null){
+            return relatedTags;
+        }
+        for(Tag relatedTag : tagsSameContext){
+            if(!tagText.equals(relatedTag.getTagText()) && !relatedTags.contains(relatedTag)){
                 relatedTags.add(relatedTag);
             }
         }

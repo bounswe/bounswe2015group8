@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by gokcan on 06.12.2015.
  */
 @Entity
-@Table(name = "follow_tag", schema = "", catalog = "cmpe451_db")
+@Table(name = "FOLLOW_TAG", schema = "", catalog = "cmpe451_db")
 @IdClass(FollowTagPK.class)
 public class FollowTag {
     private long followerId;

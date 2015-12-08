@@ -78,14 +78,18 @@ public class HeritageService {
     }
 
     public List<Heritage> removeDuplicates(List<Heritage> heritages){
+        List<Integer> toRemoved = new ArrayList<>();
         HashSet<Long> heritageIds = new HashSet<>();
         for(int i = 0; i < heritages.size(); i++){
             if(!heritageIds.contains(heritages.get(i).getId())){
                 heritageIds.add(heritages.get(i).getId());
             }
             else{
-                heritages.remove(i);
+                toRemoved.add(i);
             }
+        }
+        for(int i = toRemoved.size()-1; i >= 0; i--){
+            heritages.remove((int)toRemoved.get(i));
         }
         return heritages;
     }

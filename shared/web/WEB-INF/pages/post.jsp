@@ -25,7 +25,7 @@
         <div class="col-sm-9">
             <input type="text" class="form-control" name="place" id="place" placeholder="Place">
         </div>
-        <button class="btn btn-default" type="button" style="float:right; margin-right:1.7%; background-color: #8a4ce2; color: #8a4ce2" onclick="window.open('/google_map');">
+        <button class="btn btn-default" type="button" style="float:right; margin-right:1.7%; background-color: #8a4ce2; color: #8a4ce2" onclick="window.open('${contextPath}/google_map');">
             Choose
             <span style="float:left; font-size: 20px;" class="col-sm-1 glyphicon glyphicon-map-marker"></span>
         </button>
