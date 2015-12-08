@@ -19,6 +19,8 @@ public interface FollowDao {
 
     public Follow saveFollow(Follow follow);
 
+    public void unfollow(Member follower, Member followee);
+
     SessionFactory getSessionFactory();
 
     void setSessionFactory(SessionFactory sessionFactory);

@@ -17,6 +17,7 @@ public class CommentAdapter implements JsonSerializer<Comment>{
         jsonObjectComment.addProperty("id", comment.getId());
         jsonObjectComment.addProperty("content", comment.getContent());
         jsonObjectComment.addProperty("ownerId", comment.getOwner().getId());
+        jsonObjectComment.addProperty("username", comment.getOwner().getUsername());
         jsonObjectComment.addProperty("postId", comment.getPost().getId());
         jsonObjectComment.addProperty("postDate", comment.getPostDate().toString());
         jsonObjectComment.addProperty("lastEditedDate", comment.getLastEditedDate().toString());

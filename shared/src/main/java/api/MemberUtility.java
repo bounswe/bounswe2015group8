@@ -27,6 +27,16 @@ public class MemberUtility {
         return memberList;
     }
 
+    public static Member getMemberById(long id) {
+        memberList = getUserList();
+        for (Member member : memberList) {
+            if (member.getId() == id) {
+                return member;
+            }
+        }
+        return null;
+    }
+
     public static MemberDetailsService getMemberService() {
         if (memberService == null) {
             memberService = new MemberDetailsService();
