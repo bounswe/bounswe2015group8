@@ -17,6 +17,7 @@ public class TagAdapter implements JsonSerializer<Tag> {
         JsonObject jsonObjectTag = new JsonObject();
         jsonObjectTag.addProperty("id", tag.getId());
         jsonObjectTag.addProperty("tagText", tag.getTagText());
+        jsonObjectTag.addProperty("tagContext", tag.getTagContext());
         return jsonObjectTag;
     }
 }
