@@ -22,13 +22,41 @@ public class TagDaoImpl implements TagDao {
         return tag;
     }
 
+    @SuppressWarnings("unchecked")
+    public String[] getTagContextsByText(String text){
+        Session s = getSessionFactory().openSession();
+        List<String> tagContexts = s
+                .createQuery("select tagContext from Tag where tagText=? and tagContext is not null")
+                .setParameter(0, text).list();
+        return tagContexts.toArray(new String[tagContexts.size()]);
+    }
+
     public Tag getTagByText(String tagText){
         Session s = getSessionFactory().openSession();
         Tag tag = (Tag) s
-                .createQuery("from Tag where tagText=?")
+                .createQuery("from Tag where tagText=? and tagContext is null")
                 .setParameter(0, tagText).uniqueResult();
         s.close();
         return tag;
+    }
+
+    public Tag getTagByTextAndContext(String tagText, String tagContext){
+        Session s = getSessionFactory().openSession();
+        Tag tag = (Tag) s
+                .createQuery("from Tag where tagText=? and tagContext=?")
+                .setParameter(0, tagText)
+                .setParameter(1, tagContext).uniqueResult();
+        s.close();
+        return tag;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Tag> getTagsByContext(String context){
+        Session s = getSessionFactory().openSession();
+        List<Tag> tags = s
+                .createQuery("from Tag where tagContext=?")
+                .setParameter(0, context).list();
+        return tags;
     }
 
     @SuppressWarnings("unchecked")
@@ -130,6 +158,24 @@ public class TagDaoImpl implements TagDao {
         s.getTransaction().commit();
         s.close();
         return tagPost;
+    }
+
+    public int countHeritagesForTag(Tag tag){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from TagHeritage where tag=?")
+                .setParameter(0, tag).list().size();
+        s.close();
+        return count;
+    }
+
+    public int countPostsForTag(Tag tag){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from TagPost where tag=?")
+                .setParameter(0, tag).list().size();
+        s.close();
+        return count;
     }
 
     public SessionFactory getSessionFactory() {

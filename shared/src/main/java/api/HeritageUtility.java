@@ -2,6 +2,7 @@ package api;
 
 import controller.Main;
 import model.Heritage;
+import model.HeritagePost;
 import model.Post;
 import service.HeritageService;
 import service.PostService;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 public class HeritageUtility {
     private static ArrayList<Heritage> heritageList;
     private static ArrayList<Post> postList;
+    private static ArrayList<HeritagePost> heritagePostList;
     static HeritageService heritageService;
     static PostService postService;
     static VoteService voteService;
@@ -68,4 +70,5 @@ public class HeritageUtility {
         }
         return voteService;
     }
+
 }

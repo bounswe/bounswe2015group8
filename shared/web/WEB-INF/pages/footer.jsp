@@ -9,12 +9,10 @@
 
 </div>
 
-<nav class="navbar navbar-default navbar-fixed-bottom footer">
-    <div class="container">
-            <div class="navbar-text text-center">
+<nav class="navbar navbar-default navbar-fixed-bottom footer" >
+            <div class="navbar-text text-center" style="float: right">
                 <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span> WeStory
             </div>
-    </div>
 </nav>
 
 </body>
