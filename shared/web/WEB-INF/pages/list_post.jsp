@@ -98,6 +98,36 @@
             });
         });
     });
+
+    function follow(memberId, memberName){
+        $.ajax({
+            url: "${contextPath}/follow/" + memberId,
+            type: "POST",
+            success: function(response) {
+                if(response == -1){
+                    $.notify("You are already following " + memberName, "warn");
+                }
+                else{
+                    $.notify("You are now following " + memberName, "success");
+                }
+            }
+        });
+    }
+
+    function unfollow(memberId, memberName){
+        $.ajax({
+            url: "${contextPath}/unfollow/" + memberId,
+            type: "POST",
+            success: function(response) {
+                if(response == -1){
+                    $.notify("You are already not following " + memberName, "warn");
+                }
+                else{
+                    $.notify("You have unfollowed " + memberName, "success");
+                }
+            }
+        });
+    }
 </script>
 
 <sec:authorize access="isAuthenticated()">
@@ -175,10 +205,23 @@
                                             ${post.owner.username}
                                     </span>
                                 </div>
-                                <button class="btn btn-success followUserButton" style="margin-left: 1.2%"
-                                        type="button" id="followUserButton_${post.owner.username}">Follow</button>
-                                <button class="btn btn-danger followUserButton" style="margin-left: 1.2%"
-                                        type="button" id="unfollowUserButton_${post.owner.username}">Unfollow</button>
+                                <sec:authorize access="isAuthenticated()">
+                                    <c:if test="${principal.username != post.owner.username}">
+                                        <button class="btn btn-success followUserButton" style="margin-left: 1.2%" onclick="follow('${post.owner.id}', '${post.owner.username}');"
+                                                type="button" class="follow" id="followUserButton_${post.owner.id}">Follow</button>
+                                        <button class="btn btn-danger followUserButton" style="margin-left: 1.2%" onclick="unfollow('${post.owner.id}', '${post.owner.username}');"
+                                                type="button" class="unfollow" id="unfollowUserButton_${post.owner.id}">Unfollow</button>
+                                    </c:if>
+                                </sec:authorize>
+                            </div>
+                            <div class="row">
+                                <label for="place_${post.id}" class="col-sm-2 control-label">Place</label>
+
+                                <div class="col-sm-10">
+                                    <p name="place_${post.id}" id="place_${post.id}">
+                                            ${post.place}
+                                    </p>
+                                </div>
                             </div>
                             <div class="row">
                                 <label for="date_${post.id}" class="col-sm-2 control-label">Date posted</label>
@@ -215,7 +258,7 @@
                             <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage!=true}">
                                 <c:if test="${media.mediaType == 0}">
                                     <div class="row">
-                                        <label class="col-sm-2 control-label">Media</label>
+                                        <label class="col-sm-2 control-label"></label>
 
                                         <div class="media col-sm-10">
                                             <div class="media-left">
@@ -261,10 +304,14 @@
                                 <div class="col-sm-10">
                                     <blockquote>
                                         <p><strong>by ${comment.owner.username}</strong>
-                                            <button class="btn btn-success followUserButton" style="margin-left: 1.2%"
-                                                    type="button" id="followUserButton_${comment.owner.username}">Follow</button>
-                                            <button class="btn btn-danger followUserButton" style="margin-left: 1.2%"
-                                                    type="button" id="unfollowUserButton_${comment.owner.username}">Unfollow</button>
+                                            <sec:authorize access="isAuthenticated()">
+                                                <c:if test="${principal.username != comment.owner.username}">
+                                                    <button class="btn btn-success followUserButton" style="margin-left: 1.2%" onclick="follow('${comment.owner.id}', '${comment.owner.username}');"
+                                                            type="button" id="followUserButton_${comment.owner.username}">Follow</button>
+                                                    <button class="btn btn-danger followUserButton" style="margin-left: 1.2%" onclick="unfollow('${comment.owner.id}', '${comment.owner.username}');"
+                                                            type="button" id="unfollowUserButton_${comment.owner.username}">Unfollow</button>
+                                                </c:if>
+                                            </sec:authorize>
                                         </p>
                                         <p>"${comment.content}"</p>
                                         <footer>${comment.lastEditedDate}</footer>

@@ -33,6 +33,8 @@ public class FollowService {
         return followDao.getAllFollows();
     }
 
+    public boolean doesFollow(Member follower, Member followee) { return followDao.doesFollow(follower, followee); }
+
     public void deleteFollow(Member follower, Member followee) {
         followDao.unfollow(follower,followee);
     }

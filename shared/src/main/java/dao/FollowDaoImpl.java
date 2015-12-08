@@ -54,6 +54,19 @@ public class FollowDaoImpl implements FollowDao {
         return follows;
     }
 
+    public boolean doesFollow(Member follower, Member followee){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from Follow where follower=? and followee=?")
+                .setParameter(0, follower)
+                .setParameter(1, followee).list().size();
+        s.close();
+        if(count == 0)
+            return false;
+        else
+            return true;
+    }
+
     public void unfollow(Member follower, Member followee) {
         Session s = getSessionFactory().openSession();
         Query q = s.createQuery("from Follow where follower=:fer and followee=:fee")

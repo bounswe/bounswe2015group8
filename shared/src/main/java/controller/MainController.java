@@ -382,22 +382,32 @@ public class MainController {
         return new ModelAndView("edit_post_page", viewVariables);
     }
 
-    @RequestMapping(value = "/follow/{followeeId}")
-    public ModelAndView follow(@PathVariable long followeeId) {
+    @RequestMapping(value = "/follow/{followeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long follow(@PathVariable long followeeId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Member m = memberService.getMemberByUsername(username);
+        Member other = memberService.getMemberById(followeeId);
+        if(followService.doesFollow(m, other)){
+            return -1; // If already follows
+        }
         followService.saveFollow(m.getId(), followeeId);
-        return new ModelAndView("redirect:/show_heritages");
+        return 1;
     }
 
-    @RequestMapping(value = "/unfollow/{followeeId}")
-    public ModelAndView unfollow(@PathVariable long followeeId) {
+    @RequestMapping(value = "/unfollow/{followeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long unfollow(@PathVariable long followeeId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         Member m = memberService.getMemberByUsername(username);
+        Member other = memberService.getMemberById(followeeId);
+        if(!followService.doesFollow(m, other)){
+            return -1; // If already does not follow
+        }
         followService.deleteFollow(m, memberService.getMemberById(followeeId));
-        return new ModelAndView("redirect:/show_heritages");
+        return 1;
     }
 
     @RequestMapping(value = "/update_post", method = RequestMethod.POST)
@@ -626,6 +636,11 @@ public class MainController {
         if(fh == null)
             return -1;
         return 1;
+    }
+
+    @RequestMapping("/profile")
+    public ModelAndView profile(){
+        return new ModelAndView("under_construction");
     }
 
 

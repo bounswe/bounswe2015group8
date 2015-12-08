@@ -75,11 +75,11 @@
     <sec:authorize var="isAuthorized" access="isAuthenticated()" />
     <div class="container-fluid"  style="background-color: darkblue">
         <div class="navbar-header">
-            <a class="navbar-brand" href="${contextPath}/show_heritages" style="color: floralwhite">&#x2655; WeStory</a>
+            <a class="navbar-brand" href="${contextPath}/feed" style="color: floralwhite">&#x2655; WeStory</a>
         </div>
         <c:if test="${isAuthorized}">
             <a style="float:right; margin-top: 0.5%;" href="${contextPath}/logout" class="btn btn-default" role="button">Log Out</a>
-            <a style="float:right; margin-top: 0.5%; margin-right: 0.5%; font-size: 30px; color: floralwhite" href="${contextPath}/profile.jsp"><span class="glyphicon glyphicon-user"></span></a>
+            <a style="float:right; margin-top: 0.5%; margin-right: 0.5%; font-size: 30px; color: floralwhite" href="${contextPath}/profile"><span class="glyphicon glyphicon-user"></span></a>
         </c:if>
         <c:if test="${!isAuthorized}">
             <a style="float:right; margin-top: 0.5%;" href="${contextPath}/login" class="btn btn-default" role="button">Log In</a>

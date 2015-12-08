@@ -17,6 +17,8 @@ public interface FollowDao {
 
     public List<Follow> getAllFollows();
 
+    public boolean doesFollow(Member follower, Member followee);
+
     public Follow saveFollow(Follow follow);
 
     public void unfollow(Member follower, Member followee);
