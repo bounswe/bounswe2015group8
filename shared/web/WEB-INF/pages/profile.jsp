@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+<div class="page-content container">
 <table>
   <tr>
     <td width="40%">Followers</td>

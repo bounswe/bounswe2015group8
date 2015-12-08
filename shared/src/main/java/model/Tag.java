@@ -9,18 +9,23 @@ import java.util.HashSet;
 public class Tag {
     private long id;
     private String tagText;
+    private String tagContext;
     private Collection<Heritage> heritages;
     private Collection<Post> posts;
+    private Collection<Member> followers;
 
     public Tag() {
         this.heritages = new HashSet<Heritage>();
         this.posts = new HashSet<Post>();
+        this.followers = new HashSet<Member>();
     }
 
-    public Tag(String tagText) {
+    public Tag(String tagText, String tagContext) {
         this.tagText = tagText;
+        this.tagContext = tagContext;
         this.heritages = new HashSet<Heritage>();
         this.posts = new HashSet<Post>();
+        this.followers = new HashSet<Member>();
     }
 
     public long getId() {
@@ -37,6 +42,14 @@ public class Tag {
 
     public void setTagText(String tagText) {
         this.tagText = tagText;
+    }
+
+    public String getTagContext() {
+        return tagContext;
+    }
+
+    public void setTagContext(String tagContext) {
+        this.tagContext = tagContext;
     }
 
     @Override
@@ -74,4 +87,8 @@ public class Tag {
     public void setPosts(Collection<Post> posts) {
         this.posts = posts;
     }
+
+    public Collection<Member> getFollowers() { return followers; }
+
+    public void setFollowers(Collection<Member> follwoers) { this.followers = follwoers; }
 }

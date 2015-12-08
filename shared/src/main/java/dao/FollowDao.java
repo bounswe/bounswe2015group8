@@ -13,7 +13,7 @@ import java.util.List;
 public interface FollowDao {
     public Collection<Member> getFollowersById(long id);
 
-    public Collection<Member> getFollowingById(long id);
+    public List<Member> getFollowingById(long id);
 
     public List<Follow> getAllFollows();
 

@@ -2,12 +2,14 @@ package dao;
 
 import api.MemberUtility;
 import model.Follow;
+import model.Heritage;
 import model.Member;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.annotations.common.util.impl.Log;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.apache.log4j.Logger;
@@ -28,13 +30,21 @@ public class FollowDaoImpl implements FollowDao {
         return member.getFollowers();
     }
 
-    public Collection<Member> getFollowingById(long id) {
+    @SuppressWarnings("unchecked")
+    public List<Member> getFollowingById(long id) {
         Session s = getSessionFactory().openSession();
         Member member = (Member)s
                 .createQuery("from Member where id=?")
                 .setParameter(0, id).uniqueResult();
+        List<Follow> follows = s
+                .createQuery("from Follow where follower=?")
+                .setParameter(0, member).list();
+        List<Member> followees = new ArrayList<>();
+        for (int i = 0; i < follows.size(); i++) {
+            followees.add(follows.get(i).getFollowee());
+        }
         s.close();
-        return member.getFollowedMembers();
+        return followees;
     }
 
     public List<Follow> getAllFollows() {

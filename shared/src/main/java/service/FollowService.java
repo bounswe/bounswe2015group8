@@ -25,7 +25,7 @@ public class FollowService {
         return followDao.getFollowersById(id);
     }
 
-    public Collection<Member> getFollowingById(long id) {
+    public List<Member> getFollowingById(long id) {
         return followDao.getFollowingById(id);
     }
 

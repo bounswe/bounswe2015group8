@@ -1,20 +1,21 @@
 package dao;
 
-import model.Heritage;
-import model.HeritagePost;
-import model.Member;
-import model.Post;
+import model.*;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by gokcan on 08.11.2015.
  */
 public class PostDaoImpl implements PostDao {
-
+    private Logger logger = Logger.getLogger(PostDaoImpl.class);
     private SessionFactory sessionFactory;
 
     public Post getPostById(long id) {
@@ -31,7 +32,6 @@ public class PostDaoImpl implements PostDao {
         List<Post> posts = s
                 .createQuery("from Post where owner=?")
                 .setParameter(0, owner).list();
-        s.close();
         return posts;
     }
 
@@ -50,6 +50,20 @@ public class PostDaoImpl implements PostDao {
         return post;
     }
 
+    public HeritagePost linkPostWithHeritage(Post post, Heritage heritage){
+        Session s = getSessionFactory().openSession();
+        s.getTransaction().begin();
+
+        HeritagePost hp = new HeritagePost();
+        hp.setHeritage(heritage);
+        hp.setPost(post);
+        s.save(hp);
+
+        s.getTransaction().commit();
+        s.close();
+        return hp;
+    }
+
     public List<Post> getPostsByHeritage(Heritage heritage) {
         Session s = getSessionFactory().openSession();
         List<HeritagePost> heritageposts = s
@@ -62,12 +76,63 @@ public class PostDaoImpl implements PostDao {
         return posts;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsByTag(Tag tag) {
+        Session s = getSessionFactory().openSession();
+        List<TagPost> tagposts = s
+                .createQuery("from TagPost where tag=?")
+                .setParameter(0, tag).list();
+        List<Post> posts = new ArrayList<Post>();
+        for (int i = 0; i < tagposts.size(); i++) {
+            posts.add(tagposts.get(i).getPost());
+        }
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsCreatedAfter(Timestamp date){
+        Session s = getSessionFactory().openSession();
+        List<Post> posts = s
+                .createQuery("from Post where postDate > :date")
+                .setParameter("date", date).list();
+
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsCreatedAfter(Timestamp date, Heritage heritage){
+        Session s = getSessionFactory().openSession();
+        List<BigInteger> postIds = s
+                .createSQLQuery("select POST_ID from HERITAGE_POST where HERITAGE_ID=?")
+                .setParameter(0, heritage.getId()).list();
+        List<Long> postIdsLong = new ArrayList<>();
+        for(BigInteger postId : postIds){
+            postIdsLong.add(postId.longValue());
+        }
+        List<Post> posts = s
+                .createQuery("from Post where postDate > :date and id in :ids")
+                .setParameter("date", date)
+                .setParameterList("ids", postIdsLong).list();
+        logger.info("postIds: " + postIdsLong);
+        logger.info("posts: " + posts);
+        return posts;
+    }
+
     public Post updatePost(Post post){
         Session s = getSessionFactory().openSession();
         s.getTransaction().begin();
         s.update(post);
         s.getTransaction().commit();
         return post;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsContainTitle(String title){
+        Session s = getSessionFactory().openSession();
+        List<Post> posts = s
+                .createQuery("from Post where title like ?")
+                .setString(0, "%"+title+"%").list();
+        return posts;
     }
 
     public SessionFactory getSessionFactory() {

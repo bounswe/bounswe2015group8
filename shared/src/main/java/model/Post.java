@@ -15,6 +15,7 @@ public class Post {
     private Timestamp lastEditedDate;
     private String title;
     private String content;
+    private String place;
     private Collection<Comment> comments;
     private Collection<Heritage> heritages;
     private Collection<PostVote> votes;
@@ -32,6 +33,19 @@ public class Post {
         this.postDate = postDate;
         this.title = title;
         this.content = content;
+        comments = new HashSet<Comment>();
+        heritages = new HashSet<Heritage>();
+        votes = new HashSet<PostVote>();
+        tags = new HashSet<Tag>();
+    }
+
+    public Post(Member owner, int type, Timestamp postDate, String title, String content, String place) {
+        this.owner = owner;
+        this.type = type;
+        this.postDate = postDate;
+        this.title = title;
+        this.content = content;
+        this.place = place;
         comments = new HashSet<Comment>();
         heritages = new HashSet<Heritage>();
         votes = new HashSet<PostVote>();
@@ -83,6 +97,14 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     @Override

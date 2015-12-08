@@ -111,7 +111,11 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        NamedFragment nf = new HeritageViewFragment();
+        Bundle b = new Bundle();
+        b.putParcelable("heritage",heritages[position]);
+        nf.setArguments(b);
+        MainActivity.beginFragment(getActivity(), nf);
     }
     @Override
     public void onRefresh() {
