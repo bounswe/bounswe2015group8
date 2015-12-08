@@ -226,10 +226,16 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                         newTag.setId(t.getId());
                         t.setTagText(newTag.getTagText());
                         t.setTagContext(newTag.getTagContext());
-                        //TODO edit tag call to system. if successful, do the following
-                        tvText.setText(t.getTagText());
-                        tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
-                        viewSwitcher.showPrevious();
+                        ServerRequests sr = new ServerRequests(activity);
+                        sr.editTag(newTag, new Consumer<Tag>() {
+                            @Override
+                            public void accept(Tag tag) {
+                                tvText.setText(t.getTagText());
+                                tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
+                                viewSwitcher.showPrevious();
+                            }
+                        });
+
                     }
                 });
                 ivTagSmallCancel.setOnClickListener(new View.OnClickListener() {
