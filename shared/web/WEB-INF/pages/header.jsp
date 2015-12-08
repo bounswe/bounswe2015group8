@@ -94,7 +94,7 @@
             </div>
         </div>
         <sec:authorize access="isAuthenticated()">
-            <div class="navbar-header" style="margin-left:85%; margin-top:-2.5%; width:10%;">
+            <div class="navbar-header" style="margin-left:85%; margin-top:-2.25%; width:10%;">
                 <button class="btn btn-info" onclick="recommendHeritage();">Recommend</button>
             </div>
         </sec:authorize>
