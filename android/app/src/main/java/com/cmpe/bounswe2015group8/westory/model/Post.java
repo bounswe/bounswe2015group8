@@ -16,32 +16,38 @@ public class Post implements Parcelable{
     private int type;
     private Member owner;
     private long ownerId;
+    private String heritage_id;
     private String postDate;
     private String lastEditedDate;
     private String title;
     private String content;
+    private String place;
     private Collection<Comment> comments;
     private Collection<Heritage> heritages;
     private Collection<PostVote> votes;
     private Collection<Tag> tags;
+    private Collection<Media> media;
     private int netCount;
     public Post() {
         comments = new HashSet<Comment>();
         heritages = new HashSet<Heritage>();
         votes = new HashSet<PostVote>();
         tags = new HashSet<Tag>();
+        media = new HashSet<>();
     }
 
-    public Post(Member owner, int type, String postDate, String title, String content) {
+    public Post(Member owner, int type, String postDate, String title, String content, String place) {
         this.owner = owner;
         this.type = type;
         this.postDate = postDate;
         this.title = title;
         this.content = content;
+        this.place = place;
         comments = new HashSet<Comment>();
         heritages = new HashSet<Heritage>();
         votes = new HashSet<PostVote>();
         tags = new HashSet<Tag>();
+        media = new HashSet<>();
     }
     public Post(Parcel in) {
         id = in.readLong();
@@ -51,11 +57,13 @@ public class Post implements Parcelable{
         lastEditedDate = in.readString();
         title = in.readString();
         content = in.readString();
+        place = in.readString();
         //TODO fix comments
         this.comments = new HashSet<>();
         this.heritages = new HashSet<>();
         this.votes = new HashSet<>();
         this.tags = new HashSet<>();
+        this.media = new HashSet<>();
     }
     public long getId() {
         return id;
@@ -105,6 +113,13 @@ public class Post implements Parcelable{
         this.content = content;
     }
 
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -160,6 +175,12 @@ public class Post implements Parcelable{
 
     public long getOwnerId() { return ownerId; }
 
+    public void setHeritage_id(String heritage_id) {
+        this.heritage_id = heritage_id;
+    }
+
+    public String getHeritage_id() { return heritage_id; }
+
     public void setOwnerId(long ownerId) { this.ownerId = ownerId; }
 
     public Collection<PostVote> getVotes() {
@@ -182,6 +203,14 @@ public class Post implements Parcelable{
 
     public int getNetCount (){return netCount;}
 
+    public Collection<Media> getMedia() {
+        return media;
+    }
+
+    public void setMedia(Collection<Media> media) {
+        this.media = media;
+    }
+
     public void addTags(Tag... tags) {
         for(Tag t : tags) {
             this.tags.add(t);
@@ -195,6 +224,7 @@ public class Post implements Parcelable{
         dataToSend.put("ownerId", Long.toString(owner.getId()));
         dataToSend.put("title", title);
         dataToSend.put("content", content);
+        dataToSend.put("place",place);
         return new Requestable<Long>("/api/createPost",dataToSend,Long.class);
     }
 
@@ -230,6 +260,7 @@ public class Post implements Parcelable{
         dest.writeString(lastEditedDate);
         dest.writeString(title);
         dest.writeString(content);
+        dest.writeString(place);
         //TODO save owner and other fields
     }
     public static final Parcelable.Creator<Post> CREATOR

@@ -23,6 +23,8 @@ public class Member implements Parcelable{
     private Collection<Member> followers;
     private Collection<Post> posts;
     private Collection<PostVote> postVotes;
+    private Collection<Heritage> followedHeritages;
+    private Collection<Tag> followedTags;
     public Member() {
         this("","","","");
     }
@@ -42,6 +44,8 @@ public class Member implements Parcelable{
         followers = new HashSet<Member>();
         posts = new HashSet<Post>();
         postVotes = new HashSet<PostVote>();
+        followedHeritages = new HashSet<>();
+        followedTags = new HashSet<>();
     }
     public Member(Parcel in) {
         id = in.readLong();
@@ -55,6 +59,8 @@ public class Member implements Parcelable{
         followers = new HashSet<Member>();
         posts = new HashSet<Post>();
         postVotes = new HashSet<PostVote>();
+        followedHeritages = new HashSet<>();
+        followedTags = new HashSet<>();
     }
     public long getId() {
         return id;
@@ -170,6 +176,17 @@ public class Member implements Parcelable{
     public void setPostVotes(Collection<PostVote> postVotes) {
         this.postVotes = postVotes;
     }
+
+    public Collection<Heritage> getFollowedHeritages() {
+        return followedHeritages;
+    }
+
+    public void setFollowedHeritages(Collection<Heritage> followedHeritages) { this.followedHeritages = followedHeritages; }
+
+    public Collection<Tag> getFollowedTags() { return followedTags; }
+
+    public void setFollowedTags(Collection<Tag> followedTags) { this.followedTags = followedTags; }
+
     public void postPost(Post p, Heritage... heritages) {
         p.setOwner(this);
         posts.add(p);
@@ -197,6 +214,15 @@ public class Member implements Parcelable{
     public void follow(Member other) {
         followedMembers.add(other);
         other.followers.add(this);
+    }
+    public void followHeritage(Heritage heritage) {
+        followedHeritages.add(heritage);
+        heritage.getFollowers().add(this);
+    }
+
+    public void followTag(Tag tag) {
+        followedTags.add(tag);
+        tag.getFollowers().add(this);
     }
     public Requestable<Member> getLoginRequestable() {
         Map<String,String> dataToSend = new HashMap<>();
