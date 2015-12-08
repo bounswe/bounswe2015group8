@@ -17,13 +17,13 @@ public class CloudinaryApi {
 
     @RequestMapping(value = "/api/uploadCloudinary",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getCommentsOfFollowedUsers(@RequestBody Media media) {
+    public long getCommentsOfFollowedUsers(@RequestBody Media media) {
         final Session session = Main.getSession();
         session.getTransaction().begin();
         Media newMedia = new Media(media.getPostOrHeritageId(), media.getMediaLink(), media.getMediaType(), media.getPostOrHeritage());
         session.save(newMedia);
         session.getTransaction().commit();
         session.close();
-        return newMedia.getMediaLink();
+        return newMedia.getId();
     }
 }
