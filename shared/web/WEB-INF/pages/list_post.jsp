@@ -8,7 +8,14 @@
     $(document).ready(function(){
         var tags = [];
         <c:forEach var="tag" items="${allTags}">
-        tags.push("${tag.tagText}");
+            <c:choose>
+                <c:when test="${tag.tagContext == null}">
+                    tags.push("${tag.tagText}");
+                </c:when>
+                <c:otherwise>
+                    tags.push("${tag.tagText}(${tag.tagContext})");
+                </c:otherwise>
+            </c:choose>
         </c:forEach>
         $(".upvote").click(function(){
             console.log($(this).attr("name"));
@@ -68,33 +75,8 @@
         });
         $(".tokenfield").tokenfield({
             autocomplete: {
-                source: [],
+                source: tags,
                 delay: 100
-            }
-        });
-        $(".tokenfield").on('keypress', function (e) {
-            if(e.which == 41){ // If it is a closing paranthesis ")"
-                var inputField = $(this).find("input.token-input");
-                var newToken = $(inputField).val() + ")";
-                $(inputField).parent().find("input.tokenfield").tokenfield('createToken', newToken);
-                $(inputField).val("");
-                $(inputField).autocomplete('option', 'source', []);
-                e.preventDefault();
-            }
-            else if(e.which == 40){ // If it is an opening paranthesis "("
-                var inputField = $(this).find("input.token-input");
-                var tagText = $(inputField).val();
-                $.ajax({
-                    url: "${contextPath}/suggestTagContexts",
-                    data:{tagText: tagText},
-                    type: "POST",
-                    success: function(response) {
-                        var tagSuggestions = response.map(function(suggestion){
-                            return tagText + "(" + suggestion + ")";
-                        })
-                        $(inputField).autocomplete('option', 'source', tagSuggestions);
-                    }
-                });
             }
         });
 

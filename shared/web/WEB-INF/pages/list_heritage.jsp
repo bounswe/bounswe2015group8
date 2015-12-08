@@ -9,37 +9,19 @@
     $(document).ready(function(){
         var tags = [];
         <c:forEach var="tag" items="${allTags}">
-            tags.push("${tag.tagText}");
+            <c:choose>
+                <c:when test="${tag.tagContext == null}">
+                    tags.push("${tag.tagText}");
+                </c:when>
+                <c:otherwise>
+                    tags.push("${tag.tagText}(${tag.tagContext})");
+                </c:otherwise>
+            </c:choose>
         </c:forEach>
         $(".tokenfield").tokenfield({
             autocomplete: {
-                source: [],
+                source: tags,
                 delay: 100
-            }
-        });
-        $(".tokenfield").on('keypress', function (e) {
-            if(e.which == 41){ // If it is a closing paranthesis ")"
-                var inputField = $(this).find("input.token-input");
-                var newToken = $(inputField).val() + ")";
-                $(inputField).parent().find("input.tokenfield").tokenfield('createToken', newToken);
-                $(inputField).val("");
-                $(inputField).autocomplete('option', 'source', []);
-                e.preventDefault();
-            }
-            else if(e.which == 40){ // If it is an opening paranthesis "("
-                var inputField = $(this).find("input.token-input");
-                var tagText = $(inputField).val();
-                $.ajax({
-                    url: "${contextPath}/suggestTagContexts",
-                    data:{tagText: tagText},
-                    type: "POST",
-                    success: function(response) {
-                        var tagSuggestions = response.map(function(suggestion){
-                            return tagText + "(" + suggestion + ")";
-                        })
-                        $(inputField).autocomplete('option', 'source', tagSuggestions);
-                    }
-                });
             }
         });
         $(".tagbutton").click(function(){
@@ -53,7 +35,7 @@
                     $("#tags_" + heritageId).html("");
                     for(var i = 0; i < response.length; i++){
                         var tag = response[i];
-                        $("#tags_" + heritageId).append("<a href='${contextPath}/search/" + tag + "'>&lt;" + tag + "&gt;</a> ");
+                        $("#tags_" + heritageId).append("<a href='${contextPath}/searchHeritageByTag/" + tag + "'>&lt;" + tag + "&gt;</a> ");
                     }
                 }
             });
@@ -168,7 +150,9 @@
                 <div class="col-sm-4" role="group">
                     <p id="tags_${heritage.id}">
                         <c:forEach items="${heritage.tags}" var="tag">
-                            <a href="${contextPath}/search/${tag.tagText}">&lt;${tag.tagText}&gt;</a>
+                            <a href="${contextPath}/searchHeritageByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
+                                &lt;${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;
+                            </a>
                         </c:forEach>
                     </p>
                 </div>

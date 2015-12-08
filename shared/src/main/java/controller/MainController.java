@@ -541,6 +541,10 @@ public class MainController {
         for (int i = 0; i < tags.length; i++) {
             session.update(heritageTags.get(i));
             tags[i] = heritageTags.get(i).getTagText();
+            String context = heritageTags.get(i).getTagContext();
+            if(context != null){
+                tags[i] = tags[i] + "(" + context + ")";
+            }
         }
         session.close();
         return tags;
@@ -562,6 +566,10 @@ public class MainController {
         for (int i = 0; i < tags.length; i++) {
             session.update(postTags.get(i));
             tags[i] = postTags.get(i).getTagText();
+            String context = postTags.get(i).getTagContext();
+            if(context != null){
+                tags[i] = tags[i] + "(" + context + ")";
+            }
         }
         session.close();
         return tags;
