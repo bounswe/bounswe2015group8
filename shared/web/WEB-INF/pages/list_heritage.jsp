@@ -86,7 +86,6 @@
     <div class="panel panel-success">
         <div class="panel-heading">
             <div class="row">
-            <div class="row">
                 <b><h class="panel-title" style="margin-left:0.5% " name="name" id="name">${heritage.name}</h></b>
                 <sec:authorize access="isAuthenticated()">
                     <button style="float:right; margin-right:1%" type="button" class="btn btn-success followbutton"
@@ -187,7 +186,6 @@
                     </button>
             </div>
         </div>
-
     </div>
 </c:forEach>
     <div class="row">
