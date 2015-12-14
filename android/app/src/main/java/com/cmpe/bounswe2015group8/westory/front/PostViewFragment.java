@@ -197,10 +197,9 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                     public void accept(String link) {
                         final Media m = new Media(post.getId(), link, requestCode, true);
                         ServerRequests sr = new ServerRequests(getActivity());
-                        sr.addMedia(m, new Consumer<Long>() {
+                        sr.addMedia(m, new Consumer<String>() {
                             @Override
-                            public void accept(Long id) {
-                                m.setId(id);
+                            public void accept(String url) {
                                 post.getMedia().add(m);
                                 updateAdapter();
                             }

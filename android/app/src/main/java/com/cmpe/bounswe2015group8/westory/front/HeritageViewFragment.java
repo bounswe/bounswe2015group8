@@ -181,10 +181,9 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                     public void accept(String link) {
                         final Media m = new Media(heritage.getId(), link, requestCode, false);
                         ServerRequests sr = new ServerRequests(getActivity());
-                        sr.addMedia(m, new Consumer<Long>() {
+                        sr.addMedia(m, new Consumer<String>() {
                             @Override
-                            public void accept(Long id) {
-                                m.setId(id);
+                            public void accept(String url) {
                                 heritage.getMedia().add(m);
                                 updateAdapter();
                             }
