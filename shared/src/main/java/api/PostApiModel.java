@@ -10,6 +10,9 @@ public class PostApiModel {
     private String title;
     private String content;
 
+    public PostApiModel() {
+    }
+
     public PostApiModel(long heritageId, long ownerId ,int type, String title, String content) {
         this.heritageId = heritageId;
         this.ownerId = ownerId;

@@ -12,6 +12,8 @@ public interface ErrorCodes {
     final int USERNAME_NULL = -101;
     final int PASSWORD_NULL = -102;
     final int EMAIL_NULL = -103;
+    final int USERNAME_ALREADY_EXISTS = -104;
+    final int EMAIL_ALREADY_EXISTS = -105;
 
     // Heritage
     final int HERITAGE_DOES_NOT_EXIST = -201;

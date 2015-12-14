@@ -19,17 +19,22 @@ import java.util.ArrayList;
  */
 @RestController
 public class LoginApi implements ErrorCodes{
+    /**
+     * Gets member information from the user and logs in to database
+     * @param memberParam member information containing username and password
+     * @return the member as json
+     */
     @RequestMapping(value = "/api/login",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String doLogin(@RequestBody Member member) {
+    public String doLogin(@RequestBody Member memberParam) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.registerTypeAdapter(Member.class, new MemberAdapter()).create();
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         ArrayList<Member> members = MemberUtility.getUserList();
-        for (Member m : members) {
-            if (m.getUsername().equals(member.getUsername())) {
-                if (passwordEncoder.matches(member.getPassword(), m.getPassword())) {
-                    return gson.toJson(m);
+        for (Member member : members) {
+            if (member.getUsername().equals(memberParam.getUsername())) {
+                if (passwordEncoder.matches(memberParam.getPassword(), member.getPassword())) {
+                    return gson.toJson(member);
                 } else {
                     return WRONG_PASSWORD_ERROR_CODE;
                 }
