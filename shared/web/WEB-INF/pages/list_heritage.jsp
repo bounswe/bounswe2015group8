@@ -5,60 +5,6 @@
 <c:set var="medias" value="${allContent.medias}"/>
 <c:set var="allTags" value="${allContent.allTags}"/>
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        var tags = [];
-        <c:forEach var="tag" items="${allTags}">
-            <c:choose>
-                <c:when test="${tag.tagContext == null}">
-                    tags.push("${tag.tagText}");
-                </c:when>
-                <c:otherwise>
-                    tags.push("${tag.tagText}(${tag.tagContext})");
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-        $(".tokenfield").tokenfield({
-            autocomplete: {
-                source: tags,
-                delay: 100
-            }
-        });
-        $(".tagbutton").click(function(){
-            var heritageId = $(this).attr("id").split("_")[1];
-            var heritageTags = $("#tokenfield_" + heritageId).val().split(", ");
-            $.ajax({
-                url: "${contextPath}/tag_heritage/" + heritageId,
-                data:{tagTexts: heritageTags},
-                type: "POST",
-                success: function(response) {
-                    $("#tags_" + heritageId).html("");
-                    for(var i = 0; i < response.length; i++){
-                        var tag = response[i];
-                        $("#tags_" + heritageId).append("<a href='${contextPath}/searchHeritageByTag/" + tag + "'>&lt;" + tag + "&gt;</a> ");
-                    }
-                }
-            });
-        });
-    });
-    function followHeritage(heritageId){
-        $.ajax({
-            url: "${contextPath}/followHeritage/" + heritageId,
-            type: "POST",
-            success: function(response) {
-                if(response == -1){
-                    $.notify("You are already following this heritage", "warn", {position:"top center"});
-                }
-                else{
-                    $.notify("You are now following this heritage", "success", {position:"top center"});
-                }
-            }
-        });
-    }
-
-
-</script>
-
 <sec:authorize access="isAuthenticated()">
     <div class="well">
         <div class="row">
@@ -192,5 +138,60 @@
     <div class="row">
         <div class="col-xs-12" style="height:40px;"></div>
     </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var tags = [];
+            <c:forEach var="tag" items="${allTags}">
+            <c:choose>
+            <c:when test="${tag.tagContext == null}">
+            tags.push("${tag.tagText}");
+            </c:when>
+            <c:otherwise>
+            tags.push("${tag.tagText}(${tag.tagContext})");
+            </c:otherwise>
+            </c:choose>
+            </c:forEach>
+            $(".tokenfield").tokenfield({
+                autocomplete: {
+                    source: tags,
+                    delay: 100
+                }
+            });
+            $(".tagbutton").click(function(){
+                var heritageId = $(this).attr("id").split("_")[1];
+                var heritageTags = $("#tokenfield_" + heritageId).val().split(", ");
+                $.ajax({
+                    url: "${contextPath}/tag_heritage/" + heritageId,
+                    data:{tagTexts: heritageTags},
+                    type: "POST",
+                    success: function(response) {
+                        $("#tags_" + heritageId).html("");
+                        for(var i = 0; i < response.length; i++){
+                            var tag = response[i];
+                            $("#tags_" + heritageId).append("<a href='${contextPath}/searchHeritageByTag/" + tag + "'>&lt;" + tag + "&gt;</a> ");
+                        }
+                    }
+                });
+            });
+        });
+        function followHeritage(heritageId){
+            $.ajax({
+                url: "${contextPath}/followHeritage/" + heritageId,
+                type: "POST",
+                success: function(response) {
+                    if(response == -1){
+                        $.notify("You are already following this heritage", "warn", {position:"top center"});
+                    }
+                    else{
+                        $.notify("You are now following this heritage", "success", {position:"top center"});
+                    }
+                }
+            });
+        }
+
+
+    </script>
 
 <%@ include file="/WEB-INF/pages/footer.jsp" %>
