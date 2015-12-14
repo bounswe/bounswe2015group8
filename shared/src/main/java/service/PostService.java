@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by gokcan on 08.11.2015.
+ * The class for handling the post related functionality. The layer between the controller and DAO
  */
 public class PostService {
     private PostDao postDao;
@@ -65,6 +66,14 @@ public class PostService {
 
     }
 
+    /// The service function for removing the duplicate posts from a list of posts
+    /**
+     * If a list of post contains more than one post with the same fields (title, owner, content, post date, place, media),
+     * this function removes the duplicates from the list and leaves only the unique posts
+     *
+     * @param posts: the list of posts which may contain duplicates (list of posts)
+     * @return the lsit of posts which do not contain any duplicates (list of posts)
+     */
     public List<Post> removeDuplicates(List<Post> posts){
         List<Integer> toRemoved = new ArrayList<>();
         HashSet<Long> postIds = new HashSet<>();

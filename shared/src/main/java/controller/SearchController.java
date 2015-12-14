@@ -19,6 +19,7 @@ import java.util.*;
 
 /**
  * Created by gokcan on 03.12.2015.
+ * The class for handling the requests related to searching
  */
 @Controller
 public class SearchController {
@@ -44,6 +45,12 @@ public class SearchController {
         tagService = new TagService(Main.getSessionFactory());
     }
 
+     /// The controller for searching posts by tag
+	 /**
+	 *
+	 * @param wholetag: the tagtext with tagcontext (String)
+	 * @return the view for listing posts with only the relevant tags
+	 */
     @RequestMapping(value = "/searchByTag/{wholetag}")
     public ModelAndView searchByTag(@PathVariable String wholetag){
         final Session session = Main.getSession();
@@ -88,6 +95,12 @@ public class SearchController {
         return new ModelAndView("list_post", "allContent", allContent);
     }
 
+    /// The controller for searching heritages by tag
+    /**
+     *
+     * @param wholetag: the tagtext with tagcontext (String)
+     * @return the view for listing heritages with only the relevant tags
+     */
     @RequestMapping(value = "/searchHeritageByTag/{wholetag}")
     public ModelAndView searchHeritageByTag(@PathVariable String wholetag){
         final Session session = Main.getSession();
@@ -133,12 +146,23 @@ public class SearchController {
         return new ModelAndView("list_heritage", "allContent", allContent);
     }
 
+    /// The controller for requesting tag context suggestions based on a tag text
+    /**
+     * @param tagText: the text of a tag without its context (String)
+     * @return an array of the suggested contexts based on the specified tag text. (array of strings)
+     */
     @RequestMapping(value = "/suggestTagContexts")
     @ResponseBody
     public String[] suggestTagContexts(@RequestParam(value = "tagText") String tagText){
         return tagService.getTagContextsByText(tagText);
     }
 
+    /// The controller for searching posts by member
+    /**
+     *
+     * @param username: the username of the posts we want to see (String)
+     * @return the view for listing posts only whose owner is the specified user
+     */
     @RequestMapping(value = "/searchByMember/{username}")
     public ModelAndView searchByMember(@PathVariable String username){
         final Session session = Main.getSession();
@@ -157,6 +181,12 @@ public class SearchController {
         return new ModelAndView("list_post", "allContent", allContent);
     }
 
+    /// The controller for searching posts by title
+    /**
+     *
+     * @param title: the title of the posts we want to see (String)
+     * @return the view for listing posts only which has the specified title
+     */
     @RequestMapping(value = "/searchByTitle/{title}")
     public ModelAndView searchByTitle(@PathVariable String title){
         final Session session = Main.getSession();

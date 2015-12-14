@@ -9,6 +9,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>bounswe2015group8-shared</artifactId>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.sf.doodleproject</groupId>
+                <artifactId>doxygen-maven-plugin</artifactId>
+                <configuration>
+                    <alphabeticalIndexs>true</alphabeticalIndexs>
+                    <generateHtml>true</generateHtml>
+                    <inputDirectory>${basedir}/src/main/java</inputDirectory>
+                    <filePatterns>*.java</filePatterns>
+                    <recursive>true</recursive>
+                </configuration>
+            </plugin>
+    </plugins>
+    </build>
     <dependencies>
         <!-- Hibernate dependencies -->
         <dependency>
