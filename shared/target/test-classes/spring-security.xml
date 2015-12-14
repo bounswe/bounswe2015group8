@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd">
+    <http auto-config="true">
+        <csrf disabled="true" />
+        <intercept-url pattern="/" access="permitAll" />
+        <intercept-url pattern="/home" access="permitAll" />
+        <intercept-url pattern="/login" access="permitAll" />
+        <intercept-url pattern="/signup" access="permitAll" />
+        <form-login login-page="/login" default-target-url="/show_heritages"
+                    authentication-failure-url="/login?success=false" />
+        <logout logout-success-url="/login" logout-url="/logout" />
+        <!--<intercept-url pattern="/**" access="isAuthenticated()" /> -->
+        <!--<intercept-url access="ROLE_USER" pattern="/admin**"/>-->
+    </http>
+    <authentication-manager>
+        <authentication-provider user-service-ref="myUserDetailsService" >
+            <password-encoder ref="bcryptEncoder" />
+        </authentication-provider>
+    </authentication-manager>
+    <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+</beans:beans>

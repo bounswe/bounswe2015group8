@@ -47,13 +47,18 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" style="float:right; margin-right: 1.2%;" class="btn btn-default">Post</button>
+                    <button type="submit" style="float:right; margin-right: 1.2%;" class="btn btn-default" onclick="myFunction()">Post</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+<script>
+    function myFunction() {
+        alert("Post has been edited!");
+    }
+</script>
 
 <script type="text/javascript">
     function fillPlaceFromGoogleMap() {

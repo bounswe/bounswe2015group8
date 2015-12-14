@@ -72,4 +72,26 @@ public class SearchControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString().contains("sweet");
     }
+    @Test
+    public void testPosting() throws Exception{
+        logger.info("testing Posting...");
+        mockMvc.perform(post("/post", 5))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testCommenting() throws Exception{
+        logger.info("testing commenting...");
+        mockMvc.perform(post("/comment").param("commentdeneme", "5")) // lokum should suggest sweet
+                .andExpect(status().isOk())
+                .andExpect(view().name("list_post"));
+    }
+
+    @Test
+    public void testUpdatePost() throws Exception{
+        logger.info("testing updatePost...");
+        mockMvc.perform(post("/update_post").param("titlechanged", "contentchanged", "placechanged",null, "5")) // lokum should suggest sweet
+                .andExpect(status().isOk())
+                .andExpect(view().name("list_post"));
+    }
 }

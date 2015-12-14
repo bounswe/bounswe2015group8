@@ -457,7 +457,6 @@ public class MainController {
                 return new ModelAndView("list_post", "error", "You failed to upload the file" + e.getMessage());
             }
         }
-
         return new ModelAndView("redirect:/show_posts/" + heritageId);
     }
 
