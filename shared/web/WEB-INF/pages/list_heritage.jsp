@@ -59,7 +59,7 @@
 
 </script>
 
-<sec:authorize access="isAuthenticated()">
+<c:if test="${isAuthorized}">
     <div class="well">
         <div class="row">
             <div class="col-xs-12">
@@ -77,7 +77,7 @@
             </div>
         </div>
     </div>
-</sec:authorize>
+</c:if>
 
 <c:forEach items="${allHeritages}" var="heritage">
     <div class="row">
@@ -87,10 +87,10 @@
         <div class="panel-heading">
             <div class="row">
                 <b><h class="panel-title" style="margin-left:0.5% " name="name" id="name">${heritage.name}</h></b>
-                <sec:authorize access="isAuthenticated()">
+                <c:if test="${isAuthorized}">
                     <button style="float:right; margin-right:1%" type="button" class="btn btn-success followbutton"
                             onclick="followHeritage(${heritage.id})" id="followbutton_${heritage.id}">Follow</button>
-                </sec:authorize>
+                </c:if>
             </div>
         </div>
 
@@ -158,27 +158,27 @@
                 </div>
             </div>
 
-            <sec:authorize access="isAuthenticated()">
+            <c:if test="${isAuthorized}">
                 <div class="row">
                     <div class="col-sm-offset-2 col-sm-5" role="group">
                         <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${heritage.id}">Add</button>
                         <input style="width:88%;" type="text" class="form-control tokenfield" id="tokenfield_${heritage.id}" placeholder="Add tags..." />
                     </div>
                 </div>
-            </sec:authorize>
+            </c:if>
         </div>
 
 
         <div class="panel-footer">
             <div class="row">
 
-                    <sec:authorize access="isAuthenticated()">
+                    <c:if test="${isAuthorized}">
                         <button type="button" style="float:right; margin-right: 0.5%"
                                 class="btn btn-default"
                                 onclick="window.location.href='${contextPath}/post/${heritage.id}'">
                             Add Post
                         </button>
-                    </sec:authorize>
+                    </c:if>
                     <button type="button" style="float:right; margin-right: 0.5%;"
                             class="btn btn-default"
                             onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
