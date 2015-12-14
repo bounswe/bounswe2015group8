@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -38,5 +39,37 @@ public class SearchControllerTest {
         mockMvc.perform(get("/searchByTag/{wholetag}", "lokum"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("list_post"));
+    }
+
+    @Test
+    public void testSearchByMember() throws Exception{
+        logger.info("testing SearchByMember...");
+        mockMvc.perform(get("/searchByMember/{username}", "hebele"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("list_post"));
+    }
+
+    @Test
+    public void testSearchByTitle() throws Exception{
+        logger.info("testing SearchByTitle...");
+        mockMvc.perform(get("/searchByTitle/{title}", "turkish lokum"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("list_post"));
+    }
+
+    @Test
+    public void testSearchHeritageByTag() throws Exception{
+        logger.info("testing searchHeritageByTag...");
+        mockMvc.perform(get("/searchHeritageByTag/{wholetag}", "sweet"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("list_heritage"));
+    }
+
+    @Test
+    public void testSuggestTagContexts() throws Exception{
+        logger.info("testing suggestTagContexts...");
+        mockMvc.perform(post("/suggestTagContexts").param("tagText", "lokum")) // lokum should suggest sweet
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString().contains("sweet");
     }
 }
