@@ -16,6 +16,7 @@ public class Post implements Parcelable{
     private int type;
     private Member owner;
     private long ownerId;
+    private String username;
     private String heritage_id;
     private String postDate;
     private String lastEditedDate;
@@ -51,13 +52,12 @@ public class Post implements Parcelable{
     }
     public Post(Parcel in) {
         id = in.readLong();
-        //TODO save owner also
-        //owner = b.getString(base + "owner", "")
         postDate = in.readString();
         lastEditedDate = in.readString();
         title = in.readString();
         content = in.readString();
         place = in.readString();
+        username = in.readString();
         //TODO fix comments
         this.comments = new HashSet<>();
         this.heritages = new HashSet<>();
@@ -120,6 +120,11 @@ public class Post implements Parcelable{
     public void setPlace(String place) {
         this.place = place;
     }
+
+    public String getUsername() { return username; }
+
+    public void setUsername(String username) { this.username = username; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -261,6 +266,7 @@ public class Post implements Parcelable{
         dest.writeString(title);
         dest.writeString(content);
         dest.writeString(place);
+        dest.writeString(username);
         //TODO save owner and other fields
     }
     public static final Parcelable.Creator<Post> CREATOR

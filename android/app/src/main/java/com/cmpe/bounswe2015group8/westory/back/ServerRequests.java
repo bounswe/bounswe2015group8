@@ -6,14 +6,17 @@ import android.os.AsyncTask;
 
 import com.cmpe.bounswe2015group8.westory.model.Comment;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
+import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Requestable;
+import com.cmpe.bounswe2015group8.westory.model.Tag;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +29,7 @@ import java.util.Map;
  * Date: 31/10/15.
  */
 public class ServerRequests{
-    public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com:8080/lokum_v3";
+    public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com:8080/lokum_v4";
     private ProgressDialog progressDialog;
     private boolean display;
     public ServerRequests(Context context){
@@ -103,6 +106,24 @@ public class ServerRequests{
     public void register(Member m, Consumer<Long> callback) {
         if(display) progressDialog.show();
         new RestAsyncTask<Long>(callback, HttpMethod.POST).execute(m.getRegisterRequestable());
+    }
+    public void addTags(Post p, Consumer<Tag[]> callback) {
+        if(display) progressDialog.show();
+        for(Tag t : p.getTags()) t.setPosts(new ArrayList<Post>());
+        new RestAsyncTask<>(callback,HttpMethod.POST).execute(new Requestable<Tag[]>("/api/updatePostTags",p,Tag[].class));
+    }
+    public void addTags(Heritage h, Consumer<Tag[]> callback) {
+        if(display) progressDialog.show();
+        for(Tag t : h.getTags()) t.setHeritages(new ArrayList<Heritage>());
+        new RestAsyncTask<>(callback,HttpMethod.POST).execute(new Requestable<Tag[]>("/api/updateHeritageTags",h,Tag[].class));
+    }
+    public void editTag(Tag t, Consumer<Tag> callback) {
+        if(display) progressDialog.show();
+        new RestAsyncTask<>(callback,HttpMethod.POST).execute(new Requestable<>("/api/editTag",t,Tag.class));
+    }
+    public void addMedia(Media m, Consumer<String> callback){
+        if(display) progressDialog.show();
+        new RestAsyncTask<>(callback,HttpMethod.POST).execute(new Requestable<>("/api/uploadCloudinary",m,String.class));
     }
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
         Consumer<T> callback;

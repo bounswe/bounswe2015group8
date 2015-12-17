@@ -81,8 +81,7 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
     }
     private void initViews(Bundle args) {
         post = args.getParcelable("post");
-        //TODO fix this once owner is properly stored
-        tvOwner.setText(""+post.getOwnerId());
+        tvOwner.setText(post.getUsername());
         tvCreationDate.setText(post.getPostDate());
         if(post.getLastEditedDate()!=null) {
             tvLastEditDate.setText(post.getLastEditedDate());
@@ -154,8 +153,15 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Tag t = new Tag(tagText.getText().toString(),
                                 tagContext.getText().toString());
-                        //TODO add tag
                         post.addTags(t);
+                        ServerRequests sr = new ServerRequests(getActivity());
+                        sr.addTags(post, new Consumer<Tag[]>() {
+                            @Override
+                            public void accept(Tag[] tags) {
+                                post.setTags(Arrays.asList(tags));
+                                Toast.makeText(getActivity(),"Successfully added tag.",Toast.LENGTH_LONG).show();
+                            }
+                        });
                         updateAdapter();
                     }
                 })
@@ -189,9 +195,15 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                 Consumer<String> c = new Consumer<String>() {
                     @Override
                     public void accept(String link) {
-                        Media m = new Media(post.getId(), link, requestCode, true);
-                        //TODO upload media to server once API call is ready
-                        Toast.makeText(getActivity(), link, Toast.LENGTH_LONG).show();
+                        final Media m = new Media(post.getId(), link, requestCode, true);
+                        ServerRequests sr = new ServerRequests(getActivity());
+                        sr.addMedia(m, new Consumer<String>() {
+                            @Override
+                            public void accept(String url) {
+                                post.getMedia().add(m);
+                                updateAdapter();
+                            }
+                        });
                     }
                 };
                 new CloudinaryAPI.CloudinaryUploadTask(getActivity(),c).execute(data.getData());

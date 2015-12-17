@@ -75,6 +75,9 @@ public class TagService {
         String[] tagPieces = extractTextAndContext(wholetag);
         String tagText = tagPieces[0];
         String tagContext = tagPieces[1];
+        return addTag(tagText,tagContext,heritage);
+    }
+    public TagHeritage addTag(String tagText, String tagContext, Heritage heritage){
         if(doesHeritageHaveTag(heritage, tagText, tagContext))
             return getTagHeritage(heritage, tagDao.getTagByText(tagText));
         Tag tag = getTagByText(tagText, tagContext);
@@ -89,6 +92,9 @@ public class TagService {
         String[] tagPieces = extractTextAndContext(wholetag);
         String tagText = tagPieces[0];
         String tagContext = tagPieces[1];
+        return addTag(tagText, tagContext, post);
+    }
+    public TagPost addTag(String tagText, String tagContext, Post post){
         if(doesPostHaveTag(post, tagText, tagContext))
             return getTagPost(post, tagDao.getTagByText(tagText));
         Tag tag = getTagByText(tagText, tagContext);

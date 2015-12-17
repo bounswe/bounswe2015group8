@@ -145,8 +145,8 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 TextView tvTitle = (TextView) v.findViewById(R.id.tvPostSmallTitle);
                 tvTitle.setText(p.getTitle());
                 TextView tvOwner = (TextView) v.findViewById(R.id.tvPostSmallOwner);
-                tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, Long.toString(p.getOwnerId())));
-                //tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, p.getOwner().getUsername()));
+                //tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, Long.toString(p.getOwnerId())));
+                tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, p.getUsername()));
                 TextView tvCreationDate = (TextView) v.findViewById(R.id.tvPostSmallCreationDateValue);
                 tvCreationDate.setText(p.getPostDate());
                 TextView tvContent = (TextView) v.findViewById(R.id.tvPostSmallContent);
@@ -226,10 +226,16 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                         newTag.setId(t.getId());
                         t.setTagText(newTag.getTagText());
                         t.setTagContext(newTag.getTagContext());
-                        //TODO edit tag call to system. if successful, do the following
-                        tvText.setText(t.getTagText());
-                        tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
-                        viewSwitcher.showPrevious();
+                        ServerRequests sr = new ServerRequests(activity);
+                        sr.editTag(newTag, new Consumer<Tag>() {
+                            @Override
+                            public void accept(Tag tag) {
+                                tvText.setText(t.getTagText());
+                                tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
+                                viewSwitcher.showPrevious();
+                            }
+                        });
+
                     }
                 });
                 ivTagSmallCancel.setOnClickListener(new View.OnClickListener() {

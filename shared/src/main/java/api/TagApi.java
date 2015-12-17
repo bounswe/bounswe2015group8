@@ -64,7 +64,7 @@ public class TagApi {
         Post dbPost = postService.getPostById(post.getId());
         for (Tag tag : postTags) {
             if (tagService.getTagById(tag.getId()) == null) {
-                tagService.addTag(tag.getTagText(), dbPost);
+                tagService.addTag(tag.getTagText(), tag.getTagContext(), dbPost);
             }
         }
 
@@ -80,7 +80,7 @@ public class TagApi {
         Heritage dbHeritage = heritageService.getHeritageById(heritage.getId());
         for (Tag tag : heritageTags) {
             if (tagService.getTagById(tag.getId()) == null) {
-                tagService.addTag(tag.getTagText(), dbHeritage);
+                tagService.addTag(tag.getTagText(), tag.getTagContext(), dbHeritage);
             }
         }
 

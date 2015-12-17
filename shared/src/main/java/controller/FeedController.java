@@ -104,6 +104,7 @@ public class FeedController {
             // Here we will add the heritages with followed tags (Interested in...)
 
             heritages.addAll(heritageService.getRecentlyMostPopularHeritages());
+            heritages = heritageService.removeDuplicates(heritages);
         }
         Map<String, List> allContent = new HashMap<String, List>();
         allContent.put("heritages", heritages);
