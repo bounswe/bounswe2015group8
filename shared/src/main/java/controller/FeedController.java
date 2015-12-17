@@ -114,6 +114,35 @@ public class FeedController {
         return new ModelAndView("list_heritage", "allContent", allContent);
     }
 
+    @RequestMapping(value = "/feedPosts")
+    public ModelAndView feedPosts(){
+        final Session session = Main.getSession();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        List<Post> posts = new ArrayList<>();
+        if(username.equals("anonymousUser")){
+            posts = postService.getRecentlyMostPopularPosts();
+        }
+        else{
+            List<Heritage> followedHeritages = followHeritageService.getFollowedHeritagesByMemberId(memberService.getMemberByUsername(username).getId());
+            for(int i = 0; i < followedHeritages.size(); i++){
+                posts.addAll(postService.getRecentlyMostPopularPosts(followedHeritages.get(i)));
+            }
+            posts = postService.sortByPopularity(posts);
+
+            // Here we will add the heritages with followed tags (Interested in...)
+
+            posts.addAll(postService.getRecentlyMostPopularPosts());
+            posts = postService.removeDuplicates(posts);
+        }
+        Map<String, List> allContent = new HashMap<String, List>();
+        allContent.put("posts", posts);
+        allContent.put("medias", session.createCriteria(Media.class).list());
+        allContent.put("allTags", session.createCriteria(Tag.class).list());
+        session.close();
+        return new ModelAndView("list_post", "allContent", allContent);
+    }
+
     @RequestMapping(value = "/recommendHeritage", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getRecommendedHeritage(){
