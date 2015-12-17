@@ -1,8 +1,10 @@
 package dao;
 
+import model.Follow;
 import model.FollowHeritage;
 import model.Heritage;
 import model.Member;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -61,6 +63,18 @@ public class FollowHeritageDaoImpl implements FollowHeritageDao{
         s.getTransaction().commit();
         s.close();
         return followHeritage;
+    }
+
+    public void unfollow(long followerId, long heritageId) {
+        Session s = getSessionFactory().openSession();
+        Query q = s.createQuery("from FollowHeritage where followerId=:followerId and heritageId=:heritageId")
+                .setParameter("followerId", followerId)
+                .setParameter("heritageId", heritageId);
+        FollowHeritage fh = (FollowHeritage)q.uniqueResult();
+        s.getTransaction().begin();
+        s.delete(fh);
+        s.getTransaction().commit();
+        s.close();
     }
 
     public SessionFactory getSessionFactory() {

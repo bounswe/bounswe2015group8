@@ -19,6 +19,8 @@ public interface FollowHeritageDao {
 
     FollowHeritage saveFollowHeritage (FollowHeritage followHeritage);
 
+    void unfollow(long followerId, long heritageId);
+
     SessionFactory getSessionFactory();
 
     void setSessionFactory(SessionFactory sessionFactory);

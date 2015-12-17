@@ -97,6 +97,12 @@
                 }
             });
         });
+
+        $("#feed_type").change(function(){
+           if($(this).val() == "heritage"){
+               window.location.href = "${contextPath}/feed";
+           }
+        });
     });
 
     function follow(memberId, memberName){
@@ -153,6 +159,12 @@
         </div>
     </div>
 </c:if>
+
+    FEED TYPE:
+    <select id="feed_type">
+        <option value="post" selected>POST</option>
+        <option value="heritage">HERITAGE</option>
+    </select>
 
 <c:forEach items="${posts}" var="post">
     <div class="row">
