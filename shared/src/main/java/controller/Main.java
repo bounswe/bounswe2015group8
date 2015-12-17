@@ -46,7 +46,7 @@ public class Main {
             //Heritage h = new Heritage("türbe","somewhere","something",Timestamp.valueOf(LocalDateTime.now()));
             Member m = (Member)session.get(Member.class,8l);
             Heritage h = (Heritage)session.get(Heritage.class,4l);
-            Tag t = new Tag("smt");
+            Tag t = new Tag("smt", null);
             Post p = new Post(m,1, Timestamp.valueOf(LocalDateTime.now()),"title","content");
             p.addTags(t);
             h.addTags(t);

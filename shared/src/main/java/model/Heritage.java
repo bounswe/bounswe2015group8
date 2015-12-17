@@ -15,9 +15,11 @@ public class Heritage {
     private String description;
     private Collection<Post> posts;
     private Collection<Tag> tags;
+    private Collection<Member> followers;
     public Heritage() {
         this.posts = new HashSet<Post>();
         this.tags = new HashSet<Tag>();
+        this.followers = new HashSet<Member>();
     }
 
     public Heritage(String name, String place, String description, Timestamp postDate) {
@@ -27,6 +29,7 @@ public class Heritage {
         this.postDate = postDate;
         this.posts = new HashSet<Post>();
         this.tags = new HashSet<Tag>();
+        this.followers = new HashSet<Member>();
     }
 
     public long getId() {
@@ -118,4 +121,8 @@ public class Heritage {
             t.getHeritages().add(this);
         }
     }
+
+    public Collection<Member> getFollowers(){ return followers; }
+
+    public void setFollowers(Collection<Member> followers){ this.followers = followers; }
 }

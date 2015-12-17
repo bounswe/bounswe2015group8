@@ -1,10 +1,9 @@
 package dao;
 
-import model.Heritage;
-import model.Member;
-import model.Post;
+import model.*;
 import org.hibernate.SessionFactory;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -17,7 +16,17 @@ public interface PostDao {
 
     List<Post> getPostsByHeritage(Heritage heritage);
 
+    List<Post> getPostsByTag(Tag tag);
+
+    List<Post> getPostsContainTitle(String title);
+
+    List<Post> getPostsCreatedAfter(Timestamp date);
+
+    List<Post> getPostsCreatedAfter(Timestamp date, Heritage heritage);
+
     Post savePost(Post post, Heritage heritage);
+
+    HeritagePost linkPostWithHeritage(Post post, Heritage heritage);
 
     Post updatePost(Post post);
 
