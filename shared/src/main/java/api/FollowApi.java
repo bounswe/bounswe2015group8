@@ -31,9 +31,9 @@ public class FollowApi {
     @RequestMapping(value = "/api/follow",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public long follow(@RequestBody String json) {
-        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
-        long followerId = Long.parseLong(jsonComment.get("followerId"));
-        long followeeId = Long.parseLong(jsonComment.get("followeeId"));
+        HashMap<String, String> jsonFollow = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        long followerId = Long.parseLong(jsonFollow.get("followerId"));
+        long followeeId = Long.parseLong(jsonFollow.get("followeeId"));
         followService.saveFollow(followerId, followeeId);
         return followeeId;
     }
@@ -41,9 +41,9 @@ public class FollowApi {
     @RequestMapping(value = "/api/unfollow",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public long unfollow(@RequestBody String json) {
-        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
-        Member follower = MemberUtility.getMemberById(Long.parseLong(jsonComment.get("followerId")));
-        Member followee = MemberUtility.getMemberById(Long.parseLong(jsonComment.get("followeeId")));
+        HashMap<String, String> jsonFollow = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        Member follower = MemberUtility.getMemberById(Long.parseLong(jsonFollow.get("followerId")));
+        Member followee = MemberUtility.getMemberById(Long.parseLong(jsonFollow.get("followeeId")));
         followService.deleteFollow(follower, followee);
         return followee.getId();
     }
@@ -51,9 +51,9 @@ public class FollowApi {
     @RequestMapping(value = "/api/followHeritage",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public long followHeritage(@RequestBody String json) {
-        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
-        long followerId = Long.parseLong(jsonComment.get("followerId"));
-        long heritageId = Long.parseLong(jsonComment.get("heritageId"));
+        HashMap<String, String> jsonFollow = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        long followerId = Long.parseLong(jsonFollow.get("followerId"));
+        long heritageId = Long.parseLong(jsonFollow.get("heritageId"));
         followHeritageService.saveFollowHeritage(followerId, heritageId);
         return heritageId;
     }
@@ -61,9 +61,9 @@ public class FollowApi {
     @RequestMapping(value = "/api/unfollowHeritage",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public long unfollowHeritage(@RequestBody String json) {
-        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
-        long followerId = Long.parseLong(jsonComment.get("followerId"));
-        long heritageId = Long.parseLong(jsonComment.get("heritageId"));
+        HashMap<String, String> jsonFollow = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        long followerId = Long.parseLong(jsonFollow.get("followerId"));
+        long heritageId = Long.parseLong(jsonFollow.get("heritageId"));
         followHeritageService.deleteFollowHeritage(followerId, heritageId);
         return heritageId;
     }
