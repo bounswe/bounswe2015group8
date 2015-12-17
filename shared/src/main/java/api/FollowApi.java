@@ -3,6 +3,7 @@ package api;
 import adapter.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import controller.Main;
 import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,28 +13,59 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import service.FollowHeritageService;
 import service.FollowService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Goktug on 07.12.2015.
  */
 @RestController
 public class FollowApi {
-    @Autowired
-    private ApplicationContext appContext;
+    Gson gson = new Gson();
     FollowService followService = new FollowService(Main.getSessionFactory());
+    FollowHeritageService followHeritageService = new FollowHeritageService(Main.getSessionFactory());
 
     @RequestMapping(value = "/api/follow",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String followApi(@RequestBody String followString) {
-        long followerId = Long.parseLong(followString.substring(0, followString.lastIndexOf('-')));
-        long followeeId = Long.parseLong(followString.substring(followString.lastIndexOf('-') + 1));
-        Follow follow = followService.saveFollow(followerId, followeeId);
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.registerTypeAdapter(Member.class, new MemberAdapter()).create();
-        return gson.toJson(follow.getFollowee());
+    public long follow(@RequestBody String json) {
+        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        long followerId = Long.parseLong(jsonComment.get("followerId"));
+        long followeeId = Long.parseLong(jsonComment.get("followeeId"));
+        followService.saveFollow(followerId, followeeId);
+        return followeeId;
+    }
+
+    @RequestMapping(value = "/api/unfollow",
+            method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public long unfollow(@RequestBody String json) {
+        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        Member follower = MemberUtility.getMemberById(Long.parseLong(jsonComment.get("followerId")));
+        Member followee = MemberUtility.getMemberById(Long.parseLong(jsonComment.get("followeeId")));
+        followService.deleteFollow(follower, followee);
+        return followee.getId();
+    }
+
+    @RequestMapping(value = "/api/followHeritage",
+            method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public long followHeritage(@RequestBody String json) {
+        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        long followerId = Long.parseLong(jsonComment.get("followerId"));
+        long heritageId = Long.parseLong(jsonComment.get("heritageId"));
+        followHeritageService.saveFollowHeritage(followerId, heritageId);
+        return heritageId;
+    }
+
+    @RequestMapping(value = "/api/unfollowHeritage",
+            method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public long unfollowHeritage(@RequestBody String json) {
+        HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
+        long followerId = Long.parseLong(jsonComment.get("followerId"));
+        long heritageId = Long.parseLong(jsonComment.get("heritageId"));
+        followHeritageService.deleteFollowHeritage(followerId, heritageId);
+        return heritageId;
     }
 
     @RequestMapping(value = "/api/getFollowedPosts",

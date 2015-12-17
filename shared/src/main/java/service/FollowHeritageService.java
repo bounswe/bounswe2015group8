@@ -53,8 +53,9 @@ public class FollowHeritageService {
         return followHeritageDao.saveFollowHeritage(followHeritage);
     }
 
-
-
-
-
+    public void deleteFollowHeritage(long followerId, long heritageId) {
+        if(!doesMemberFollowHeritage(followerId, heritageId))
+            return;
+        followHeritageDao.unfollow(followerId, heritageId);
+    }
 }
