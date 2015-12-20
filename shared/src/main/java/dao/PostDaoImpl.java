@@ -93,9 +93,9 @@ public class PostDaoImpl implements PostDao {
     public List<Post> getPostsCreatedAfter(Timestamp date){
         Session s = getSessionFactory().openSession();
         List<Post> posts = s
-                .createQuery("from Post where postDate > :date")
+                .createQuery("from Post where postDate >= :date")
                 .setParameter("date", date).list();
-
+        s.close();
         return posts;
     }
 
@@ -110,11 +110,41 @@ public class PostDaoImpl implements PostDao {
             postIdsLong.add(postId.longValue());
         }
         List<Post> posts = s
-                .createQuery("from Post where postDate > :date and id in :ids")
+                .createQuery("from Post where postDate >= :date and id in :ids")
                 .setParameter("date", date)
                 .setParameterList("ids", postIdsLong).list();
         logger.info("postIds: " + postIdsLong);
         logger.info("posts: " + posts);
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsCreatedBefore(Timestamp date){
+        Session s = getSessionFactory().openSession();
+        List<Post> posts = s
+                .createQuery("from Post where postDate <= :date")
+                .setParameter("date", date).list();
+        s.close();
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsEditedAfter(Timestamp date){
+        Session s = getSessionFactory().openSession();
+        List<Post> posts = s
+                .createQuery("from Post where lastEditedDate >= :date")
+                .setParameter("date", date).list();
+        s.close();
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsEditedBefore(Timestamp date){
+        Session s = getSessionFactory().openSession();
+        List<Post> posts = s
+                .createQuery("from Post where lastEditedDate <= :date")
+                .setParameter("date", date).list();
+        s.close();
         return posts;
     }
 
@@ -132,6 +162,17 @@ public class PostDaoImpl implements PostDao {
         List<Post> posts = s
                 .createQuery("from Post where title like ?")
                 .setString(0, "%"+title+"%").list();
+        s.close();
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsContainContent(String content){
+        Session s = getSessionFactory().openSession();
+        List<Post> posts = s
+                .createQuery("from Post where content like ?")
+                .setString(0, "%"+content+"%").list();
+        s.close();
         return posts;
     }
 

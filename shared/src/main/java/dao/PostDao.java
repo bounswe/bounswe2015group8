@@ -20,9 +20,17 @@ public interface PostDao {
 
     List<Post> getPostsContainTitle(String title);
 
+    List<Post> getPostsContainContent(String content);
+
     List<Post> getPostsCreatedAfter(Timestamp date);
 
     List<Post> getPostsCreatedAfter(Timestamp date, Heritage heritage);
+
+    List<Post> getPostsCreatedBefore(Timestamp date);
+
+    List<Post> getPostsEditedAfter(Timestamp date);
+
+    List<Post> getPostsEditedBefore(Timestamp date);
 
     Post savePost(Post post, Heritage heritage);
 
