@@ -3,10 +3,14 @@ package controller;
 import com.cloudinary.utils.ObjectUtils;
 import dao.MemberDaoImpl;
 import model.Media;
+import model.Member;
+import model.Tag;
 import org.hibernate.Session;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +33,7 @@ public class ProfileController {
     PostService postService;
     HeritageService heritageService;
     TagService tagService;
+    FollowTagService followTagService;
 
     public ProfileController(){
         memberService = new MemberDetailsService();
@@ -38,6 +43,13 @@ public class ProfileController {
         postService = new PostService(Main.getSessionFactory());
         heritageService = new HeritageService(Main.getSessionFactory());
         tagService = new TagService(Main.getSessionFactory());
+        followTagService = new FollowTagService(Main.getSessionFactory());
+    }
+
+    @RequestMapping("/profile/{username}")
+    public ModelAndView userProfile(@PathVariable String username){
+        Member member = memberService.getMemberByUsername(username);
+        return new ModelAndView("profile", "user", member);
     }
 
     @RequestMapping(value = "/uploadProfilePicture", method = RequestMethod.POST)
@@ -69,6 +81,34 @@ public class ProfileController {
         }
         return new ModelAndView("redirect:/profile/"+username);
 
+    }
+
+    @RequestMapping(value = "/followTag", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String[] followTag(@RequestParam("tags[]") String[] tags){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        long userId = memberService.getMemberByUsername(username).getId();
+        String[] newTagsToFollow = new String[tags.length];
+
+        for(int i = 0; i < tags.length; i++) {
+            String tagText = tags[i];
+            String tagContext = null;
+            String[] tagPieces = tagService.extractTextAndContext(tagText);
+            tagText = tagPieces[0];
+            tagContext = tagPieces[1];
+            Tag tag;
+            if(tagService.doesTagExist(tagText, tagContext)){
+                tag = tagService.getTagByText(tagText, tagContext);
+            }
+            else{
+                tag = tagService.saveTag(tagText, tagContext);
+            }
+            followTagService.saveFollowTag(userId, tag.getId());
+            newTagsToFollow[i] = tagText;
+            if(tagContext != null)
+                newTagsToFollow[i] += "(" + tagContext + ")";
+        }
+        return newTagsToFollow;
     }
 
 }
