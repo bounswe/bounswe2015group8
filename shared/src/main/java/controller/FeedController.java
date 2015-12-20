@@ -53,6 +53,11 @@ public class FeedController {
     }
 
 
+    /// The controller for view recent posts
+    /**
+     *
+     * @return the view for listing recent posts
+     */
     @RequestMapping(value = "/getRecentlyMostPopular")
     public ModelAndView recentPosts(){
         /* Gets the posts that are created within the last week and sorts them in terms of vote count */
@@ -69,6 +74,11 @@ public class FeedController {
         return new ModelAndView("list_post", "allContent", allContent);
     }
 
+    /// The controller for view recent posts
+    /**
+     *@param heritageId the id of the heritage (long)
+     * @return the view for listing recent posts
+     */
     @RequestMapping(value = "/getRecentlyMostPopular/{heritageId}")
     public ModelAndView recentPosts(@PathVariable long heritageId){
         /* Gets the posts that are created within the last week and sorts them in terms of vote count */
@@ -88,6 +98,11 @@ public class FeedController {
         return new ModelAndView("list_post", "allContent", allContent);
     }
 
+    /// The controller for newsfeed
+    /**
+     *
+     * @return the view for most populer heritages followed by user.
+     */
     @RequestMapping(value = "/feed")
     public ModelAndView feed(){
         final Session session = Main.getSession();
@@ -114,6 +129,11 @@ public class FeedController {
         return new ModelAndView("list_heritage", "allContent", allContent);
     }
 
+    /// The controller for view of recommended heritages
+    /**
+     *
+     * @return the view for recommended heritages
+     */
     @RequestMapping(value = "/recommendHeritage", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getRecommendedHeritage(){

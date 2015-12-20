@@ -16,6 +16,10 @@ public class CloudinaryController {
     private static String[] audioFormats = {"mp3", "ogg", "wav"};
     private static String[] videoFormats = {"mp4", "webm", "flv", "mov", "ogv", "3gp", "3g2", "wmv", "mpeg", "flv", "avi"};
 
+    /// The controller for get Cloudinary, helps storing the media content
+    /**
+     * @return cloudinary
+     */
     public static Cloudinary getCloudinary() {
         if (cloudinary == null) {
             Map config = new HashMap();
@@ -27,6 +31,11 @@ public class CloudinaryController {
         return cloudinary;
     }
 
+    /// The controller for get Media type
+    /**
+     * @param fileName the name of the file (String)
+     * @return the type of the name, 0 for image, 1 for audio, 2 for video, -1 for no media.
+     */
     public static int getMediaType(String fileName) {
         String fileFormat = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
         Logger logger = Logger.getLogger(MainController.class);
