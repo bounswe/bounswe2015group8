@@ -5,6 +5,7 @@ import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -655,10 +656,13 @@ public class MainController {
 
     @RequestMapping(value = "/profile/{username}")
     public ModelAndView profile_of_user(@PathVariable String username) {
-
+        final Session session = Main.getSession();
         Member m = memberService.getMemberByUsername(username);
-
-
+        session.refresh(m);
+        Hibernate.initialize(m.getFollowers());
+        Hibernate.initialize(m.getFollowedMembers());
+        Hibernate.initialize(m.getFollowedHeritages());
+        Hibernate.initialize(m.getFollowedTags());
         return new ModelAndView("profile", "member", m);
     }
 

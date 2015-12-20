@@ -3,6 +3,20 @@
 
 <c:set var="member" value="${member}"/>
 
+<c:forEach var="follower" items="${member.followers}">
+    <!-- Followers -->
+    ${follower.username}
+</c:forEach>
+
+<c:forEach var="followee" items="${member.followedMembers}">
+    <!-- Followees -->
+    ${followee.username}
+</c:forEach>
+
+<c:forEach var="heritage" items="${member.followedHeritages}">
+    <!-- Following Heritages -->
+    ${heritage.name}
+</c:forEach>
 
 <div class="page-content container">
 
