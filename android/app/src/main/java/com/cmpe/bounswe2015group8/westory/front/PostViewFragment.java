@@ -23,6 +23,7 @@ import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.PostViewAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Comment;
+import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
@@ -63,7 +64,7 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         tvContent = (TextView) header.findViewById(R.id.tvPostViewContentValue);
         tvVote = (TextView) header.findViewById(R.id.tvPostVoteCount);
         btnEdit = (Button) header.findViewById(R.id.btnPostViewEdit);
-		btnAdd = (Button) header.findViewById(R.id.btnPostViewAdd);
+        btnAdd = (Button) header.findViewById(R.id.btnPostViewAdd);
         initViews(this.getArguments());
         if(memberLocalStore.getUserLoggedIn() && post.getOwnerId() == memberLocalStore.getLoggedInMember().getId()) {
             btnEdit.setOnClickListener(this);
@@ -92,6 +93,8 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         tvContent.setText(post.getContent());
     }
     @Override
+    /** Handles on-click actions for the two buttons visible when the user is logged in.
+     */
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.btnPostViewEdit:
@@ -107,6 +110,9 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                 break;
         }
     }
+    /** Builds an alert dialog which allows user to choose
+     * to add comment, heritage, tag, or media.
+     */
     private void add() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Add...");
@@ -133,6 +139,10 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                 });
         builder.show();
     }
+    /** Begins the comment create fragment by giving it the current post as the
+     * post it is tied to.
+     * @see Post
+     */
     private void addComment() {
         NamedFragment nf = new CommentEditFragment();
         Bundle b = new Bundle();
@@ -140,9 +150,16 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         nf.setArguments(b);
         MainActivity.beginFragment(getActivity(), nf);
     }
+    /** This function will add heritages to a given post once the api is done.
+     * @see Heritage
+     */
     private void addHeritage() {
         //TODO add heritage to post
     }
+    /** Creates a add tag dialog that prompts the user for a tag text and a tag
+     * context.
+     * @see Tag
+     */
     private void addTag() {
         View v = inflater.inflate(R.layout.popup_tag_add,null,false);
         final EditText tagText = (EditText) v.findViewById(R.id.etPopupTagAddText);
@@ -230,7 +247,15 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
 //            }
 //        });
     }
+    /** Updates the current adapter underlying this fragment and its expandable list.
+     * Uses the default {@link PostViewFragment#post} field.
+     * @see PostViewFragment#updateAdapter(Post)
+     */
     private void updateAdapter() { updateAdapter(post); }
+    /** Updates the current adapter underlying this fragment and its expandable list.
+     * Uses the given post as the source.
+     * @param p the post object used as the source.
+     */
     private void updateAdapter(Post p) {
         elvData.setAdapter(new PostViewAdapter(getActivity(), new ArrayList<>(p.getComments()),
                 new ArrayList<>(p.getHeritages()), new ArrayList<>(p.getTags()), new ArrayList<>(p.getMedia())));

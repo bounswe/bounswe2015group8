@@ -11,7 +11,7 @@ public class Member {
     private String username;
     private String password;
     private String email;
-    private transient String profilePicture;
+    private String profilePicture;
     private transient Collection<Comment> comments;
     private transient Collection<CommentVote> commentVotes;
     private transient Collection<Member> followedMembers;

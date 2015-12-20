@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by gokcan on 21.11.2015.
+ * The class for handling the tag related functionality. The layer between the controller and DAO
  */
 public class TagService {
     private TagDao tagDao;
@@ -105,6 +106,13 @@ public class TagService {
         return tagDao.saveTagPost(tag, post);
     }
 
+    /// The service function for getting the semantically related tags of a tag
+    /**
+     *
+     * @param tagText: the text of the tag (String)
+     * @param tagContext: the context of the tag (String)
+     * @return a list of the tags who are semantically related to the tag with specified text and contexts (list of strings)
+     */
     public List<Tag> getSemanticallyRelatedTags(String tagText, String tagContext){
         //String tagText = tag.getTagText();
         //String tagContext = tag.getTagContext();
@@ -121,18 +129,38 @@ public class TagService {
         return relatedTags;
     }
 
+    /// The service function for getting the number of heritages which are tagged with the specified tag
+    /**
+     * @param tag: the tag (Tag object)
+     * @return the number of heritages which are tagged with the specified tag (int)
+     */
     public int countHeritagesForTag(Tag tag){
         return tagDao.countHeritagesForTag(tag);
     }
 
+    /// The service function for getting the number of posts which are tagged with the specified tag
+    /**
+     * @param tag: the tag (Tag object)
+     * @return the number of posts which are tagged with the specified tag (int)
+     */
     public int countPostsForTag(Tag tag){
         return tagDao.countPostsForTag(tag);
     }
 
+    /// The service function for getting the total number of heritages and posts which are tagged with the specified tag
+    /**
+     * @param tag: the tag (Tag object)
+     * @return the total number of heritages and posts which are tagged with the specified tag (int)
+     */
     public int countTag(Tag tag){
         return countHeritagesForTag(tag) + countPostsForTag(tag);
     }
 
+    /// The service function for sorting a list of tags based on total number of posts and heritages which are tagged with them
+    /**
+     * @param tags: the list of tags which we want to sort (list of tags)
+     * @return the sorted list of tags (list of tags)
+     */
     public List<Tag> sortByCount(List<Tag> tags){
         int size = tags.size();
         List<Tag> sortedTags = new ArrayList<Tag>();

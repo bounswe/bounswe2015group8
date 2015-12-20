@@ -7,13 +7,11 @@ import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by gokcan on 08.11.2015.
+ * The class for handling the post related functionality. The layer between the controller and DAO
  */
 public class PostService {
     private PostDao postDao;
@@ -40,6 +38,8 @@ public class PostService {
 
     public List<Post> getPostsContainTitle(String title) { return postDao.getPostsContainTitle(title); }
 
+    public List<Post> getPostsContainContent(String content) { return postDao.getPostsContainContent(content); }
+
     public Post savePost(Member member, int type, Timestamp timestamp, String title, String content, Heritage heritage) {
         Post post = new Post(member, type, timestamp, title, content);
         return postDao.savePost(post, heritage);
@@ -65,6 +65,14 @@ public class PostService {
 
     }
 
+    /// The service function for removing the duplicate posts from a list of posts
+    /**
+     * If a list of post contains more than one post with the same fields (title, owner, content, post date, place, media),
+     * this function removes the duplicates from the list and leaves only the unique posts
+     *
+     * @param posts: the list of posts which may contain duplicates (list of posts)
+     * @return the lsit of posts which do not contain any duplicates (list of posts)
+     */
     public List<Post> removeDuplicates(List<Post> posts){
         List<Integer> toRemoved = new ArrayList<>();
         HashSet<Long> postIds = new HashSet<>();
@@ -122,5 +130,29 @@ public class PostService {
         logger.info("last week " + nowMinusOneWeekTimestamp);
         List<Post> recentPosts = postDao.getPostsCreatedAfter(nowMinusOneWeekTimestamp, heritage);
         return sortByPopularity(recentPosts);
+    }
+
+    public List<Post> getPostsCreatedAfter(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Post> posts = postDao.getPostsCreatedAfter(date);
+        return sortByPopularity(posts);
+    }
+
+    public List<Post> getPostsCreatedBefore(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Post> posts = postDao.getPostsCreatedBefore(date);
+        return sortByPopularity(posts);
+    }
+
+    public List<Post> getPostsEditedAfter(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Post> posts = postDao.getPostsEditedAfter(date);
+        return sortByPopularity(posts);
+    }
+
+    public List<Post> getPostsEditedBefore(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Post> posts = postDao.getPostsEditedBefore(date);
+        return sortByPopularity(posts);
     }
 }

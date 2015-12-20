@@ -10,8 +10,6 @@ import model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -28,65 +26,81 @@ public class PostApi implements ErrorCodes {
     private ApplicationContext appContext;
     Gson gson = new Gson();
 
+    /**
+     * Get the post by given ID
+     * @param id of the post
+     * @return json representation of specific post
+     */
     @RequestMapping(value = "/api/getPostById",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostById(@RequestBody int id) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
-        ArrayList<Post> posts = HeritageUtility.getPostList();
-        for (Post p : posts) {
-            if (p.getId() == id) {
-                return gson.toJson(p);
-            }
+        Post post = PostUtility.getPostById(id);
+        if (post != null) {
+            return gson.toJson(post);
         }
         return Integer.toString(POST_DOES_NOT_EXIST);
     }
 
+    /**
+     * Creates a new post by taking information from user
+     * @param json representation of user's post
+     * @return created post's id
+     */
     @RequestMapping(value="/api/createPost",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public long createPost(@RequestBody String json) {
         PostApiModel apiModel = gson.fromJson(json, PostApiModel.class);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
         Date now = new Date();
 
-        Member m = MemberUtility.getMemberService().getMemberById(apiModel.getOwnerId());
+        Member member = MemberUtility.getMemberService().getMemberById(apiModel.getOwnerId());
         Heritage heritage = HeritageUtility.getHeritageService().getHeritageById(apiModel.getHeritageId());
 
-        Post post = HeritageUtility.getPostService().savePost(m, 0, new Timestamp(now.getTime()), apiModel.getTitle(), apiModel.getContent(), heritage);
+        Post post = PostUtility.getPostService().savePost(member, 0, new Timestamp(now.getTime()), apiModel.getTitle(), apiModel.getContent(), heritage);
 
         return post.getId();
     }
 
+    /**
+     * Votes post by getting information from user
+     * @param json comment representation
+     * @return new vote count of post
+     */
     @RequestMapping(value = "/api/votePost",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public long votePost(@RequestBody String json){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
         HashMap<String, String> jsonComment = gson.fromJson(json, new TypeToken<HashMap<String, String>>(){}.getType());
         Member member = MemberUtility.getMemberService().getMemberById(Long.parseLong(jsonComment.get("ownerId")));
-        Post post = HeritageUtility.getPostService().getPostById(Long.parseLong(jsonComment.get("postId")));
+        Post post = PostUtility.getPostService().getPostById(Long.parseLong(jsonComment.get("postId")));
         boolean voteType = Boolean.parseBoolean(jsonComment.get("voteType"));
 
         HeritageUtility.getVoteService().savePostVote(member, post, voteType);
         return HeritageUtility.getVoteService().getPostOverallVote(post);
     }
 
+    /**
+     * Get vote count of given post
+     * @param postId id of post
+     * @return vote count of the post
+     */
     @RequestMapping(value = "/api/getOverallPostVoteById/{postId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public long getOverallPostVoteById(@PathVariable long postId){
-        Post post = HeritageUtility.getPostService().getPostById(postId);
+        Post post = PostUtility.getPostService().getPostById(postId);
         return HeritageUtility.getVoteService().getPostOverallVote(post);
     }
 
+    /**
+     * Returns all posts in the database
+     * @return json representation of all posts
+     */
     @RequestMapping(value = "/api/getAllPosts",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getAllPosts() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
-        ArrayList<Post> posts = HeritageUtility.getPostList();
+        ArrayList<Post> posts = PostUtility.getPostList();
         return gson.toJson(posts);
     }
 }

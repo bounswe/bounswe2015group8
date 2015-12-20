@@ -38,7 +38,7 @@ public class CommentApi implements ErrorCodes {
         String username = auth.getName();
         java.util.Date now = new java.util.Date();
         Member member = MemberUtility.getMemberService().getMemberById(Long.parseLong(jsonComment.get("ownerId")));
-        Post post = HeritageUtility.getPostService().getPostById(Long.parseLong(jsonComment.get("postId")));
+        Post post = PostUtility.getPostService().getPostById(Long.parseLong(jsonComment.get("postId")));
         String content = jsonComment.get("content");
         Comment comment= CommentUtility.getCommentService().saveComment(member, post, content, new Timestamp(now.getTime()));
 
@@ -59,7 +59,7 @@ public class CommentApi implements ErrorCodes {
 
     @RequestMapping(value = "/api/getCommentsByPostId/{postId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getCommentsByPostId(@PathVariable long postId){
-        Post post = HeritageUtility.getPostService().getPostById(postId);
+        Post post = PostUtility.getPostService().getPostById(postId);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Comment.class, new CommentAdapter()).create();
         List<Comment> comments = CommentUtility.getCommentService().getCommentsByPost(post);
