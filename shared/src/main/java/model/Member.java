@@ -12,6 +12,7 @@ public class Member {
     private String password;
     private String email;
     private String profilePicture;
+    private String biography;
     private transient Collection<Comment> comments;
     private transient Collection<CommentVote> commentVotes;
     private transient Collection<Member> followedMembers;
@@ -36,6 +37,7 @@ public class Member {
         this.password = password;
         this.email = email;
         this.profilePicture = profilePicture;
+        this.biography = "";
         comments = new HashSet<Comment>();
         commentVotes = new HashSet<CommentVote>();
         followedMembers = new HashSet<Member>();
@@ -82,6 +84,14 @@ public class Member {
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
     }
 
     @Override

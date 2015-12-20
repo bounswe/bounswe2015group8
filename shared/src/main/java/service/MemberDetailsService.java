@@ -43,6 +43,12 @@ public class MemberDetailsService implements UserDetailsService{
         return memberDao.updateMember(member);
     }
 
+    public Member updateBiography(String username, String biography){
+        Member member = memberDao.getMemberByUsername(username);
+        member.setBiography(biography);
+        return memberDao.updateMember(member);
+    }
+
     public Member getMemberByUsername(String username) {
         return memberDao.getMemberByUsername(username);
     }

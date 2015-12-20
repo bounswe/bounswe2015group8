@@ -135,6 +135,9 @@
         <property name="profilePicture">
             <column name="PROFILE_PICTURE" sql-type="varchar" length="256"/>
         </property>
+        <property name="biography">
+            <column name="BIOGRAPHY" sql-type="text" length="65535" />
+        </property>
         <set name="comments" inverse="true" cascade="save-update" fetch="select" lazy="true">
             <key>
                 <column name="OWNER_ID" not-null="true"/>
