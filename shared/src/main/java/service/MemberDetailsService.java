@@ -37,6 +37,12 @@ public class MemberDetailsService implements UserDetailsService{
         return memberDao.updateMember(m);
     }
 
+    public Member updateProfilePicture(long userId, String profilePicture){
+        Member member = memberDao.getMemberById(userId);
+        member.setProfilePicture(profilePicture);
+        return memberDao.updateMember(member);
+    }
+
     public Member getMemberByUsername(String username) {
         return memberDao.getMemberByUsername(username);
     }
