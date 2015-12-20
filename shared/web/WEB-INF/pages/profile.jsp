@@ -15,10 +15,7 @@
 
                     <p> Member Biography </p>
 
-                    <p><a href="#" class="btn btn-primary" role="button">Change Profile Picture</a> <a href="#"
-                                                                                                       class="btn btn-default"
-                                                                                                       role="button">Edit
-                        Biography</a></p>
+                    <p><a href="#" class="btn btn-primary" role="button">Change Profile Picture</a> <a href="#" class="btn btn-default" role="button">Edit Biography</a></p>
                 </div>
             </div>
         </div>
@@ -26,6 +23,12 @@
             <h2>Followers</h2>
             <c:forEach var="follower" items="${member.followers}">
                 <p>  ${follower.username} </p>
+                <button type="button"
+                        class="btn btn-default"
+                        onclick="window.location.href='${contextPath}/profile/${follower.username}'">
+                        ${follower.username}
+                </button>
+
             </c:forEach>
 
         </div>
@@ -34,6 +37,11 @@
             <h2>Followings</h2>
             <c:forEach var="followee" items="${member.followedMembers}">
                <p>${followee.username}</p>
+                <button type="button"
+                        class="btn btn-default"
+                        onclick="window.location.href='${contextPath}/profile/${follower.username}'">
+                        ${follower.username}
+                </button>
             </c:forEach>
         </div>
     </div>
