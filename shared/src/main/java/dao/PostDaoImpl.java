@@ -162,6 +162,17 @@ public class PostDaoImpl implements PostDao {
         List<Post> posts = s
                 .createQuery("from Post where title like ?")
                 .setString(0, "%"+title+"%").list();
+        s.close();
+        return posts;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Post> getPostsContainContent(String content){
+        Session s = getSessionFactory().openSession();
+        List<Post> posts = s
+                .createQuery("from Post where content like ?")
+                .setString(0, "%"+content+"%").list();
+        s.close();
         return posts;
     }
 

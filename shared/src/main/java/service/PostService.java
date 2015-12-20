@@ -38,6 +38,8 @@ public class PostService {
 
     public List<Post> getPostsContainTitle(String title) { return postDao.getPostsContainTitle(title); }
 
+    public List<Post> getPostsContainContent(String content) { return postDao.getPostsContainContent(content); }
+
     public Post savePost(Member member, int type, Timestamp timestamp, String title, String content, Heritage heritage) {
         Post post = new Post(member, type, timestamp, title, content);
         return postDao.savePost(post, heritage);
