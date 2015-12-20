@@ -2,21 +2,22 @@ package api;
 
 import controller.Main;
 import model.Heritage;
-import model.HeritagePost;
 import model.Post;
+import service.FollowHeritageService;
 import service.HeritageService;
 import service.VoteService;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Goktug on 13.11.2015.
  */
 public class HeritageUtility {
     private static ArrayList<Heritage> heritageList;
-    private static ArrayList<HeritagePost> heritagePostList;
     static HeritageService heritageService;
+    static FollowHeritageService followHeritageService;
     static VoteService voteService;
 
     /**
@@ -88,6 +89,19 @@ public class HeritageUtility {
             }
         }
         return heritagesWithName;
+    }
+
+    public static List<Heritage> heritageNewsfeed(long id) {
+        List<Heritage> heritages = new ArrayList<>();
+
+        heritages = followHeritageService.getFollowedHeritagesByMemberId(id);
+        heritages = heritageService.sortByPopularity(heritages);
+
+        // Here we will add the heritages with followed tags (Interested in...)
+
+        heritages.addAll(heritageService.getRecentlyMostPopularHeritages());
+        heritages = heritageService.removeDuplicates(heritages);
+        return heritages;
     }
 
     /**

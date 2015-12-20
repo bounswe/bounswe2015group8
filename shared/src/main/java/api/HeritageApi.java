@@ -121,6 +121,16 @@ public class HeritageApi implements ErrorCodes {
         return gson.toJson(currentHeritage);
     }
 
+    @RequestMapping(value = "/api/heritageNewsfeed",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String heritageNewsfeed(@RequestBody long id) {
+        ArrayList<Heritage> heritages = (ArrayList<Heritage>) HeritageUtility.heritageNewsfeed(id);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Heritage.class, new HeritageAdapter()).create();
+        String json = gson.toJson(heritages);
+        return json;
+    }
+
     /**
      * Gets the JSON representation of heritages with given name
      * @param name given by user
