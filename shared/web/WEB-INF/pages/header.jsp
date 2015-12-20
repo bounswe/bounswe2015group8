@@ -9,6 +9,8 @@
 <%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,18 +19,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
     <script src="https://content.jwplatform.com/libraries/s5hFO93v.js"></script>
 
     <link rel="stylesheet" href="${contextPath}/static/css/bootstrap.css">
     <link rel="stylesheet" href="${contextPath}/static/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="${contextPath}/static/css/bootstrap-tokenfield.css"/>
+    <link rel="stylesheet" href="${contextPath}/static/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="${contextPath}/static/css/styles.css">
     <link rel="stylesheet" href="${contextPath}/static/css/jquery-ui.min.css"/>
+    <link rel="stylesheet" href="${contextPath}/static/css/advanced-search.css"/>
 
     <script src="${contextPath}/static/js/jquery-1.11.3.js"></script>
     <script src="${contextPath}/static/js/jquery-ui.min.js"></script>
+    <script src="${contextPath}/static/js/moment.js"></script>
     <script src="${contextPath}/static/js/bootstrap/bootstrap.js"></script>
     <script src="${contextPath}/static/js/bootstrap/bootstrap-tokenfield.js"></script>
+    <script src="${contextPath}/static/js/bootstrap/bootstrap-datetimepicker.min.js"></script>
     <script src="${contextPath}/static/js/notify.js"></script>
 </head>
 
@@ -36,6 +43,10 @@
     function searchByTag(){
         var tag = document.getElementById("search").value;
         window.location.href = "${contextPath}/searchByTag/" + tag;
+    }
+
+    function open_search_modal(){
+        $("#search_modal").modal('show');
     }
 
     function recommendHeritage(){
@@ -71,6 +82,9 @@
 </script>
 
 <body>
+<%@ include file="/WEB-INF/pages/templates/advanced-search.html" %>
+
+
 <nav class="navbar navbar-default navbar-static-top header">
     <sec:authorize var="isAuthorized" access="isAuthenticated()" />
     <div class="container-fluid"  style="background-color: darkblue">
@@ -91,6 +105,7 @@
             <div class="form-group">
                 <input style="color:black; width:300px;" id="search" type="text" placeholder="Search Posts by Tags..." class="form-control">
                 <button class="btn btn-default" type="submit" onclick="searchByTag();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                <button onclick="open_search_modal();" class="btn" style="background-color: #9a4ce2">Advanced Search</button>
             </div>
         </div>
         <sec:authorize access="isAuthenticated()">
