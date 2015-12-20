@@ -3,21 +3,6 @@
 
 <c:set var="member" value="${member}"/>
 
-<c:forEach var="follower" items="${member.followers}">
-    <!-- Followers -->
-    ${follower.username}
-</c:forEach>
-
-<c:forEach var="followee" items="${member.followedMembers}">
-    <!-- Followees -->
-    ${followee.username}
-</c:forEach>
-
-<c:forEach var="heritage" items="${member.followedHeritages}">
-    <!-- Following Heritages -->
-    ${heritage.name}
-</c:forEach>
-
 <div class="page-content container">
 
     <div class="row">
@@ -39,12 +24,20 @@
         </div>
         <div class="col-sm-6 col-md-4">
             <h2>Followers</h2>
+            <c:forEach var="follower" items="${member.followers}">
+                <p>  ${follower.username} </p>
+            </c:forEach>
+
         </div>
 
         <div class="col-sm-6 col-md-4">
             <h2>Followings</h2>
+            <c:forEach var="followee" items="${member.followedMembers}">
+               <p>${followee.username}</p>
+            </c:forEach>
         </div>
     </div>
+
 
     <div class="panel panel-default">
         <div class="panel-heading">Subscribed Heritages</div>
@@ -52,77 +45,100 @@
             <p> ${member.username} follows these heritages </p>
         </div>
 
-
-        <div class="row">
-            <div class="col-xs-12" style="height:20px;"></div>
-        </div>
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <div class="row">
-                    <b>
-                        <h class="panel-title" style="margin-left:0.5% " name="name" id="name">heritage 1</h>
-                    </b>
-
-                    <button style="float:right; margin-right:1%" type="button" class="btn btn-success followbutton"
-                            onclick="followHeritage(heritageID)" id="followbutton_${heritage.id}">Follow
-                    </button>
-
-                </div>
+        <c:forEach items="${member.followedHeritages}" var="heritage">
+            <div class="row">
+                <div class="col-xs-12" style="height:20px;"></div>
             </div>
-
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="row">
-                            <label for="place" class="col-sm-2 control-label">Place</label>
-
-                            <div class="col-sm-10">
-                                <p name="place" id="place">
-                                    heritage-place
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label for="description" class="col-sm-2 control-label">Description</label>
-
-                            <div class="col-sm-10">
-                                <p name="description" id="description">
-                                    heritage description
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <label for="postDate" class="col-sm-2 control-label">Date</label>
-
-                            <div class="col-sm-10">
-                                <p name="postDate" id="postDate">
-                                    heritage-posts
-                                </p>
-                            </div>
-                        </div>
-
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <b>
+                            <h class="panel-title" style="margin-left:0.5% " name="name" id="name">${heritage.name}</h>
+                        </b>
                     </div>
                 </div>
-                <div class="row">
-                    <label for="tags_heritageID" class="col-sm-2 control-label">Tags</label>
 
-                    <div class="col-sm-4" role="group">
-                        <p id="tags_HeritageID"></p>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <label for="place" class="col-sm-2 control-label">Place</label>
+
+                                <div class="col-sm-10">
+                                    <p name="place" id="place">
+                                            ${heritage.place}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="description" class="col-sm-2 control-label">Description</label>
+
+                                <div class="col-sm-10">
+                                    <p name="description" id="description">
+                                            ${heritage.description}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="postDate" class="col-sm-2 control-label">Date</label>
+
+                                <div class="col-sm-10">
+                                    <p name="postDate" id="postDate">
+                                            ${heritage.postDate}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <c:forEach var="media" items="${medias}">
+                                <c:if test="${media.postOrHeritageId == heritage.id && media.postOrHeritage==true}">
+                                    <c:if test="${media.mediaType == 0}">
+                                        <img src="${media.mediaLink}" height="240px;" width="360px;">
+                                    </c:if>
+                                    <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
+                                        <div id="container"></div>
+                                        <script type="text/javascript">
+                                            jwplayer("container").setup({
+                                                file: "${media.mediaLink}",
+                                                height: 300,
+                                                width: 520,
+                                                autostart: false
+                                            });
+                                        </script>
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="tags_${heritage.id}" class="col-sm-2 control-label">Tags</label>
+
+                        <div class="col-sm-4" role="group">
+                            <p id="tags_${heritage.id}">
+                                <c:forEach items="${heritage.tags}" var="tag">
+                                    <a href="${contextPath}/searchHeritageByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
+                                        &lt;${tag.tagText}<c:if
+                                            test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;
+                                    </a>
+                                </c:forEach>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel-footer">
+                    <div class="row">
+
+                        <button type="button" style="float:right; margin-right: 0.5%;"
+                                class="btn btn-default"
+                                onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
+                            See Posts
+                        </button>
                     </div>
                 </div>
             </div>
+        </c:forEach>
 
-
-            <div class="panel-footer">
-                <div class="row">
-                    <button type="button" style="float:right; margin-right: 0.5%;"
-                            class="btn btn-default"
-                            onclick="window.location.href='${contextPath}/show_posts/1'">
-                        See Posts
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="row">
