@@ -644,5 +644,11 @@ public class MainController {
         return new ModelAndView("under_construction");
     }
 
+    @RequestMapping("/profile/{username}")
+    public ModelAndView userProfile(@PathVariable String username){
+        Member member = memberService.getMemberByUsername(username);
+        return new ModelAndView("profile", "user", member);
+    }
+
 
 }
