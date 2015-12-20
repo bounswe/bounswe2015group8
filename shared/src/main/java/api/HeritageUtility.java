@@ -73,6 +73,18 @@ public class HeritageUtility {
         return heritageService;
     }
 
+    public static ArrayList<Heritage> searcHeritageByName(String name) {
+        heritageList = getHeritageList();
+        ArrayList<Heritage> heritagesWithName = new ArrayList<>();
+        name = name.toLowerCase();
+        for (Heritage heritage : heritageList) {
+            if (heritage.getName().toLowerCase().contains(name)) {
+                heritagesWithName.add(heritage);
+            }
+        }
+        return heritagesWithName;
+    }
+
     /**
      * Gets vote service
      * @return vote service
