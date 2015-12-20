@@ -44,6 +44,15 @@ public class TagService {
         return new String[]{tagText, tagContext};
     }
 
+    public boolean doesTagExist(String tagText, String tagContext){
+        return tagDao.doesTagExist(tagText, tagContext);
+    }
+
+    public Tag saveTag(String tagText, String tagContext){
+        Tag tag = new Tag(tagText, tagContext);
+        return tagDao.saveTag(tag);
+    }
+
     public List<Tag> getTagsByHeritage(Heritage heritage){
         return tagDao.getTagsByHeritage(heritage);
     }

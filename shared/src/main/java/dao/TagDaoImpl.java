@@ -59,6 +59,19 @@ public class TagDaoImpl implements TagDao {
         return tags;
     }
 
+    public boolean doesTagExist(String tagText, String tagContext){
+        Session s = getSessionFactory().openSession();
+        int count = s
+                .createQuery("from Tag where tagText=? and tagContext=?")
+                .setParameter(0, tagText)
+                .setParameter(1, tagContext).list().size();
+        s.close();
+        if(count > 0)
+            return true;
+        else
+            return false;
+    }
+
     @SuppressWarnings("unchecked")
     public List<Tag> getTagsByHeritage(Heritage heritage){
         Session s = getSessionFactory().openSession();

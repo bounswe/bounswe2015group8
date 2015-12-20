@@ -14,6 +14,7 @@ public interface TagDao {
     Tag getTagByTextAndContext(String tagText, String tagContext);
     String[] getTagContextsByText(String text);
     List<Tag> getTagsByContext(String context);
+    boolean doesTagExist(String tagText, String tagContext);
 
     List<Tag> getTagsByHeritage(Heritage heritage);
     List<Tag> getTagsByPost(Post post);
