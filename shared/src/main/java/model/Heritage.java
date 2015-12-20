@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -125,4 +126,16 @@ public class Heritage {
     public Collection<Member> getFollowers(){ return followers; }
 
     public void setFollowers(Collection<Member> followers){ this.followers = followers; }
+
+    /**
+     * Gets the list of all post ids in the heritage
+     * @return the id list of posts
+     */
+    public ArrayList<Long> getPostIds() {
+        ArrayList<Long> postIds = new ArrayList<>();
+        for (Post post : posts) {
+            postIds.add(post.getId());
+        }
+        return postIds;
+    }
 }

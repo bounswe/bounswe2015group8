@@ -98,4 +98,27 @@ public class HeritageApi implements ErrorCodes {
         return heritage.getId();
     }
 
+    /**
+     * Gets a heritage as parameter, adds new posts to the current heritage in the database
+     * @param heritage with new heritage list
+     * @return updated post in the database
+     */
+    @RequestMapping(value = "/api/addPostsToHeritage",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String addPostsToHeritage(@RequestBody Heritage heritage) {
+        Heritage currentHeritage = HeritageUtility.getHeritageById(heritage.getId());
+        if (currentHeritage == null) {
+            return "Heritage does not exist.";
+        }
+        ArrayList<Long> postIds = currentHeritage.getPostIds();
+        for (Post post : heritage.getPosts()) {
+            if (!postIds.contains(post.getId())) {
+                currentHeritage.getPosts().add(post);
+            }
+        }
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.registerTypeAdapter(Heritage.class, new HeritageAdapter()).create();
+        return gson.toJson(currentHeritage);
+    }
+
 }
