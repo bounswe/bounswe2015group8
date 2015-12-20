@@ -147,7 +147,7 @@ public class PostApi implements ErrorCodes {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
         Member member = MemberUtility.getMemberService().getMemberById(memberId);
-        ArrayList<Post> posts = (ArrayList<Post>)HeritageUtility.getPostService().getPostsByMember(member);
+        ArrayList<Post> posts = (ArrayList<Post>)PostUtility.getPostService().getPostsByMember(member);
         return gson.toJson(posts);
     }
 }
