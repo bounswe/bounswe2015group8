@@ -70,11 +70,25 @@ public class MainController {
         followHeritageService = new FollowHeritageService(Main.getSessionFactory());
     }
 
+    /// The controller for home page
+    /**
+     *
+     * no parameter for this method
+     * @return home page
+     */
+
     @RequestMapping(value = "/")
     public ModelAndView home() {
         return new ModelAndView("home");
     }
 
+    /// The controller for login
+    /**
+     *
+     * @param username: username of the registered user (String)
+     * @param password: password of registered user (String)
+     * @return login_success jsp.
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(@RequestParam(value = "username") String username,
                               @RequestParam(value = "password") String password) {
@@ -99,7 +113,12 @@ public class MainController {
 
 
     }
-
+/// The controller for forget password
+    /**
+     * Sends reset password mail to user
+     * @param username: username of the registered user(String)
+     * @redirect login page
+     */
     @RequestMapping(value = "/forget_password", method = RequestMethod.POST)
     public ModelAndView forget_password(HttpServletRequest request,
                                         @RequestParam(value = "username") String username) {
@@ -116,7 +135,7 @@ public class MainController {
         String text = "Hello " + username + "! " + " We heard that you wanted to reset your password...\n\n";
         text += "You can click this link to reset your password: ";
         text += baseURL + "/reset_password?token=" + token;
-        text += "\nHave a nice day...";
+        text += "\n Have a nice day...";
 
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom("WeStory");

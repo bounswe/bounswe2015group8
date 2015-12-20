@@ -48,7 +48,7 @@ public class TagApi {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.registerTypeAdapter(Tag.class, new TagAdapter()).create();
         ArrayList<Tag> tags = TagUtility.getTagList();
-        ArrayList<Tag> startsWith = new ArrayList<>();
+        ArrayList<Tag> startsWith = new ArrayList<Tag>();
         for (Tag tag : tags) {
             if (tag.getTagText().toLowerCase().startsWith(startingPart.toLowerCase())) {
                 startsWith.add(tag);
