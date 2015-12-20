@@ -80,6 +80,8 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         tvDescription.setText(heritage.getDescription());
     }
     @Override
+    /** Handles on-click actions for the two buttons visible when the user is logged in.
+     */
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.btnHeritageViewEdit:
@@ -95,6 +97,10 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 break;
         }
     }
+
+    /** Builds an alert dialog which allows user to choose
+     * to add post, tag, or media.
+     */
     private void add() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Add...");
@@ -118,6 +124,11 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 });
         builder.show();
     }
+
+    /** Begins the post create fragment by giving it the current heritage as the
+     * initial object it is tied to.
+     * @see Post
+     */
     private void addPost() {
         NamedFragment pef = new PostEditFragment();
         Bundle b2 = new Bundle();
@@ -125,6 +136,11 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         pef.setArguments(b2);
         MainActivity.beginFragment(getActivity(),pef);
     }
+
+    /** Creates a add tag dialog that prompts the user for a tag text and a tag
+     * context.
+     * @see Tag
+     */
     private void addTag() {
         View v = inflater.inflate(R.layout.popup_tag_add,null,false);
         final EditText tagText = (EditText) v.findViewById(R.id.etPopupTagAddText);
@@ -143,11 +159,13 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        // If the user changes their mind about adding a tag
                         dialog.cancel();
                     }
                 })
                 .show();
     }
+
     private void uploadMedia() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Select media type");
@@ -212,7 +230,17 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
             }
         });
     }
+
+    /** Updates the current adapter underlying this fragment and its expandable list.
+     * Uses the default {@link HeritageViewFragment#heritage} field.
+     * @see HeritageViewFragment#updateAdapter(Heritage)
+     */
     private void updateAdapter() { updateAdapter(heritage); }
+
+    /** Updates the current adapter underlying this fragment and its expandable list.
+     * Uses the given heritage as the source.
+     * @param h the heritage object used as the source.
+     */
     private void updateAdapter(Heritage h) {
         elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()), new ArrayList<>(h.getTags()), new ArrayList<>(h.getMedia())));
     }

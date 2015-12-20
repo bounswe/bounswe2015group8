@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+
 /**
  * Created by Goktug on 31.10.2015.
  */
@@ -34,8 +36,34 @@ public class SignUpApi implements ErrorCodes {
         if (email == null) {
             return EMAIL_NULL;
         }
-        Member m = MemberUtility.getMemberService().createMember(username,password,email,"");
-        return m.getId();
+        if (usernameExists(username)) {
+            return USERNAME_ALREADY_EXISTS;
+        }
+        if (emailExists(email)) {
+            return EMAIL_ALREADY_EXISTS;
+        }
+        Member member = MemberUtility.getMemberService().createMember(username,password,email,"");
+        return member.getId();
+    }
+
+    public boolean usernameExists(String username) {
+        ArrayList<Member> members = MemberUtility.getUserList();
+        for (Member member : members) {
+            if (member.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean emailExists(String email) {
+        ArrayList<Member> members = MemberUtility.getUserList();
+        for (Member member : members) {
+            if (member.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
