@@ -38,6 +38,7 @@ public class FeedController {
     TagService tagService;
     FollowService followService;
     FollowHeritageService followHeritageService;
+    FollowTagService followTagService;
 
     public FeedController(){
         memberService = new MemberDetailsService();
@@ -50,6 +51,7 @@ public class FeedController {
         tagService = new TagService(Main.getSessionFactory());
         followService = new FollowService(Main.getSessionFactory());
         followHeritageService = new FollowHeritageService(Main.getSessionFactory());
+        followTagService = new FollowTagService(Main.getSessionFactory());
     }
 
 
@@ -102,6 +104,11 @@ public class FeedController {
             heritages = heritageService.sortByPopularity(heritages);
 
             // Here we will add the heritages with followed tags (Interested in...)
+            List<Tag> tags = followTagService.getFollowedTagsByMemberId(memberService.getMemberByUsername(username).getId());
+            List<Tag> sortedTags = tagService.sortByCount(tags);
+            for(Tag tag : sortedTags){
+                heritages.addAll(heritageService.getHeritagesByTag(tag));
+            }
 
             heritages.addAll(heritageService.getRecentlyMostPopularHeritages());
             heritages = heritageService.removeDuplicates(heritages);
@@ -123,6 +130,8 @@ public class FeedController {
 
         List<Heritage> myHeritages = followHeritageService.getFollowedHeritagesByMemberId(memberId);
         List<Heritage> heritagesToRecommend = new ArrayList<>();
+
+        // The heritages of the following members...
         List<Member> followingMembers = followService.getFollowingById(memberId);
         for(int i = 0; i < followingMembers.size(); i++){
             Member followee = followingMembers.get(i);
@@ -133,6 +142,18 @@ public class FeedController {
             }
         }
 
+        // The heritages of the heritages that are tagged with the user's following tags...
+        List<Tag> followingTags = followTagService.getFollowedTagsByMemberId(memberId);
+        for(int i = 0; i < followingTags.size(); i++){
+            Tag tag = followingTags.get(i);
+            for(Heritage heritage : heritageService.getHeritagesByTag(tag)){
+                if(!myHeritages.contains(heritage)){
+                    heritagesToRecommend.add(heritage);
+                }
+            }
+        }
+
+        heritagesToRecommend = heritageService.removeDuplicates(heritagesToRecommend);
         heritagesToRecommend = heritageService.sortByPopularity(heritagesToRecommend);
         JsonArray jsonHeritagesRecommend = new JsonArray();
         for(int i = 0; i < heritagesToRecommend.size(); i++){
