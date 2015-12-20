@@ -81,6 +81,29 @@ public class PostApi implements ErrorCodes {
     }
 
     /**
+     * Gets a post as parameter, adds new heritages to the current post in the database
+     * @param post with new heritage list
+     * @return updated post in the database
+     */
+    @RequestMapping(value = "/api/addHeritagesToPost",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String addHeritagestoPost(@RequestBody Post post) {
+        Post currentPost = PostUtility.getPostById(post.getId());
+        if (currentPost == null) {
+            return "Post does not exist.";
+        }
+        ArrayList<Long> heritageIds = currentPost.getHeritageIds();
+        for (Heritage heritage : post.getHeritages()) {
+            if (!heritageIds.contains(heritage.getId())) {
+                currentPost.getHeritages().add(heritage);
+            }
+        }
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
+        return gson.toJson(currentPost);
+    }
+
+    /**
      * Get vote count of given post
      * @param postId id of post
      * @return vote count of the post
