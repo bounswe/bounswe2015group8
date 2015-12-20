@@ -115,6 +115,21 @@ public class PostApi implements ErrorCodes {
     }
 
     /**
+     * Gets the JSON representation of heritages with given name
+     * @param name given by user
+     * @return the heritage list
+     */
+    @RequestMapping(value = "/api/searchByPostTitle",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String searchByPostTitle(@RequestBody String name) {
+        ArrayList<Post> postsWithTitle = PostUtility.searchByPostTitle(name);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
+        String json = gson.toJson(postsWithTitle);
+        return json;
+    }
+
+    /**
      * Returns all posts in the database
      * @return json representation of all posts
      */

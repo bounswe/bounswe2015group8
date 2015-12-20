@@ -121,10 +121,15 @@ public class HeritageApi implements ErrorCodes {
         return gson.toJson(currentHeritage);
     }
 
+    /**
+     * Gets the JSON representation of heritages with given name
+     * @param name given by user
+     * @return the heritage list
+     */
     @RequestMapping(value = "/api/searchByHeritageName",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String searchByHeritageName(@RequestBody String name) {
-        ArrayList<Heritage> heritagesWithName = HeritageUtility.searcHeritageByName(name);
+        ArrayList<Heritage> heritagesWithName = HeritageUtility.searchHeritageByName(name);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Heritage.class, new HeritageAdapter()).create();
         String json = gson.toJson(heritagesWithName);

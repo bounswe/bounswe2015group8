@@ -73,7 +73,12 @@ public class HeritageUtility {
         return heritageService;
     }
 
-    public static ArrayList<Heritage> searcHeritageByName(String name) {
+    /**
+     * Searches for the heritages with names that contain the parameter
+     * @param name the search string
+     * @return the heritages with names containing parameter
+     */
+    public static ArrayList<Heritage> searchHeritageByName(String name) {
         heritageList = getHeritageList();
         ArrayList<Heritage> heritagesWithName = new ArrayList<>();
         name = name.toLowerCase();
