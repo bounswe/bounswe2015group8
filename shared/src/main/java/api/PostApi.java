@@ -89,4 +89,13 @@ public class PostApi implements ErrorCodes {
         ArrayList<Post> posts = HeritageUtility.getPostList();
         return gson.toJson(posts);
     }
+
+    @RequestMapping(value = "/api/getPostsByMemberId/{memberId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getPostsByMemberId(@PathVariable long memberId){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
+        Member member = MemberUtility.getMemberService().getMemberById(memberId);
+        ArrayList<Post> posts = (ArrayList<Post>)HeritageUtility.getPostService().getPostsByMember(member);
+        return gson.toJson(posts);
+    }
 }
