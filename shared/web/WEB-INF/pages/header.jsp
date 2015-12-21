@@ -58,21 +58,22 @@
                     $.notify("We don't have any recommendation for you, sorry :(", "info");
                 }
                 else{
-                    var html = "<h3 style='color:orangered;'>Would you like to see posts of the following heritages?</h3>";
+                    var html = "<div class='panel panel-success'>" +
+                            "<div class='panel-heading'>" +
+                            "<b><h class='panel-title' style='margin-left:0.5%'>Would you like to see posts of the following heritages?</h></b></div>";
                     console.log(response);
                     for(var i = 0; i < response.length; i++){
+                        html += "<div class='row col-md-offset-1'>";
                         html += "Name: <a style='color:black; font-weight:bold;' href='${contextPath}/show_posts/"+response[i]['id']+"'>"+response[i]['title']+"</a>";
-                        html += "<br>";
+                        html += "</div>";
+
                     }
+                    html += "</div>";
+
                     $.notify.addStyle('recommend', {
-                        html: "<div><span data-notify-html/></div>",
-                        classes: {
-                            base: {
-                                "white-space": "nowrap",
-                                "background-color": "lightblue",
-                                "padding": "5px"
-                            }
-                        }
+                        html: "<div><span data-notify-html/></div>"
+
+
                     });
                     $.notify(html, {style: 'recommend'});
                 }
