@@ -5,26 +5,24 @@ import model.Heritage;
 import model.HeritagePost;
 import model.Post;
 import service.HeritageService;
-import service.PostService;
 import service.VoteService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Goktug on 13.11.2015.
  */
 public class HeritageUtility {
     private static ArrayList<Heritage> heritageList;
-    private static ArrayList<Post> postList;
     private static ArrayList<HeritagePost> heritagePostList;
     static HeritageService heritageService;
-    static PostService postService;
     static VoteService voteService;
 
     /**
-     * Creates and/or updates member list.
+     * Creates and/or updates heritage list.
      *
-     * @return the list of member objects in the database.
+     * @return the list of heritage objects in the database.
      */
     public static ArrayList<Heritage> getHeritageList() {
         if (heritageList == null) {
@@ -34,22 +32,40 @@ public class HeritageUtility {
         return heritageList;
     }
 
-    public static ArrayList<Post> getPostList() {
-        if (postList == null) {
-            postList = new ArrayList<Post>();
-        }
-        if (heritageList == null) {
-            heritageList = new ArrayList<Heritage>();
-        }
+    /**
+     * Finds heritage with the given id and returns it
+     * @param id of heritage
+     * @return heritage with given id
+     */
+    public static Heritage getHeritageById(long id) {
         heritageList = getHeritageList();
-        postList.clear();
-        for (Heritage h : heritageList) {
-            postList.addAll(h.getPosts());
+        for (Heritage heritage : heritageList) {
+            if (heritage.getId() == id) {
+                return heritage;
+            }
         }
-
-        return postList;
+        return null;
     }
 
+    /**
+     * Returns post belonging to heritage
+     * @param id of the heritage
+     * @return all posts related to heritage
+     */
+    public static Collection<Post> getPostsByHeritageId(long id) {
+        heritageList = getHeritageList();
+        for (Heritage heritage : heritageList) {
+            if (id == heritage.getId()) {
+                return heritage.getPosts();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets heritage service
+     * @return heritage service
+     */
     public static HeritageService getHeritageService() {
         if (heritageService == null) {
             heritageService = new HeritageService(Main.getSessionFactory());
@@ -57,13 +73,10 @@ public class HeritageUtility {
         return heritageService;
     }
 
-    public static PostService getPostService() {
-        if (postService == null) {
-            postService = new PostService(Main.getSessionFactory());
-        }
-        return postService;
-    }
-
+    /**
+     * Gets vote service
+     * @return vote service
+     */
     public static VoteService getVoteService() {
         if (voteService == null) {
             voteService = new VoteService(Main.getSessionFactory());

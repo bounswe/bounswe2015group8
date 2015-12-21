@@ -6,8 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.Heritage;
 import model.Post;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,31 +17,37 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Goktug on 13.11.2015.
  */
 @RestController
 public class HeritageApi implements ErrorCodes {
-    @Autowired
-    private ApplicationContext appContext;
     Gson gson = new Gson();
 
+    /**
+     * Returns heritage with given id as a json
+     * @param id of the heritage
+     * @return heritage's json representation
+     */
     @RequestMapping(value = "/api/getHeritageById",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getById(@RequestBody int id) {
+    public String getHeritageById(@RequestBody int id) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Heritage.class, new HeritageAdapter()).create();
-        ArrayList<Heritage> heritages = HeritageUtility.getHeritageList();
-        for (Heritage h : heritages) {
-            if (id == h.getId()) {
-                String json = gson.toJson(h);
-                return json;
-            }
+        Heritage heritage = HeritageUtility.getHeritageById(id);
+        if (heritage == null) {
+            return Integer.toString(HERITAGE_DOES_NOT_EXIST);
         }
-        return Integer.toString(HERITAGE_DOES_NOT_EXIST);
+        String json = gson.toJson(heritage);
+        return json;
     }
 
+    /**
+     * Gets all heritages from the database
+     * @return all heritages as json
+     */
     @RequestMapping(value = "/api/getAllHeritages",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getAll() {
@@ -54,22 +58,29 @@ public class HeritageApi implements ErrorCodes {
         return json;
     }
 
+    /**
+     * Gets given heritage's posts as JSON
+     * @param id of the heritage
+     * @return heritage's posts as JSON
+     */
     @RequestMapping(value = "/api/getHeritagePostsById",
             method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostsByHeritageId(@RequestBody int id) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
 
-        ArrayList<Heritage> heritages = HeritageUtility.getHeritageList();
-        for (Heritage h : heritages) {
-            if (id == h.getId()) {
-                return gson.toJson(h.getPosts());
-            }
+        Collection<Post> posts = HeritageUtility.getPostsByHeritageId(id);
+        if (posts == null) {
+            return Integer.toString(HERITAGE_DOES_NOT_EXIST);
         }
-
-        return Integer.toString(HERITAGE_DOES_NOT_EXIST);
+        return gson.toJson(posts);
     }
 
+    /**
+     * Creates heritage by getting necessary parameters from the user
+     * @param apiHeritage heritage object containing information
+     * @return created heritage's id
+     */
     @RequestMapping(value = "/api/createHeritage",
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public long createHeritage(@RequestBody Heritage apiHeritage) {

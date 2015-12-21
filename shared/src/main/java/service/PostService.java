@@ -7,10 +7,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by gokcan on 08.11.2015.
@@ -40,6 +37,8 @@ public class PostService {
     public List<Post> getPostsByTag(Tag tag){ return postDao.getPostsByTag(tag); }
 
     public List<Post> getPostsContainTitle(String title) { return postDao.getPostsContainTitle(title); }
+
+    public List<Post> getPostsContainContent(String content) { return postDao.getPostsContainContent(content); }
 
     public Post savePost(Member member, int type, Timestamp timestamp, String title, String content, Heritage heritage) {
         Post post = new Post(member, type, timestamp, title, content);
@@ -131,5 +130,29 @@ public class PostService {
         logger.info("last week " + nowMinusOneWeekTimestamp);
         List<Post> recentPosts = postDao.getPostsCreatedAfter(nowMinusOneWeekTimestamp, heritage);
         return sortByPopularity(recentPosts);
+    }
+
+    public List<Post> getPostsCreatedAfter(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Post> posts = postDao.getPostsCreatedAfter(date);
+        return sortByPopularity(posts);
+    }
+
+    public List<Post> getPostsCreatedBefore(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Post> posts = postDao.getPostsCreatedBefore(date);
+        return sortByPopularity(posts);
+    }
+
+    public List<Post> getPostsEditedAfter(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Post> posts = postDao.getPostsEditedAfter(date);
+        return sortByPopularity(posts);
+    }
+
+    public List<Post> getPostsEditedBefore(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Post> posts = postDao.getPostsEditedBefore(date);
+        return sortByPopularity(posts);
     }
 }
