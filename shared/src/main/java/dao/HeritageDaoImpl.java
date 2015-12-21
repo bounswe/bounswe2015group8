@@ -20,6 +20,13 @@ public class HeritageDaoImpl implements HeritageDao {
         Heritage heritage = (Heritage) s
                 .createQuery("from Heritage where id=?")
                 .setParameter(0, id).uniqueResult();
+        Hibernate.initialize(heritage.getPosts());
+        for(Post post : heritage.getPosts()){
+            Hibernate.initialize(post);
+            Hibernate.initialize(post.getOwner());
+            Hibernate.initialize(post.getComments());
+        }
+        Hibernate.initialize(heritage.getFollowers());
         Hibernate.initialize(heritage.getTags());
         s.close();
         return heritage;
