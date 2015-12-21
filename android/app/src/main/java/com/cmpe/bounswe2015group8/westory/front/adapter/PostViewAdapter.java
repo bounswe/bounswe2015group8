@@ -21,6 +21,7 @@ import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.HeritageViewFragment;
 import com.cmpe.bounswe2015group8.westory.front.MainActivity;
 import com.cmpe.bounswe2015group8.westory.front.NamedFragment;
+import com.cmpe.bounswe2015group8.westory.front.ProfileFragment;
 import com.cmpe.bounswe2015group8.westory.model.Comment;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Media;
@@ -159,14 +160,24 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 TextView tvOwner = (TextView) v.findViewById(R.id.tvCommentSmallOwner);
                 tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, c.getUsername()));
                 TextView tvCreationDate = (TextView) v.findViewById(R.id.tvCommentSmallCreationDate);
-                tvCreationDate.setText(activity.getResources().getString(R.string.generic_created_at, c.getPostDate()));
+                tvCreationDate.setText(c.getPostDate());
                 TextView tvContent = (TextView) v.findViewById(R.id.tvCommentSmallContent);
                 tvContent.setText(c.getContent());
                 final TextView tvVoteCount = (TextView) v.findViewById(R.id.tvCommentVoteCount);
                 tvVoteCount.setText(Integer.toString(c.getNetCount()));
                 ImageButton btnDownVote = (ImageButton) v.findViewById(R.id.btnCommentDownVote);
                 ImageButton btnUpVote = (ImageButton) v.findViewById(R.id.btnCommentUpVote);
-
+                tvOwner.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        NamedFragment nfp = new ProfileFragment();
+                        Bundle bp = new Bundle();
+                        bp.putBoolean("isLogged",false);
+                        bp.putLong("memberId",c.getOwnerId());
+                        nfp.setArguments(bp);
+                        MainActivity.beginFragment(activity,nfp);
+                    }
+                });
                 btnUpVote.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
