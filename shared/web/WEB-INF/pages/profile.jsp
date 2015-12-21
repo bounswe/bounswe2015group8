@@ -1,22 +1,155 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: coldwhistle
-  Date: 11/6/15
-  Time: 7:05 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+
+<c:set var="member" value="${member}"/>
+
 <div class="page-content container">
-<table>
-  <tr>
-    <td width="40%">Followers</td>
-    <td width="40%">Following</td>
-    <td width="20%">Picture</td>
-  </tr>
-  <tr>
-    <td width="80%">Posts</td>
-    <td width="20%">Bio</td>
-  </tr>
-</table>
+
+    <div class="row">
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <img src="http://vignette1.wikia.nocookie.net/minion/images/1/1b/Check-in-minion.jpg/revision/latest?cb=20140516030342">
+
+                <div class="caption">
+                    <h3>${member.username}</h3>
+
+                    <p> Member Biography </p>
+
+                    <p><a href="#" class="btn btn-primary" role="button">Change Profile Picture</a> <a href="#" class="btn btn-default" role="button">Edit Biography</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <h2>Followers</h2>
+            <c:forEach var="follower" items="${member.followers}">
+                <p>  ${follower.username} </p>
+                <button type="button"
+                        class="btn btn-default"
+                        onclick="window.location.href='${contextPath}/profile/${follower.username}'">
+                        ${follower.username}
+                </button>
+
+            </c:forEach>
+
+        </div>
+
+        <div class="col-sm-6 col-md-4">
+            <h2>Followings</h2>
+            <c:forEach var="followee" items="${member.followedMembers}">
+               <p>${followee.username}</p>
+                <button type="button"
+                        class="btn btn-default"
+                        onclick="window.location.href='${contextPath}/profile/${follower.username}'">
+                        ${follower.username}
+                </button>
+            </c:forEach>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Subscribed Heritages</div>
+        <div class="panel-body">
+            <p> ${member.username} follows these heritages </p>
+        </div>
+
+        <c:forEach items="${member.followedHeritages}" var="heritage">
+            <div class="row">
+                <div class="col-xs-12" style="height:20px;"></div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <b>
+                            <h class="panel-title" style="margin-left:0.5% " name="name" id="name">${heritage.name}</h>
+                        </b>
+                    </div>
+                </div>
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <label for="place" class="col-sm-2 control-label">Place</label>
+
+                                <div class="col-sm-10">
+                                    <p name="place" id="place">
+                                            ${heritage.place}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="description" class="col-sm-2 control-label">Description</label>
+
+                                <div class="col-sm-10">
+                                    <p name="description" id="description">
+                                            ${heritage.description}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="postDate" class="col-sm-2 control-label">Date</label>
+
+                                <div class="col-sm-10">
+                                    <p name="postDate" id="postDate">
+                                            ${heritage.postDate}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <c:forEach var="media" items="${medias}">
+                                <c:if test="${media.postOrHeritageId == heritage.id && media.postOrHeritage==true}">
+                                    <c:if test="${media.mediaType == 0}">
+                                        <img src="${media.mediaLink}" height="240px;" width="360px;">
+                                    </c:if>
+                                    <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
+                                        <div id="container"></div>
+                                        <script type="text/javascript">
+                                            jwplayer("container").setup({
+                                                file: "${media.mediaLink}",
+                                                height: 300,
+                                                width: 520,
+                                                autostart: false
+                                            });
+                                        </script>
+                                    </c:if>
+                                </c:if>
+                            </c:forEach>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="tags_${heritage.id}" class="col-sm-2 control-label">Tags</label>
+
+                        <div class="col-sm-4" role="group">
+                            <p id="tags_${heritage.id}">
+                                <c:forEach items="${heritage.tags}" var="tag">
+                                    <a href="${contextPath}/searchHeritageByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
+                                        &lt;${tag.tagText}<c:if
+                                            test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;
+                                    </a>
+                                </c:forEach>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel-footer">
+                    <div class="row">
+
+                        <button type="button" style="float:right; margin-right: 0.5%;"
+                                class="btn btn-default"
+                                onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
+                            See Posts
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12" style="height:40px;"></div>
+    </div>
 <%@ include file="/WEB-INF/pages/footer.jsp" %>

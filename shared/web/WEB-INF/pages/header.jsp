@@ -84,16 +84,27 @@
 <body>
 <%@ include file="/WEB-INF/pages/templates/advanced-search.html" %>
 
+<sec:authorize access="isAuthenticated()">
+    <sec:authentication var="principal" property="principal" />
+    <sec:authorize var="isAuthorized" access="isAuthenticated()" />
+</sec:authorize>
 
 <nav class="navbar navbar-default navbar-static-top header">
-    <sec:authorize var="isAuthorized" access="isAuthenticated()" />
+
     <div class="container-fluid"  style="background-color: darkblue">
         <div class="navbar-header">
-            <a class="navbar-brand" href="${contextPath}/feed" style="color: floralwhite">&#x2655; WeStory</a>
+            <c:if test="${isAuthorized}">
+                <a class="navbar-brand" href="${contextPath}/feed" style="color: floralwhite">&#x2655; WeStory</a>
+            </c:if>
+            <c:if test="${!isAuthorized}">
+                <a class="navbar-brand" href="${contextPath}/show_heritages" style="color: floralwhite">&#x2655; WeStory</a>
+            </c:if>
+
         </div>
         <c:if test="${isAuthorized}">
             <a style="float:right; margin-top: 0.5%;" href="${contextPath}/logout" class="btn btn-default" role="button">Log Out</a>
-            <a style="float:right; margin-top: 0.5%; margin-right: 0.5%; font-size: 30px; color: floralwhite" href="${contextPath}/profile"><span class="glyphicon glyphicon-user"></span></a>
+            <a style="float:right; margin-top: 0.5%; margin-right: 0.5%; font-size: 30px; color: floralwhite" href="${contextPath}/profile/${principal.username}"><span class="glyphicon glyphicon-user"></span></a>
+            <a class="btn btn-default" role="button" style="float:right; margin-top: 0.5%; margin-right: 0.5%;" onclick="recommendHeritage();">Recommend</a>
         </c:if>
         <c:if test="${!isAuthorized}">
             <a style="float:right; margin-top: 0.5%;" href="${contextPath}/login" class="btn btn-default" role="button">Log In</a>
@@ -108,11 +119,6 @@
                 <button onclick="open_search_modal();" class="btn" style="background-color: #9a4ce2">Advanced Search</button>
             </div>
         </div>
-        <sec:authorize access="isAuthenticated()">
-            <div class="navbar-header" style="margin-left:85%; margin-top:-2.5%; width:10%;">
-                <button class="btn btn-info" onclick="recommendHeritage();">Recommend</button>
-            </div>
-        </sec:authorize>
     </div>
 </nav>
 

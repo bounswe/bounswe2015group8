@@ -5,6 +5,7 @@ import dao.MemberDaoImpl;
 import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -639,8 +640,18 @@ public class MainController {
         return 1;
     }
 
-    @RequestMapping("/profile")
-    public ModelAndView profile(){
-        return new ModelAndView("under_construction");
+    @RequestMapping(value = "/profile")
+    public ModelAndView profile() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        final Session session = Main.getSession();
+
+        logger.info("The current user is: " + username);
+        Member m = memberService.getMemberByUsername(username);
+
+        session.close();
+
+        return new ModelAndView("profile", "member", m);
     }
+
 }

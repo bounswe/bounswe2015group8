@@ -5,6 +5,7 @@ import dao.MemberDaoImpl;
 import model.Media;
 import model.Member;
 import model.Tag;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -46,10 +47,16 @@ public class ProfileController {
         followTagService = new FollowTagService(Main.getSessionFactory());
     }
 
-    @RequestMapping("/profile/{username}")
-    public ModelAndView userProfile(@PathVariable String username){
-        Member member = memberService.getMemberByUsername(username);
-        return new ModelAndView("profile", "user", member);
+    @RequestMapping(value = "/profile/{username}")
+    public ModelAndView profile_of_user(@PathVariable String username) {
+        final Session session = Main.getSession();
+        Member m = memberService.getMemberByUsername(username);
+        session.refresh(m);
+        Hibernate.initialize(m.getFollowers());
+        Hibernate.initialize(m.getFollowedMembers());
+        Hibernate.initialize(m.getFollowedHeritages());
+        Hibernate.initialize(m.getFollowedTags());
+        return new ModelAndView("profile", "member", m);
     }
 
     @RequestMapping(value = "/uploadProfilePicture", method = RequestMethod.POST)
