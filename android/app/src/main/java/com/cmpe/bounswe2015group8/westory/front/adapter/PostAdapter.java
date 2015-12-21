@@ -17,6 +17,7 @@ import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.MainActivity;
 import com.cmpe.bounswe2015group8.westory.front.NamedFragment;
 import com.cmpe.bounswe2015group8.westory.front.PostViewFragment;
+import com.cmpe.bounswe2015group8.westory.front.ProfileFragment;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
@@ -42,7 +43,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         final TextView tvVoteCount = (TextView) v.findViewById(R.id.tvPostVoteCount);
         final Post p = getItem(position);
         tvTitle.setText(p.getTitle());
-        tvOwner.setText(context.getResources().getString(R.string.generic_by_username, Long.toString(p.getOwnerId())));
+        tvOwner.setText(context.getResources().getString(R.string.generic_by_username, p.getUsername()));
         tvCreationDate.setText(p.getPostDate());
 
         tvContent.setText(p.getContent());
@@ -64,6 +65,12 @@ public class PostAdapter extends ArrayAdapter<Post> {
                         MainActivity.beginFragment(context, nf);
                         break;
                     case R.id.tvPostSmallOwner:
+                        NamedFragment nfp = new ProfileFragment();
+                        Bundle bp = new Bundle();
+                        bp.putBoolean("isLogged",false);
+                        bp.putLong("memberId",p.getOwnerId());
+                        nfp.setArguments(bp);
+                        MainActivity.beginFragment(context,nfp);
                         break;
                     case R.id.btnPostUpVote:
                         ServerRequests sr = new ServerRequests(getContext());

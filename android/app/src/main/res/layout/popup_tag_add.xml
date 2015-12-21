@@ -27,7 +27,7 @@
         android:layout_marginBottom="10dp"
         android:background="@color/primary_light"
         android:hint="@string/hint_tag_context"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:padding="@dimen/relative_layout_margin_between"
         android:singleLine="true"
         android:textColor="@color/primary_text"

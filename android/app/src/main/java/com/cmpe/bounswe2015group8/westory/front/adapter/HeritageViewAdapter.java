@@ -21,6 +21,7 @@ import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.MainActivity;
 import com.cmpe.bounswe2015group8.westory.front.NamedFragment;
 import com.cmpe.bounswe2015group8.westory.front.PostViewFragment;
+import com.cmpe.bounswe2015group8.westory.front.ProfileFragment;
 import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 import com.cmpe.bounswe2015group8.westory.model.Post;
@@ -145,13 +146,13 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 TextView tvTitle = (TextView) v.findViewById(R.id.tvPostSmallTitle);
                 tvTitle.setText(p.getTitle());
                 TextView tvOwner = (TextView) v.findViewById(R.id.tvPostSmallOwner);
-                tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, Long.toString(p.getOwnerId())));
-                //tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, p.getOwner().getUsername()));
+                tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, (Long.toString(p.getOwnerId()))));
                 TextView tvCreationDate = (TextView) v.findViewById(R.id.tvPostSmallCreationDateValue);
                 tvCreationDate.setText(p.getPostDate());
                 TextView tvContent = (TextView) v.findViewById(R.id.tvPostSmallContent);
                 tvContent.setText(p.getContent());
-                v.setOnClickListener(new View.OnClickListener() {
+                TextView tvSeeMore = (TextView) v.findViewById(R.id.tvPostSmallSeeMore);
+                tvSeeMore.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         NamedFragment nf = new PostViewFragment();
@@ -161,9 +162,19 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                         MainActivity.beginFragment(activity, nf);
                     }
                 });
+                tvOwner.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NamedFragment nf = new ProfileFragment();
+                        Bundle b = new Bundle();
+                        b.putLong("memberId", p.getOwnerId());
+                        nf.setArguments(b);
+                        MainActivity.beginFragment(activity, nf);
+                    }
+                });
                 final TextView tvVote= (TextView) v.findViewById(R.id.tvPostVoteCount);
-                int netVoteCount=p.getVoteCount();
-                tvVote.setText("" + netVoteCount);
+                System.out.println("mumu: "+ p.getId()+" - " +p.getVoteCount());
+                tvVote.setText(Integer.toString(p.getVoteCount()));
                 ImageButton btnDownVote = (ImageButton) v.findViewById(R.id.btnPostDownVote);
                 ImageButton btnUpVote = (ImageButton) v.findViewById(R.id.btnPostUpVote);
                 btnUpVote.setOnClickListener(new View.OnClickListener() {
@@ -226,10 +237,16 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                         newTag.setId(t.getId());
                         t.setTagText(newTag.getTagText());
                         t.setTagContext(newTag.getTagContext());
-                        //TODO edit tag call to system. if successful, do the following
-                        tvText.setText(t.getTagText());
-                        tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
-                        viewSwitcher.showPrevious();
+                        ServerRequests sr = new ServerRequests(activity);
+                        sr.editTag(newTag, new Consumer<Tag>() {
+                            @Override
+                            public void accept(Tag tag) {
+                                tvText.setText(t.getTagText());
+                                tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
+                                viewSwitcher.showPrevious();
+                            }
+                        });
+
                     }
                 });
                 ivTagSmallCancel.setOnClickListener(new View.OnClickListener() {

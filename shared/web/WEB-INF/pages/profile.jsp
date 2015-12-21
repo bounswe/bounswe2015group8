@@ -55,17 +55,16 @@
             console.log(formData);
             $.ajax({
                 url: "${contextPath}/uploadProfilePicture",
-                headers: { "Accept-Encoding" : "gzip" },
                 type: "POST",
                 data: formData,
                 enctype: 'multipart/form-data',
                 processData: false,  // tell jQuery not to process the data
                 contentType: false,   // tell jQuery not to set contentType
                 success: function(response){
-                    $("#picture").attr('src', response);
+                    window.location.reload();
                 },
                 error: function(response){
-                    console.log(response);
+                    window.location.reload();
                 }
             });
         });

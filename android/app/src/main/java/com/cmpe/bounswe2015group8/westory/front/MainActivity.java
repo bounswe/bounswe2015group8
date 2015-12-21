@@ -136,7 +136,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.navProfile:
                         f = getSupportFragmentManager().findFragmentByTag(ProfileFragment.NAME);
-                        nf = (f == null) ? new ProfileFragment(): (NamedFragment)f;
+                        //nf = (f == null) ? new ProfileFragment(): (NamedFragment)f;
+                        nf=new ProfileFragment();
+                        Bundle bp = new Bundle();
+                        nf.setArguments(bp);
                         break;
                     case R.id.navComments:
                         f = getSupportFragmentManager().findFragmentByTag(CommentsFragment.NAME);

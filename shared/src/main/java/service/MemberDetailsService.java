@@ -37,15 +37,15 @@ public class MemberDetailsService implements UserDetailsService{
         return memberDao.updateMember(m);
     }
 
-    public Member updateProfilePicture(String username, String pictureUrl){
+    public Member updateBiography(String username, String biography) {
         Member member = memberDao.getMemberByUsername(username);
-        member.setProfilePicture(pictureUrl);
+        member.setBiography(biography);
         return memberDao.updateMember(member);
     }
 
-    public Member updateBiography(String username, String biography){
-        Member member = memberDao.getMemberByUsername(username);
-        member.setBiography(biography);
+    public Member updateProfilePicture(long userId, String profilePicture){
+        Member member = memberDao.getMemberById(userId);
+        member.setProfilePicture(profilePicture);
         return memberDao.updateMember(member);
     }
 

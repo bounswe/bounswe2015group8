@@ -46,6 +46,23 @@ public class PostUtility {
     }
 
     /**
+     * Searches for the heritages with names that contain the parameter
+     * @param name the search string
+     * @return the heritages with names containing parameter
+     */
+    public static ArrayList<Post> searchByPostTitle(String name) {
+        postList = getPostList();
+        ArrayList<Post> postsWithName= new ArrayList<>();
+        name = name.toLowerCase();
+        for (Post post : postList) {
+            if (post.getTitle().toLowerCase().contains(name)) {
+                postsWithName.add(post);
+            }
+        }
+        return postsWithName;
+    }
+
+    /**
      * Returns post service
      * @return post service
      */

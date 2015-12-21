@@ -152,8 +152,15 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Tag t = new Tag(tagText.getText().toString(),
                                 tagContext.getText().toString());
-                        //TODO add tag
                         heritage.addTags(t);
+                        ServerRequests sr = new ServerRequests(getActivity());
+                        sr.addTags(heritage, new Consumer<Tag[]>() {
+                            @Override
+                            public void accept(Tag[] tags) {
+                                heritage.setTags(Arrays.asList(tags));
+                                Toast.makeText(getActivity(),"Successfully added tag.",Toast.LENGTH_LONG).show();
+                            }
+                        });
                         updateAdapter();
                     }
                 })
@@ -190,9 +197,15 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 Consumer<String> c = new Consumer<String>() {
                     @Override
                     public void accept(String link) {
-                        Media m = new Media(heritage.getId(), link, requestCode, false);
-                        //TODO upload media to server once API call is ready
-                        Toast.makeText(getActivity(), link, Toast.LENGTH_LONG).show();
+                        final Media m = new Media(heritage.getId(), link, requestCode, false);
+                        ServerRequests sr = new ServerRequests(getActivity());
+                        sr.addMedia(m, new Consumer<String>() {
+                            @Override
+                            public void accept(String url) {
+                                heritage.getMedia().add(m);
+                                updateAdapter();
+                            }
+                        });
                     }
                 };
                 new CloudinaryAPI.CloudinaryUploadTask(getActivity(),c).execute(data.getData());

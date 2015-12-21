@@ -22,4 +22,5 @@ public abstract class NamedFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getTitle());
     }
 
+
 }

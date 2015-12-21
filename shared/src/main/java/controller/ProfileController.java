@@ -73,6 +73,7 @@ public class ProfileController {
     public ModelAndView uploadProfilePicture(@RequestParam("picture") MultipartFile pictureMedia) throws Exception{
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
+        long userId = memberService.getMemberByUsername(username).getId();
 
         try{
             String mediaName = pictureMedia.getOriginalFilename();
@@ -86,7 +87,7 @@ public class ProfileController {
             try {
                 Map utilsMap = ObjectUtils.asMap("resource_type", "auto");
                 Map uploadResult = CloudinaryController.getCloudinary().uploader().upload(toUpload, utilsMap);
-                memberService.updateProfilePicture(username, uploadResult.get("url").toString());
+                memberService.updateProfilePicture(userId, uploadResult.get("url").toString());
             } catch (RuntimeException e) {
                 e.printStackTrace();
                 return new ModelAndView("list_post", "error", "Cloudinary upload failed..");

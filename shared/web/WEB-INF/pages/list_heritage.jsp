@@ -40,6 +40,16 @@
                 }
             });
         });
+
+        $("#feed_type").change(function(){
+            if($(this).val() == "post"){
+                window.location.href = "${contextPath}/feedPosts";
+            }
+        });
+
+        if(window.location.href.indexOf("feed") > -1){
+            $("#feed_type_div").css('display', '');
+        }
     });
     function followHeritage(heritageId){
         $.ajax({
@@ -58,7 +68,13 @@
 
 
 </script>
-
+    <p id="feed_type_div" style="display:none;">
+        FEED TYPE:
+        <select id="feed_type">
+            <option value="post">POST</option>
+            <option value="heritage" selected>HERITAGE</option>
+        </select>
+    </p>
 <c:if test="${isAuthorized}">
     <div class="well">
         <div class="row">
