@@ -65,6 +65,7 @@
                     for(var i = 0; i < response.length; i++){
                         html += "<div class='row col-md-offset-1'>";
                         html += "Name: <a style='color:black; font-weight:bold;' href='${contextPath}/show_posts/"+response[i]['id']+"'>"+response[i]['title']+"</a>";
+                        html += "<p>Description: "+response[i]['description']+"</p>";
                         html += "</div>";
 
                     }
