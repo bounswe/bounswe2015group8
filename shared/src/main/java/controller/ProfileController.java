@@ -11,10 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import service.*;
@@ -90,7 +87,7 @@ public class ProfileController {
 
     }
 
-    @RequestMapping(value = "/followTag", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/followTag", produces = MediaType.APPLICATION_JSON_VALUE)
     public String[] followTag(@RequestParam("tags[]") String[] tags){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -116,6 +113,15 @@ public class ProfileController {
                 newTagsToFollow[i] += "(" + tagContext + ")";
         }
         return newTagsToFollow;
+    }
+
+    @RequestMapping(value = "/updateBiography", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public long updateBiography(@RequestParam("biography") String biography){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        memberService.updateBiography(username, biography).getBiography();
+        return 1;
     }
 
 }

@@ -1,51 +1,108 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 
 <c:set var="member" value="${member}"/>
+
+<script>
+    function edit_bio_click(){
+        currentBio = $("#biography").html();
+        $("#edit_biography").html(currentBio);
+        $("#edit_biography").css('display', '');
+        $("#biography").css('display', 'none');
+        $("#edit_bio_button").attr("disabled", "disabled");
+    }
+
+    function choose_file(){
+        $("#profilePicture").click();
+    }
+
+    $(document).ready(function(){
+        $("#edit_biography").change(function(){
+            $("#edit_bio_button").removeAttr('disabled');
+            var updatedBio = $("#edit_biography").val();
+
+            $.ajax({
+                url: "${contextPath}/updateBiography",
+                data:{biography: updatedBio},
+                type: "POST",
+                success: function(response) {
+                    $("#biography").html(updatedBio);
+                    $("#edit_biography").css('display', 'none');
+                    $("#biography").css('display', '');
+                    $("#edit_bio_button").removeAttr('disabled');
+                }
+            });
+        });
+
+        $("#profilePicture").change(function(){
+            var formData = new FormData();
+            formData.append('picture', $('#profilePicture')[0].files[0]);
+            console.log(formData);
+            $.ajax({
+                url: "${contextPath}/uploadProfilePicture",
+                headers: { "Accept-Encoding" : "gzip" },
+                type: "POST",
+                data: formData,
+                enctype: 'multipart/form-data',
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,   // tell jQuery not to set contentType
+                success: function(response){
+                    $("#picture").attr('src', response);
+                },
+                error: function(response){
+                    console.log(response);
+                }
+            });
+        });
+    });
+
+</script>
 
 <div class="page-content container">
 
     <div class="row">
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail">
-                <img src="http://vignette1.wikia.nocookie.net/minion/images/1/1b/Check-in-minion.jpg/revision/latest?cb=20140516030342">
+                <c:choose>
+                    <c:when test="${member.profilePicture == null}">
+                        <img id="picture" src="${contextPath}/static/img/minion.jpg">
+                    </c:when>
+                    <c:otherwise>
+                        <img id="picture" src="${member.profilePicture}">
+                    </c:otherwise>
+                </c:choose>
 
                 <div class="caption">
                     <h3>${member.username}</h3>
+                    Member Biography
+                    <p id="biography">${member.biography}</p>
+                    <textarea style="display: none; width: 100%;" type='text' id='edit_biography'></textarea>
 
-                    <p> Member Biography </p>
-
-                    <p><a href="#" class="btn btn-primary" role="button">Change Profile Picture</a> <a href="#" class="btn btn-default" role="button">Edit Biography</a></p>
+                    <p> <input onclick="choose_file();" class="btn btn-primary" type="button" value="Change Profile Picture"/>
+                        <a id="edit_bio_button" onclick="edit_bio_click();" class="btn btn-default" role="button">Edit Biography</a>
+                        <input id="profilePicture" type="file" style="display: none;"/>
+                    </p>
                 </div>
             </div>
         </div>
         <div class="col-sm-6 col-md-4">
-            <h2>Followers</h2>
+            <h2>Followers(${fn:length(member.followers)})</h2>
             <c:forEach var="follower" items="${member.followers}">
-                <p>  ${follower.username} </p>
-                <button type="button"
-                        class="btn btn-default"
-                        onclick="window.location.href='${contextPath}/profile/${follower.username}'">
-                        ${follower.username}
-                </button>
-
+                <a href="${contextPath}/profile/${follower.username}">${follower.username}</a>
+                <br>
             </c:forEach>
 
         </div>
 
         <div class="col-sm-6 col-md-4">
-            <h2>Followings</h2>
+            <h2>Followings(${fn:length(member.followedMembers)})</h2>
             <c:forEach var="followee" items="${member.followedMembers}">
-               <p>${followee.username}</p>
-                <button type="button"
-                        class="btn btn-default"
-                        onclick="window.location.href='${contextPath}/profile/${follower.username}'">
-                        ${follower.username}
-                </button>
+               <a href="${contextPath}/profile/${followee.username}">${followee.username}</a>
+                <br>
             </c:forEach>
         </div>
     </div>
-
 
     <div class="panel panel-default">
         <div class="panel-heading">Subscribed Heritages</div>
