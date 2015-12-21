@@ -40,6 +40,12 @@
                 }
             });
         });
+
+        $("#feed_type").change(function(){
+            if($(this).val() == "post"){
+                window.location.href = "${contextPath}/feedPosts";
+            }
+        });
     });
     function followHeritage(heritageId){
         $.ajax({
@@ -58,6 +64,12 @@
 
 
 </script>
+
+    FEED TYPE:
+    <select id="feed_type">
+        <option value="post">POST</option>
+        <option value="heritage" selected>HERITAGE</option>
+    </select>
 
 <sec:authorize access="isAuthenticated()">
     <div class="well">

@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -181,6 +182,18 @@ public class Post {
             this.tags.add(t);
             t.getPosts().add(this);
         }
+    }
+
+    /**
+     * Gets the list of all heritage ids in the post
+     * @return the id list of heritages
+     */
+    public ArrayList<Long> getHeritageIds() {
+        ArrayList<Long> heritageIds = new ArrayList<>();
+        for (Heritage heritage : heritages) {
+            heritageIds.add(heritage.getId());
+        }
+        return heritageIds;
     }
 
 }

@@ -16,6 +16,7 @@ public class Comment {
     private Member owner;
     private Post post;
     private long ownerId;
+    private String username;
     private long postId;
     private int netCount;
     private Collection<CommentVote> votes;
@@ -120,6 +121,10 @@ public class Comment {
     public long getOwnerId() { return ownerId; }
 
     public void setOwnerId(long ownerId) { this.ownerId = ownerId; }
+
+    public String getUsername() { return username; }
+
+    public void setUsername(String username) { this.username = username; }
 
     public long getPostId() { return postId; }
 

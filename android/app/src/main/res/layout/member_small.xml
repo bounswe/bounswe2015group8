@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:id="@+id/ivMemberProfSmall"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:maxHeight="67dp"
+        android:maxWidth="67dp"
+        android:padding="5dp"
+        android:layout_margin="2dp"
+        android:src="@drawable/ic_image_black_48dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvMemberUserName"
+        android:text="new text"
+        android:textSize="18dp"
+        android:textColor="@color/primary_text"
+        android:layout_alignTop="@+id/ivMemberProfSmall"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="new text"
+        android:textSize="18dp"
+        android:textColor="@color/primary_text"
+        android:id="@+id/tvMemberFollowing"
+        android:layout_marginLeft="41dp"
+        android:layout_marginStart="41dp"
+        android:layout_alignBottom="@+id/ivMemberProfSmall"
+        android:layout_toRightOf="@+id/ivMemberProfSmall"
+        android:layout_toEndOf="@+id/ivMemberProfSmall" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="new text"
+        android:textSize="18dp"
+        android:textColor="@color/primary_text"
+        android:id="@+id/tvMemberFollowers"
+        android:layout_alignTop="@+id/tvMemberFollowing"
+        android:layout_toRightOf="@+id/tvMemberFollowing"
+        android:layout_toEndOf="@+id/tvMemberFollowing"
+        android:layout_marginLeft="20dp" />
+</RelativeLayout>
