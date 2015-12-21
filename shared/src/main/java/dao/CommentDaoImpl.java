@@ -3,6 +3,7 @@ package dao;
 import model.Comment;
 import model.Member;
 import model.Post;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -43,6 +44,11 @@ public class CommentDaoImpl implements CommentDao {
     public List<Comment> getAllComments() {
         Session s = getSessionFactory().openSession();
         List<Comment> comments = s.createQuery("from Comment").list();
+        for(Comment comment : comments){
+            Hibernate.initialize(comment);
+            Hibernate.initialize(comment.getOwner());
+            Hibernate.initialize(comment.getPost());
+        }
         s.close();
         return comments;
     }

@@ -3,6 +3,7 @@ package adapter;
 import com.google.gson.*;
 import model.Comment;
 import model.CommentVote;
+import org.hibernate.Hibernate;
 
 import java.lang.reflect.Type;
 
