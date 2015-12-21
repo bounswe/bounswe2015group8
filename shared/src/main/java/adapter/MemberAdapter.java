@@ -53,6 +53,14 @@ public class MemberAdapter implements JsonSerializer<Member> {
         }
         memberObject.add("followers", followers);
 
+        JsonArray followedHeritages = new JsonArray();
+        for (Heritage heritage : member.getFollowedHeritages()) {
+            JsonObject heritageJson = new JsonObject();
+            heritageJson.addProperty("id", heritage.getId());
+            followedHeritages.add(heritageJson);
+        }
+        memberObject.add("followedHeritages", followedHeritages);
+
         JsonArray posts = new JsonArray();
         for (Post post : member.getPosts()) {
             posts.add(postAdapter.serialize(post, type, jsonSerializationContext));
