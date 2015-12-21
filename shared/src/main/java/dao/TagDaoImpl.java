@@ -61,10 +61,18 @@ public class TagDaoImpl implements TagDao {
 
     public boolean doesTagExist(String tagText, String tagContext){
         Session s = getSessionFactory().openSession();
-        int count = s
-                .createQuery("from Tag where tagText=? and tagContext=?")
-                .setParameter(0, tagText)
-                .setParameter(1, tagContext).list().size();
+        int count;
+        if(tagContext != null && !tagContext.equals("")){
+            count = s
+                    .createQuery("from Tag where tagText=? and tagContext=?")
+                    .setParameter(0, tagText)
+                    .setParameter(1, tagContext).list().size();
+        }
+        else{
+            count = s
+                    .createQuery("from Tag where tagText=? and tagContext is null")
+                    .setParameter(0, tagText).list().size();
+        }
         s.close();
         if(count > 0)
             return true;

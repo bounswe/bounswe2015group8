@@ -19,6 +19,8 @@ import service.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,13 +49,20 @@ public class ProfileController {
     @RequestMapping(value = "/profile/{username}")
     public ModelAndView profile_of_user(@PathVariable String username) {
         final Session session = Main.getSession();
+        HashMap<String, Object> allContent = new HashMap<>();
         Member m = memberService.getMemberByUsername(username);
+        List medias = session.createCriteria(Media.class).list();
+        List allTags = session.createCriteria(Tag.class).list();
         session.refresh(m);
         Hibernate.initialize(m.getFollowers());
         Hibernate.initialize(m.getFollowedMembers());
         Hibernate.initialize(m.getFollowedHeritages());
         Hibernate.initialize(m.getFollowedTags());
-        return new ModelAndView("profile", "member", m);
+        allContent.put("member", m);
+        allContent.put("medias", medias);
+        allContent.put("allTags", allTags);
+        session.close();
+        return new ModelAndView("profile", "allContent", allContent);
     }
 
     @RequestMapping(value = "/uploadProfilePicture", method = RequestMethod.POST)
@@ -88,6 +97,7 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/followTag", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     public String[] followTag(@RequestParam("tags[]") String[] tags){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();

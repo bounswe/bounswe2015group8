@@ -2,9 +2,23 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="/WEB-INF/pages/header.jsp" %>
 
-<c:set var="member" value="${member}"/>
+<c:set var="member" value="${allContent.member}"/>
+<c:set var="medias" value="${allContent.medias}"/>
+<c:set var="allTags" value="${allContent.allTags}"/>
 
 <script>
+    var tags = [];
+    <c:forEach var="tag" items="${allTags}">
+        <c:choose>
+            <c:when test="${tag.tagContext == null}">
+                tags.push("${tag.tagText}");
+            </c:when>
+            <c:otherwise>
+                tags.push("${tag.tagText}(${tag.tagContext})");
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+
     function edit_bio_click(){
         currentBio = $("#biography").html();
         $("#edit_biography").html(currentBio);
@@ -55,6 +69,29 @@
                 }
             });
         });
+
+        $("#tokenfield").tokenfield({
+            autocomplete: {
+                source: tags,
+                delay: 100
+            }
+        });
+
+        $("#tagbutton").click(function(){
+            var interestedTags = $("#tokenfield").val().split(", ");
+            $.ajax({
+                url: "${contextPath}/followTag",
+                data:{tags: interestedTags},
+                type: "POST",
+                success: function(response) {
+                    for(var i = 0; i < response.length; i++){
+                        var tag = response[i];
+                        if($("#interestedInTags").html().indexOf(tag) == -1)
+                            $("#interestedInTags").append("<a href='${contextPath}/searchHeritageByTag/" + tag + "'>" + tag + "</a>&nbsp;");
+                    }
+                }
+            });
+        });
     });
 
 </script>
@@ -78,14 +115,25 @@
                     Member Biography
                     <p id="biography">${member.biography}</p>
                     <textarea style="display: none; width: 100%;" type='text' id='edit_biography'></textarea>
-
-                    <p> <input onclick="choose_file();" class="btn btn-primary" type="button" value="Change Profile Picture"/>
-                        <a id="edit_bio_button" onclick="edit_bio_click();" class="btn btn-default" role="button">Edit Biography</a>
-                        <input id="profilePicture" type="file" style="display: none;"/>
+                    Interested in:
+                    <p id="interestedInTags">
+                        <c:forEach var="tag" items="${member.followedTags}">
+                            <a href="${contextPath}/searchHeritageByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
+                                ${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&nbsp;
+                            </a>
+                        </c:forEach>
                     </p>
+
+                    <c:if test="${principal.username == member.username}">
+                        <p> <input onclick="choose_file();" class="btn btn-primary" type="button" value="Change Profile Picture"/>
+                            <a id="edit_bio_button" onclick="edit_bio_click();" class="btn btn-default" role="button">Edit Biography</a>
+                            <input id="profilePicture" type="file" style="display: none;"/>
+                        </p>
+                    </c:if>
                 </div>
             </div>
         </div>
+
         <div class="col-sm-6 col-md-4">
             <h2>Followers(${fn:length(member.followers)})</h2>
             <c:forEach var="follower" items="${member.followers}">
@@ -101,6 +149,11 @@
                <a href="${contextPath}/profile/${followee.username}">${followee.username}</a>
                 <br>
             </c:forEach>
+        </div>
+
+        <div class="col-sm-offset-1 col-sm-5" role="group" style="margin-top:25%;">
+            <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton">Add</button>
+            <input style="width:85%;" type="text" class="form-control tokenfield" id="tokenfield" placeholder="Add interested areas as tags..." />
         </div>
     </div>
 
