@@ -17,13 +17,10 @@ import android.widget.Toast;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.CloudinaryAPI;
-import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.PostViewAdapter;
-import com.cmpe.bounswe2015group8.westory.model.Comment;
-import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 
@@ -81,7 +78,9 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
     }
     private void initViews(Bundle args) {
         post = args.getParcelable("post");
-        tvOwner.setText(post.getUsername());
+        //TODO fix this once owner is properly stored
+        assert post != null;
+        tvOwner.setText(""+post.getOwnerId());
         tvCreationDate.setText(post.getPostDate());
         if(post.getLastEditedDate()!=null) {
             tvLastEditDate.setText(post.getLastEditedDate());
@@ -153,6 +152,7 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Tag t = new Tag(tagText.getText().toString(),
                                 tagContext.getText().toString());
+                        //TODO add tag
                         post.addTags(t);
                         ServerRequests sr = new ServerRequests(getActivity());
                         sr.addTags(post, new Consumer<Tag[]>() {
@@ -195,15 +195,16 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                 Consumer<String> c = new Consumer<String>() {
                     @Override
                     public void accept(String link) {
-                        final Media m = new Media(post.getId(), link, requestCode, true);
-                        ServerRequests sr = new ServerRequests(getActivity());
+                        System.out.println("mumu"+link);
+                        //final Media m = new Media(post.getId(), link, requestCode, true);
+                        /*ServerRequests sr = new ServerRequests(getActivity());
                         sr.addMedia(m, new Consumer<String>() {
                             @Override
                             public void accept(String url) {
                                 post.getMedia().add(m);
                                 updateAdapter();
                             }
-                        });
+                        });*/
                     }
                 };
                 new CloudinaryAPI.CloudinaryUploadTask(getActivity(),c).execute(data.getData());
