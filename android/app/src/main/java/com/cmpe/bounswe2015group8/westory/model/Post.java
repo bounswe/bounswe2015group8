@@ -16,13 +16,14 @@ public class Post implements Parcelable{
     private int type;
     private Member owner;
     private long ownerId;
-    private String username;
     private String heritage_id;
     private String postDate;
     private String lastEditedDate;
     private String title;
     private String content;
     private String place;
+    private String username;
+
     private Collection<Comment> comments;
     private Collection<Heritage> heritages;
     private Collection<PostVote> votes;
