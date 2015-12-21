@@ -63,10 +63,14 @@
                             "<b><h class='panel-title' style='margin-left:0.5%'>Would you like to see posts of the following heritages?</h></b></div>";
                     console.log(response);
                     for(var i = 0; i < response.length; i++){
+                        var rTitle = 'no title';
+                        if(response[i]['title'] != null){
+                            rTitle = response[i]['title'];
+                        }
                         html += "<div class='row col-md-offset-1'>";
-                        html += "Name: <a style='color:black; font-weight:bold;' href='${contextPath}/show_posts/"+response[i]['id']+"'>"+response[i]['title']+"</a>";
-                        html += "<p>Description: "+response[i]['description']+"</p>";
-                        html += "</div>";
+                        html += "<div class='row'>Name: <a style='color:black; font-weight:bold;' href='${contextPath}/show_posts/"+response[i]['id']+"'>"+rTitle+"</a></div>";
+                        html += "<div class='row'>Description:<span style='max-width:300px;overflow:hidden;text-overflow:ellipsis'> "+response[i]['description']+"</span></div>";
+                        html += "</div><br>";
 
                     }
                     html += "</div>";
