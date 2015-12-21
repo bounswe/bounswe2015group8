@@ -23,6 +23,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/generic_by_username"
         android:gravity="end"
+        android:clickable="true"
         android:textStyle="italic" />
     <TextView
         android:id="@+id/tvCommentSmallCreationDate"

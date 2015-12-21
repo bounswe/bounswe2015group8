@@ -62,6 +62,7 @@
     <string name="title_heritage_new">New Heritage</string>
     <string name="title_post_new">New Post</string>
     <string name="title_generic_edit">Edit </string>
+    <string name="textFollowMember">Follow</string>
     <string-array name="heritage_view_list">
         <item>Posts</item>
         <item>Tags</item>

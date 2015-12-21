@@ -1,85 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical" android:layout_width="match_parent"
-android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tvHomeName"
-        android:layout_gravity="center_horizontal"
-        android:padding="10dp"
-        android:textColor="@color/accent"
-        android:textSize="24sp"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/profilePicture"
-        android:layout_centerHorizontal="true" />
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#448899"
+    >
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/listPosts"
-            android:layout_marginTop="47dp"
-            android:layout_alignTop="@+id/yourPosts"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:id="@+id/header"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Latest Posts:"
-            android:id="@+id/yourPosts"
+            android:text="New Text"
+            android:id="@+id/tvHomeName"
+            android:layout_gravity="center_horizontal"
             android:padding="10dp"
             android:textColor="@color/accent"
-            android:textSize="18dp"
-            android:layout_below="@+id/postsText"
-            android:layout_marginTop="12dp" />
+            android:textSize="20sp"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/profilePicture"
+            android:layout_centerHorizontal="true" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/profilePicture"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:id="@+id/profilePicture"
             android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
             android:contextClickable="false"
-            android:longClickable="false" />
+            android:longClickable="false"
+            android:background="#AA5599"
+            android:padding="4dp"
+            android:maxHeight="100dp"
+            android:maxWidth="100dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-        <TextView
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Posts"
-            android:id="@+id/postsText"
-            android:padding="10dp"
-            android:textColor="@color/accent"
-            android:textSize="20dp"
-            android:layout_alignTop="@+id/followerText"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:id="@+id/addProfilePic"
+            android:src="@drawable/ic_add_white_24dp"
+            style="@style/Widget.AppCompat.ActionButton"
+            android:scaleType="fitCenter"
+            android:clickable="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/profilePicture"
+            android:layout_toStartOf="@+id/profilePicture"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="14dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Followers"
-            android:id="@+id/followerText"
-            android:padding="10dp"
-            android:textColor="@color/accent"
-            android:textSize="20dp"
-            android:layout_marginTop="49dp"
-            android:layout_below="@+id/tvHomeName"
-            android:layout_alignRight="@+id/tvHomeName"
-            android:layout_alignEnd="@+id/tvHomeName" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Following"
-            android:id="@+id/followingText"
-            android:layout_alignTop="@+id/followerText"
-            android:layout_alignParentRight="true"
+        <Button
+            android:id="@+id/btnFollowMember"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:background="@color/accent"
+            android:text="New Text"
+            android:clickable="true"
+            android:textColor="@color/primary_text"
+            android:elevation="@dimen/btn_elevation"
+            android:layout_alignBottom="@+id/tvHomeName"
             android:layout_alignParentEnd="true"
-            android:padding="10dp"
-            android:textColor="@color/accent"
-            android:textSize="20dp" />
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
+
+
+    </RelativeLayout>
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:background="?attr/colorPrimary"
+        android:elevation="6dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/profilePager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/tab_layout" />
 </RelativeLayout>
