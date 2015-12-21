@@ -81,6 +81,29 @@ public class PostApi implements ErrorCodes {
     }
 
     /**
+     * Gets a post as parameter, adds new heritages to the current post in the database
+     * @param post with new heritage list
+     * @return updated post in the database
+     */
+    @RequestMapping(value = "/api/addHeritagesToPost",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String addHeritagestoPost(@RequestBody Post post) {
+        Post currentPost = PostUtility.getPostById(post.getId());
+        if (currentPost == null) {
+            return "Post does not exist.";
+        }
+        ArrayList<Long> heritageIds = currentPost.getHeritageIds();
+        for (Heritage heritage : post.getHeritages()) {
+            if (!heritageIds.contains(heritage.getId())) {
+                currentPost.getHeritages().add(heritage);
+            }
+        }
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
+        return gson.toJson(currentPost);
+    }
+
+    /**
      * Get vote count of given post
      * @param postId id of post
      * @return vote count of the post
@@ -89,6 +112,21 @@ public class PostApi implements ErrorCodes {
     public long getOverallPostVoteById(@PathVariable long postId){
         Post post = PostUtility.getPostService().getPostById(postId);
         return HeritageUtility.getVoteService().getPostOverallVote(post);
+    }
+
+    /**
+     * Gets the JSON representation of heritages with given name
+     * @param name given by user
+     * @return the heritage list
+     */
+    @RequestMapping(value = "/api/searchByPostTitle",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String searchByPostTitle(@RequestBody String name) {
+        ArrayList<Post> postsWithTitle = PostUtility.searchByPostTitle(name);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
+        String json = gson.toJson(postsWithTitle);
+        return json;
     }
 
     /**
@@ -101,6 +139,15 @@ public class PostApi implements ErrorCodes {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
         ArrayList<Post> posts = PostUtility.getPostList();
+        return gson.toJson(posts);
+    }
+
+    @RequestMapping(value = "/api/getPostsByMemberId/{memberId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getPostsByMemberId(@PathVariable long memberId){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
+        Member member = MemberUtility.getMemberService().getMemberById(memberId);
+        ArrayList<Post> posts = (ArrayList<Post>)PostUtility.getPostService().getPostsByMember(member);
         return gson.toJson(posts);
     }
 }
