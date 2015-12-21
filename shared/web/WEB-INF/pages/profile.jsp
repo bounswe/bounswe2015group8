@@ -102,7 +102,7 @@
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail">
                 <c:choose>
-                    <c:when test="${member.profilePicture == null}">
+                    <c:when test="${member.profilePicture == null || member.profilePicture == ''}">
                         <img id="picture" src="${contextPath}/static/img/minion.jpg">
                     </c:when>
                     <c:otherwise>

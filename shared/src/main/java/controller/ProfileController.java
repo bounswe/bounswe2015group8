@@ -2,6 +2,7 @@ package controller;
 
 import com.cloudinary.utils.ObjectUtils;
 import dao.MemberDaoImpl;
+import model.Heritage;
 import model.Media;
 import model.Member;
 import model.Tag;
@@ -57,6 +58,9 @@ public class ProfileController {
         Hibernate.initialize(m.getFollowers());
         Hibernate.initialize(m.getFollowedMembers());
         Hibernate.initialize(m.getFollowedHeritages());
+        for(Heritage heritage : m.getFollowedHeritages()){
+            Hibernate.initialize(heritage.getTags());
+        }
         Hibernate.initialize(m.getFollowedTags());
         allContent.put("member", m);
         allContent.put("medias", medias);
