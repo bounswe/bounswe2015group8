@@ -17,8 +17,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class handling all server requests through REST API.
@@ -29,10 +27,10 @@ import java.util.Map;
  * Date: 31/10/15.
  */
 public class ServerRequests{
-    public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com:8080/lokum_v4";
+    public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com:8080/lokum_v3";
     private ProgressDialog progressDialog;
     private boolean display;
-    public ServerRequests(Context context){
+    public ServerRequests(Context context) {
         this(context, true);
     }
     public ServerRequests(Context context, boolean display) {
@@ -51,9 +49,13 @@ public class ServerRequests{
         if(display) progressDialog.show();
         new RestAsyncTask<Post[]>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/getHeritagePostsById", id, Post[].class));
     }
+    public void getPostsByMemberId(long id, Consumer<Post[]> callback) {
+        if(display) progressDialog.show();
+        new RestAsyncTask<Post[]>(callback, HttpMethod.GET).execute(new Requestable<Post[]>("/api/getPostsByMemberId/"+id, null, Post[].class));
+    }
     public void getCommentsByPostId(long id, Consumer<Comment[]> callback) {
         progressDialog.show();
-        new RestAsyncTask<Comment[]>(callback, HttpMethod.GET).execute(new Requestable<Comment[]>("/api/getCommentsByPostId/"+id, id, Comment[].class));
+        new RestAsyncTask<Comment[]>(callback, HttpMethod.GET).execute(new Requestable<Comment[]>("/api/getCommentsByPostId/" + id, id, Comment[].class));
     }
     public void getPostVoteCount(long id, Consumer<Long> callback) {
         progressDialog.show();
@@ -91,6 +93,10 @@ public class ServerRequests{
         if(display) progressDialog.show();
         new RestAsyncTask<Heritage>(callback, HttpMethod.POST).execute(new Requestable<Heritage>("/api/getHeritageById", id, Heritage.class));
     }
+    public void getMemberById(long id, Consumer<Member> callback) {
+        if(display) progressDialog.show();
+        new RestAsyncTask<Member>(callback, HttpMethod.POST).execute(new Requestable<Member>("/api/getMemberById", id, Member.class));
+    }
     public void getAllHeritages(Consumer<Heritage[]> callback) {
         if(display) progressDialog.show();
         new RestAsyncTask<Heritage[]>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/getAllHeritages",null,Heritage[].class) );
@@ -124,6 +130,18 @@ public class ServerRequests{
     public void addMedia(Media m, Consumer<String> callback){
         if(display) progressDialog.show();
         new RestAsyncTask<>(callback,HttpMethod.POST).execute(new Requestable<>("/api/uploadCloudinary",m,String.class));
+    }
+    public void uploadProfilePicture(Member m,String link,  Consumer<Member> callback){
+        if(display) progressDialog.show();
+        new RestAsyncTask<>(callback,HttpMethod.POST).execute(m.getUploadPictureRequestable(link));
+    }
+    public void followMember(Member follower,Long followee,  Consumer<Long> callback) {
+        if (display) progressDialog.show();
+        new RestAsyncTask<>(callback, HttpMethod.POST).execute(follower.getFollowRequestable(followee));
+    }
+    public void unfollowMember(Member follower,Long followee,  Consumer<Long> callback) {
+        if (display) progressDialog.show();
+        new RestAsyncTask<>(callback, HttpMethod.POST).execute(follower.getUnfollowRequestable(followee));
     }
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
         Consumer<T> callback;
