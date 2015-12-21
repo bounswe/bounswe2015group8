@@ -160,6 +160,7 @@ public class FeedController {
             JsonObject jsonHeritage = new JsonObject();
             jsonHeritage.addProperty("id", heritagesToRecommend.get(i).getId());
             jsonHeritage.addProperty("title", heritagesToRecommend.get(i).getName());
+            jsonHeritage.addProperty("description", heritagesToRecommend.get(i).getDescription());
             jsonHeritagesRecommend.add(jsonHeritage);
         }
         return jsonHeritagesRecommend.toString();
