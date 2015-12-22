@@ -81,7 +81,7 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
                 memberLocalStore.storeUserData(m);
                 a.resetNavbar();
                 Toast.makeText(getActivity(), "Congratulations " + m.getUsername() + ", you are logged in!", Toast.LENGTH_LONG).show();
-                MainActivity.beginFragment(a, new HomeFragment());
+                MainActivity.beginFragment(a, new HeritagesFeed());
             }
         });
     }

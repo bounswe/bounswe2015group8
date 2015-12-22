@@ -16,7 +16,6 @@ import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.MainActivity;
 import com.cmpe.bounswe2015group8.westory.front.NamedFragment;
 import com.cmpe.bounswe2015group8.westory.front.ProfileFragment;
-import com.cmpe.bounswe2015group8.westory.front.TheTask;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 
 /**
@@ -42,7 +41,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
         sr.getMemberById(m.getId(), new Consumer<Member>() {
             @Override
             public void accept(Member member) {
-                new TheTask(member.getProfilePicture(), ivProfile).execute();
+                //new TheTask(member.getProfilePicture(), ivProfile,67).execute();
                 tvFollowers.setText("Followers: " + member.getFollowers().size());
                 tvFollowing.setText("Following: " + member.getFollowedMembers().size());
                 tvUserName.setText(member.getUsername());

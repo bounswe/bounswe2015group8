@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         if(savedInstanceState == null || !savedInstanceState.containsKey("curFragment")) {
-            MainActivity.beginFragment(this, new HomeFragment());
+            MainActivity.beginFragment(this, new HeritagesFeed());
         } else {
             MainActivity.beginFragment(this,
                     (NamedFragment)getSupportFragmentManager().getFragment(savedInstanceState, "curFragment"));
@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 NamedFragment nf = null;
                 switch (item.getItemId()) {
                     case R.id.navHome:
-                        f = getSupportFragmentManager().findFragmentByTag(HomeFragment.NAME);
-                        nf = (f == null) ? new HomeFragment(): (NamedFragment)f;
+                        f = getSupportFragmentManager().findFragmentByTag(HeritagesFeed.NAME);
+                        nf = (f == null) ? new HeritagesFeed(): (NamedFragment)f;
                         break;
                     case R.id.navHeritages:
                         f = getSupportFragmentManager().findFragmentByTag(HeritagesFragment.NAME);
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navLogin:
                         if (authenticated()) {
                              memberLocalStore.clearMemberData();
-                            nf = new HomeFragment();
+                            nf = new HeritagesFeed();
                         } else {
                             nf = new LoginFragment();
                         }
