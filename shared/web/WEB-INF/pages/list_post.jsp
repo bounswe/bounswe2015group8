@@ -188,7 +188,7 @@
                     <div class="row">
 
                         <div class="col-sm-12 form-group text-right" id="votecount_${post.id}">
-                            Score: ?
+                            Score: ${post.totalVote}
                         </div>
                     </div>
                     <div class="row">
@@ -305,7 +305,7 @@
                                     <div class="row">
 
                                         <div class="col-sm-13 form-group text-right" id="votecount_comment_${comment.id}">
-                                            Score: ?
+                                            Score: ${comment.totalVote}
                                         </div>
                                     </div>
                                     <div class="row">

@@ -17,6 +17,7 @@ public class Post {
     private String title;
     private String content;
     private String place;
+    private int totalVote;
     private Collection<Comment> comments;
     private Collection<Heritage> heritages;
     private Collection<PostVote> votes;
@@ -34,6 +35,7 @@ public class Post {
         this.postDate = postDate;
         this.title = title;
         this.content = content;
+        this.totalVote = 0;
         comments = new HashSet<Comment>();
         heritages = new HashSet<Heritage>();
         votes = new HashSet<PostVote>();
@@ -47,6 +49,7 @@ public class Post {
         this.title = title;
         this.content = content;
         this.place = place;
+        this.totalVote = 0;
         comments = new HashSet<Comment>();
         heritages = new HashSet<Heritage>();
         votes = new HashSet<PostVote>();
@@ -194,6 +197,20 @@ public class Post {
             heritageIds.add(heritage.getId());
         }
         return heritageIds;
+    }
+
+    public void setTotalVote(int totalVote){ this.totalVote = totalVote; }
+
+    public int getTotalVote(){
+        int count = 0;
+        for(PostVote postVote : votes){
+            if(postVote.getVoteType())
+                count += 1;
+            else
+                count -= 1;
+        }
+        this.totalVote = count;
+        return this.totalVote;
     }
 
 }
