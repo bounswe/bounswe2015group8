@@ -60,6 +60,9 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
             @Override
             public void accept(Member mm) {
                 loggedInMember=mm;
+                if(loggedInMember.isFollowed(heritage)){
+                        followBtn.setText("Unfollow");
+                }
             }
         });
         View v = inflater.inflate(R.layout.fragment_heritage_view,container,false);
@@ -89,9 +92,6 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     private void initViews(Bundle args) {
         heritage = args.getParcelable("heritage");
         tvPlace.setText(heritage.getPlace());
-        /*if(loggedInMember.isFollowed(heritage)){
-            followBtn.setText("Unfollow");
-        }*/
         tvCreationDate.setText(heritage.getPostDate());
         tvDescription.setText(heritage.getDescription());
     }

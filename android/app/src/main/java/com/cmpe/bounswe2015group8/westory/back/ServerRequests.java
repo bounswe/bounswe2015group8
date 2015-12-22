@@ -151,6 +151,10 @@ public class ServerRequests{
         if (display) progressDialog.show();
         new RestAsyncTask<>(callback, HttpMethod.POST).execute(follower.getUnFollowHeritageRequestable(followee));
     }
+    public void heritagesFeed(Long id,  Consumer<Heritage[]> callback) {
+        if (display) progressDialog.show();
+        new RestAsyncTask<Heritage[]>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/heritageNewsfeed",id,Heritage[].class) );
+    }
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
         Consumer<T> callback;
         HttpMethod method;
