@@ -23,6 +23,7 @@ import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.HeritageViewAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Media;
+import com.cmpe.bounswe2015group8.westory.model.Member;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 
@@ -45,12 +46,22 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     private SwipeRefreshLayout swipeRefreshLayout;
     private ExpandableListView elvData;
     private LayoutInflater inflater;
+    private Button followBtn;
+    private Member loggedInMember;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
         MemberLocalStore memberLocalStore = new MemberLocalStore(getActivity());
+        Long idd=memberLocalStore.getLoggedInMember().getId();
+        ServerRequests sr = new ServerRequests(getActivity());
+        sr.getMemberById(idd, new Consumer<Member>() {
+            @Override
+            public void accept(Member mm) {
+                loggedInMember=mm;
+            }
+        });
         View v = inflater.inflate(R.layout.fragment_heritage_view,container,false);
         swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.srlHeritageView);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -61,9 +72,11 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         tvDescription = (TextView) header.findViewById(R.id.tvHeritageViewDescriptionValue);
         Button btnEdit = (Button) header.findViewById(R.id.btnHeritageViewEdit);
         Button btnAdd = (Button) header.findViewById(R.id.btnHeritageViewAdd);
+        followBtn= (Button)header.findViewById(R.id.btnHeritageFollow);
         if(memberLocalStore.getUserLoggedIn()) {
             btnEdit.setOnClickListener(this);
             btnAdd.setOnClickListener(this);
+            followBtn.setOnClickListener(this);
         } else {
             btnEdit.setVisibility(View.GONE);
             btnAdd.setVisibility(View.GONE);
@@ -76,6 +89,9 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     private void initViews(Bundle args) {
         heritage = args.getParcelable("heritage");
         tvPlace.setText(heritage.getPlace());
+        /*if(loggedInMember.isFollowed(heritage)){
+            followBtn.setText("Unfollow");
+        }*/
         tvCreationDate.setText(heritage.getPostDate());
         tvDescription.setText(heritage.getDescription());
     }
@@ -94,6 +110,27 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 break;
             case R.id.btnHeritageViewAdd:
                 add();
+                break;
+            case R.id.btnHeritageFollow:
+                if (!loggedInMember.isFollowed(heritage)) {
+                    ServerRequests sr = new ServerRequests(getActivity());
+                    sr.followHeritage(loggedInMember, heritage.getId(), new Consumer<Long>() {
+                        @Override
+                        public void accept(Long followed) {
+                            loggedInMember.follow(heritage);
+                            followBtn.setText("Unfollow");
+                        }
+                    });
+                } else {
+                    ServerRequests sr = new ServerRequests(getActivity());
+                    sr.unfollowHeritage(loggedInMember, heritage.getId(), new Consumer<Long>() {
+                        @Override
+                        public void accept(Long unfollowed) {
+                            loggedInMember.unfollow(heritage);
+                            followBtn.setText("Follow");
+                        }
+                    });
+                }
                 break;
         }
     }

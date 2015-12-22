@@ -87,7 +87,7 @@ public class ServerRequests{
     }
     public void votePost(Post p,boolean voteType,Long ownerId, Consumer<String> callback){
         progressDialog.show();
-        new RestAsyncTask<String>(callback, HttpMethod.POST).execute(p.getVoteRequestable(voteType,ownerId));
+        new RestAsyncTask<String>(callback, HttpMethod.POST).execute(p.getVoteRequestable(voteType, ownerId));
     }
     public void getHeritageById(long id, Consumer<Heritage> callback) {
         if(display) progressDialog.show();
@@ -142,6 +142,14 @@ public class ServerRequests{
     public void unfollowMember(Member follower,Long followee,  Consumer<Long> callback) {
         if (display) progressDialog.show();
         new RestAsyncTask<>(callback, HttpMethod.POST).execute(follower.getUnfollowRequestable(followee));
+    }
+    public void followHeritage(Member follower,Long followee,  Consumer<Long> callback) {
+        if (display) progressDialog.show();
+        new RestAsyncTask<>(callback, HttpMethod.POST).execute(follower.getFollowHeritageRequestable(followee));
+    }
+    public void unfollowHeritage(Member follower,Long followee,  Consumer<Long> callback) {
+        if (display) progressDialog.show();
+        new RestAsyncTask<>(callback, HttpMethod.POST).execute(follower.getUnFollowHeritageRequestable(followee));
     }
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
         Consumer<T> callback;

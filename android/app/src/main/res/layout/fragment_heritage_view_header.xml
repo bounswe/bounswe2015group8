@@ -113,6 +113,18 @@
             android:text="@string/generic_add"
             android:textColor="@color/primary_light"
             android:elevation="@dimen/btn_elevation"/>
+
+        <Button
+            android:id="@+id/btnHeritageFollow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:background="@color/accent"
+            android:text="Follow"
+            android:textColor="@color/primary_light"
+            android:elevation="@dimen/btn_elevation"/>
     </LinearLayout>
+
 </RelativeLayout>
 

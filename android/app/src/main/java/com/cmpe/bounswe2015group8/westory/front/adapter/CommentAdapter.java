@@ -50,49 +50,48 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         btnDownVote = (ImageButton) v.findViewById(R.id.btnCommentDownVote);
         btnUpVote = (ImageButton) v.findViewById(R.id.btnCommentUpVote);
         tvVoteCount.setText("" + c.getNetCount());
-        tvOwner.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NamedFragment nfp = new ProfileFragment();
-                Bundle bp = new Bundle();
-                bp.putLong("memberId", c.getOwnerId());
-                nfp.setArguments(bp);
-                MainActivity.beginFragment(context, nfp);
-            }
-        });
-        btnUpVote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ServerRequests sr = new ServerRequests(getContext());
-                MemberLocalStore memberLocalStore = new MemberLocalStore(getContext());
-                Member m = memberLocalStore.getLoggedInMember();
-                c = getItem(position);
-                sr.voteComment(c, true, m.getId(), new Consumer<String>() {
-                    @Override
-                    public void accept(String vote) {
-                        tvVoteCount.setText("" + vote);
+                switch(v.getId()) {
+                    case R.id.tvCommentSmallOwner:
+                        NamedFragment nfp = new ProfileFragment();
+                        Bundle bp = new Bundle();
+                        bp.putLong("memberId", c.getOwnerId());
+                        nfp.setArguments(bp);
+                        MainActivity.beginFragment(context, nfp);
+                        break;
+                    case R.id.btnCommentUpVote:
+                        ServerRequests sr = new ServerRequests(getContext());
+                        MemberLocalStore memberLocalStore = new MemberLocalStore(getContext());
+                        Member m = memberLocalStore.getLoggedInMember();
+                        c = getItem(position);
+                        sr.voteComment(c, true, m.getId(), new Consumer<String>() {
+                            @Override
+                            public void accept(String vote) {
+                                tvVoteCount.setText("" + vote);
 
-                    }
-                });
-
+                            }
+                        });
+                        break;
+                    case R.id.btnCommentDownVote:
+                        ServerRequests sr2 = new ServerRequests(getContext());
+                        MemberLocalStore memberLocalStore2 = new MemberLocalStore(getContext());
+                        Member m2 = memberLocalStore2.getLoggedInMember();
+                        c = getItem(position);
+                        sr2.voteComment(c, false, m2.getId(), new Consumer<String>() {
+                            @Override
+                            public void accept(String vote) {
+                                tvVoteCount.setText("" + vote);
+                            }
+                        });
+                        break;
+                }
             }
-        });
-
-        btnDownVote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ServerRequests sr = new ServerRequests(getContext());
-                MemberLocalStore memberLocalStore = new MemberLocalStore(getContext());
-                Member m = memberLocalStore.getLoggedInMember();
-                c = getItem(position);
-                sr.voteComment(c, false, m.getId(), new Consumer<String>() {
-                    @Override
-                    public void accept(String vote) {
-                        tvVoteCount.setText("" + vote);
-                    }
-                });
-            }
-        });
+        };
+        tvOwner.setOnClickListener(listener);
+        btnUpVote.setOnClickListener(listener);
+        btnDownVote.setOnClickListener(listener);
 
         return v;
     }
