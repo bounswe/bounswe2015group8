@@ -189,7 +189,11 @@ public class FeedController {
             JsonObject jsonHeritage = new JsonObject();
             jsonHeritage.addProperty("id", heritagesToRecommend.get(i).getId());
             jsonHeritage.addProperty("title", heritagesToRecommend.get(i).getName());
-            jsonHeritage.addProperty("description", heritagesToRecommend.get(i).getDescription());
+            String shortDescription = heritagesToRecommend.get(i).getDescription();
+            if(shortDescription.length() > 30){
+                shortDescription = shortDescription.substring(0,30) + "...";
+            }
+            jsonHeritage.addProperty("description", shortDescription);
             jsonHeritagesRecommend.add(jsonHeritage);
         }
         return jsonHeritagesRecommend.toString();
