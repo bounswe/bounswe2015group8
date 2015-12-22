@@ -2,6 +2,7 @@ package dao;
 
 import model.*;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -23,6 +24,11 @@ public class PostDaoImpl implements PostDao {
         Post post = (Post) s
                 .createQuery("from Post where id=?")
                 .setParameter(0, id).uniqueResult();
+        Hibernate.initialize(post);
+        Hibernate.initialize(post.getOwner());
+        Hibernate.initialize(post.getComments());
+        Hibernate.initialize(post.getVotes());
+        Hibernate.initialize(post.getTags());
         s.close();
         return post;
     }
@@ -95,6 +101,18 @@ public class PostDaoImpl implements PostDao {
         List<Post> posts = s
                 .createQuery("from Post where postDate >= :date")
                 .setParameter("date", date).list();
+        for(Post post : posts){
+            Hibernate.initialize(post);
+            Hibernate.initialize(post.getOwner());
+            Hibernate.initialize(post.getComments());
+            for(Comment comment : post.getComments()){
+                Hibernate.initialize(comment);
+                Hibernate.initialize(comment.getOwner());
+                Hibernate.initialize(comment.getVotes());
+            }
+            Hibernate.initialize(post.getVotes());
+            Hibernate.initialize(post.getTags());
+        }
         s.close();
         return posts;
     }

@@ -31,6 +31,21 @@
         $("#profilePicture").click();
     }
 
+    function followHeritage(heritageId){
+        $.ajax({
+            url: "${contextPath}/followHeritage/" + heritageId,
+            type: "POST",
+            success: function(response) {
+                if(response == -1){
+                    $.notify("You are already following this heritage", "warn", {position:"top center"});
+                }
+                else{
+                    $.notify("You are now following this heritage", "success", {position:"top center"});
+                }
+            }
+        });
+    }
+
     $(document).ready(function(){
         $("#edit_biography").change(function(){
             $("#edit_bio_button").removeAttr('disabled');
@@ -111,7 +126,7 @@
 
                 <div class="caption">
                     <h3>${member.username}</h3>
-                    Member Biography
+                    <i>Member Biography</i>
                     <p id="biography">${member.biography}</p>
                     <textarea style="display: none; width: 100%;" type='text' id='edit_biography'></textarea>
                     Interested in:
@@ -150,10 +165,12 @@
             </c:forEach>
         </div>
 
-        <div class="col-sm-offset-1 col-sm-5" role="group" style="margin-top:25%;">
-            <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton">Add</button>
-            <input style="width:85%;" type="text" class="form-control tokenfield" id="tokenfield" placeholder="Add interested areas as tags..." />
-        </div>
+        <c:if test="${principal.username == member.username}">
+            <div class="col-sm-offset-1 col-sm-5" role="group" style="margin-top:25%;">
+                <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton">Add</button>
+                <input style="width:85%;" type="text" class="form-control tokenfield" id="tokenfield" placeholder="Add interested areas as tags..." />
+            </div>
+        </c:if>
     </div>
 
     <div class="panel panel-default">
@@ -171,6 +188,10 @@
                     <div class="row">
                         <b>
                             <h class="panel-title" style="margin-left:0.5% " name="name" id="name">${heritage.name}</h>
+                            <c:if test="${principal.username != member.username}">
+                            <button style="float:right; margin-right:1%" type="button" class="btn btn-success followbutton"
+                                    onclick="followHeritage(${heritage.id})" id="followbutton_${heritage.id}">Follow</button>
+                            </c:if>
                         </b>
                     </div>
                 </div>
