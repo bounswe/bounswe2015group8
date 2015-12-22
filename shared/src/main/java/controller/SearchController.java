@@ -74,6 +74,7 @@ public class SearchController {
         // Check whether there are enough results
         if(posts.size() < MIN_LIMIT){
             List<Tag> additionalTags = tagService.sortByCount(tagService.getSemanticallyRelatedTags(tagPieces[0], tagPieces[1]));
+            logger.info("ADDITIONAL: " + additionalTags.size());
             for(Tag additionalTag : additionalTags){
                 List<Post> additionalPosts = postService.getPostsByTag(additionalTag);
                 for(int i = 0; i < additionalPosts.size(); i++){
@@ -125,6 +126,7 @@ public class SearchController {
         // Check whether there are enough results
         if(heritages.size() < MIN_LIMIT){
             List<Tag> additionalTags = tagService.sortByCount(tagService.getSemanticallyRelatedTags(tagPieces[0], tagPieces[1]));
+            logger.info("ADDITIONAL: " + additionalTags.size());
             for(Tag additionalTag : additionalTags){
                 List<Heritage> additionalHeritages = heritageService.getHeritagesByTag(additionalTag);
                 for(int i = 0; i < additionalHeritages.size(); i++){

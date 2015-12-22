@@ -40,6 +40,16 @@ public class TagDaoImpl implements TagDao {
         return tag;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Tag> getTagsByText(String tagText){
+        Session s = getSessionFactory().openSession();
+        List<Tag> tags =  s
+                .createQuery("from Tag where tagText=?")
+                .setParameter(0, tagText).list();
+        s.close();
+        return tags;
+    }
+
     public Tag getTagByTextAndContext(String tagText, String tagContext){
         Session s = getSessionFactory().openSession();
         Tag tag = (Tag) s

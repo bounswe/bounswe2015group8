@@ -127,8 +127,8 @@ public class TagService {
         //String tagContext = tag.getTagContext();
         List<Tag> relatedTags = new ArrayList<Tag>();
         List<Tag> tagsSameContext = tagDao.getTagsByContext(tagContext);
-        if(tagsSameContext == null){
-            return relatedTags;
+        if(tagsSameContext.size() == 0){
+            return tagDao.getTagsByText(tagText);
         }
         for(Tag relatedTag : tagsSameContext){
             if(!tagText.equals(relatedTag.getTagText()) && !relatedTags.contains(relatedTag)){
