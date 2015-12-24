@@ -12,6 +12,15 @@ public class FollowTag {
     private long followerId;
     private long tagId;
 
+    public FollowTag(){
+
+    }
+
+    public FollowTag(long followerId, long tagId) {
+        this.followerId = followerId;
+        this.tagId = tagId;
+    }
+
     @Id
     @Column(name = "FOLLOWER_ID")
     public long getFollowerId() {

@@ -44,6 +44,15 @@ public class TagService {
         return new String[]{tagText, tagContext};
     }
 
+    public boolean doesTagExist(String tagText, String tagContext){
+        return tagDao.doesTagExist(tagText, tagContext);
+    }
+
+    public Tag saveTag(String tagText, String tagContext){
+        Tag tag = new Tag(tagText, tagContext);
+        return tagDao.saveTag(tag);
+    }
+
     public List<Tag> getTagsByHeritage(Heritage heritage){
         return tagDao.getTagsByHeritage(heritage);
     }
@@ -118,8 +127,8 @@ public class TagService {
         //String tagContext = tag.getTagContext();
         List<Tag> relatedTags = new ArrayList<Tag>();
         List<Tag> tagsSameContext = tagDao.getTagsByContext(tagContext);
-        if(tagsSameContext == null){
-            return relatedTags;
+        if(tagsSameContext.size() == 0){
+            return tagDao.getTagsByText(tagText);
         }
         for(Tag relatedTag : tagsSameContext){
             if(!tagText.equals(relatedTag.getTagText()) && !relatedTags.contains(relatedTag)){

@@ -40,6 +40,16 @@ public class TagDaoImpl implements TagDao {
         return tag;
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Tag> getTagsByText(String tagText){
+        Session s = getSessionFactory().openSession();
+        List<Tag> tags =  s
+                .createQuery("from Tag where tagText=?")
+                .setParameter(0, tagText).list();
+        s.close();
+        return tags;
+    }
+
     public Tag getTagByTextAndContext(String tagText, String tagContext){
         Session s = getSessionFactory().openSession();
         Tag tag = (Tag) s
@@ -57,6 +67,27 @@ public class TagDaoImpl implements TagDao {
                 .createQuery("from Tag where tagContext=?")
                 .setParameter(0, context).list();
         return tags;
+    }
+
+    public boolean doesTagExist(String tagText, String tagContext){
+        Session s = getSessionFactory().openSession();
+        int count;
+        if(tagContext != null && !tagContext.equals("")){
+            count = s
+                    .createQuery("from Tag where tagText=? and tagContext=?")
+                    .setParameter(0, tagText)
+                    .setParameter(1, tagContext).list().size();
+        }
+        else{
+            count = s
+                    .createQuery("from Tag where tagText=? and tagContext is null")
+                    .setParameter(0, tagText).list().size();
+        }
+        s.close();
+        if(count > 0)
+            return true;
+        else
+            return false;
     }
 
     @SuppressWarnings("unchecked")

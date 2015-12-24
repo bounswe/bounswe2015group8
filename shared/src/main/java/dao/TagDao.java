@@ -11,9 +11,11 @@ import java.util.List;
 public interface TagDao {
     Tag getTagById(long id);
     Tag getTagByText(String tagText);
+    List<Tag> getTagsByText(String tagText);
     Tag getTagByTextAndContext(String tagText, String tagContext);
     String[] getTagContextsByText(String text);
     List<Tag> getTagsByContext(String context);
+    boolean doesTagExist(String tagText, String tagContext);
 
     List<Tag> getTagsByHeritage(Heritage heritage);
     List<Tag> getTagsByPost(Post post);

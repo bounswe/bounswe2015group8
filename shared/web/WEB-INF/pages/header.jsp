@@ -58,21 +58,27 @@
                     $.notify("We don't have any recommendation for you, sorry :(", "info");
                 }
                 else{
-                    var html = "<h3 style='color:orangered;'>Would you like to see posts of the following heritages?</h3>";
+                    var html = "<div class='panel panel-success'>" +
+                            "<div class='panel-heading'>" +
+                            "<b><h class='panel-title' style='margin-left:0.5%'>Would you like to see posts of the following heritages?</h></b></div>";
                     console.log(response);
                     for(var i = 0; i < response.length; i++){
-                        html += "Name: <a style='color:black; font-weight:bold;' href='${contextPath}/show_posts/"+response[i]['id']+"'>"+response[i]['title']+"</a>";
-                        html += "<br>";
-                    }
-                    $.notify.addStyle('recommend', {
-                        html: "<div><span data-notify-html/></div>",
-                        classes: {
-                            base: {
-                                "white-space": "nowrap",
-                                "background-color": "lightblue",
-                                "padding": "5px"
-                            }
+                        var rTitle = 'no title';
+                        if(response[i]['title'] != null){
+                            rTitle = response[i]['title'];
                         }
+                        html += "<div class='row col-md-offset-1'>";
+                        html += "<div class='row'>Name: <a style='color:black; font-weight:bold;' href='${contextPath}/show_posts/"+response[i]['id']+"'>"+rTitle+"</a></div>";
+                        html += "<div class='row'>Description:<span style='max-width:300px;overflow:hidden;text-overflow:ellipsis'> "+response[i]['description']+"</span></div>";
+                        html += "</div><br>";
+
+                    }
+                    html += "</div>";
+
+                    $.notify.addStyle('recommend', {
+                        html: "<div><span data-notify-html/></div>"
+
+
                     });
                     $.notify(html, {style: 'recommend'});
                 }
@@ -84,16 +90,27 @@
 <body>
 <%@ include file="/WEB-INF/pages/templates/advanced-search.html" %>
 
+<sec:authorize access="isAuthenticated()">
+    <sec:authentication var="principal" property="principal" />
+    <sec:authorize var="isAuthorized" access="isAuthenticated()" />
+</sec:authorize>
 
 <nav class="navbar navbar-default navbar-static-top header">
-    <sec:authorize var="isAuthorized" access="isAuthenticated()" />
+
     <div class="container-fluid"  style="background-color: darkblue">
         <div class="navbar-header">
-            <a class="navbar-brand" href="${contextPath}/feed" style="color: floralwhite">&#x2655; WeStory</a>
+            <c:if test="${isAuthorized}">
+                <a class="navbar-brand" href="${contextPath}/feed" style="color: floralwhite">&#x2655; WeStory</a>
+            </c:if>
+            <c:if test="${!isAuthorized}">
+                <a class="navbar-brand" href="${contextPath}/show_heritages" style="color: floralwhite">&#x2655; WeStory</a>
+            </c:if>
+
         </div>
         <c:if test="${isAuthorized}">
             <a style="float:right; margin-top: 0.5%;" href="${contextPath}/logout" class="btn btn-default" role="button">Log Out</a>
-            <a style="float:right; margin-top: 0.5%; margin-right: 0.5%; font-size: 30px; color: floralwhite" href="${contextPath}/profile"><span class="glyphicon glyphicon-user"></span></a>
+            <a style="float:right; margin-top: 0.5%; margin-right: 0.5%; font-size: 30px; color: floralwhite" href="${contextPath}/profile/${principal.username}"><span class="glyphicon glyphicon-user"></span></a>
+            <a class="btn btn-default" role="button" style="float:right; margin-top: 0.5%; margin-right: 0.5%;" onclick="recommendHeritage();">Recommend</a>
         </c:if>
         <c:if test="${!isAuthorized}">
             <a style="float:right; margin-top: 0.5%;" href="${contextPath}/login" class="btn btn-default" role="button">Log In</a>
@@ -108,11 +125,6 @@
                 <button onclick="open_search_modal();" class="btn" style="background-color: #9a4ce2">Advanced Search</button>
             </div>
         </div>
-        <sec:authorize access="isAuthenticated()">
-            <div class="navbar-header" style="margin-left:85%; margin-top:-2.5%; width:10%;">
-                <button class="btn btn-info" onclick="recommendHeritage();">Recommend</button>
-            </div>
-        </sec:authorize>
     </div>
 </nav>
 

@@ -103,6 +103,10 @@
                window.location.href = "${contextPath}/feed";
            }
         });
+
+        if(window.location.href.indexOf("feed") > -1){
+            $("#feed_type_div").css('display', '');
+        }
     });
 
     function follow(memberId, memberName){
@@ -136,10 +140,6 @@
     }
 </script>
 
-<sec:authorize access="isAuthenticated()">
-    <sec:authentication var="principal" property="principal" />
-</sec:authorize>
-
 <c:if test="${allContent.heritages != null}">
     <div class="well">
         <div class="row">
@@ -159,12 +159,13 @@
         </div>
     </div>
 </c:if>
-
-    FEED TYPE:
-    <select id="feed_type">
-        <option value="post" selected>POST</option>
-        <option value="heritage">HERITAGE</option>
-    </select>
+    <p id="feed_type_div" style="display:none;">
+        FEED TYPE:
+        <select id="feed_type">
+            <option value="post" selected>POST</option>
+            <option value="heritage">HERITAGE</option>
+        </select>
+    </p>
 
 <c:forEach items="${posts}" var="post">
     <div class="row">
@@ -187,7 +188,7 @@
                     <div class="row">
 
                         <div class="col-sm-12 form-group text-right" id="votecount_${post.id}">
-                            Score: ?
+                            Score: ${post.totalVote}
                         </div>
                     </div>
                     <div class="row">
@@ -217,14 +218,14 @@
                                             ${post.owner.username}
                                     </span>
                                 </div>
-                                <sec:authorize access="isAuthenticated()">
+                                <c:if test="${isAuthorized}">
                                     <c:if test="${principal.username != post.owner.username}">
                                         <button class="btn btn-success followUserButton" style="margin-left: 1.2%" onclick="follow('${post.owner.id}', '${post.owner.username}');"
                                                 type="button" class="follow" id="followUserButton_${post.owner.id}">Follow</button>
                                         <button class="btn btn-danger followUserButton" style="margin-left: 1.2%" onclick="unfollow('${post.owner.id}', '${post.owner.username}');"
                                                 type="button" class="unfollow" id="unfollowUserButton_${post.owner.id}">Unfollow</button>
                                     </c:if>
-                                </sec:authorize>
+                                </c:if>
                             </div>
                             <div class="row">
                                 <label for="place_${post.id}" class="col-sm-2 control-label">Place</label>
@@ -257,14 +258,14 @@
                                     </p>
                                 </div>
                             </div>
-                            <sec:authorize access="isAuthenticated()">
+                            <c:if test="${isAuthorized}">
                                 <div class="row">
                                     <div class="col-sm-offset-2 col-sm-5" role="group">
                                         <button style="float:right;" type="button" class="btn btn-success tagbutton" id="tagbutton_${post.id}">Add</button>
                                         <input style="width:85%;" type="text" class="form-control tokenfield" id="tokenfield_${post.id}" placeholder="Add tags..." />
                                     </div>
                                 </div>
-                            </sec:authorize>
+                            </c:if>
                         </div>
                         <c:forEach var="media" items="${medias}">
                             <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage!=true}">
@@ -304,7 +305,7 @@
                                     <div class="row">
 
                                         <div class="col-sm-13 form-group text-right" id="votecount_comment_${comment.id}">
-                                            Score: ?
+                                            Score: ${comment.totalVote}
                                         </div>
                                     </div>
                                     <div class="row">
@@ -316,14 +317,14 @@
                                 <div class="col-sm-10">
                                     <blockquote>
                                         <p><strong>by ${comment.owner.username}</strong>
-                                            <sec:authorize access="isAuthenticated()">
+                                            <c:if test="${isAuthorized}">
                                                 <c:if test="${principal.username != comment.owner.username}">
                                                     <button class="btn btn-success followUserButton" style="margin-left: 1.2%" onclick="follow('${comment.owner.id}', '${comment.owner.username}');"
                                                             type="button" id="followUserButton_${comment.owner.username}">Follow</button>
                                                     <button class="btn btn-danger followUserButton" style="margin-left: 1.2%" onclick="unfollow('${comment.owner.id}', '${comment.owner.username}');"
                                                             type="button" id="unfollowUserButton_${comment.owner.username}">Unfollow</button>
                                                 </c:if>
-                                            </sec:authorize>
+                                            </c:if>
                                         </p>
                                         <p>"${comment.content}"</p>
                                         <footer>${comment.lastEditedDate}</footer>
@@ -342,7 +343,7 @@
 
         </div>
 
-        <sec:authorize access="isAuthenticated()">
+        <c:if test="${isAuthorized}">
             <div class="panel-footer">
             <div class="row">
                 <div class="col-sm-offset-8 col-sm-4" role="group">
@@ -361,7 +362,7 @@
                 </div>
             </div>
         </div>
-        </sec:authorize>
+        </c:if>
     </div>
 </c:forEach>
     <div class="row">

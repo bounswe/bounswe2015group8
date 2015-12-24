@@ -14,17 +14,19 @@ public class Comment {
     private Timestamp lastEditedDate;
     private Member owner;
     private Post post;
+    private int totalVote;
     private Collection<CommentVote> votes;
     public Comment() {
-        votes = new HashSet<CommentVote>();
+        this.votes = new HashSet<CommentVote>();
+        this.totalVote = 0;
     }
-    public Comment(Member owner, Post post, String content, Timestamp postDate
-    ) {
+    public Comment(Member owner, Post post, String content, Timestamp postDate) {
         this.owner = owner;
         this.post = post;
         this.content = content;
         this.postDate = postDate;
         this.votes = new HashSet<CommentVote>();
+        this.totalVote = 0;
     }
     public long getId() {
         return id;
@@ -105,5 +107,19 @@ public class Comment {
 
     public void setVotes(Collection<CommentVote> votes) {
         this.votes = votes;
+    }
+
+    public void setTotalVote(int totalVote){ this.totalVote = totalVote; }
+
+    public int getTotalVote(){
+        int count = 0;
+        for(CommentVote commentVote : votes){
+            if(commentVote.getVoteType())
+                count += 1;
+            else
+                count -= 1;
+        }
+        this.totalVote = count;
+        return this.totalVote;
     }
 }

@@ -92,15 +92,18 @@ public class HeritageUtility {
     }
 
     public static List<Heritage> heritageNewsfeed(long id) {
+        if(followHeritageService == null){
+            followHeritageService = new FollowHeritageService(Main.getSessionFactory());
+        }
         List<Heritage> heritages = new ArrayList<>();
 
         heritages = followHeritageService.getFollowedHeritagesByMemberId(id);
-        heritages = heritageService.sortByPopularity(heritages);
+        heritages = getHeritageService().sortByPopularity(heritages);
 
         // Here we will add the heritages with followed tags (Interested in...)
 
-        heritages.addAll(heritageService.getRecentlyMostPopularHeritages());
-        heritages = heritageService.removeDuplicates(heritages);
+        heritages.addAll(getHeritageService().getRecentlyMostPopularHeritages());
+        heritages = getHeritageService().removeDuplicates(heritages);
         return heritages;
     }
 
