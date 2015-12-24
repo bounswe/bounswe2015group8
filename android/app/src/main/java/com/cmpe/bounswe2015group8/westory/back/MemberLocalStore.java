@@ -25,7 +25,7 @@ public class MemberLocalStore {
         spEditor.putString("username", m.getUsername());
         spEditor.putString("email", m.getEmail());
         spEditor.putString("profilePicture",m.getProfilePicture());
-        spEditor.putBoolean("loggedIn",true);
+        spEditor.putBoolean("loggedIn", true);
         spEditor.commit();
     }
 

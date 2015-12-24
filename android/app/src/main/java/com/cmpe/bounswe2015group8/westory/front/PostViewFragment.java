@@ -17,14 +17,11 @@ import android.widget.Toast;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.CloudinaryAPI;
-import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
 import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.PostViewAdapter;
-import com.cmpe.bounswe2015group8.westory.model.Comment;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
-import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 

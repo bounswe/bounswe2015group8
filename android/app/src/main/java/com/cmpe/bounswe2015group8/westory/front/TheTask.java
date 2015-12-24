@@ -18,11 +18,13 @@ public class TheTask extends AsyncTask<Void,Void,Void> {
     Bitmap image;
     String imageUrl = "";
     ImageView imgView;
+    int maxHeight;
 
-    public TheTask(String link, ImageView imgV) {
+    public TheTask(String link, ImageView imgV,int max) {
         super();
         imageUrl = link;
         imgView = imgV;
+        maxHeight=max;
     }
 
     @Override

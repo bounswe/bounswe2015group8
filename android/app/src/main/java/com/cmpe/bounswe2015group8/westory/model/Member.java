@@ -194,6 +194,13 @@ public class Member implements Parcelable {
         }
         return false;
     }
+    public boolean isFollowed(Heritage heritage) {
+        for (Heritage h : followedHeritages) {
+            if (h.getId() == heritage.getId())
+                return true;
+        }
+        return false;
+    }
 
     public void setFollowedHeritages(Collection<Heritage> followedHeritages) {
         this.followedHeritages = followedHeritages;
@@ -244,6 +251,13 @@ public class Member implements Parcelable {
         followedMembers.remove(other);
         other.followers.remove(this);
     }
+    public void follow(Heritage other) {
+        followedHeritages.add(other);
+    }
+
+    public void unfollow(Heritage other) {
+        followedHeritages.remove(other);
+    }
 
     public void followHeritage(Heritage heritage) {
         followedHeritages.add(heritage);
@@ -285,6 +299,18 @@ public class Member implements Parcelable {
         dataToSend.put("followerId", Long.toString(id));
         dataToSend.put("followeeId", Long.toString(followee));
         return new Requestable<Long>("/api/unfollow",dataToSend,Long.class);
+    }
+    public Requestable<Long> getFollowHeritageRequestable(Long followee) {
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("followerId", Long.toString(id));
+        dataToSend.put("heritageId", Long.toString(followee));
+        return new Requestable<Long>("/api/followHeritage",dataToSend,Long.class);
+    }
+    public Requestable<Long> getUnFollowHeritageRequestable(Long followee) {
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("followerId", Long.toString(id));
+        dataToSend.put("heritageId", Long.toString(followee));
+        return new Requestable<Long>("/api/unfollowHeritage",dataToSend,Long.class);
     }
 
     @Override
