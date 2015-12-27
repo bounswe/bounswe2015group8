@@ -22,7 +22,13 @@ public interface HeritageDao {
 
     List<Heritage> getHeritagesByTag(Tag tag);
 
+    List<Heritage> getHeritagesContainName(String name);
+
+    List<Heritage> getHeritagesContainDescription(String description);
+
     List<Heritage> getHeritagesCreatedAfter(Timestamp date);
+
+    List<Heritage> getHeritagesCreatedBefore(Timestamp date);
 
     int countPostsInHeritage(Heritage heritage);
 

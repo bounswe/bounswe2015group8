@@ -73,8 +73,37 @@ public class HeritageDaoImpl implements HeritageDao {
     public List<Heritage> getHeritagesCreatedAfter(Timestamp date){
         Session s = getSessionFactory().openSession();
         List<Heritage> heritages = s
-                .createQuery("from Heritage where postDate > :date")
+                .createQuery("from Heritage where postDate >= :date")
                 .setParameter("date", date).list();
+        return heritages;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Heritage> getHeritagesCreatedBefore(Timestamp date){
+        Session s = getSessionFactory().openSession();
+        List<Heritage> heritages = s
+                .createQuery("from Heritage where postDate <= :date")
+                .setParameter("date", date).list();
+        return heritages;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Heritage> getHeritagesContainName(String name){
+        Session s = getSessionFactory().openSession();
+        List<Heritage> heritages = s
+                .createQuery("from Heritage where name like ?")
+                .setString(0, "%"+name+"%").list();
+        s.close();
+        return heritages;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Heritage> getHeritagesContainDescription(String description){
+        Session s = getSessionFactory().openSession();
+        List<Heritage> heritages = s
+                .createQuery("from Heritage where description like ?")
+                .setString(0, "%"+description+"%").list();
+        s.close();
         return heritages;
     }
 
