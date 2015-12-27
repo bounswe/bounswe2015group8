@@ -214,8 +214,81 @@ public class SearchController {
                                        @RequestParam(value = "endEditDate", required = false) String endEditDate,
                                        @RequestParam(value = "ownerName", required = false) String username,
                                        @RequestParam(value = "title", required = false) String title,
-                                       @RequestParam(value = "content", required = false) String content
-                                       ) throws ParseException{
+                                       @RequestParam(value = "content", required = false) String content,
+                                       @RequestParam(value = "searchType") String searchType) throws ParseException{
+        if(searchType.equals("POST")){ // If it is a search for POST
+            return advancedSearchPosts(beginPostDate, endPostDate, beginEditDate, endEditDate, username, title, content);
+        }
+        else{                          // If it is a search for HERITAGE
+            return advancedSearchHeritages(beginPostDate, endPostDate, title, content);
+        }
+    }
+
+
+    public ModelAndView advancedSearchHeritages(String beginPostDate, String endPostDate, String name, String description) throws ParseException{
+        final Session session = Main.getSession();
+        HashSet<Heritage> heritages = new HashSet<>(session.createCriteria(Heritage.class).list());
+
+        logger.info("WE BEGIN!");
+        logger.info("SIZE " + heritages.size());
+        if(beginPostDate != null && !beginPostDate.equals("")){
+            logger.info("begin post date filter...");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(sdf.parse(beginPostDate));
+            HashSet<Heritage> heritagesFiltered = new HashSet<>(heritageService.getHeritagesCreatedAfter(calendar));
+            heritages.retainAll(heritagesFiltered);
+            logger.info("SIZE " + heritages.size());
+            logger.info("calendar " + calendar.getTime());
+        }
+
+        if(endPostDate != null && !endPostDate.equals("")){
+            logger.info("end post date filter...");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(sdf.parse(endPostDate));
+            HashSet<Heritage> heritagesFiltered = new HashSet<>(heritageService.getHeritagesCreatedBefore(calendar));
+            heritages.retainAll(heritagesFiltered);
+            logger.info("SIZE " + heritages.size());
+            logger.info("calendar " + calendar.getTime());
+        }
+
+        if(name != null && !name.equals("")){
+            logger.info("name filter...");
+            HashSet<Heritage> heritagesFiltered = new HashSet<>(heritageService.getHeritagesContainName(name));
+            heritages.retainAll(heritagesFiltered);
+            logger.info("SIZE " + heritages.size());
+        }
+
+        if(description != null && !description.equals("")){
+            logger.info("description filter...");
+            HashSet<Heritage> heritagesFiltered = new HashSet<>(heritageService.getHeritagesContainDescription(description));
+            heritages.retainAll(heritagesFiltered);
+            logger.info("SIZE " + heritages.size());
+        }
+        logger.info("WE FINISH!");
+        logger.info("SIZE " + heritages.size());
+
+        List<Heritage> sortedHeritages = heritageService.sortByPopularity(new ArrayList<>(heritages));
+        for(Heritage heritage : sortedHeritages){
+            session.refresh(heritage);
+            Hibernate.initialize(heritage);
+            Hibernate.initialize(heritage.getFollowers());
+            Hibernate.initialize(heritage.getTags());
+        }
+
+        List medias = session.createCriteria(Media.class).list();
+        List allTags = session.createCriteria(Tag.class).list();
+        Map<String, List> allContent = new HashMap<String, List>();
+        allContent.put("heritages", sortedHeritages);
+        allContent.put("medias", medias);
+        allContent.put("allTags", allTags);
+        session.close();
+        return new ModelAndView("list_heritage", "allContent", allContent);
+    }
+
+    public ModelAndView advancedSearchPosts(String beginPostDate, String endPostDate, String beginEditDate, String endEditDate,
+                                            String username, String title, String content) throws ParseException{
         final Session session = Main.getSession();
         HashSet<Post> posts = new HashSet<>(session.createCriteria(Post.class).list());
 
