@@ -328,4 +328,58 @@
             <key-property name="tagId" column="TAG_ID"/>
         </composite-id>
     </class>
+    <class name="model.Gamification" table="gamification" schema="" catalog="cmpe451_db">
+        <id name="id">
+            <column name="ID" sql-type="bigint" not-null="true"/>
+            <generator class="identity"/>
+        </id>
+        <property name="postNum">
+            <column name="POST_NUM" sql-type="bigint" default="0"/>
+        </property>
+        <property name="postLevel">
+            <column name="POST_LEVEL" sql-type="int" default="0"/>
+        </property>
+        <property name="heritageNum">
+            <column name="HERITAGE_NUM" sql-type="bigint" default="0"/>
+        </property>
+        <property name="heritageLevel">
+            <column name="HERITAGE_LEVEL" sql-type="int" default="0"/>
+        </property>
+        <property name="followerNum">
+            <column name="FOLLOWER_NUM" sql-type="bigint" default="0"/>
+        </property>
+        <property name="followerLevel">
+            <column name="FOLLOWER_LEVEL" sql-type="int" default="0"/>
+        </property>
+        <property name="followeeNum">
+            <column name="FOLLOWEE_NUM" sql-type="bigint" default="0"/>
+        </property>
+        <property name="followeeLevel">
+            <column name="FOLLOWEE_LEVEL" sql-type="int" default="0"/>
+        </property>
+        <property name="commentNum">
+            <column name="COMMENT_NUM" sql-type="bigint" default="0"/>
+        </property>
+        <property name="commentLevel">
+            <column name="COMMENT_LEVEL" sql-type="int" default="0"/>
+        </property>
+        <property name="upvoteNum">
+            <column name="UPVOTE_NUM" sql-type="bigint" default="0"/>
+        </property>
+        <property name="upvoteLevel">
+            <column name="UPVOTE_LEVEL" sql-type="int" default="0"/>
+        </property>
+        <property name="downvoteNum">
+            <column name="DOWNVOTE_NUM" sql-type="bigint" default="0"/>
+        </property>
+        <property name="downvoteLevel">
+            <column name="DOWNVOTE_LEVEL" sql-type="int" default="0"/>
+        </property>
+        <property name="overallLevel">
+            <column name="OVERALL_LEVEL" sql-type="int" default="0" />
+        </property>
+        <many-to-one name="user" class="model.Member" cascade="save-update">
+            <column name="USER_ID" not-null="true"/>
+        </many-to-one>
+    </class>
 </hibernate-mapping>
