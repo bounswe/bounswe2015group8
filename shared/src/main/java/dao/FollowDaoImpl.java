@@ -4,6 +4,7 @@ import api.MemberUtility;
 import model.Follow;
 import model.Heritage;
 import model.Member;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,6 +27,9 @@ public class FollowDaoImpl implements FollowDao {
         Member member = (Member)s
                 .createQuery("from Member where id=?")
                 .setParameter(0, id).uniqueResult();
+        for(Member follower : member.getFollowers()){
+            Hibernate.initialize(follower);
+        }
         s.close();
         return member.getFollowers();
     }

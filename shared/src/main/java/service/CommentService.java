@@ -40,6 +40,10 @@ public class CommentService {
         return commentDao.saveComment(comment, post);
     }
 
+    public long getCommentNumber(Member member){
+        return getCommentsByMember(member).size();
+    }
+
     public SessionFactory getSessionFactory(){
         return commentDao.getSessionFactory();
     }

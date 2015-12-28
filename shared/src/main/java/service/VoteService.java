@@ -91,4 +91,34 @@ public class VoteService {
     public void deletePostVote(PostVote postVote){
         voteDao.deletePostVote(postVote);
     }
+
+    public long getUpvoteNum(Member member){
+        long num = 0;
+        for(CommentVote commentVote : getCommentVotesByMember(member)){
+            if(commentVote.getVoteType()){
+                num++;
+            }
+        }
+        for(PostVote postVote : getPostVotesByMember(member)){
+            if(postVote.getVoteType()){
+                num++;
+            }
+        }
+        return num;
+    }
+
+    public long getDownvoteNum(Member member){
+        long num = 0;
+        for(CommentVote commentVote : getCommentVotesByMember(member)){
+            if(!commentVote.getVoteType()){
+                num++;
+            }
+        }
+        for(PostVote postVote : getPostVotesByMember(member)){
+            if(!postVote.getVoteType()){
+                num++;
+            }
+        }
+        return num;
+    }
 }
