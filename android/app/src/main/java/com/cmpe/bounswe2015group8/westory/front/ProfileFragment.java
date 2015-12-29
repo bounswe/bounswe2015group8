@@ -124,7 +124,7 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
         String s=member.getProfilePicture();
         if(!s.equals("")) { //if user has a picture than show it
             profPicUrl = s;
-            new TheTask(profPicUrl,iv,100).execute();
+            new TheTask(profPicUrl,iv,200).execute();
         } else {
             iv.setImageResource(R.drawable.ic_image_black_48dp);
         }

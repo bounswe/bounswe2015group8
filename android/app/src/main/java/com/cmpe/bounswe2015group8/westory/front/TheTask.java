@@ -37,7 +37,8 @@ public class TheTask extends AsyncTask<Void,Void,Void> {
     protected Void doInBackground(Void... params) {
 
         try {
-            image = downloadBitmap(imageUrl);
+            image=decodeSampledBitmapFromResource(imageUrl, maxHeight, maxHeight);
+            //image = downloadBitmap(imageUrl);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,7 +54,7 @@ public class TheTask extends AsyncTask<Void,Void,Void> {
 
     }
 
-    private Bitmap downloadBitmap(String urlStr) {
+    /*private Bitmap downloadBitmap(String urlStr) {
         try {
             URL url = new URL(urlStr);
             HttpURLConnection connection = (HttpURLConnection) url
@@ -67,5 +68,50 @@ public class TheTask extends AsyncTask<Void,Void,Void> {
             e.printStackTrace();
             return null;
         }
+    }*/
+    public static Bitmap decodeSampledBitmapFromResource(String urlStr,int reqWidth, int reqHeight) throws IOException{
+        URL url = new URL(urlStr);
+        HttpURLConnection connection = (HttpURLConnection) url
+                .openConnection();
+        connection.setDoInput(true);
+        connection.connect();
+        InputStream input = connection.getInputStream();
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(input, null, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        System.out.println("aaloo: " + options.inSampleSize);
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        connection = (HttpURLConnection) url
+                .openConnection();
+        connection.setDoInput(true);
+        connection.connect();
+        input = connection.getInputStream();
+        return BitmapFactory.decodeStream(input, null, options);
+    }
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }
