@@ -23,10 +23,10 @@ import service.*;
 public class GamificationController {
     private Logger logger = Logger.getLogger(GamificationController.class);
     private int[] postLevelLimits = {1, 10, 25, 50, 100};
-    //private int[] heritageLevelLimits = {1, 10, 25, 50, 100};  // only after heritage model is updated
+    //private int[] heritageLevelLimits = {1, 5, 10, 25, 50};  // only after heritage model is updated
     private int[] followLevelLimits = {1, 10, 25, 50, 100};
-    private int[] commentLevelLimits = {1, 15, 30, 75, 150};
-    private int[] voteLevelLimits = {1, 20, 50, 100, 200};
+    private int[] commentLevelLimits = {1, 10, 25, 50, 200};
+    private int[] voteLevelLimits = {1, 25, 50, 100, 200};
 
     MemberDetailsService memberService;
     PostService postService;
