@@ -52,12 +52,15 @@ public class GamificationController {
     @RequestMapping(value = "/checkAchievements", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String achievements(){
+        JsonObject achievementsUnlocked = new JsonObject();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
+        if(username.equals("anonymousUser")){
+            return achievementsUnlocked.toString();
+        }
         Member currentUser = memberService.getMemberByUsername(username);
 
         Gamification gamification = gamificationService.getGamification(currentUser);
-        JsonObject achievementsUnlocked = new JsonObject();
 
         // Checking Post Num and Level
         long postNum = postService.getPostNumber(currentUser);
@@ -65,7 +68,7 @@ public class GamificationController {
             int postLevel = gamification.getPostLevel();
             if(postNum >= postLevelLimits[postLevel]){
                 gamificationService.incrementPostLevel(gamification);
-                achievementsUnlocked.addProperty("postLevel", gamification.getPostLevel());
+                achievementsUnlocked.addProperty("post", gamification.getPostLevel());
             }
         }
 
@@ -76,7 +79,7 @@ public class GamificationController {
             int heritageLevel = gamification.getHeritageLevel();
             if(heritageNum >= heritageLevelLimits[heritageLevel]){
                 gamificationService.incrementHeritageLevel(gamification);
-                achievementsUnlocked.addProperty("heritageLevel", gamification.getHeritageLevel());
+                achievementsUnlocked.addProperty("heritage", gamification.getHeritageLevel());
             }
         }
         */
@@ -87,7 +90,7 @@ public class GamificationController {
             int followerLevel = gamification.getFollowerLevel();
             if(followerNum >= followLevelLimits[followerLevel]){
                 gamificationService.incrementFollowerLevel(gamification);
-                achievementsUnlocked.addProperty("followerLevel", gamification.getFollowerLevel());
+                achievementsUnlocked.addProperty("follower", gamification.getFollowerLevel());
             }
         }
 
@@ -97,7 +100,7 @@ public class GamificationController {
             int followeeLevel = gamification.getFolloweeLevel();
             if(followeeNum >= followLevelLimits[followeeLevel]){
                 gamificationService.incrementFolloweeLevel(gamification);
-                achievementsUnlocked.addProperty("followeeLevel", gamification.getFolloweeLevel());
+                achievementsUnlocked.addProperty("followee", gamification.getFolloweeLevel());
             }
         }
 
@@ -107,17 +110,19 @@ public class GamificationController {
             int commentLevel = gamification.getCommentLevel();
             if(commentNum >= commentLevelLimits[commentLevel]){
                 gamificationService.incrementCommentLevel(gamification);
-                achievementsUnlocked.addProperty("commentLevel", gamification.getCommentLevel());
+                achievementsUnlocked.addProperty("comment", gamification.getCommentLevel());
             }
         }
 
         // Checking Upvote Num and Level
         long upvoteNum = voteService.getUpvoteNum(currentUser);
+        logger.info("Upvote num: " + upvoteNum);
+        logger.info("Gamification upvote: " + gamification.getUpvoteNum());
         if(gamification.getUpvoteNum() != upvoteNum){
             int upvoteLevel = gamification.getUpvoteLevel();
             if(upvoteNum >= voteLevelLimits[upvoteLevel]){
                 gamificationService.incrementUpvoteLevel(gamification);
-                achievementsUnlocked.addProperty("upvoteLevel", gamification.getUpvoteLevel());
+                achievementsUnlocked.addProperty("upvote", gamification.getUpvoteLevel());
             }
         }
 
@@ -127,7 +132,7 @@ public class GamificationController {
             int downvoteLevel = gamification.getDownvoteLevel();
             if(downvoteNum >= voteLevelLimits[downvoteLevel]){
                 gamificationService.incrementDownvoteLevel(gamification);
-                achievementsUnlocked.addProperty("downvoteLevel", gamification.getDownvoteLevel());
+                achievementsUnlocked.addProperty("downvote", gamification.getDownvoteLevel());
             }
         }
 
@@ -142,7 +147,7 @@ public class GamificationController {
         if(gamification.getDownvoteLevel() < minLevel) minLevel = gamification.getDownvoteLevel();
         if(gamification.getOverallLevel() < minLevel){
             gamificationService.incrementOverallLevel(gamification);
-            achievementsUnlocked.addProperty("overallLevel", gamification.getOverallLevel());
+            achievementsUnlocked.addProperty("overall", gamification.getOverallLevel());
         }
 
         return achievementsUnlocked.toString();
