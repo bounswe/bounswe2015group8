@@ -62,30 +62,35 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
             case R.id.btnPostEditSubmit:
                 post.setTitle(etTitle.getText().toString());
                 post.setContent(etContent.getText().toString());
-                ServerRequests sr = new ServerRequests(getActivity());
+                final ServerRequests sr = new ServerRequests(getActivity());
                 if(isNew) {
-
                     sr.createPost(post, heritageId, new Consumer<Long>() {
                         @Override
                         public void accept(Long id) {
-                            post.setId(id);
-                            NamedFragment nf = new PostViewFragment();
-                            Bundle b = new Bundle();
-                            b.putParcelable("post", post);
-                            nf.setArguments(b);
-                            MainActivity.beginFragment(getActivity(), nf);
+                            if(id == null) ServerRequests.handleErrors(getContext(), sr);
+                            else {
+                                post.setId(id);
+                                NamedFragment nf = new PostViewFragment();
+                                Bundle b = new Bundle();
+                                b.putParcelable("post", post);
+                                nf.setArguments(b);
+                                MainActivity.beginFragment(getActivity(), nf);
+                            }
                         }
                     });
                 } else {
                     sr.createPost(post, heritageId, new Consumer<Long>() {
                         @Override
                         public void accept(Long id) {
-                            post.setId(id);
-                            NamedFragment nf = new PostViewFragment();
-                            Bundle b = new Bundle();
-                            b.putParcelable("post", post);
-                            nf.setArguments(b);
-                            MainActivity.beginFragment(getActivity(), nf);
+                            if(id == null) ServerRequests.handleErrors(getContext(), sr);
+                            else {
+                                post.setId(id);
+                                NamedFragment nf = new PostViewFragment();
+                                Bundle b = new Bundle();
+                                b.putParcelable("post", post);
+                                nf.setArguments(b);
+                                MainActivity.beginFragment(getActivity(), nf);
+                            }
                         }
                     });
                 }

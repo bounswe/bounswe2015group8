@@ -199,12 +199,15 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                         Tag t = new Tag(tagText.getText().toString(),
                                 tagContext.getText().toString());
                         heritage.addTags(t);
-                        ServerRequests sr = new ServerRequests(getActivity());
+                        final ServerRequests sr = new ServerRequests(getActivity());
                         sr.addTags(heritage, new Consumer<Tag[]>() {
                             @Override
                             public void accept(Tag[] tags) {
-                                heritage.setTags(Arrays.asList(tags));
-                                Toast.makeText(getActivity(),"Successfully added tag.",Toast.LENGTH_LONG).show();
+                                if (tags == null) ServerRequests.handleErrors(getContext(), sr);
+                                else {
+                                    heritage.setTags(Arrays.asList(tags));
+                                    Toast.makeText(getActivity(), "Successfully added tag.", Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
                         updateAdapter();

@@ -28,7 +28,7 @@ public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.O
     public static final String BUNDLE_POSTS = "posts";
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView listView;
-    private Post[] posts;
+    private Post[] posts = new Post[0];
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.O
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fabHeritages);
         fab.hide();
         swipeRefreshLayout.setOnRefreshListener(this);
-        if(posts != null) {
+        if(posts != null && posts.length > 0) {
             setAdapter(posts);
             return v;
         }
@@ -98,11 +98,15 @@ public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {
-        ServerRequests sr = new ServerRequests(getActivity(),false);
+        final ServerRequests sr = new ServerRequests(getActivity(),false);
         sr.getAllPosts(new Consumer<Post[]>() {
             @Override
             public void accept(Post[] posts) {
-                setAdapter(posts);
+                if(posts == null) {
+                    ServerRequests.handleErrors(getContext(), sr);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+                else setAdapter(posts);
             }
         });
     }

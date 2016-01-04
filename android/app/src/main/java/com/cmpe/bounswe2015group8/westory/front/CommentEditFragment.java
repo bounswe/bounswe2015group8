@@ -60,23 +60,19 @@ public class CommentEditFragment extends NamedFragment implements View.OnClickLi
         switch(v.getId()) {
             case R.id.btnCommentEditSubmit:
                 comment.setContent(etContent.getText().toString());
-                ServerRequests sr = new ServerRequests(getActivity());
-                 sr.createComment(comment, postId, new Consumer<String>() {
+                final ServerRequests sr = new ServerRequests(getActivity());
+                sr.createComment(comment, postId, new Consumer<String>() {
                     @Override
                     public void accept(String json) {
-                        Long id=null;
                         try {
-
                             JSONObject obj = new JSONObject(json);
-                            id=obj.getLong("id");
-                            Log.d("My App", obj.toString());
-
+                            Long id=obj.getLong("id");
+                            comment.setId(id);
+                            NamedFragment nf = new PostsFragment();
+                            MainActivity.beginFragment(getActivity(),nf);
                         } catch (Throwable t) {
-                            Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+                            ServerRequests.handleErrors(getContext(), sr);
                         }
-                        comment.setId(id);
-                        NamedFragment nf = new PostsFragment();
-                        MainActivity.beginFragment(getActivity(),nf);
                     }
                 });
                 break;

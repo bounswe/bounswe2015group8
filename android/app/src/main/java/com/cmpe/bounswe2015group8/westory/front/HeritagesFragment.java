@@ -52,7 +52,7 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
                 else MainActivity.beginFragment(getActivity(), new LoginFragment());
             }
         });
-        if(heritages != null) {
+        if(heritages != null && heritages.length > 0) {
             setAdapter(heritages);
             return v;
         }

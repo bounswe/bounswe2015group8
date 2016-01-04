@@ -27,11 +27,12 @@ public class CommentsFragment extends NamedFragment {
         listView = (ListView) v.findViewById(R.id.lvHeritages);
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fabHeritages);
         fab.hide();
-        ServerRequests sr = new ServerRequests(getActivity());
+        final ServerRequests sr = new ServerRequests(getActivity());
         sr.getAllComments(new Consumer<Comment[]>() {
             @Override
             public void accept(Comment[] comments) {
-                setAdapter(comments);
+                if(comments == null) ServerRequests.handleErrors(getContext(),sr);
+                else setAdapter(comments);
             }
         });
         return v;

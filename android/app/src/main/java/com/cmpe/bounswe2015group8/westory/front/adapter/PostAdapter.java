@@ -73,24 +73,26 @@ public class PostAdapter extends ArrayAdapter<Post> {
                         MainActivity.beginFragment(context,nfp);
                         break;
                     case R.id.btnPostUpVote:
-                        ServerRequests sr = new ServerRequests(getContext());
+                        final ServerRequests sr = new ServerRequests(getContext());
                         MemberLocalStore memberLocalStore = new MemberLocalStore(getContext());
                         Member m = memberLocalStore.getLoggedInMember();
                         sr.votePost(p, true, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                tvVoteCount.setText(vote);
+                                if(vote == null) ServerRequests.handleErrors(context,sr);
+                                else tvVoteCount.setText(vote);
                             }
                         });
                         break;
                     case R.id.btnPostDownVote:
-                        ServerRequests sr2 = new ServerRequests(getContext());
+                        final ServerRequests sr2 = new ServerRequests(getContext());
                         MemberLocalStore memberLocalStore2 = new MemberLocalStore(getContext());
                         Member m2= memberLocalStore2.getLoggedInMember();
                         sr2.votePost(p, false, m2.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                tvVoteCount.setText(vote);
+                                if(vote == null) ServerRequests.handleErrors(context,sr2);
+                                else tvVoteCount.setText(vote);
                             }
                         });
                         break;

@@ -62,27 +62,29 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
                         MainActivity.beginFragment(context, nfp);
                         break;
                     case R.id.btnCommentUpVote:
-                        ServerRequests sr = new ServerRequests(getContext());
+                        final ServerRequests sr = new ServerRequests(getContext());
                         MemberLocalStore memberLocalStore = new MemberLocalStore(getContext());
                         Member m = memberLocalStore.getLoggedInMember();
                         c = getItem(position);
                         sr.voteComment(c, true, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                tvVoteCount.setText("" + vote);
+                                if(vote == null) ServerRequests.handleErrors(context,sr);
+                                else tvVoteCount.setText("" + vote);
 
                             }
                         });
                         break;
                     case R.id.btnCommentDownVote:
-                        ServerRequests sr2 = new ServerRequests(getContext());
+                        final ServerRequests sr2 = new ServerRequests(getContext());
                         MemberLocalStore memberLocalStore2 = new MemberLocalStore(getContext());
                         Member m2 = memberLocalStore2.getLoggedInMember();
                         c = getItem(position);
                         sr2.voteComment(c, false, m2.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                tvVoteCount.setText("" + vote);
+                                if(vote == null) ServerRequests.handleErrors(context,sr2);
+                                else tvVoteCount.setText("" + vote);
                             }
                         });
                         break;

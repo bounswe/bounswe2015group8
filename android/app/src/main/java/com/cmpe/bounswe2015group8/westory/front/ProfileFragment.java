@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.CloudinaryAPI;
@@ -51,16 +52,16 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
         tvName = (TextView) v.findViewById(R.id.tvHomeName);
         boolean isLogged=true;
         member = memberLocalStore.getLoggedInMember();
-        ServerRequests sr = new ServerRequests(getActivity());
+        final ServerRequests sr = new ServerRequests(getActivity());
         sr.getMemberById(member.getId(), new Consumer<Member>() {
             @Override
             public void accept(Member mm) {
-                loggedInMember=mm;
+                if(mm == null) ServerRequests.handleErrors(getContext(), sr);
+                 else loggedInMember=mm;
             }
         });
         Long idd= getArguments().getLong("memberId");
         if(idd==0) {
-            System.out.println("iff: "+member.getId());
             isLogged = true;
             idd=member.getId();
         }else if(idd!=member.getId()){
@@ -68,14 +69,13 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
             b.setVisibility(View.GONE);
             isLogged=false;
         }
-        sr = new ServerRequests(getActivity());
         sr.getMemberById(idd, new Consumer<Member>() {
             @Override
             public void accept(Member mm) {
-                initViews(mm, v);
+                if (mm == null) ServerRequests.handleErrors(getContext(), sr);
+                else initViews(mm, v);
             }
         });
-        System.out.println("babababababa" + member.getProfilePicture());
         ImageButton imgAdd = (ImageButton) v.findViewById(R.id.addProfilePic);
         imgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,30 +92,33 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
             @Override
             public void onClick(View vv) {
                 if (!loggedInMember.isFollowed(member)) {
-                    ServerRequests sr = new ServerRequests(getActivity());
+                    final ServerRequests sr = new ServerRequests(getActivity());
                     sr.followMember(loggedInMember, member.getId(), new Consumer<Long>() {
                         @Override
                         public void accept(Long followed) {
-                            loggedInMember.follow(member);
-                            followBtn.setText("Unfollow");
+                            if(followed == null) ServerRequests.handleErrors(getContext(), sr);
+                            else {
+                                loggedInMember.follow(member);
+                                followBtn.setText("Unfollow");
+                            }
                         }
                     });
                 } else {
-                    ServerRequests sr = new ServerRequests(getActivity());
+                    final ServerRequests sr = new ServerRequests(getActivity());
                     sr.unfollowMember(loggedInMember, member.getId(), new Consumer<Long>() {
                         @Override
                         public void accept(Long unfollowed) {
-                            loggedInMember.unfollow(member);
-                            followBtn.setText("Follow");
+                            if(unfollowed == null) ServerRequests.handleErrors(getContext(), sr);
+                            else {
+                                loggedInMember.unfollow(member);
+                                followBtn.setText("Follow");
+                            }
                         }
                     });
                 }
             }
         });
         return v;
-    }
-    public void onRefresh(){
-
     }
 
     public void initViews(Member member2,View v) {
@@ -141,7 +144,6 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
         tabLayout.addTab(tabLayout.newTab().setText("Following"));
         tabLayout.addTab(tabLayout.newTab().setText("Followers"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        System.out.println("Tabdan önce: "+member.getUsername());
         final ViewPager viewPager = (ViewPager) v.findViewById(R.id.profilePager);
         final PagerAdapter adapter =new PagerAdapter
                 (getChildFragmentManager(), tabLayout.getTabCount());
@@ -176,15 +178,20 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
                 Consumer<String> c = new Consumer<String>() {
                     @Override
                     public void accept(String link) {
-                        ServerRequests sr = new ServerRequests(getActivity());
-                        System.out.println("anam: "+link);
-                        final String lll=link;
-                        sr.uploadProfilePicture(loggedInMember,link, new Consumer<Member>() {
-                            @Override
-                            public void accept(Member member) {
-                                System.out.println("memis: " + member.getUsername() + "mumus: " + lll);
-                            }
-                        });
+                        if(link == null) Toast.makeText(getContext(), getString(R.string.generic_no_internet), Toast.LENGTH_LONG).show();
+                        else {
+                            final ServerRequests sr = new ServerRequests(getActivity());
+                            sr.uploadProfilePicture(loggedInMember, link, new Consumer<Member>() {
+                                @Override
+                                public void accept(Member member) {
+                                    if (member == null)
+                                        ServerRequests.handleErrors(getContext(), sr);
+                                    else {
+                                        loggedInMember.setProfilePicture(member.getProfilePicture());
+                                    }
+                                }
+                            });
+                        }
                     }
                 };
                 new CloudinaryAPI.CloudinaryUploadTask(getActivity(),c).execute(data.getData());
@@ -215,7 +222,6 @@ public class ProfileFragment extends NamedFragment implements AdapterView.OnItem
                     Bundle b= new Bundle();
                     b.putParcelable("member",member);
                     namedFragment.setArguments(b);
-                    System.out.println("Case 0: " + member.getUsername());
                     return namedFragment;
                 case 1:
                     final NamedFragment membersFragment=new MembersFragment();

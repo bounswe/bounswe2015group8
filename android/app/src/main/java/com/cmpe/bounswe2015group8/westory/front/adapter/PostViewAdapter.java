@@ -181,13 +181,14 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 btnUpVote.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ServerRequests sr = new ServerRequests(activity);
+                        final ServerRequests sr = new ServerRequests(activity);
                         MemberLocalStore memberLocalStore = new MemberLocalStore(activity);
                         Member m = memberLocalStore.getLoggedInMember();
                         sr.voteComment(c, true, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                tvVoteCount.setText(vote);
+                                if(vote == null) ServerRequests.handleErrors(activity,sr);
+                                else tvVoteCount.setText(vote);
                             }
                         });
                     }
@@ -196,13 +197,14 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 btnDownVote.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ServerRequests sr = new ServerRequests(activity);
+                        final ServerRequests sr = new ServerRequests(activity);
                         MemberLocalStore memberLocalStore = new MemberLocalStore(activity);
                         Member m = memberLocalStore.getLoggedInMember();
                         sr.voteComment(c, false, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                tvVoteCount.setText(vote);
+                                if(vote == null) ServerRequests.handleErrors(activity,sr);
+                                else tvVoteCount.setText(vote);
                             }
                         });
                     }
@@ -210,7 +212,11 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 tvOwner.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO launch owner's profile page
+                        NamedFragment nf = new ProfileFragment();
+                        Bundle b = new Bundle();
+                        b.putLong("memberId", c.getOwnerId());
+                        nf.setArguments(b);
+                        MainActivity.beginFragment(activity, nf);
                     }
                 });
                 break;
@@ -251,7 +257,7 @@ public class PostViewAdapter extends BaseExpandableListAdapter {
                 final TextView tvContext = (TextView) v.findViewById(R.id.tvTagSmallViewContext);
                 tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
                 final ImageView ivTagSmallEdit = (ImageView) v.findViewById(R.id.ivTagSmallViewEdit);
-                if(!new MemberLocalStore(activity).getUserLoggedIn()) ivTagSmallEdit.setVisibility(View.GONE);
+                ivTagSmallEdit.setVisibility(View.GONE);
                 ivTagSmallEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

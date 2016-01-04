@@ -22,6 +22,7 @@ import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.front.adapter.PostViewAdapter;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
+import com.cmpe.bounswe2015group8.westory.model.Media;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 
@@ -168,14 +169,16 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Tag t = new Tag(tagText.getText().toString(),
                                 tagContext.getText().toString());
-                        //TODO add tag
                         post.addTags(t);
-                        ServerRequests sr = new ServerRequests(getActivity());
+                        final ServerRequests sr = new ServerRequests(getActivity());
                         sr.addTags(post, new Consumer<Tag[]>() {
                             @Override
                             public void accept(Tag[] tags) {
-                                post.setTags(Arrays.asList(tags));
-                                Toast.makeText(getActivity(),"Successfully added tag.",Toast.LENGTH_LONG).show();
+                                if (tags == null) ServerRequests.handleErrors(getContext(), sr);
+                                else {
+                                    post.setTags(Arrays.asList(tags));
+                                    Toast.makeText(getActivity(), "Successfully added tag.", Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
                         updateAdapter();
@@ -211,16 +214,21 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                 Consumer<String> c = new Consumer<String>() {
                     @Override
                     public void accept(String link) {
-                        System.out.println("mumu"+link);
-                        //final Media m = new Media(post.getId(), link, requestCode, true);
-                        /*ServerRequests sr = new ServerRequests(getActivity());
-                        sr.addMedia(m, new Consumer<String>() {
-                            @Override
-                            public void accept(String url) {
-                                post.getMedia().add(m);
-                                updateAdapter();
-                            }
-                        });*/
+                        if(link == null) Toast.makeText(getContext(),getString(R.string.generic_no_internet), Toast.LENGTH_LONG).show();
+                        else {
+                            final Media m = new Media(post.getId(), link, requestCode, true);
+                            final ServerRequests sr = new ServerRequests(getActivity());
+                            sr.addMedia(m, new Consumer<String>() {
+                                @Override
+                                public void accept(String url) {
+                                    if (url == null) ServerRequests.handleErrors(getContext(), sr);
+                                    else {
+                                        post.getMedia().add(m);
+                                        updateAdapter();
+                                    }
+                                }
+                            });
+                        }
                     }
                 };
                 new CloudinaryAPI.CloudinaryUploadTask(getActivity(),c).execute(data.getData());
@@ -240,24 +248,20 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
     }
     @Override
     public void onRefresh() {
-        ServerRequests sr = new ServerRequests(getActivity());
+        final ServerRequests sr = new ServerRequests(getActivity());
         sr.getPostById(post.getId(), new Consumer<Post>() {
             @Override
             public void accept(Post p) {
-                updateAdapter(p);
-                post.setComments(p.getComments());
-                post.setHeritages(p.getHeritages());
-                post.setTags(p.getTags());
-                post.setMedia(p.getMedia());
+                if(p == null) ServerRequests.handleErrors(getContext(), sr);
+                else {
+                    updateAdapter(p);
+                    post.setComments(p.getComments());
+                    post.setHeritages(p.getHeritages());
+                    post.setTags(p.getTags());
+                    post.setMedia(p.getMedia());
+                }
             }
         });
-//        sr.getCommentsByPostId(post.getId(), new Consumer<Comment[]>() {
-//            @Override
-//            public void accept(Comment[] comments) {
-//                elvData.setAdapter(new PostViewAdapter(getActivity(),Arrays.asList(comments),null,null,null));
-//                post.setComments(Arrays.asList(comments));
-//            }
-//        });
     }
     /** Updates the current adapter underlying this fragment and its expandable list.
      * Uses the default {@link PostViewFragment#post} field.
