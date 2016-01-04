@@ -76,13 +76,13 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
         serverRequests.login(member, new Consumer<Member>() {
             @Override
             public void accept(Member m) {
-                if(m == null) ServerRequests.handleErrors(getContext(),serverRequests);
+                if(m == null) ServerRequests.handleErrors(getContext(), serverRequests);
                 else {
                     m.setUsername(member.getUsername());
                     memberLocalStore.storeUserData(m);
                     a.resetNavbar();
                     Toast.makeText(getActivity(), getString(R.string.login_success,m.getUsername()), Toast.LENGTH_LONG).show();
-                    MainActivity.beginFragment(a, new HeritagesFeed());
+                    MainActivity.beginFragment(a, new HeritageFeedFragment());
                 }
             }
         });

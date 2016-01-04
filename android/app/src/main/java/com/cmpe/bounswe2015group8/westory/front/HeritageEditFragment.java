@@ -61,16 +61,19 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
                 heritage.setName(etName.getText().toString());
                 heritage.setPlace(etPlace.getText().toString());
                 heritage.setDescription(etDescription.getText().toString());
-                ServerRequests sr = new ServerRequests(getActivity());
+                final ServerRequests sr = new ServerRequests(getActivity());
                 sr.createHeritage(heritage, new Consumer<Long>() {
                     @Override
                     public void accept(Long id) {
-                        heritage.setId(id);
-                        NamedFragment nf = new HeritageViewFragment();
-                        Bundle b = new Bundle();
-                        b.putParcelable("heritage",heritage);
-                        nf.setArguments(b);
-                        MainActivity.beginFragment(getActivity(),nf);
+                        if(id == null) ServerRequests.handleErrors(getContext(), sr);
+                        else {
+                            heritage.setId(id);
+                            NamedFragment nf = new HeritageViewFragment();
+                            Bundle b = new Bundle();
+                            b.putParcelable("heritage", heritage);
+                            nf.setArguments(b);
+                            MainActivity.beginFragment(getActivity(), nf);
+                        }
                     }
                 });
                 break;

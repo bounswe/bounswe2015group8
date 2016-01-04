@@ -65,16 +65,19 @@ public class RegisterFragment extends NamedFragment implements View.OnClickListe
     }
 
     private void registerMember(final Member member){
-        ServerRequests serverRequests = new ServerRequests(getActivity());
+        final ServerRequests serverRequests = new ServerRequests(getActivity());
         final MainActivity a = (MainActivity) getActivity();
         serverRequests.register(member, new Consumer<Long>() {
             @Override
             public void accept(Long l) {
-                member.setId(l);
-                memberLocalStore.storeUserData(member);
-                a.resetNavbar();
-                Toast.makeText(getActivity(), "Congratulations " + member.getUsername() + ", you are logged in!", Toast.LENGTH_LONG).show();
-                MainActivity.beginFragment(a, new HomeFragment());
+                if(l == null) ServerRequests.handleErrors(getContext(),serverRequests);
+                else {
+                    member.setId(l);
+                    memberLocalStore.storeUserData(member);
+                    a.resetNavbar();
+                    Toast.makeText(getActivity(), getString(R.string.login_success, member.getUsername()), Toast.LENGTH_LONG).show();
+                    MainActivity.beginFragment(a, new HeritageFeedFragment());
+                }
             }
         });
     }

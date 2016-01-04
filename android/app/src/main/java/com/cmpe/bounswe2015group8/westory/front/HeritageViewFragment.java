@@ -55,13 +55,16 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
         this.inflater = inflater;
         MemberLocalStore memberLocalStore = new MemberLocalStore(getActivity());
         Long idd=memberLocalStore.getLoggedInMember().getId();
-        ServerRequests sr = new ServerRequests(getActivity());
+        final ServerRequests sr = new ServerRequests(getActivity());
         sr.getMemberById(idd, new Consumer<Member>() {
             @Override
             public void accept(Member mm) {
-                loggedInMember=mm;
-                if(loggedInMember.isFollowed(heritage)){
+                if(mm == null) ServerRequests.handleErrors(getContext(),sr);
+                else {
+                    loggedInMember = mm;
+                    if (loggedInMember.isFollowed(heritage)) {
                         followBtn.setText("Unfollow");
+                    }
                 }
             }
         });
@@ -113,21 +116,27 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 break;
             case R.id.btnHeritageFollow:
                 if (!loggedInMember.isFollowed(heritage)) {
-                    ServerRequests sr = new ServerRequests(getActivity());
+                    final ServerRequests sr = new ServerRequests(getActivity());
                     sr.followHeritage(loggedInMember, heritage.getId(), new Consumer<Long>() {
                         @Override
                         public void accept(Long followed) {
-                            loggedInMember.follow(heritage);
-                            followBtn.setText("Unfollow");
+                            if(followed == null) ServerRequests.handleErrors(getContext(), sr);
+                            else {
+                                loggedInMember.follow(heritage);
+                                followBtn.setText("Unfollow");
+                            }
                         }
                     });
                 } else {
-                    ServerRequests sr = new ServerRequests(getActivity());
+                    final ServerRequests sr = new ServerRequests(getActivity());
                     sr.unfollowHeritage(loggedInMember, heritage.getId(), new Consumer<Long>() {
                         @Override
                         public void accept(Long unfollowed) {
-                            loggedInMember.unfollow(heritage);
-                            followBtn.setText("Follow");
+                            if(unfollowed == null) ServerRequests.handleErrors(getContext(), sr);
+                            else {
+                                loggedInMember.unfollow(heritage);
+                                followBtn.setText("Follow");
+                            }
                         }
                     });
                 }
@@ -169,9 +178,9 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
     private void addPost() {
         NamedFragment pef = new PostEditFragment();
         Bundle b2 = new Bundle();
-        b2.putLong("heritageId",heritage.getId());
+        b2.putLong("heritageId", heritage.getId());
         pef.setArguments(b2);
-        MainActivity.beginFragment(getActivity(),pef);
+        MainActivity.beginFragment(getActivity(), pef);
     }
 
     /** Creates a add tag dialog that prompts the user for a tag text and a tag
@@ -234,15 +243,21 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                 Consumer<String> c = new Consumer<String>() {
                     @Override
                     public void accept(String link) {
-                        final Media m = new Media(heritage.getId(), link, requestCode, false);
-                        ServerRequests sr = new ServerRequests(getActivity());
-                        sr.addMedia(m, new Consumer<String>() {
-                            @Override
-                            public void accept(String url) {
-                                heritage.getMedia().add(m);
-                                updateAdapter();
-                            }
-                        });
+                        if(link == null) Toast.makeText(getContext(),getString(R.string.generic_no_internet), Toast.LENGTH_LONG).show();
+                        else {
+                            final Media m = new Media(heritage.getId(), link, requestCode, false);
+                            final ServerRequests sr = new ServerRequests(getActivity());
+                            sr.addMedia(m, new Consumer<String>() {
+                                @Override
+                                public void accept(String url) {
+                                    if(url == null) ServerRequests.handleErrors(getContext(),sr);
+                                    else {
+                                        heritage.getMedia().add(m);
+                                        updateAdapter();
+                                    }
+                                }
+                            });
+                        }
                     }
                 };
                 new CloudinaryAPI.CloudinaryUploadTask(getActivity(),c).execute(data.getData());
@@ -262,21 +277,17 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
 
     @Override
     public void onRefresh() {
-        ServerRequests sr = new ServerRequests(getActivity());
-//        sr.getPostsByHeritageId(heritage.getId(), new Consumer<Post[]>() {
-//            @Override
-//            public void accept(Post[] posts) {
-//                elvData.setAdapter(new HeritageViewAdapter(getActivity(),Arrays.asList(posts),null,null));
-//                heritage.setPosts(Arrays.asList(posts));
-//            }
-//        });
+        final ServerRequests sr = new ServerRequests(getActivity());
         sr.getHeritageById(heritage.getId(), new Consumer<Heritage>() {
             @Override
             public void accept(Heritage h) {
-                updateAdapter(h);
-                heritage.setPosts(h.getPosts());
-                heritage.setTags(h.getTags());
-                heritage.setMedia(h.getMedia());
+                if(h == null) ServerRequests.handleErrors(getContext(), sr);
+                else {
+                    updateAdapter(h);
+                    heritage.setPosts(h.getPosts());
+                    heritage.setTags(h.getTags());
+                    heritage.setMedia(h.getMedia());
+                }
             }
         });
     }
@@ -292,7 +303,8 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
      * @param h the heritage object used as the source.
      */
     private void updateAdapter(Heritage h) {
-        elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()), new ArrayList<>(h.getTags()), new ArrayList<>(h.getMedia())));
+        elvData.setAdapter(new HeritageViewAdapter(getActivity(), new ArrayList<>(h.getPosts()),
+                new ArrayList<>(h.getTags()), new ArrayList<>(h.getMedia())));
     }
     private void manualRefresh() {
         swipeRefreshLayout.setRefreshing(true);

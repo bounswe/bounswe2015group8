@@ -28,11 +28,11 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
     public static final String BUNDLE_INDEX = "index";
     public static final String BUNDLE_TOP = "top";
     public static final String BUNDLE_HERITAGES = "heritages";
-    private SwipeRefreshLayout swipeRefreshLayout;
+    protected SwipeRefreshLayout swipeRefreshLayout;
     private ListView listView;
-    private FloatingActionButton fab;
-    private MemberLocalStore memberLocalStore;
-    private Heritage[] heritages;
+    protected FloatingActionButton fab;
+    protected MemberLocalStore memberLocalStore;
+    private Heritage[] heritages = new Heritage[0];
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
         setRetainInstance(true);
     }
 
-    private void setAdapter(Heritage[] heritages) {
+    protected void setAdapter(Heritage[] heritages) {
         this.heritages = heritages;
         listView.setAdapter(new HeritageAdapter(getActivity(),R.layout.heritage_small, heritages));
         swipeRefreshLayout.setRefreshing(false);
@@ -119,11 +119,15 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
     }
     @Override
     public void onRefresh() {
-        ServerRequests sr = new ServerRequests(getActivity(),false);
+        final ServerRequests sr = new ServerRequests(getActivity(),false);
         sr.getAllHeritages(new Consumer<Heritage[]>() {
             @Override
             public void accept(Heritage[] heritages) {
-                setAdapter(heritages);
+                if(heritages == null) {
+                    ServerRequests.handleErrors(getContext(),sr);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+                else setAdapter(heritages);
             }
         });
     }
