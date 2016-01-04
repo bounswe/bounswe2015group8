@@ -12,6 +12,8 @@
     <string name="btn_submit">Submit</string>
     <string name="login_to_register">Not a member? Join us now.</string>
     <string name="login_forgot_password">Forgot your password?</string>
+    <string name="login_user_details_incorrect">Incorrect user details!</string>
+    <string name="login_success">Congratulations %1$s, you are logged in!</string>
     <string name="welcome">Welcome</string>
 
     <string name="hint_username">Username</string>
@@ -46,6 +48,8 @@
     <string name="generic_created_at">Created at %1$s</string>
     <string name="generic_see_more"> - see more</string>
     <string name="generic_parenthesized">(%1$s)</string>
+    <string name="generic_no_internet">Unable to perform this operation. Please check your internet connection.</string>
+    <string name="generic_server_error">We are currently experiencing technical difficulties. Try again later!</string>
     <string name="post_post_date">Post Date:</string>
     <string name="post_last_edit_date">Last Edit Date:</string>
     <string name="post_view_title_default">Viewing Post</string>

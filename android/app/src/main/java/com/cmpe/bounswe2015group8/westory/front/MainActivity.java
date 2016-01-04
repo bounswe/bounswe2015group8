@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         if(savedInstanceState == null || !savedInstanceState.containsKey("curFragment")) {
-            MainActivity.beginFragment(this, new HeritagesFeed());
+            MainActivity.beginFragment(this, authenticated() ? new HeritagesFeed() : new HeritagesFragment());
         } else {
             MainActivity.beginFragment(this,
                     (NamedFragment)getSupportFragmentManager().getFragment(savedInstanceState, "curFragment"));

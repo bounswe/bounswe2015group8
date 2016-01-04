@@ -3,7 +3,9 @@ package com.cmpe.bounswe2015group8.westory.back;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
+import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.model.Comment;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Media;
@@ -13,7 +15,11 @@ import com.cmpe.bounswe2015group8.westory.model.Requestable;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 
 import org.springframework.http.HttpMethod;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -27,9 +33,25 @@ import java.util.ArrayList;
  * Date: 31/10/15.
  */
 public class ServerRequests{
+    public enum ErrorType { NO_ERROR, NO_INTERNET, SERVER_ERROR, WRONG_LOGIN }
     public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com:8080/lokum_v3";
+    public static ErrorType handleErrors(Context c, ServerRequests sr) {
+        switch(sr.getLastError()) {
+            case NO_INTERNET:
+                Toast.makeText(c, c.getString(R.string.generic_no_internet), Toast.LENGTH_LONG).show();
+                break;
+            case WRONG_LOGIN:
+                Toast.makeText(c, c.getString(R.string.login_user_details_incorrect),Toast.LENGTH_LONG).show();
+                break;
+            case SERVER_ERROR:
+                Toast.makeText(c, c.getString(R.string.generic_server_error),Toast.LENGTH_LONG).show();
+                break;
+        }
+        return sr.getLastError();
+    }
     private ProgressDialog progressDialog;
     private boolean display;
+    private ErrorType lastError = ErrorType.NO_ERROR;
     public ServerRequests(Context context) {
         this(context, true);
     }
@@ -40,6 +62,9 @@ public class ServerRequests{
         progressDialog.setMessage("Please wait...");
         this.display = display;
 
+    }
+    public ErrorType getLastError() {
+        return lastError;
     }
     public void getPostById(long id, Consumer<Post> callback) {
         if(display) progressDialog.show();
@@ -167,13 +192,27 @@ public class ServerRequests{
         protected T doInBackground(Requestable<T>... params) {
             RestTemplate rt = new RestTemplate(true);
             rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-            switch (method) {
-                case GET:
-                    return rt.getForObject(SERVER_ADDRESS + params[0].getEndpoint(), params[0].getDataClass());
-                case POST:
-                    return rt.postForObject(SERVER_ADDRESS + params[0].getEndpoint(), params[0].getData(), params[0].getDataClass());
-                default:
-                    return null;
+            try {
+                switch (method) {
+                    case GET:
+                        return rt.getForObject(SERVER_ADDRESS + params[0].getEndpoint(), params[0].getDataClass());
+                    case POST:
+                        return rt.postForObject(SERVER_ADDRESS + params[0].getEndpoint(), params[0].getData(), params[0].getDataClass());
+                    default:
+                        return null;
+                }
+            } catch(HttpStatusCodeException e) {
+                // This is thrown on server errors
+                lastError = ErrorType.SERVER_ERROR;
+                return null;
+            } catch (ResourceAccessException e) {
+                // This is thrown when there is no internet
+                lastError = ErrorType.NO_INTERNET;
+                return null;
+            } catch (HttpMessageNotReadableException e) {
+                // This is thrown on wrong login
+                lastError = ErrorType.WRONG_LOGIN;
+                return null;
             }
         }
 
