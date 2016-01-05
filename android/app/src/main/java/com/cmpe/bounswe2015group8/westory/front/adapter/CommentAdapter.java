@@ -25,8 +25,6 @@ import com.cmpe.bounswe2015group8.westory.model.Member;
  */
 public class CommentAdapter extends ArrayAdapter<Comment> {
     //private Activity context;
-    private ImageButton btnUpVote,btnDownVote;
-    private Comment c;
     private FragmentActivity context;
     public CommentAdapter(FragmentActivity context, int resource, Comment[] objects) {
         super(context, resource, objects);
@@ -42,13 +40,13 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         TextView tvCreationDateValue = (TextView) v.findViewById(R.id.tvCommentSmallCreationDate);
         TextView tvContent = (TextView) v.findViewById(R.id.tvCommentSmallContent);
         final TextView tvVoteCount = (TextView) v.findViewById(R.id.tvCommentVoteCount);
-        c = getItem(position);
+        final Comment c = getItem(position);
         tvOwner.setText(context.getResources().getString(R.string.generic_by_username,c.getUsername()));
         String s  =c.getPostDate();
-        tvCreationDateValue.setText(s);
+        tvCreationDateValue.setText(context.getString(R.string.generic_created_at,s));
         tvContent.setText(c.getContent());
-        btnDownVote = (ImageButton) v.findViewById(R.id.btnCommentDownVote);
-        btnUpVote = (ImageButton) v.findViewById(R.id.btnCommentUpVote);
+        ImageButton btnDownVote = (ImageButton) v.findViewById(R.id.btnCommentDownVote);
+        ImageButton btnUpVote = (ImageButton) v.findViewById(R.id.btnCommentUpVote);
         tvVoteCount.setText("" + c.getNetCount());
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -65,12 +63,11 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
                         final ServerRequests sr = new ServerRequests(getContext());
                         MemberLocalStore memberLocalStore = new MemberLocalStore(getContext());
                         Member m = memberLocalStore.getLoggedInMember();
-                        c = getItem(position);
                         sr.voteComment(c, true, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
                                 if(vote == null) ServerRequests.handleErrors(context,sr);
-                                else tvVoteCount.setText("" + vote);
+                                else tvVoteCount.setText(vote);
 
                             }
                         });
@@ -79,12 +76,11 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
                         final ServerRequests sr2 = new ServerRequests(getContext());
                         MemberLocalStore memberLocalStore2 = new MemberLocalStore(getContext());
                         Member m2 = memberLocalStore2.getLoggedInMember();
-                        c = getItem(position);
                         sr2.voteComment(c, false, m2.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
                                 if(vote == null) ServerRequests.handleErrors(context,sr2);
-                                else tvVoteCount.setText("" + vote);
+                                else tvVoteCount.setText(vote);
                             }
                         });
                         break;

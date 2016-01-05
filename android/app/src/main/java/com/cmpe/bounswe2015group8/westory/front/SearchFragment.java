@@ -81,10 +81,14 @@ public class SearchFragment extends NamedFragment implements View.OnClickListene
         if(position > 1) {
             etSearch2.setVisibility(View.VISIBLE);
             etSearch1.setHint(R.string.hint_tag_text);
+            etSearch1.setText("");
+            etSearch2.setText("");
         }
         else {
             etSearch2.setVisibility(View.GONE);
             etSearch1.setHint(R.string.hint_search);
+            etSearch1.setText("");
+            etSearch2.setText("");
         }
     }
 
