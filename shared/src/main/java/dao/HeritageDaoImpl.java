@@ -1,9 +1,12 @@
 package dao;
 
+import controller.Main;
 import model.*;
+import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.List;
  */
 public class HeritageDaoImpl implements HeritageDao {
     private SessionFactory sessionFactory;
+    private Logger logger = Logger.getLogger(HeritageDaoImpl.class);
 
     public Heritage getHeritageById(long id) {
         Session s = getSessionFactory().openSession();
@@ -106,10 +110,31 @@ public class HeritageDaoImpl implements HeritageDao {
         List<TagHeritage> tagheritages = s
                 .createQuery("from TagHeritage where tag=?")
                 .setParameter(0, tag).list();
-        List<Heritage> heritages = new ArrayList<Heritage>();
+        List<Long> heritageIds = new ArrayList<>();
         for (int i = 0; i < tagheritages.size(); i++) {
-            heritages.add(tagheritages.get(i).getHeritage());
+            heritageIds.add(tagheritages.get(i).getHeritage().getId());
         }
+
+        List<Heritage> heritages = s
+                .createQuery("from Heritage where id in (:ids)")
+                .setParameterList("ids", heritageIds).list();
+        for(int i = 0; i < heritages.size(); i++){
+            Heritage heritage = heritages.get(i);
+            Hibernate.initialize(heritage.getPosts());
+            for(Post post : heritage.getPosts()){
+                Hibernate.initialize(post);
+                Hibernate.initialize(post.getOwner());
+                Hibernate.initialize(post.getComments());
+            }
+            Hibernate.initialize(heritage.getFollowers());
+            Hibernate.initialize(heritage.getTags());
+            if(heritage instanceof HibernateProxy){
+                logger.info("niye lan niye");
+                heritage = Main.initializeAndUnproxy(heritage);
+                heritages.set(i, heritage);
+            }
+        }
+        s.close();
         return heritages;
     }
 

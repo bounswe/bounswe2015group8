@@ -1,10 +1,12 @@
 package dao;
 
+import controller.Main;
 import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -92,6 +94,28 @@ public class PostDaoImpl implements PostDao {
         for (int i = 0; i < tagposts.size(); i++) {
             posts.add(tagposts.get(i).getPost());
         }
+        for(int i = 0; i < posts.size(); i++){
+            Post post = posts.get(i);
+            Hibernate.initialize(post);
+            Hibernate.initialize(post.getOwner());
+            Hibernate.initialize(post.getComments());
+            for(Comment comment : post.getComments()){
+                Hibernate.initialize(comment);
+                Hibernate.initialize(comment.getOwner());
+            }
+            Hibernate.initialize(post.getVotes());
+            for(PostVote postVote : post.getVotes()){
+                Hibernate.initialize(postVote);
+                Hibernate.initialize(postVote.getOwner());
+            }
+            Hibernate.initialize(post.getTags());
+            post = Main.initializeAndUnproxy(post);
+            posts.set(i, post);
+            if(post instanceof HibernateProxy){
+                logger.info("yok artik ama...");
+            }
+        }
+        s.close();
         return posts;
     }
 

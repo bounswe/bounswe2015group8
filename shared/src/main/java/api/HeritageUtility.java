@@ -3,8 +3,14 @@ package api;
 import controller.Main;
 import model.Heritage;
 import model.Post;
+import model.Tag;
+import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.proxy.HibernateProxy;
 import service.FollowHeritageService;
 import service.HeritageService;
+import service.TagService;
 import service.VoteService;
 
 import java.util.ArrayList;
@@ -15,9 +21,12 @@ import java.util.List;
  * Created by Goktug on 13.11.2015.
  */
 public class HeritageUtility {
+    private static Logger logger = Logger.getLogger(HeritageUtility.class);
+
     private static ArrayList<Heritage> heritageList;
     static HeritageService heritageService;
     static FollowHeritageService followHeritageService;
+    static TagService tagService;
     static VoteService voteService;
 
     /**
@@ -118,4 +127,39 @@ public class HeritageUtility {
         return voteService;
     }
 
+    public static TagService getTagService() {
+        if (tagService == null) {
+            tagService = new TagService(Main.getSessionFactory());
+        }
+        return tagService;
+    }
+
+    public static ArrayList<Heritage> getSemanticallyRelatedHeritages(String wholetag){
+        if(tagService == null){
+            tagService = new TagService(Main.getSessionFactory());
+        }
+        String[] tagPieces = tagService.extractTextAndContext(wholetag);
+        Tag tag = tagService.getTagByText(tagPieces[0], tagPieces[1]);
+        ArrayList<Heritage> heritages;
+        if(tag != null)
+            heritages = (ArrayList<Heritage>)getHeritageService().getHeritagesByTag(tag);
+        else
+            heritages = new ArrayList<>();
+
+
+        // Check whether there are enough results
+        if(heritages.size() < SearchApi.MIN_LIMIT){
+            List<Tag> additionalTags = tagService.sortByCount(tagService.getSemanticallyRelatedTags(tagPieces[0], tagPieces[1]));
+            for(Tag additionalTag : additionalTags){
+                List<Heritage> additionalHeritages = getHeritageService().getHeritagesByTag(additionalTag);
+                for(int i = 0; i < additionalHeritages.size(); i++){
+                    heritages.addAll(additionalHeritages);
+                }
+                if(heritages.size() >= SearchApi.MIN_LIMIT)
+                    break;
+            }
+        }
+
+        return (ArrayList<Heritage>)getHeritageService().removeDuplicates(heritages);
+    }
 }
