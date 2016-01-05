@@ -1,6 +1,7 @@
 package controller;
 
 import com.cloudinary.utils.ObjectUtils;
+import com.sun.istack.internal.logging.Logger;
 import dao.MemberDaoImpl;
 import model.Heritage;
 import model.Media;
@@ -29,12 +30,14 @@ import java.util.Map;
  */
 @Controller
 public class ProfileController {
+    private Logger logger = Logger.getLogger(ProfileController.class);
 
     MemberDetailsService memberService;
     PostService postService;
     HeritageService heritageService;
     TagService tagService;
     FollowTagService followTagService;
+    GamificationService gamificationService;
 
     public ProfileController(){
         memberService = new MemberDetailsService();
@@ -45,6 +48,7 @@ public class ProfileController {
         heritageService = new HeritageService(Main.getSessionFactory());
         tagService = new TagService(Main.getSessionFactory());
         followTagService = new FollowTagService(Main.getSessionFactory());
+        gamificationService = new GamificationService(Main.getSessionFactory());
     }
 
     @RequestMapping(value = "/profile/{username}")
@@ -62,7 +66,9 @@ public class ProfileController {
             Hibernate.initialize(heritage.getTags());
         }
         Hibernate.initialize(m.getFollowedTags());
+        logger.info("Gamification post level: " + gamificationService.getGamification(m).getPostLevel());
         allContent.put("member", m);
+        allContent.put("gamification", gamificationService.getGamification(m));
         allContent.put("medias", medias);
         allContent.put("allTags", allTags);
         session.close();

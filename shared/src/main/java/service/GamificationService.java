@@ -64,4 +64,8 @@ public class GamificationService {
         gamification.setOverallLevel(gamification.getOverallLevel() + 1);
         return gamificationDao.update(gamification);
     }
+
+    public Gamification update(Gamification gamification){
+        return gamificationDao.update(gamification);
+    }
 }

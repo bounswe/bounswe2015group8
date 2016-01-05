@@ -70,6 +70,7 @@ public class GamificationController {
                 gamificationService.incrementPostLevel(gamification);
                 achievementsUnlocked.addProperty("post", gamification.getPostLevel());
             }
+            gamification.setPostNum(postNum);
         }
 
         /* This part will be uncommented when the Heritage model is updated
@@ -81,6 +82,7 @@ public class GamificationController {
                 gamificationService.incrementHeritageLevel(gamification);
                 achievementsUnlocked.addProperty("heritage", gamification.getHeritageLevel());
             }
+             gamification.setHeritageNum(heritageNum);
         }
         */
 
@@ -92,6 +94,7 @@ public class GamificationController {
                 gamificationService.incrementFollowerLevel(gamification);
                 achievementsUnlocked.addProperty("follower", gamification.getFollowerLevel());
             }
+            gamification.setFollowerNum(followerNum);
         }
 
         // Checking Followee Num and Level
@@ -102,6 +105,7 @@ public class GamificationController {
                 gamificationService.incrementFolloweeLevel(gamification);
                 achievementsUnlocked.addProperty("followee", gamification.getFolloweeLevel());
             }
+            gamification.setFolloweeNum(followeeNum);
         }
 
         // Checking Comment Num and Level
@@ -112,6 +116,7 @@ public class GamificationController {
                 gamificationService.incrementCommentLevel(gamification);
                 achievementsUnlocked.addProperty("comment", gamification.getCommentLevel());
             }
+            gamification.setCommentNum(commentNum);
         }
 
         // Checking Upvote Num and Level
@@ -124,6 +129,7 @@ public class GamificationController {
                 gamificationService.incrementUpvoteLevel(gamification);
                 achievementsUnlocked.addProperty("upvote", gamification.getUpvoteLevel());
             }
+            gamification.setUpvoteNum(upvoteNum);
         }
 
         // Checking Downvote Num and Level
@@ -134,6 +140,7 @@ public class GamificationController {
                 gamificationService.incrementDownvoteLevel(gamification);
                 achievementsUnlocked.addProperty("downvote", gamification.getDownvoteLevel());
             }
+            gamification.setDownvoteNum(downvoteNum);
         }
 
         // Checking Overall Level
@@ -149,6 +156,7 @@ public class GamificationController {
             gamificationService.incrementOverallLevel(gamification);
             achievementsUnlocked.addProperty("overall", gamification.getOverallLevel());
         }
+        gamificationService.update(gamification);
 
         return achievementsUnlocked.toString();
     }
