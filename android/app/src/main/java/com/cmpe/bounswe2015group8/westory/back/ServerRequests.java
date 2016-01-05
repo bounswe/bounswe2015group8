@@ -23,6 +23,8 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class handling all server requests through REST API.
@@ -179,6 +181,18 @@ public class ServerRequests{
     public void heritageFeed(Long id,  Consumer<Heritage[]> callback) {
         if (display) progressDialog.show();
         new RestAsyncTask<Heritage[]>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/heritageNewsfeed",id,Heritage[].class) );
+    }
+    public void searchByHeritageName(String name, Consumer<Heritage[]> callback) {
+        if (display) progressDialog.show();
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("name", name);
+        new RestAsyncTask<>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/searchByHeritageName",dataToSend,Heritage[].class));
+    }
+    public void searchByPostTitle(String title, Consumer<Post[]> callback) {
+        if (display) progressDialog.show();
+        Map<String,String> dataToSend = new HashMap<>();
+        dataToSend.put("name", title);
+        new RestAsyncTask<>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/searchByPostTitle",dataToSend,Post[].class));
     }
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
         Consumer<T> callback;

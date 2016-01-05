@@ -145,6 +145,10 @@ public class MainActivity extends AppCompatActivity {
                         f = getSupportFragmentManager().findFragmentByTag(CommentsFragment.NAME);
                         nf = (f == null) ? new CommentsFragment(): (NamedFragment)f;
                         break;
+                    case R.id.navSearch:
+                        f = getSupportFragmentManager().findFragmentByTag(SearchFragment.NAME);
+                        nf = (f == null) ? new SearchFragment() : (NamedFragment)f;
+                        break;
                     default:
                         break;
                 }

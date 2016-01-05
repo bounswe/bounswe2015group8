@@ -26,7 +26,7 @@ public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.O
     public static final String BUNDLE_INDEX = "index";
     public static final String BUNDLE_TOP = "top";
     public static final String BUNDLE_POSTS = "posts";
-    private SwipeRefreshLayout swipeRefreshLayout;
+    protected SwipeRefreshLayout swipeRefreshLayout;
     private ListView listView;
     private Post[] posts = new Post[0];
     @Override
@@ -68,7 +68,7 @@ public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.O
         setRetainInstance(true);
     }
 
-    private void setAdapter(Post[] posts) {
+    protected void setAdapter(Post[] posts) {
         this.posts = posts;
         listView.setAdapter(new PostAdapter(getActivity(),R.layout.post_small, posts));
         swipeRefreshLayout.setRefreshing(false);

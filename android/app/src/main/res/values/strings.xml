@@ -25,6 +25,7 @@
     <string name="hint_heritage_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris vitae vehicula nibh, et tempor mi. Vivamus malesuada tincidunt risus, quis dapibus nibh mattis ut. Morbi gravida neque ac ligula malesuada fermentum. Pellentesque nec consequat ligula. Sed iaculis metus eu arcu venenatis malesuada.</string>
     <string name="hint_tag_text">Tag Text</string>
     <string name="hint_tag_context">Tag Context</string>
+    <string name="hint_search">Search</string>
     <string name="comment_hint">Type your comment here</string>
     <string name="placeholder_short">WeStory</string>
     <string name="placeholder_mid">Cultural Heritage Story</string>
@@ -53,6 +54,7 @@
     <string name="post_post_date">Post Date:</string>
     <string name="post_last_edit_date">Last Edit Date:</string>
     <string name="post_view_title_default">Viewing Post</string>
+    <string name="search_type">Search for:</string>
 
     <string name="nav_home">Home</string>
     <string name="nav_heritages">Heritages</string>
@@ -62,11 +64,18 @@
     <string name="nav_logout">Logout</string>
     <string name="nav_profile">Profile</string>
     <string name="nav_comments">Comments</string>
+    <string name="nav_search">Search</string>
 
     <string name="title_heritage_new">New Heritage</string>
     <string name="title_post_new">New Post</string>
     <string name="title_generic_edit">Edit </string>
     <string name="textFollowMember">Follow</string>
+    <string-array name="search_types">
+        <item>Heritage Name</item>
+        <item>Post Title</item>
+        <item>Semantic Tagged Heritages</item>
+        <item>Semantic Tagged Posts</item>
+    </string-array>
     <string-array name="heritage_view_list">
         <item>Posts</item>
         <item>Tags</item>
