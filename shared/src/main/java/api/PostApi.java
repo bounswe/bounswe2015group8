@@ -58,7 +58,7 @@ public class PostApi implements ErrorCodes {
         Member member = MemberUtility.getMemberService().getMemberById(apiModel.getOwnerId());
         Heritage heritage = HeritageUtility.getHeritageService().getHeritageById(apiModel.getHeritageId());
 
-        Post post = PostUtility.getPostService().savePost(member, 0, new Timestamp(now.getTime()), apiModel.getTitle(), apiModel.getContent(), heritage);
+        Post post = PostUtility.getPostService().savePost(member, 0, new Timestamp(now.getTime()), apiModel.getTitle(), apiModel.getContent(), apiModel.getPlace() , heritage);
 
         return post.getId();
     }

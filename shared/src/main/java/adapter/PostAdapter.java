@@ -40,6 +40,7 @@ public class PostAdapter implements JsonSerializer<Post> {
         jsonObjectPost.addProperty("lastEditedDate", post.getLastEditedDate().toString());
         jsonObjectPost.addProperty("title", post.getTitle());
         jsonObjectPost.addProperty("content", post.getContent());
+        jsonObjectPost.addProperty("place", post.getPlace() != null ? post.getPlace() : "");
 
         int voteCountPost = 0;
         JsonArray votesPost = new JsonArray();
