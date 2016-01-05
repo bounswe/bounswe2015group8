@@ -2,6 +2,7 @@ package api;
 
 import controller.Main;
 import model.Heritage;
+import model.Member;
 import model.Post;
 import model.Tag;
 import org.apache.log4j.Logger;
@@ -22,6 +23,7 @@ public class HeritageUtility {
 
     private static ArrayList<Heritage> heritageList;
     static HeritageService heritageService;
+    static FollowService followService;
     static FollowHeritageService followHeritageService;
     static FollowTagService followTagService;
     static TagService tagService;
@@ -79,6 +81,28 @@ public class HeritageUtility {
             heritageService = new HeritageService(Main.getSessionFactory());
         }
         return heritageService;
+    }
+
+    /**
+     * Gets the Follow Service (which member follows who)
+     * @return Follow Service instance
+     */
+    public static FollowService getFollowService() {
+        if (followService == null) {
+            followService = new FollowService(Main.getSessionFactory());
+        }
+        return followService;
+    }
+
+    /**
+     * Gets the Follow Heritage Service (which member follows which heritages)
+     * @return Follow Heritage Service instance
+     */
+    public static FollowHeritageService getFollowHeritageService() {
+        if (followHeritageService == null) {
+            followHeritageService = new FollowHeritageService(Main.getSessionFactory());
+        }
+        return followHeritageService;
     }
 
     /**
@@ -179,5 +203,35 @@ public class HeritageUtility {
         }
 
         return (ArrayList<Heritage>)getHeritageService().removeDuplicates(heritages);
+    }
+
+    public static ArrayList<Heritage> getRecommendedHeritages(long memberId){
+        List<Heritage> myHeritages = getFollowHeritageService().getFollowedHeritagesByMemberId(memberId);
+        List<Heritage> heritagesToRecommend = new ArrayList<>();
+
+        // The heritages of the following members...
+        List<Member> followingMembers = getFollowService().getFollowingById(memberId);
+        for(int i = 0; i < followingMembers.size(); i++){
+            Member followee = followingMembers.get(i);
+            for(Heritage heritage : getFollowHeritageService().getFollowedHeritagesByMemberId(followee.getId())){
+                if(!myHeritages.contains(heritage)){
+                    heritagesToRecommend.add(heritage);
+                }
+            }
+        }
+
+        // The heritages of the heritages that are tagged with the user's following tags...
+        List<Tag> followingTags = getFollowTagService().getFollowedTagsByMemberId(memberId);
+        for(int i = 0; i < followingTags.size(); i++){
+            Tag tag = followingTags.get(i);
+            for(Heritage heritage : getHeritageService().getHeritagesByTag(tag)){
+                if(!myHeritages.contains(heritage)){
+                    heritagesToRecommend.add(heritage);
+                }
+            }
+        }
+
+        heritagesToRecommend = getHeritageService().removeDuplicates(heritagesToRecommend);
+        return (ArrayList<Heritage>)getHeritageService().sortByPopularity(heritagesToRecommend);
     }
 }
