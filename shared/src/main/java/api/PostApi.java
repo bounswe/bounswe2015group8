@@ -150,4 +150,14 @@ public class PostApi implements ErrorCodes {
         ArrayList<Post> posts = (ArrayList<Post>)PostUtility.getPostService().getPostsByMember(member);
         return gson.toJson(posts);
     }
+
+    @RequestMapping(value = "/api/postNewsfeed",
+            method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String postNewsfeed(@RequestBody long id) {
+        ArrayList<Post> posts = (ArrayList<Post>) PostUtility.postNewsfeed(id);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Post.class, new PostAdapter()).create();
+        String json = gson.toJson(posts);
+        return json;
+    }
 }

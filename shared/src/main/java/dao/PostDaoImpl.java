@@ -81,6 +81,8 @@ public class PostDaoImpl implements PostDao {
         for (int i = 0; i < heritageposts.size(); i++) {
             posts.add(heritageposts.get(i).getPost());
         }
+        posts = unproxyPostList(posts);
+        s.close();
         return posts;
     }
 
@@ -94,27 +96,7 @@ public class PostDaoImpl implements PostDao {
         for (int i = 0; i < tagposts.size(); i++) {
             posts.add(tagposts.get(i).getPost());
         }
-        for(int i = 0; i < posts.size(); i++){
-            Post post = posts.get(i);
-            Hibernate.initialize(post);
-            Hibernate.initialize(post.getOwner());
-            Hibernate.initialize(post.getComments());
-            for(Comment comment : post.getComments()){
-                Hibernate.initialize(comment);
-                Hibernate.initialize(comment.getOwner());
-            }
-            Hibernate.initialize(post.getVotes());
-            for(PostVote postVote : post.getVotes()){
-                Hibernate.initialize(postVote);
-                Hibernate.initialize(postVote.getOwner());
-            }
-            Hibernate.initialize(post.getTags());
-            post = Main.initializeAndUnproxy(post);
-            posts.set(i, post);
-            if(post instanceof HibernateProxy){
-                logger.info("yok artik ama...");
-            }
-        }
+        posts = unproxyPostList(posts);
         s.close();
         return posts;
     }
@@ -125,18 +107,7 @@ public class PostDaoImpl implements PostDao {
         List<Post> posts = s
                 .createQuery("from Post where postDate >= :date")
                 .setParameter("date", date).list();
-        for(Post post : posts){
-            Hibernate.initialize(post);
-            Hibernate.initialize(post.getOwner());
-            Hibernate.initialize(post.getComments());
-            for(Comment comment : post.getComments()){
-                Hibernate.initialize(comment);
-                Hibernate.initialize(comment.getOwner());
-                Hibernate.initialize(comment.getVotes());
-            }
-            Hibernate.initialize(post.getVotes());
-            Hibernate.initialize(post.getTags());
-        }
+        posts = unproxyPostList(posts);
         s.close();
         return posts;
     }
@@ -224,5 +195,30 @@ public class PostDaoImpl implements PostDao {
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public List<Post> unproxyPostList(List<Post> posts){
+        for(int i = 0; i < posts.size(); i++){
+            Post post = posts.get(i);
+            Hibernate.initialize(post);
+            Hibernate.initialize(post.getOwner());
+            Hibernate.initialize(post.getComments());
+            for(Comment comment : post.getComments()){
+                Hibernate.initialize(comment);
+                Hibernate.initialize(comment.getOwner());
+            }
+            Hibernate.initialize(post.getVotes());
+            for(PostVote postVote : post.getVotes()){
+                Hibernate.initialize(postVote);
+                Hibernate.initialize(postVote.getOwner());
+            }
+            Hibernate.initialize(post.getTags());
+            post = Main.initializeAndUnproxy(post);
+            posts.set(i, post);
+            if(post instanceof HibernateProxy){
+                logger.info("yok artik ama...");
+            }
+        }
+        return posts;
     }
 }

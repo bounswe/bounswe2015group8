@@ -8,10 +8,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.proxy.HibernateProxy;
-import service.FollowHeritageService;
-import service.HeritageService;
-import service.TagService;
-import service.VoteService;
+import service.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +23,7 @@ public class HeritageUtility {
     private static ArrayList<Heritage> heritageList;
     static HeritageService heritageService;
     static FollowHeritageService followHeritageService;
+    static FollowTagService followTagService;
     static TagService tagService;
     static VoteService voteService;
 
@@ -84,6 +82,17 @@ public class HeritageUtility {
     }
 
     /**
+     * Gets the follow Tag Service (The tags which the user follows)
+     * @return Follow Tag Service instance
+     */
+    public static FollowTagService getFollowTagService(){
+        if(followTagService == null){
+            followTagService = new FollowTagService(Main.getSessionFactory());
+        }
+        return followTagService;
+    }
+
+    /**
      * Searches for the heritages with names that contain the parameter
      * @param name the search string
      * @return the heritages with names containing parameter
@@ -108,11 +117,20 @@ public class HeritageUtility {
 
         heritages = followHeritageService.getFollowedHeritagesByMemberId(id);
         heritages = getHeritageService().sortByPopularity(heritages);
+        logger.info("FIRST: " + heritages.size());
 
         // Here we will add the heritages with followed tags (Interested in...)
+        List<Tag> tags = getFollowTagService().getFollowedTagsByMemberId(id);
+        List<Tag> sortedTags = getTagService().sortByCount(tags);
+        for(Tag tag : sortedTags){
+            heritages.addAll(getHeritageService().getHeritagesByTag(tag));
+        }
+        logger.info("SECOND: " + heritages.size());
 
         heritages.addAll(getHeritageService().getRecentlyMostPopularHeritages());
+        logger.info("THIRD: " + heritages.size());
         heritages = getHeritageService().removeDuplicates(heritages);
+        logger.info("LAST: " + heritages.size());
         return heritages;
     }
 

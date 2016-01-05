@@ -2,9 +2,12 @@ package api;
 
 import controller.Main;
 import controller.SearchController;
+import model.FollowHeritage;
 import model.Heritage;
 import model.Post;
 import model.Tag;
+import org.jboss.logging.Logger;
+import service.FollowHeritageService;
 import service.PostService;
 import service.TagService;
 
@@ -18,6 +21,9 @@ public class PostUtility {
     private static ArrayList<Post> postList;
     static PostService postService;
     static TagService tagService;
+    static FollowHeritageService followHeritageService;
+
+    private static Logger logger = Logger.getLogger(PostUtility.class);
 
     /**
      * Gets post list
@@ -83,6 +89,32 @@ public class PostUtility {
             tagService = new TagService(Main.getSessionFactory());
         }
         return tagService;
+    }
+
+    public static List<Post> postNewsfeed(long id) {
+        if(followHeritageService == null){
+            followHeritageService = new FollowHeritageService(Main.getSessionFactory());
+        }
+        List<Post> posts = new ArrayList<>();
+
+        List<Heritage> followedHeritages = followHeritageService.getFollowedHeritagesByMemberId(id);
+        logger.info("FOLLOWED HERITAGES: " + followedHeritages.size());
+        for(int i = 0; i < followedHeritages.size(); i++){
+            posts.addAll(getPostService().getRecentlyMostPopularPosts(followedHeritages.get(i)));
+        }
+        int heritageNum = 0;
+        while(posts.size() < 3 && heritageNum < followedHeritages.size()){
+            posts.addAll(getPostService().getPostsByHeritage(followedHeritages.get(heritageNum)));
+            heritageNum++;
+        }
+
+        posts = getPostService().sortByPopularity(posts);
+        logger.info("FOLLOWED POSTS: " + posts.size());
+
+        // Here we will add the heritages with followed tags (Interested in...)
+
+        posts.addAll(getPostService().getRecentlyMostPopularPosts());
+        return getPostService().removeDuplicates(posts);
     }
 
     public static ArrayList<Post> getSemanticallyRelatedPosts(String wholetag){

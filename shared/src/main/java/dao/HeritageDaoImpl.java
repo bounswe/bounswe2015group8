@@ -115,6 +115,10 @@ public class HeritageDaoImpl implements HeritageDao {
             heritageIds.add(tagheritages.get(i).getHeritage().getId());
         }
 
+        if(heritageIds.size() == 0){
+            return new ArrayList<Heritage>();
+        }
+
         List<Heritage> heritages = s
                 .createQuery("from Heritage where id in (:ids)")
                 .setParameterList("ids", heritageIds).list();
