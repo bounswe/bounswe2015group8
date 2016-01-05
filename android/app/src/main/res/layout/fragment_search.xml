@@ -30,9 +30,10 @@
             android:layout_alignParentEnd="true"
             android:layout_toRightOf="@id/tvSearchFor"
             android:layout_toEndOf="@id/tvSearchFor"
+            android:layout_alignTop="@id/tvSearchFor"
+            android:layout_marginBottom="20dp"
             android:layout_marginLeft="@dimen/relative_layout_margin_between"
             android:layout_marginStart="@dimen/relative_layout_margin_between"
-            android:elevation="@dimen/btn_elevation"
              />
     </RelativeLayout>
     <LinearLayout

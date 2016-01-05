@@ -14,17 +14,17 @@ import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Requestable;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class handling all server requests through REST API.
@@ -35,7 +35,7 @@ import java.util.Map;
  * Date: 31/10/15.
  */
 public class ServerRequests{
-    public enum ErrorType { NO_ERROR, NO_INTERNET, SERVER_ERROR, WRONG_LOGIN }
+    public enum ErrorType { NO_ERROR, NO_INTERNET, SERVER_ERROR, WRONG_LOGIN, UNKNOWN_ERROR }
     public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com:8080/lokum_v3";
     public static ErrorType handleErrors(Context c, ServerRequests sr) {
         switch(sr.getLastError()) {
@@ -46,6 +46,7 @@ public class ServerRequests{
                 Toast.makeText(c, c.getString(R.string.login_user_details_incorrect),Toast.LENGTH_LONG).show();
                 break;
             case SERVER_ERROR:
+            case UNKNOWN_ERROR:
                 Toast.makeText(c, c.getString(R.string.generic_server_error),Toast.LENGTH_LONG).show();
                 break;
         }
@@ -184,15 +185,11 @@ public class ServerRequests{
     }
     public void searchByHeritageName(String name, Consumer<Heritage[]> callback) {
         if (display) progressDialog.show();
-        Map<String,String> dataToSend = new HashMap<>();
-        dataToSend.put("name", name);
-        new RestAsyncTask<>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/searchByHeritageName",dataToSend,Heritage[].class));
+        new RestAsyncTask<>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/searchByHeritageName",name,Heritage[].class));
     }
     public void searchByPostTitle(String title, Consumer<Post[]> callback) {
         if (display) progressDialog.show();
-        Map<String,String> dataToSend = new HashMap<>();
-        dataToSend.put("name", title);
-        new RestAsyncTask<>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/searchByPostTitle",dataToSend,Post[].class));
+        new RestAsyncTask<>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/searchByPostTitle",title,Post[].class));
     }
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
         Consumer<T> callback;
@@ -206,12 +203,14 @@ public class ServerRequests{
         protected T doInBackground(Requestable<T>... params) {
             RestTemplate rt = new RestTemplate(true);
             rt.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
             try {
                 switch (method) {
                     case GET:
                         return rt.getForObject(SERVER_ADDRESS + params[0].getEndpoint(), params[0].getDataClass());
                     case POST:
-                        return rt.postForObject(SERVER_ADDRESS + params[0].getEndpoint(), params[0].getData(), params[0].getDataClass());
+                        return rt.postForObject(SERVER_ADDRESS + params[0].getEndpoint(), new HttpEntity<>(params[0].getData(),headers), params[0].getDataClass());
                     default:
                         return null;
                 }
@@ -226,6 +225,10 @@ public class ServerRequests{
             } catch (HttpMessageNotReadableException e) {
                 // This is thrown on wrong login
                 lastError = ErrorType.WRONG_LOGIN;
+                return null;
+            } catch (Exception e) {
+                // We have no idea what the error is
+                lastError = ErrorType.UNKNOWN_ERROR;
                 return null;
             }
         }
