@@ -2,6 +2,7 @@ package api;
 
 import controller.Main;
 import model.Media;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 
@@ -20,8 +21,15 @@ public class MediaUtility {
         if (mediaList == null) {
             mediaList = new ArrayList<Media>();
         }
-        mediaList = (ArrayList<Media>) Main.getSession().createCriteria(Media.class).list();
-        return mediaList;
+        final Session session = Main.getSession();
+        try{
+            mediaList = (ArrayList<Media>) session.createCriteria(Media.class).list();
+        }
+        catch(Exception e){}
+        finally{
+            session.close();
+            return mediaList;
+        }
     }
 
     public static ArrayList<Media> getMedias(long id, boolean postOrHeritage) {

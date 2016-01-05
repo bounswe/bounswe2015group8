@@ -131,6 +131,9 @@ public class FeedController {
             posts = postService.getRecentlyMostPopularPosts();
         }
         else{
+            //logger.info("follow heritage service null: " + followHeritageService == null);
+            //logger.info("member service null: " + memberService == null);
+            //logger.info("get user name: " + memberService.getMemberByUsername(username) == null);
             List<Heritage> followedHeritages = followHeritageService.getFollowedHeritagesByMemberId(memberService.getMemberByUsername(username).getId());
             for(int i = 0; i < followedHeritages.size(); i++){
                 posts.addAll(postService.getRecentlyMostPopularPosts(followedHeritages.get(i)));

@@ -28,6 +28,7 @@ public class FollowHeritageDaoImpl implements FollowHeritageDao{
         for(int i = 0; i < followHeritages.size(); i++) {
             memberIds.add(followHeritages.get(i).getFollowerId());
         }
+        s.close();
         return memberIds;
     }
 
@@ -40,6 +41,7 @@ public class FollowHeritageDaoImpl implements FollowHeritageDao{
         for(int i = 0; i < followHeritages.size(); i++){
             heritageIds.add(followHeritages.get(i).getHeritageId());
         }
+        s.close();
         return heritageIds;
     }
 

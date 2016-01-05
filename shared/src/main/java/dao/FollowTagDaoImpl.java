@@ -26,6 +26,7 @@ public class FollowTagDaoImpl implements FollowTagDao{
         for(int i = 0; i < followTags.size(); i++) {
             memberIds.add(followTags.get(i).getFollowerId());
         }
+        s.close();
         return memberIds;
     }
 
@@ -39,6 +40,7 @@ public class FollowTagDaoImpl implements FollowTagDao{
         for(int i = 0; i < followTags.size(); i++){
             tagIds.add(followTags.get(i).getTagId());
         }
+        s.close();
         return tagIds;
     }
 

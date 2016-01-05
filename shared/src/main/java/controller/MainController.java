@@ -151,7 +151,9 @@ public class MainController {
         ResetPassword rp = (ResetPassword) session.createCriteria(ResetPassword.class)
                 .add(Restrictions.eq("token", token)).uniqueResult();
         Member member = rp.getMember();
-        return new ModelAndView("reset_password", "username", member.getUsername());
+        String username = member.getUsername();
+        session.close();
+        return new ModelAndView("reset_password", "username", username);
     }
 
     @RequestMapping(value = "/reset_password", method = RequestMethod.POST)
@@ -249,20 +251,16 @@ public class MainController {
                     session.save(mediaObject);
                     session.getTransaction().commit();
                 } catch (RuntimeException e) {
+                    session.close();
                     e.printStackTrace();
                     return new ModelAndView("list_post", "error", "File uploaded failed:" + mediaName);
+                } finally{
+                    session.close();
                 }
             } catch (Exception e) {
                 return new ModelAndView("list_post", "error", "You failed to upload the file" + e.getMessage());
             }
         }
-
-        /*
-        Criteria criteria = session.createCriteria(Post.class)
-                .add(Restrictions.eq("owner", m));
-        List posts = criteria.list();
-        session.close();
-        */
 
         List<Post> posts = postService.getPostsByMember(m);
         return new ModelAndView("redirect:/show_posts/" + heritageId);
@@ -355,8 +353,11 @@ public class MainController {
                     session.save(mediaObject);
                     session.getTransaction().commit();
                 }  catch (RuntimeException e) {
+                    session.close();
                     e.printStackTrace();
                     return new ModelAndView("list_post", "error", "File uploaded failed:" + mediaName);
+                } finally {
+                    session.close();
                 }
             } catch (Exception e) {
                 return new ModelAndView("list_post", "error", "You failed to upload the file" + e.getMessage());
@@ -451,8 +452,11 @@ public class MainController {
                     session.save(mediaObject);
                     session.getTransaction().commit();
                 } catch (RuntimeException e) {
+                    session.close();
                     e.printStackTrace();
                     return new ModelAndView("list_post", "error", "File uploaded failed:" + mediaName);
+                } finally {
+                    session.close();
                 }
             } catch (Exception e) {
                 return new ModelAndView("list_post", "error", "You failed to upload the file" + e.getMessage());

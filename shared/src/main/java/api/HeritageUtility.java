@@ -38,8 +38,15 @@ public class HeritageUtility {
         if (heritageList == null) {
             heritageList = new ArrayList<Heritage>();
         }
-        heritageList = (ArrayList<Heritage>) Main.getSession().createCriteria(Heritage.class).list();
-        return heritageList;
+        final Session session = Main.getSession();
+        try{
+            heritageList = (ArrayList<Heritage>) session.createCriteria(Heritage.class).list();
+        }
+        catch(Exception e){}
+        finally {
+            session.close();
+            return heritageList;
+        }
     }
 
     /**
