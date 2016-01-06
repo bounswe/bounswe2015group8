@@ -331,7 +331,7 @@
             <key-property name="tagId" column="TAG_ID"/>
         </composite-id>
     </class>
-    <class name="model.Gamification" table="gamification" schema="" catalog="cmpe451_db">
+    <class name="model.Gamification" table="GAMIFICATION" schema="" catalog="cmpe451_db">
         <id name="id">
             <column name="ID" sql-type="bigint" not-null="true"/>
             <generator class="identity"/>
