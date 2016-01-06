@@ -121,8 +121,8 @@ public class GamificationController {
 
         // Checking Upvote Num and Level
         long upvoteNum = voteService.getUpvoteNum(currentUser);
-        logger.info("Upvote num: " + upvoteNum);
-        logger.info("Gamification upvote: " + gamification.getUpvoteNum());
+        //logger.info("Upvote num: " + upvoteNum);
+        //logger.info("Gamification upvote: " + gamification.getUpvoteNum());
         if(gamification.getUpvoteNum() != upvoteNum){
             int upvoteLevel = gamification.getUpvoteLevel();
             if(upvoteNum >= voteLevelLimits[upvoteLevel]){

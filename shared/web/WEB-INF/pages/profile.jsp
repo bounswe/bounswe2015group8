@@ -317,6 +317,7 @@
                         </div>
                     </c:forEach>
                 </div>
+                <%--
                 <div class="row" style="margin-top:1%;">
                     <div class="col-md-1" style="margin-top:5%;">
                         <b>HERITAGE: </b>
@@ -332,6 +333,7 @@
                         </div>
                     </c:forEach>
                 </div>
+                --%>
                 <div class="row" style="margin-top:1%;">
                     <div class="col-md-1" style="margin-top:5%;">
                         <b>UPVOTE: </b>
