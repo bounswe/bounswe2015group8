@@ -18,7 +18,7 @@
         <property name="lastEditedDate">
             <column name="LAST_EDITED_DATE" sql-type="timestamp"/>
         </property>
-        <many-to-one name="owner" class="model.Member" cascade="save-update">
+        <many-to-one name="owner" class="model.Member">
             <column name="OWNER_ID" not-null="true"/>
         </many-to-one>
         <many-to-one name="post" class="model.Post" cascade="save-update">

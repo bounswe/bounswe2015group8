@@ -3,6 +3,7 @@ package service;
 import dao.VoteDao;
 import dao.VoteDaoImpl;
 import model.*;
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * Created by gokcan on 16.11.2015.
  */
 public class VoteService {
+    private Logger logger = Logger.getLogger(VoteService.class);
     private VoteDao voteDao;
 
     public VoteService(SessionFactory sessionFactory){
@@ -68,6 +70,7 @@ public class VoteService {
 
     public CommentVote saveCommentVote(Member member, Comment comment, boolean voteType){
         CommentVote oldCommentVote = voteDao.getVoteByCommentAndOwner(comment, member);
+        logger.info("oldCommentVote: " + oldCommentVote);
         if(oldCommentVote != null){
             deleteCommentVote(oldCommentVote);
         }
