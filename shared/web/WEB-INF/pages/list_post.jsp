@@ -205,9 +205,7 @@
                                 <label for="content_${post.id}" class="col-sm-2 control-label">Content</label>
 
                                 <div class="col-sm-10">
-                                    <p name="content_${post.id}" id="content_${post.id}">
-                                            ${post.content}
-                                    </p>
+                                    <p style="white-space: pre-wrap;" name="content_${post.id}" id="content_${post.id}">${post.content}</p>
                                 </div>
                             </div>
                             <div class="row">

@@ -126,9 +126,7 @@
                         <label for="description" class="col-sm-2 control-label">Description</label>
 
                         <div class="col-sm-10">
-                            <p name="description" id="description">
-                                    ${heritage.description}
-                            </p>
+                            <p style="white-space: pre-wrap;" name="description" id="description">${heritage.description}</p>
                         </div>
                     </div>
                     <div class="row">
