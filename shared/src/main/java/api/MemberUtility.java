@@ -27,6 +27,7 @@ public class MemberUtility {
         final Session session = Main.getSession();
         try{
             memberList = (ArrayList<Member>) session.createCriteria(Member.class).list();
+            memberList = (ArrayList<Member>) getMemberService().unproxyMemberList(memberList);
         }
         catch(Exception e) {}
         finally {

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xyllan on 30.10.2015.
@@ -61,4 +62,6 @@ public class MemberDetailsService implements UserDetailsService{
     public void setMemberDao(MemberDao memberDao) {
         this.memberDao = memberDao;
     }
+
+    public List<Member> unproxyMemberList(List<Member> members) { return memberDao.unproxyMemberList(members); }
 }
