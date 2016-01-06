@@ -28,6 +28,7 @@ public class TagDaoImpl implements TagDao {
         List<String> tagContexts = s
                 .createQuery("select tagContext from Tag where tagText=? and tagContext is not null")
                 .setParameter(0, text).list();
+        s.close();
         return tagContexts.toArray(new String[tagContexts.size()]);
     }
 
@@ -66,6 +67,7 @@ public class TagDaoImpl implements TagDao {
         List<Tag> tags = s
                 .createQuery("from Tag where tagContext=?")
                 .setParameter(0, context).list();
+        s.close();
         return tags;
     }
 
@@ -144,6 +146,7 @@ public class TagDaoImpl implements TagDao {
                 .createQuery("from TagHeritage where heritage=? and tag=?")
                 .setParameter(0, heritage)
                 .setParameter(1, tag).list().size();
+        s.close();
         if(count == 0)
             return false;
         else
@@ -156,6 +159,7 @@ public class TagDaoImpl implements TagDao {
                 .createQuery("from TagPost where post=? and tag=?")
                 .setParameter(0, post)
                 .setParameter(1, tag).list().size();
+        s.close();
         if(count == 0)
             return false;
         else

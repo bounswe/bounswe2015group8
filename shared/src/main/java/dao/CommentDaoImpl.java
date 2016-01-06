@@ -38,6 +38,12 @@ public class CommentDaoImpl implements CommentDao {
         List<Comment> postComments = s
                 .createQuery("from Comment where post=?")
                 .setParameter(0, post).list();
+        for(Comment comment : postComments){
+            Hibernate.initialize(comment);
+            Hibernate.initialize(comment.getOwner());
+            Hibernate.initialize(comment.getPost());
+        }
+        s.close();
         return postComments;
     }
 

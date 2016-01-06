@@ -3,6 +3,7 @@ package api;
 import controller.Main;
 import dao.MemberDaoImpl;
 import model.Member;
+import org.hibernate.Session;
 import service.MemberDetailsService;
 
 import java.util.ArrayList;
@@ -23,8 +24,15 @@ public class MemberUtility {
         if (memberList == null) {
             memberList = new ArrayList<Member>();
         }
-        memberList = (ArrayList<Member>) Main.getSession().createCriteria(Member.class).list();
-        return memberList;
+        final Session session = Main.getSession();
+        try{
+            memberList = (ArrayList<Member>) session.createCriteria(Member.class).list();
+        }
+        catch(Exception e) {}
+        finally {
+            session.close();
+            return memberList;
+        }
     }
 
     public static Member getMemberById(long id) {

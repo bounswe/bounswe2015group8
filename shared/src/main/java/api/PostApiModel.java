@@ -9,6 +9,7 @@ public class PostApiModel {
     private int type;
     private String title;
     private String content;
+    private String place;
 
     public PostApiModel() {
     }
@@ -19,6 +20,16 @@ public class PostApiModel {
         this.type = type;
         this.title = title;
         this.content = content;
+        this.place = "";
+    }
+
+    public PostApiModel(long heritageId, long ownerId ,int type, String title, String content, String place) {
+        this.heritageId = heritageId;
+        this.ownerId = ownerId;
+        this.type = type;
+        this.title = title;
+        this.content = content;
+        this.place = place;
     }
 
     public long getHeritageId() {
@@ -55,5 +66,13 @@ public class PostApiModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 }

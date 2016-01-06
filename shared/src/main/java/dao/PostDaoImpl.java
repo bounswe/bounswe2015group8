@@ -1,10 +1,12 @@
 package dao;
 
+import controller.Main;
 import model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -24,20 +26,19 @@ public class PostDaoImpl implements PostDao {
         Post post = (Post) s
                 .createQuery("from Post where id=?")
                 .setParameter(0, id).uniqueResult();
-        Hibernate.initialize(post);
-        Hibernate.initialize(post.getOwner());
-        Hibernate.initialize(post.getComments());
-        Hibernate.initialize(post.getVotes());
-        Hibernate.initialize(post.getTags());
+        post = unproxyPost(post);
         s.close();
         return post;
     }
 
+    @SuppressWarnings("unchecked")
     public List<Post> getPostsByOwner(Member owner) {
         Session s = getSessionFactory().openSession();
         List<Post> posts = s
                 .createQuery("from Post where owner=?")
                 .setParameter(0, owner).list();
+        posts = unproxyPostList(posts);
+        s.close();
         return posts;
     }
 
@@ -79,6 +80,8 @@ public class PostDaoImpl implements PostDao {
         for (int i = 0; i < heritageposts.size(); i++) {
             posts.add(heritageposts.get(i).getPost());
         }
+        posts = unproxyPostList(posts);
+        s.close();
         return posts;
     }
 
@@ -92,6 +95,8 @@ public class PostDaoImpl implements PostDao {
         for (int i = 0; i < tagposts.size(); i++) {
             posts.add(tagposts.get(i).getPost());
         }
+        posts = unproxyPostList(posts);
+        s.close();
         return posts;
     }
 
@@ -101,18 +106,7 @@ public class PostDaoImpl implements PostDao {
         List<Post> posts = s
                 .createQuery("from Post where postDate >= :date")
                 .setParameter("date", date).list();
-        for(Post post : posts){
-            Hibernate.initialize(post);
-            Hibernate.initialize(post.getOwner());
-            Hibernate.initialize(post.getComments());
-            for(Comment comment : post.getComments()){
-                Hibernate.initialize(comment);
-                Hibernate.initialize(comment.getOwner());
-                Hibernate.initialize(comment.getVotes());
-            }
-            Hibernate.initialize(post.getVotes());
-            Hibernate.initialize(post.getTags());
-        }
+        posts = unproxyPostList(posts);
         s.close();
         return posts;
     }
@@ -131,8 +125,8 @@ public class PostDaoImpl implements PostDao {
                 .createQuery("from Post where postDate >= :date and id in :ids")
                 .setParameter("date", date)
                 .setParameterList("ids", postIdsLong).list();
-        logger.info("postIds: " + postIdsLong);
-        logger.info("posts: " + posts);
+        posts = unproxyPostList(posts);
+        s.close();
         return posts;
     }
 
@@ -171,6 +165,7 @@ public class PostDaoImpl implements PostDao {
         s.getTransaction().begin();
         s.update(post);
         s.getTransaction().commit();
+        s.close();
         return post;
     }
 
@@ -200,5 +195,34 @@ public class PostDaoImpl implements PostDao {
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public List<Post> unproxyPostList(List<Post> posts){
+        for(int i = 0; i < posts.size(); i++){
+            Post post = posts.get(i);
+            posts.set(i, unproxyPost(post));
+        }
+        return posts;
+    }
+
+    public Post unproxyPost(Post post){
+        Hibernate.initialize(post);
+        Hibernate.initialize(post.getOwner());
+        Hibernate.initialize(post.getComments());
+        for(Comment comment : post.getComments()){
+            Hibernate.initialize(comment);
+            Hibernate.initialize(comment.getOwner());
+        }
+        Hibernate.initialize(post.getVotes());
+        for(PostVote postVote : post.getVotes()){
+            Hibernate.initialize(postVote);
+            Hibernate.initialize(postVote.getOwner());
+        }
+        Hibernate.initialize(post.getTags());
+        post = Main.initializeAndUnproxy(post);
+        if(post instanceof HibernateProxy){
+            logger.info("yok artik ama...");
+        }
+        return post;
     }
 }

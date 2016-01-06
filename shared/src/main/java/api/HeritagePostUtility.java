@@ -3,6 +3,8 @@ package api;
 import controller.Main;
 import model.Heritage;
 import model.HeritagePost;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 
@@ -16,8 +18,20 @@ public class HeritagePostUtility {
         if (heritagePostList == null) {
             heritagePostList = new ArrayList<>();
         }
-        heritagePostList = (ArrayList<HeritagePost>) Main.getSession().createCriteria(HeritagePost.class).list();
-        return heritagePostList;
+        final Session session = Main.getSession();
+        try{
+            heritagePostList = (ArrayList<HeritagePost>) session.createCriteria(HeritagePost.class).list();
+            for(HeritagePost heritagePost : heritagePostList){
+                Main.initializeAndUnproxy(heritagePost);
+                Main.initializeAndUnproxy(heritagePost.getHeritage());
+                Main.initializeAndUnproxy(heritagePost.getPost());
+            }
+        }
+        catch(Exception e){}
+        finally {
+            session.close();
+            return heritagePostList;
+        }
     }
 
     public static ArrayList<Heritage> getHeritageIdOfPost(long postId) {
@@ -25,7 +39,9 @@ public class HeritagePostUtility {
         heritagePostList = getHeritagePostList();
         for (HeritagePost heritagePost : heritagePostList) {
             if (heritagePost.getPost().getId() == postId) {
-                heritages.add(heritagePost.getHeritage());
+                Heritage heritage = heritagePost.getHeritage();
+                //Hibernate.initialize(heritage);
+                heritages.add(heritage);
             }
         }
         return heritages;

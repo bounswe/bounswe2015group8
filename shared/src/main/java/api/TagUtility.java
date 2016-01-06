@@ -2,6 +2,7 @@ package api;
 
 import controller.Main;
 import model.Tag;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,14 @@ public class TagUtility {
         if (tagList == null) {
             tagList = new ArrayList<Tag>();
         }
-        tagList = (ArrayList<Tag>) Main.getSession().createCriteria(Tag.class).list();
-        return tagList;
+        final Session session = Main.getSession();
+        try {
+            tagList = (ArrayList<Tag>) session.createCriteria(Tag.class).list();
+        }
+        catch(Exception e) {}
+        finally {
+            session.close();
+            return tagList;
+        }
     }
 }
