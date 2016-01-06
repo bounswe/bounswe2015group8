@@ -40,7 +40,7 @@ import java.util.Arrays;
 public class PostViewFragment extends NamedFragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
     public static final String NAME = "POST_VIEW";
     private Button btnEdit, btnAdd;
-    private TextView tvOwner, tvCreationDate, tvLastEditDate, tvContent, tvVote;
+    private TextView tvOwner, tvPlace, tvCreationDate, tvLastEditDate, tvContent, tvVote;
     private Post post;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ExpandableListView elvData;
@@ -57,6 +57,7 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         elvData = (ExpandableListView) v.findViewById(R.id.lvHeritageViewPosts);
         View header = inflater.inflate(R.layout.fragment_post_view_header,elvData,false);
         tvOwner = (TextView) header.findViewById(R.id.tvPostViewOwnerValue);
+        tvPlace = (TextView) header.findViewById(R.id.tvPostViewPlaceValue);
         tvCreationDate = (TextView) header.findViewById(R.id.tvPostViewCreationDateValue);
         tvLastEditDate = (TextView) header.findViewById(R.id.tvPostViewLastEditDateValue);
         tvContent = (TextView) header.findViewById(R.id.tvPostViewContentValue);
@@ -86,6 +87,11 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
             tvLastEditDate.setText(post.getLastEditedDate());
         } else {
             tvLastEditDate.setText("---");
+        }
+        if(post.getPlace()!=null) {
+            tvPlace.setText(post.getPlace());
+        } else {
+            tvPlace.setText("---");
         }
         tvContent.setText(post.getContent());
     }

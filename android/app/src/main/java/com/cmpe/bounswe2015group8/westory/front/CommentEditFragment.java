@@ -68,8 +68,7 @@ public class CommentEditFragment extends NamedFragment implements View.OnClickLi
                             JSONObject obj = new JSONObject(json);
                             Long id=obj.getLong("id");
                             comment.setId(id);
-                            NamedFragment nf = new PostsFragment();
-                            MainActivity.beginFragment(getActivity(),nf);
+                            getActivity().getSupportFragmentManager().popBackStack();
                         } catch (Throwable t) {
                             ServerRequests.handleErrors(getContext(), sr);
                         }
