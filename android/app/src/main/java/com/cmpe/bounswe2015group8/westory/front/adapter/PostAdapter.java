@@ -21,8 +21,11 @@ import com.cmpe.bounswe2015group8.westory.front.ProfileFragment;
 import com.cmpe.bounswe2015group8.westory.model.Member;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
-/**
- * Created by xyllan on 17.11.2015.
+/** Basic adapter for an array of Post objects in small display.
+ * Allows for upvote and downvote.
+ * @see Post
+ * @author xyllan
+ * Date: 17.11.2015
  */
 public class PostAdapter extends ArrayAdapter<Post> {
     private FragmentActivity context;

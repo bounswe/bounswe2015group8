@@ -31,8 +31,14 @@ import com.cmpe.bounswe2015group8.westory.model.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by xyllan on 28.11.2015.
+/** Adapter handling the multi-part Post view.
+ * Shows comments, heritages, tags, and media related to that heritage.
+ * @see Comment
+ * @see Heritage
+ * @see Tag
+ * @see Media
+ * @author xyllan
+ * Date: 28.11.2015
  */
 public class PostViewAdapter extends BaseExpandableListAdapter {
     public static final int COMMENTS_VIEW_INDEX = 0;

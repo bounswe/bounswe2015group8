@@ -209,6 +209,13 @@ public class ServerRequests{
         String wholeTag = tag.getTagText() + "(" + tag.getTagContext() + ")";
         new RestAsyncTask<>(callback, HttpMethod.GET).execute(new Requestable<>("/api/searchPostsByTag/"+wholeTag,null,Post[].class));
     }
+
+    /** Class for handling REST requests.
+     * Handles one request per task. Calls the given callback object once it is done
+     * so that the result can be used. Note that all POST requests send data
+     * with content type JSON.
+     * @param <T> The class of the returned object.
+     */
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
         Consumer<T> callback;
         HttpMethod method;

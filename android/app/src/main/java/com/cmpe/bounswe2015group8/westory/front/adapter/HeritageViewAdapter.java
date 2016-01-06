@@ -30,8 +30,13 @@ import com.cmpe.bounswe2015group8.westory.model.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by xyllan on 26.11.2015.
+/** Adapter handling the multi-part Heritage view.
+ * Shows posts, tags, and media related to that heritage.
+ * @see Post
+ * @see Tag
+ * @see Media
+ * @author xyllan
+ * Date: 26.11.2015
  */
 public class HeritageViewAdapter extends BaseExpandableListAdapter {
     public static final int POSTS_VIEW_INDEX = 0;

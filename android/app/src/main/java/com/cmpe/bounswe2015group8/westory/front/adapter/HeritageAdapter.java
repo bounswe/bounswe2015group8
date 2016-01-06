@@ -15,8 +15,10 @@ import com.cmpe.bounswe2015group8.westory.front.MainActivity;
 import com.cmpe.bounswe2015group8.westory.front.NamedFragment;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 
-/**
- * Created by xyllan on 17.11.2015.
+/** Basic adapter for an array of Heritage objects in small display.
+ * @see Heritage
+ * @author xyllan
+ * Date: 17.11.2015
  */
 public class HeritageAdapter extends ArrayAdapter<Heritage> {
     private FragmentActivity context;

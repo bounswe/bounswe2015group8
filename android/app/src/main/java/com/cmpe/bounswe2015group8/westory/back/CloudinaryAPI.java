@@ -42,6 +42,12 @@ public class CloudinaryAPI {
     public static boolean canHandleRequest(int requestCode) {
         return requestCode == AUDIO_CODE || requestCode == IMAGE_CODE || requestCode == VIDEO_CODE;
     }
+    /**
+     * Class that returns the string URL from Cloudinary given a Uri.
+     * @author xyllan
+     * @see Uri
+     * Date: 02/12/15.
+     */
     public static class CloudinaryUploadTask extends AsyncTask<Uri,Void,String> {
         private Context context;
         private Consumer<String> consumer;
