@@ -57,7 +57,10 @@
     <string name="search_type">Search for:</string>
 
     <string name="nav_home">Home</string>
+    <string name="nav_feed">Feed</string>
+    <string name="nav_post_feed">Post Feed</string>
     <string name="nav_heritages">Heritages</string>
+    <string name="nav_recommendations">Recommendations</string>
     <string name="nav_add_heritage">Add Heritage</string>
     <string name="nav_posts">Posts</string>
     <string name="nav_login">Login</string>

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.model.Tag;
 
 /**
  * Created by xyllan on 05.01.2016.
@@ -67,10 +68,18 @@ public class SearchFragment extends NamedFragment implements View.OnClickListene
                 MainActivity.beginFragment(getActivity(),nf2);
                 break;
             case 2:
-                //TODO semantic search heritage
+                NamedFragment nf3 = new HeritageSemanticSearchFragment();
+                Bundle b3 = new Bundle();
+                b3.putParcelable("searchTag",new Tag(etSearch1.getText().toString(),etSearch2.getText().toString()));
+                nf3.setArguments(b3);
+                MainActivity.beginFragment(getActivity(),nf3);
                 break;
             case 3:
-                //TODO semantic search posts
+                NamedFragment nf4 = new PostSemanticSearchFragment();
+                Bundle b4 = new Bundle();
+                b4.putParcelable("searchTag",new Tag(etSearch1.getText().toString(),etSearch2.getText().toString()));
+                nf4.setArguments(b4);
+                MainActivity.beginFragment(getActivity(),nf4);
                 break;
         }
 
