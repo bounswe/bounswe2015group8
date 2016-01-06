@@ -47,10 +47,11 @@
                     console.log(results);
                     document.getElementById("latlng").value = latlng.toString();
                     var placeName;
-                    if(results.length > 1)
-                        placeName = results[results.length-2].formatted_address;
-                    else
-                        placeName = results[0].formatted_address;
+                    level = results.length - Number(document.getElementById("infoLevel").value);
+                    if(level < 0){
+                        level = 0;
+                    }
+                    placeName = results[level].formatted_address;
                     document.getElementById("place_name").value = placeName;
                 } else {
                     window.alert('No results found');
@@ -80,7 +81,19 @@
 <div class="wrapper">
     <div id="map"></div>
     <div id="floating-panel">
-        <input disabled id="latlng" type="text" value="40.714224,-73.961452">
+        Geo location:<input style="width:250px;" disabled id="latlng" type="text" value="40.714224,-73.961452">
+        &nbsp;
+        Location Info Level
+        <select id="infoLevel">
+            <option value="1">Country</option>
+            <option value="2">City</option>
+            <option value="3">Country</option>
+            <option value="4">District</option>
+            <option value="5">Region</option>
+            <option value="6">Road</option>
+        </select> <span style="color: red;">Note: Not every location has detailed info such as road or region</span>
+        <br>
+        Location Description:
         <input id="place_name" type="text">
         <button id="submit" type="button"
                 onclick="window.opener['place'] = document.getElementById('place_name').value;
