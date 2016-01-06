@@ -115,4 +115,6 @@ public class HeritageService {
     public List<Heritage> getHeritagesContainName(String name) { return heritageDao.getHeritagesContainName(name); }
 
     public List<Heritage> getHeritagesContainDescription(String description) { return heritageDao.getHeritagesContainDescription(description); }
+
+    public List<Heritage> unproxyHeritageList(List<Heritage> heritages) { return heritageDao.unproxyHeritageList(heritages); }
 }

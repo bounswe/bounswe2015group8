@@ -41,4 +41,6 @@ public interface PostDao {
     SessionFactory getSessionFactory();
 
     void setSessionFactory(SessionFactory sessionFactory);
+
+    List<Post> unproxyPostList(List<Post> posts);
 }

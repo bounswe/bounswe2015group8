@@ -159,4 +159,6 @@ public class PostService {
     public long getPostNumber(Member member){
         return getPostsByMember(member).size();
     }
+
+    public List<Post> unproxyPostList(List<Post> posts) { return postDao.unproxyPostList(posts); }
 }

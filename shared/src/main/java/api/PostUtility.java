@@ -6,6 +6,7 @@ import model.FollowHeritage;
 import model.Heritage;
 import model.Post;
 import model.Tag;
+import org.hibernate.Session;
 import org.jboss.logging.Logger;
 import service.FollowHeritageService;
 import service.PostService;
@@ -34,11 +35,21 @@ public class PostUtility {
             postList = new ArrayList<Post>();
         }
         postList.clear();
-        for (Heritage h : HeritageUtility.getHeritageList()) {
-            postList.addAll(h.getPosts());
+        final Session session = Main.getSession();
+        try{
+            for (Heritage h : HeritageUtility.getHeritageList()) {
+                postList.addAll(h.getPosts());
+            }
+            for(Post post : postList){
+                session.refresh(post);
+            }
+            postList = (ArrayList<Post>)getPostService().unproxyPostList(postList);
         }
-
-        return postList;
+        catch(Exception exp) {}
+        finally{
+            session.close();
+            return postList;
+        }
     }
 
     /**

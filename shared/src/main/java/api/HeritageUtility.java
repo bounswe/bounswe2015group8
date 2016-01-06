@@ -41,6 +41,7 @@ public class HeritageUtility {
         final Session session = Main.getSession();
         try{
             heritageList = (ArrayList<Heritage>) session.createCriteria(Heritage.class).list();
+            heritageList = (ArrayList<Heritage>)getHeritageService().unproxyHeritageList(heritageList);
         }
         catch(Exception e){}
         finally {

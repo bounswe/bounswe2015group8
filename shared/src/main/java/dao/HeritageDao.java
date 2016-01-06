@@ -40,4 +40,6 @@ public interface HeritageDao {
 
     void setSessionFactory(SessionFactory sessionFactory);
 
+    List<Heritage> unproxyHeritageList(List<Heritage> heritages);
+
 }
