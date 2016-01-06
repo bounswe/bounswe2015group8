@@ -30,6 +30,13 @@
                     </button>
                 </div>
                 <div class="form-group">
+                    <label for="date_event" class="col-sm-1 control-label">Event Date</label>
+                    <div class='input-group date col-sm-9' id='datetimepicker_event_date'>
+                        <input data-date-format="YYYY-MM-DD" id="date_event" name="eventDate" type='text' class="form-control datepicker" />
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="place" class="col-sm-1 control-label">Description</label>
 
                     <div class="col-sm-9">
@@ -57,6 +64,9 @@
 </div>
 </form>
 <script type="text/javascript">
+    $(document).ready(function(){
+        $("#date_event").datetimepicker();
+    });
     function fillPlaceFromGoogleMap(){
         $("#place").val(window['place']);
     }

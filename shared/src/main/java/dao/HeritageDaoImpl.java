@@ -1,6 +1,7 @@
 package dao;
 
 import model.*;
+import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 public class HeritageDaoImpl implements HeritageDao {
     private SessionFactory sessionFactory;
+    private Logger logger = Logger.getLogger(HeritageDaoImpl.class);
 
     public Heritage getHeritageById(long id) {
         Session s = getSessionFactory().openSession();

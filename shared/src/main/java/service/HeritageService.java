@@ -49,6 +49,11 @@ public class HeritageService {
         return heritageDao.saveHeritage(heritage);
     }
 
+    public Heritage saveHeritage(String name, String place, String description, Timestamp postDate, Timestamp eventDate) {
+        Heritage heritage = new Heritage(name, place, description, postDate, eventDate);
+        return heritageDao.saveHeritage(heritage);
+    }
+
     public List<Heritage> sortByPopularity(List<Heritage> heritages){
         List<Heritage> sortedHeritages = new ArrayList<>();
         int size = heritages.size();

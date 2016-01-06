@@ -65,11 +65,14 @@
         <property name="place">
             <column name="PLACE" sql-type="varchar" length="64"/>
         </property>
+        <property name="eventDate">
+            <column name="EVENT_DATE" sql-type="timestamp"/>
+        </property>
         <property name="postDate">
             <column name="POST_DATE" sql-type="timestamp" not-null="true"/>
         </property>
         <property name="description">
-            <column name="DESCRIPTION" sql-type="varchar" length="1024" not-null="true"/>
+            <column name="DESCRIPTION" sql-type="varchar" length="65535" not-null="true"/>
         </property>
         <set name="posts" table="HERITAGE_POST" cascade="save-update" fetch="select" lazy="true">
             <key>

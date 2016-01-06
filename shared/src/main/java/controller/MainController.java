@@ -27,10 +27,9 @@ import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -324,12 +323,27 @@ public class MainController {
     public ModelAndView upload_heritage(@RequestParam("name") String name,
                                         @RequestParam("place") String place,
                                         @RequestParam("media") MultipartFile media,
-                                        @RequestParam("description") String description) {
+                                        @RequestParam("description") String description,
+                                        @RequestParam("eventDate") String eventDate) throws ParseException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-
         java.util.Date now = new java.util.Date();
-        Heritage heritage = heritageService.saveHeritage(name, place, description, new Timestamp(now.getTime()));
+        Heritage heritage;
+
+        if(!eventDate.equals("") && eventDate != null){
+            logger.info("there is event date");
+            try{
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(sdf.parse(eventDate));
+                heritage = heritageService.saveHeritage(name, place, description, new Timestamp(now.getTime()), new Timestamp(calendar.getTimeInMillis()));
+            }
+            catch(ParseException exc){ heritage = heritageService.saveHeritage(name, place, description, new Timestamp(now.getTime())); }
+        }
+        else{
+            logger.info("there is NOT event date");
+            heritage = heritageService.saveHeritage(name, place, description, new Timestamp(now.getTime()));
+        }
 
         if (!media.isEmpty()) {
             try {
