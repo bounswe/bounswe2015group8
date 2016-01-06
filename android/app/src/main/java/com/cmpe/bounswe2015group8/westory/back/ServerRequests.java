@@ -36,7 +36,7 @@ import java.util.ArrayList;
  */
 public class ServerRequests{
     public enum ErrorType { NO_ERROR, NO_INTERNET, SERVER_ERROR, WRONG_LOGIN, UNKNOWN_ERROR }
-    public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com:8080/lokum_v3";
+    public static final String SERVER_ADDRESS = "http://ec2-54-187-115-133.us-west-2.compute.amazonaws.com:8080/WeStory";
     public static ErrorType handleErrors(Context c, ServerRequests sr) {
         switch(sr.getLastError()) {
             case NO_INTERNET:
@@ -183,6 +183,10 @@ public class ServerRequests{
         if (display) progressDialog.show();
         new RestAsyncTask<Heritage[]>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/heritageNewsfeed",id,Heritage[].class) );
     }
+    public void postFeed(Long id,  Consumer<Post[]> callback) {
+        if (display) progressDialog.show();
+        new RestAsyncTask<Post[]>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/postNewsfeed",id,Post[].class) );
+    }
     public void searchByHeritageName(String name, Consumer<Heritage[]> callback) {
         if (display) progressDialog.show();
         new RestAsyncTask<>(callback, HttpMethod.POST).execute(new Requestable<Heritage[]>("/api/searchByHeritageName",name,Heritage[].class));
@@ -190,6 +194,20 @@ public class ServerRequests{
     public void searchByPostTitle(String title, Consumer<Post[]> callback) {
         if (display) progressDialog.show();
         new RestAsyncTask<>(callback, HttpMethod.POST).execute(new Requestable<Post[]>("/api/searchByPostTitle",title,Post[].class));
+    }
+    public void recommendHeritages(Long id, Consumer<Heritage[]> callback) {
+        if (display) progressDialog.show();
+        new RestAsyncTask<>(callback, HttpMethod.GET).execute(new Requestable<>("/api/recommendHeritages/"+id,null,Heritage[].class));
+    }
+    public void searchHeritagesByTag(Tag tag, Consumer<Heritage[]> callback) {
+        if (display) progressDialog.show();
+        String wholeTag = tag.getTagText() + "(" + tag.getTagContext() + ")";
+        new RestAsyncTask<>(callback, HttpMethod.GET).execute(new Requestable<>("/api/searchHeritagesByTag/"+wholeTag,null,Heritage[].class));
+    }
+    public void searchPostsByTag(Tag tag, Consumer<Post[]> callback) {
+        if (display) progressDialog.show();
+        String wholeTag = tag.getTagText() + "(" + tag.getTagContext() + ")";
+        new RestAsyncTask<>(callback, HttpMethod.GET).execute(new Requestable<>("/api/searchPostsByTag/"+wholeTag,null,Post[].class));
     }
     public class RestAsyncTask<T> extends AsyncTask<Requestable<T>, Void, T> {
         Consumer<T> callback;
