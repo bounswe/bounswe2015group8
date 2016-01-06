@@ -63,7 +63,8 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         tvVote = (TextView) header.findViewById(R.id.tvPostVoteCount);
         btnEdit = (Button) header.findViewById(R.id.btnPostViewEdit);
         btnAdd = (Button) header.findViewById(R.id.btnPostViewAdd);
-        initViews(this.getArguments());
+        post = this.getArguments().getParcelable("post");
+        initViews(post);
         if(memberLocalStore.getUserLoggedIn() && post.getOwnerId() == memberLocalStore.getLoggedInMember().getId()) {
             btnEdit.setOnClickListener(this);
         } else {
@@ -78,10 +79,8 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
         manualRefresh();
         return v;
     }
-    private void initViews(Bundle args) {
-        post = args.getParcelable("post");
-        //TODO fix this once owner is properly stored
-        tvOwner.setText(""+post.getOwnerId());
+    private void initViews(Post post) {
+        tvOwner.setText(post.getUsername());
         tvCreationDate.setText(post.getPostDate());
         if(post.getLastEditedDate()!=null) {
             tvLastEditDate.setText(post.getLastEditedDate());
