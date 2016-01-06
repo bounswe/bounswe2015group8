@@ -1,4 +1,50 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#date_event").datetimepicker();
+        $("#heritageForm").submit(function(e){
+            if(!isASCII($("#name").val())){
+                $.notify("Please do not enter non-ASCII characters for title", "error");
+                e.preventDefault();
+            }
+            else if(!isASCII($("#place").val())){
+                $.notify("Please do not enter non-ASCII characters for place", "error");
+                e.preventDefault();
+            }
+            else if(!isASCII($("textarea#description").val())){
+                $.notify("Please do not enter non-ASCII characters for content ", "error");
+                e.preventDefault();
+            }
+        });
+        $("#media").change(function(){
+            if($("#media").val() != ""){
+                var fileNameIndex = $("#media").val().lastIndexOf("\\")+1;
+                var fileName = $("#media").val().substring(fileNameIndex);
+                $("#mediaName").html(fileName);
+                $("#mediaName").css("color", "green");
+            }
+            else{
+                $("#mediaName").html("No file chosen");
+                $("#mediaName").css("color", "red");
+            }
+        })
+    });
+    function fillPlaceFromGoogleMap(){
+        $("#place").val(window['place']);
+    }
+
+    function isASCII(str) {
+        if(typeof(str)!=='string'){
+            return false;
+        }
+        for(var i=0;i<str.length;i++){
+            if(str.charCodeAt(i)>127){
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
 
 <div class="page-content container">
     <div class="panel panel-success">
@@ -47,11 +93,13 @@
                 </div>
                 <div class="form-group">
                     <label for="media" class="col-sm-1 control-label">Media</label>
-                    <div class="col-sm-9">
+                    <div class="col-sm-1">
                         <label for="media" class="btn btn-lg"><i class="glyphicon glyphicon-paperclip"></i></label>
                         <input type="file" name="media" id="media" style="display:none"/>
                     </div>
-                </div>
+                    <div class="col-sm-8">
+                        <div style="color:red;" id="mediaName">No file chosen</div>
+                    </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-1" style="float:right">
                         <button type="submit" class="btn btn-default">Post</button>
@@ -63,14 +111,6 @@
     </div>
 </div>
 </form>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("#date_event").datetimepicker();
-    });
-    function fillPlaceFromGoogleMap(){
-        $("#place").val(window['place']);
-    }
-</script>
 
 <%@ include file="/WEB-INF/pages/footer.jsp" %>
 
