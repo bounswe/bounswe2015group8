@@ -61,6 +61,7 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
                 heritage.setName(etName.getText().toString());
                 heritage.setPlace(etPlace.getText().toString());
                 heritage.setDescription(etDescription.getText().toString());
+                if(hasAsciiError(getContext(),etName,etPlace,etDescription)) return;
                 final ServerRequests sr = new ServerRequests(getActivity());
                 sr.createHeritage(heritage, new Consumer<Long>() {
                     @Override

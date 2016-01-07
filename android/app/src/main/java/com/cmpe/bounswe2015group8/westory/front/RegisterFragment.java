@@ -49,7 +49,7 @@ public class RegisterFragment extends NamedFragment implements View.OnClickListe
                 String email = etMail.getText().toString();
                 String password = etPassword.getText().toString();
                 String passwordConfirm = etPasswordConfirm.getText().toString();
-
+                if(hasAsciiError(getContext(),etUsername,etMail,etPassword)) return;
                 if (password.contentEquals(passwordConfirm)) {
                     Member member = new Member(username, password, email,"");
                     registerMember(member);

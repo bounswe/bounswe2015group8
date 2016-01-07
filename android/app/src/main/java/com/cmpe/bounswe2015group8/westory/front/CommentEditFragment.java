@@ -60,6 +60,7 @@ public class CommentEditFragment extends NamedFragment implements View.OnClickLi
         switch(v.getId()) {
             case R.id.btnCommentEditSubmit:
                 comment.setContent(etContent.getText().toString());
+                if(hasAsciiError(getContext(),etContent)) return;
                 final ServerRequests sr = new ServerRequests(getActivity());
                 sr.createComment(comment, postId, new Consumer<String>() {
                     @Override

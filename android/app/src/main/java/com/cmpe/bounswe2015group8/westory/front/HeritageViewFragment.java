@@ -198,6 +198,7 @@ public class HeritageViewFragment extends NamedFragment implements View.OnClickL
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Tag t = new Tag(tagText.getText().toString(),
                                 tagContext.getText().toString());
+                        if(hasAsciiError(getContext(),tagText,tagContext)) return;
                         heritage.addTags(t);
                         final ServerRequests sr = new ServerRequests(getActivity());
                         sr.addTags(heritage, new Consumer<Tag[]>() {

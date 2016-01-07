@@ -73,6 +73,9 @@
     <string name="title_post_new">New Post</string>
     <string name="title_generic_edit">Edit </string>
     <string name="textFollowMember">Follow</string>
+
+    <string name="asciiError">Please enter English (ASCII) characters only.</string>
+
     <string-array name="search_types">
         <item>Heritage Name</item>
         <item>Post Title</item>

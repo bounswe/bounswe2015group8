@@ -62,6 +62,7 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.btnPostEditSubmit:
+                if(hasAsciiError(getContext(),etTitle,etPlace,etContent)) return;
                 post.setTitle(etTitle.getText().toString());
                 post.setPlace(etPlace.getText().toString());
                 post.setContent(etContent.getText().toString());

@@ -174,6 +174,7 @@ public class PostViewFragment extends NamedFragment implements View.OnClickListe
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Tag t = new Tag(tagText.getText().toString(),
                                 tagContext.getText().toString());
+                        if(hasAsciiError(getContext(), tagText, tagContext)) return;
                         post.addTags(t);
                         final ServerRequests sr = new ServerRequests(getActivity());
                         sr.addTags(post, new Consumer<Tag[]>() {
