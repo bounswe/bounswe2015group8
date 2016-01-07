@@ -208,9 +208,11 @@
                         <div class="row">
                             <b>
                                 <h class="panel-title" style="margin-left:0.5% " name="name" id="name">${heritage.name}</h>
-                                <c:if test="${principal.username != member.username}">
-                                <button style="float:right; margin-right:1%" type="button" class="btn btn-success followbutton"
-                                        onclick="followHeritage(${heritage.id})" id="followbutton_${heritage.id}">Follow</button>
+                                <c:if test="${isAuthorized}">
+                                    <c:if test="${principal.username != member.username}">
+                                        <button style="float:right; margin-right:1%" type="button" class="btn btn-success followbutton"
+                                                onclick="followHeritage(${heritage.id})" id="followbutton_${heritage.id}">Follow</button>
+                                    </c:if>
                                 </c:if>
                             </b>
                         </div>

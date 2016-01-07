@@ -42,6 +42,10 @@
 <script type="text/javascript">
     function searchByTag(){
         var tag = document.getElementById("search").value;
+        if(tag == ""){
+            $.notify("Please type something before searching it!", "danger");
+            return false;
+        }
         window.location.href = "${contextPath}/searchByTag/" + tag;
     }
 

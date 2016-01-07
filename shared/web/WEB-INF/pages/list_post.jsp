@@ -213,7 +213,7 @@
 
                                 <div class="col-sm-4">
                                     <span name="owner_${post.id}" id="owner_${post.id}">
-                                            ${post.owner.username}
+                                            <a href="${contextPath}/profile/${post.owner.username}">${post.owner.username}</a>
                                     </span>
                                 </div>
                                 <c:if test="${isAuthorized}">
@@ -306,7 +306,7 @@
                                 </div>
                                 <div class="col-sm-10">
                                     <blockquote>
-                                        <p><strong>by ${comment.owner.username}</strong>
+                                        <p><strong>by <a href="${contextPath}/profile/${comment.owner.username}">${comment.owner.username}</a></strong>
                                             <c:if test="${isAuthorized}">
                                                 <c:if test="${principal.username != comment.owner.username}">
                                                     <button class="btn btn-success followUserButton" style="margin-left: 1.2%" onclick="follow('${comment.owner.id}', '${comment.owner.username}');"
