@@ -66,12 +66,12 @@ public class ProfileController {
             Hibernate.initialize(heritage.getTags());
         }
         Hibernate.initialize(m.getFollowedTags());
+        session.close();
         logger.info("Gamification post level: " + gamificationService.getGamification(m).getPostLevel());
         allContent.put("member", m);
         allContent.put("gamification", gamificationService.getGamification(m));
         allContent.put("medias", medias);
         allContent.put("allTags", allTags);
-        session.close();
         return new ModelAndView("profile", "allContent", allContent);
     }
 
