@@ -24,6 +24,7 @@ import service.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
@@ -386,17 +387,26 @@ public class MainController {
     public ModelAndView edit_post(@PathVariable long postId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        Post post = postService.getPostById(postId);
-        String title = post.getTitle();
-        String content = post.getContent();
-        String place = post.getPlace();
-        Map viewVariables = new HashMap();
-        viewVariables.put("username", username);
-        viewVariables.put("postId", postId);
-        viewVariables.put("place", place);
-        viewVariables.put("title", title);
-        viewVariables.put("content", content);
-        return new ModelAndView("edit_post_page", viewVariables);
+        Map viewVariables = new HashMap<>();
+        final Session session = Main.getSession();
+        try{
+            Post post = postService.getPostById(postId);
+            String title = post.getTitle();
+            String content = post.getContent();
+            String place = post.getPlace();
+            viewVariables.put("username", username);
+            viewVariables.put("postId", postId);
+            viewVariables.put("place", place);
+            viewVariables.put("title", title);
+            viewVariables.put("content", content);
+            viewVariables.put("medias", session.createCriteria(Media.class).list());
+        }
+        catch(Exception exc) {}
+        finally{
+            session.close();
+            return new ModelAndView("edit_post_page", viewVariables);
+        }
+
     }
 
     @RequestMapping(value = "/follow/{followeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -431,7 +441,6 @@ public class MainController {
     public ModelAndView update_post(@RequestParam("title") String title,
                                     @RequestParam("content") String content,
                                     @RequestParam("place") String place,
-                                    @RequestParam("media") MultipartFile media,
                                     @RequestParam("postId") long postId ) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -442,41 +451,6 @@ public class MainController {
         long heritageId = heritage.getId();
         postService.updatePost(postId, title, content, place, new Timestamp(now.getTime()));
         logger.info("PLACCCCCEEEEE " + place);
-
-        if (!media.isEmpty()) {
-            try {
-                // Creating the directory to store file
-                String mediaName = media.getOriginalFilename();
-                String filePath = mediaName;
-
-                File toUpload = new File(mediaName);
-                toUpload.createNewFile();
-                FileOutputStream fos = new FileOutputStream(toUpload);
-                fos.write(media.getBytes());
-                fos.close();
-
-                final Session session = Main.getSession();
-                session.getTransaction().begin();
-                try {
-                    Map utilsMap = ObjectUtils.asMap("resource_type", "auto");
-                    Map uploadResult = CloudinaryController.getCloudinary().uploader().upload(toUpload, utilsMap);
-                    int mediaType = CloudinaryController.getMediaType(mediaName);
-                    logger.info("media type is " + mediaType);
-                    Media mediaObject = new Media(heritage.getId(), uploadResult.get("url").toString(), mediaType, true);
-                    session.save(mediaObject);
-                    session.getTransaction().commit();
-                } catch (RuntimeException e) {
-                    session.close();
-                    e.printStackTrace();
-                    return new ModelAndView("list_post", "error", "File uploaded failed:" + mediaName);
-                } finally {
-                    session.close();
-                }
-            } catch (Exception e) {
-                return new ModelAndView("list_post", "error", "You failed to upload the file" + e.getMessage());
-            }
-        }
-
         return new ModelAndView("redirect:/show_posts/" + heritageId);
     }
 
@@ -670,6 +644,45 @@ public class MainController {
         session.close();
 
         return new ModelAndView("profile", "member", m);
+    }
+
+    @RequestMapping(value = "/addMediaToPost/{postId}", method = RequestMethod.POST)
+    public ModelAndView addMediaToPost(@RequestParam("media") MultipartFile mediaFile,
+                                       @PathVariable long postId) throws Exception{
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        try{
+            long userId = memberService.getMemberByUsername(username).getId();
+            String mediaName = mediaFile.getOriginalFilename();
+
+            File toUpload = new File(mediaName);
+            toUpload.createNewFile();
+            FileOutputStream fos = new FileOutputStream(toUpload);
+            fos.write(mediaFile.getBytes());
+            fos.close();
+
+            final Session session = Main.getSession();
+            session.getTransaction().begin();
+            try {
+                Map utilsMap = ObjectUtils.asMap("resource_type", "auto");
+                Map uploadResult = CloudinaryController.getCloudinary().uploader().upload(toUpload, utilsMap);
+                int mediaType = CloudinaryController.getMediaType(mediaName);
+                logger.info("media type is " + mediaType);
+                Media mediaObject = new Media(postId, uploadResult.get("url").toString(), mediaType, false);
+                session.save(mediaObject);
+                session.getTransaction().commit();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                return new ModelAndView("edit_post_page", "error", "Cloudinary upload failed..");
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            return new ModelAndView("edit_post_page", "error", "The file could not be uploaded!");
+        }
+        return new ModelAndView("redirect:/edit_post/"+postId);
+
     }
 
 }

@@ -268,15 +268,7 @@
                         <c:forEach var="media" items="${medias}">
                             <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage!=true}">
                                 <c:if test="${media.mediaType == 0}">
-                                    <div class="row">
-                                        <label class="col-sm-2 control-label"></label>
-
-                                        <div class="media col-sm-10">
-                                            <div class="media-left">
-                                                <img src="${media.mediaLink}" height="240px;" width="360px;">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <img src="${media.mediaLink}" height="240px;" width="360px;">
                                 </c:if>
                                 <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
                                     <div id="container"></div>

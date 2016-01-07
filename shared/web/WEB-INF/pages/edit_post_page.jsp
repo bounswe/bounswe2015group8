@@ -1,4 +1,35 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+<script type="text/javascript">
+    function fillPlaceFromGoogleMap() {
+        $("#place").val(window['place']);
+    }
+    function choose_file(){
+        $("#addMedia").click();
+    }
+
+    $(document).ready(function(){
+        $("#addMedia").change(function(){
+            var formData = new FormData();
+            formData.append('media', $('#addMedia')[0].files[0]);
+            $("#addMediaButton").css('display', 'none');
+            $.ajax({
+                url: "${contextPath}/addMediaToPost/"+${postId},
+                type: "POST",
+                data: formData,
+                enctype: 'multipart/form-data',
+                processData: false,  // tell jQuery not to process the data
+                contentType: false,  // tell jQuery not to set contentType
+                success: function(response){
+                    window.location.reload();
+                },
+                error: function(response){
+                    window.location.reload();
+                }
+            });
+        });
+    });
+</script>
+
 
 <div class="page-content container">
     <div class="panel panel-success">
@@ -39,25 +70,33 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="media" class="col-sm-1 control-label">Media</label>
-
-                    <div class="col-sm-9">
-                        <label for="media" class="btn btn-lg"><i class="glyphicon glyphicon-paperclip"></i></label>
-                        <input type="file" name="media" id="media" style="display:none"/>
-                    </div>
+                    <c:forEach var="media" items="${medias}">
+                        <c:if test="${media.postOrHeritageId == postId && media.postOrHeritage!=true}">
+                            <c:if test="${media.mediaType == 0}">
+                                <img src="${media.mediaLink}" height="240px;" width="360px;">
+                            </c:if>
+                            <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
+                                <div id="container"></div>
+                                <script type="text/javascript">
+                                    jwplayer("container").setup({
+                                        file: "${media.mediaLink}",
+                                        height: 300,
+                                        width: 520,
+                                        autostart: false
+                                    });
+                                </script>
+                            </c:if>
+                        </c:if>
+                    </c:forEach>
                 </div>
                 <div class="form-group">
                     <button type="submit" style="float:right; margin-right: 1.2%;" class="btn btn-default">Post</button>
                 </div>
             </form>
+            <input id="addMediaButton" onclick="choose_file();" class="btn btn-primary" type="button" value="Add Media"/>
+            <input style="display:none;" type="file" id="addMedia" />
         </div>
     </div>
 </div>
 
-
-<script type="text/javascript">
-    function fillPlaceFromGoogleMap() {
-        $("#place").val(window['place']);
-    }
-</script>
 <%@ include file="/WEB-INF/pages/footer.jsp" %>

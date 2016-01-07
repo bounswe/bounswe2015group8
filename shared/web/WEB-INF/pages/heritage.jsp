@@ -4,7 +4,7 @@
         $("#date_event").datetimepicker();
         $("#heritageForm").submit(function(e){
             if(!isASCII($("#name").val())){
-                $.notify("Please do not enter non-ASCII characters for title", "error");
+                $.notify("Please do not enter non-ASCII characters for name", "error");
                 e.preventDefault();
             }
             else if(!isASCII($("#place").val())){
@@ -12,7 +12,7 @@
                 e.preventDefault();
             }
             else if(!isASCII($("textarea#description").val())){
-                $.notify("Please do not enter non-ASCII characters for content ", "error");
+                $.notify("Please do not enter non-ASCII characters for description ", "error");
                 e.preventDefault();
             }
         });
