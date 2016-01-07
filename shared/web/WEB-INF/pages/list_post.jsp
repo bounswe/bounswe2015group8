@@ -351,7 +351,17 @@
         </div>
         </sec:authorize>
     </div>
+
 </c:forEach>
+
+    <div>
+    <button type="button" style="float:right; margin-right: 0.5%"
+    class="btn btn-default"
+    onclick="window.location.href='${contextPath}/post/${allContent.heritages[0].id}'">
+    Add Post
+    </button>
+    </div>
+
     <div class="row">
         <div class="col-xs-12" style="height:40px;"></div>
     </div>
