@@ -11,7 +11,11 @@ import com.cmpe.bounswe2015group8.westory.model.Heritage;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 
 /**
- * Created by xyllan on 06.01.2016.
+ * Fragment for searching for Heritages that are semantically related to a tag.
+ * @see Heritage
+ * @see Tag
+ * @author xyllan
+ * Date: 06.01.2016
  */
 public class HeritageSemanticSearchFragment extends HeritagesFragment {
     public static final String NAME = "Heritage Semantic Search";

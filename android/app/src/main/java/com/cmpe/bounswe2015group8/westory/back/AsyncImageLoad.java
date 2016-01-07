@@ -11,7 +11,11 @@ import java.io.InputStream;
 import java.util.Map;
 
 /**
- * Created by xyllan on 04.12.2015.
+ * Basic Bitmap image loader that takes an URL and converts it to bitmap.
+ * URL is given in String format.
+ * @see Bitmap
+ * @author xyllan
+ * Date: 04.12.2015
  */
 public class AsyncImageLoad extends AsyncTask<String, Void, Bitmap> {
     private MediaRecyclerAdapter.ViewHolder viewHolder;

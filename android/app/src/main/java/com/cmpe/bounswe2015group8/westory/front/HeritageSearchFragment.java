@@ -10,7 +10,10 @@ import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 
 /**
- * Created by xyllan on 05.01.2016.
+ * Fragment for displaying search results in Heritage names.
+ * @see Heritage
+ * @author xyllan
+ * Date: 05.01.2016
  */
 public class HeritageSearchFragment extends HeritagesFragment {
     public static final String NAME = "Heritage Search";

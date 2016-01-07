@@ -1,7 +1,11 @@
 package com.cmpe.bounswe2015group8.westory.model;
 
 /**
- * Created by xyllan on 07.11.2015.
+ * Base object for a member's vote on a post.
+ * @see Member
+ * @see Post
+ * @author xyllan
+ * Date: 07.11.2015
  */
 public class PostVote {
     private long memberId;

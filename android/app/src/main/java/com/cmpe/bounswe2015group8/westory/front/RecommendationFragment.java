@@ -11,7 +11,10 @@ import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 
 /**
- * Created by xyllan on 06.01.2016.
+ * Fragment for displaying recommended {@link Heritage} objects to a user.
+ * @see Heritage
+ * @author xyllan
+ * Date: 06.01.2016
  */
 public class RecommendationFragment extends HeritagesFragment {
     public static final String NAME = "Recommendations";

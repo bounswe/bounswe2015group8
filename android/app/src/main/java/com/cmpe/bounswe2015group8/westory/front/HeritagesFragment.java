@@ -21,7 +21,12 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by xyllan on 17.11.2015.
+ * Base fragment for displaying heritages in a refreshable list. The list is kept
+ * in memory until it is destroyed. Contains a floating action button for adding
+ * new heritages.
+ * @see Heritage
+ * @author xyllan
+ * Date: 17.11.2015
  */
 public class HeritagesFragment extends NamedFragment implements AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String NAME = "All Heritages";

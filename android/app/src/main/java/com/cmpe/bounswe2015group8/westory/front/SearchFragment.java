@@ -12,10 +12,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.cmpe.bounswe2015group8.westory.R;
+import com.cmpe.bounswe2015group8.westory.model.Heritage;
+import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 
 /**
- * Created by xyllan on 05.01.2016.
+ * Fragment for making all search related operations. Searching by {@link Heritage#name},
+ * {@link Post#title}, and semantic searching for {@link Heritage} and {@link Post} by
+ * a {@link Tag} is supported.
+ * @see Heritage
+ * @see Post
+ * @see Tag
+ * @author xyllan
+ * Date: 05.01.2016
  */
 public class SearchFragment extends NamedFragment implements View.OnClickListener, AdapterView.OnItemSelectedListener{
     public static final String NAME = "Search";

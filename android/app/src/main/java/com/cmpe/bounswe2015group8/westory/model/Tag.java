@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.HashSet;
 
 /**
- * Created by xyllan on 07.11.2015.
+ * Base object for a semantic tag.
+ * @author xyllan
+ * Date: 07.11.2015
  */
 public class Tag implements Parcelable {
     private long id;

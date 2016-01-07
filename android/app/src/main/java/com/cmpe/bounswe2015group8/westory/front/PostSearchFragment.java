@@ -10,7 +10,11 @@ import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Post;
 
 /**
- * Created by xyllan on 05.01.2016.
+ * Fragment for displaying search results for Posts based on their title.
+ * Uses the same architecture as {@link PostsFragment}.
+ * @see Post
+ * @author xyllan
+ * Date: 05.01.2016
  */
 public class PostSearchFragment extends PostsFragment {
     public static final String NAME = "Post Search";

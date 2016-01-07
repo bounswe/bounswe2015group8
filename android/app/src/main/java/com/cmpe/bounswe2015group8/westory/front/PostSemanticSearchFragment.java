@@ -11,7 +11,12 @@ import com.cmpe.bounswe2015group8.westory.model.Post;
 import com.cmpe.bounswe2015group8.westory.model.Tag;
 
 /**
- * Created by xyllan on 06.01.2016.
+ * Fragment for displaying Posts that are semantically related to a tag. Uses the same
+ * architecture as {@link PostsFragment}.
+ * @see Tag
+ * @see Post
+ * @author xyllan
+ * Date: 06.01.2016
  */
 public class PostSemanticSearchFragment extends PostsFragment {
     public static final String NAME = "Post Semantic Search";

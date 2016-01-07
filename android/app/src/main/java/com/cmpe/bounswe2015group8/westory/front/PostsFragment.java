@@ -19,7 +19,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by xyllan on 17.11.2015.
+ * Base fragment for displaying posts in a refreshable list. The list is kept
+ * in memory until it is destroyed.
+ * @see Post
+ * @author xyllan
+ * Date: 17.11.2015
  */
 public class PostsFragment extends NamedFragment implements SwipeRefreshLayout.OnRefreshListener{
     public static final String NAME = "All Posts";
