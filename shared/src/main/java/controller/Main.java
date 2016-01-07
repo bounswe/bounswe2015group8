@@ -1,12 +1,14 @@
 package controller;
 
 import model.*;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.service.ServiceRegistry;
 
 import java.io.Serializable;
@@ -69,5 +71,19 @@ public class Main {
         } finally {
             session.close();
         }
+    }
+
+    public static <T> T initializeAndUnproxy(T entity) {
+        if (entity == null) {
+            throw new
+                    NullPointerException("Entity passed for initialization is null");
+        }
+
+        Hibernate.initialize(entity);
+        if (entity instanceof HibernateProxy) {
+            entity = (T) ((HibernateProxy) entity).getHibernateLazyInitializer()
+                    .getImplementation();
+        }
+        return entity;
     }
 }

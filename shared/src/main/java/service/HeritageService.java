@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
@@ -45,6 +46,11 @@ public class HeritageService {
 
     public Heritage saveHeritage(String name, String place, String description, Timestamp postDate) {
         Heritage heritage = new Heritage(name, place, description, postDate);
+        return heritageDao.saveHeritage(heritage);
+    }
+
+    public Heritage saveHeritage(String name, String place, String description, Timestamp postDate, Timestamp eventDate) {
+        Heritage heritage = new Heritage(name, place, description, postDate, eventDate);
         return heritageDao.saveHeritage(heritage);
     }
 
@@ -93,4 +99,22 @@ public class HeritageService {
         }
         return heritages;
     }
+
+    public List<Heritage> getHeritagesCreatedAfter(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Heritage> heritages = heritageDao.getHeritagesCreatedAfter(date);
+        return heritages;
+    }
+
+    public List<Heritage> getHeritagesCreatedBefore(Calendar calendar){
+        Timestamp date = new Timestamp(calendar.getTimeInMillis());
+        List<Heritage> heritages = heritageDao.getHeritagesCreatedBefore(date);
+        return heritages;
+    }
+
+    public List<Heritage> getHeritagesContainName(String name) { return heritageDao.getHeritagesContainName(name); }
+
+    public List<Heritage> getHeritagesContainDescription(String description) { return heritageDao.getHeritagesContainDescription(description); }
+
+    public List<Heritage> unproxyHeritageList(List<Heritage> heritages) { return heritageDao.unproxyHeritageList(heritages); }
 }

@@ -5,6 +5,21 @@
 <c:set var="member" value="${allContent.member}"/>
 <c:set var="medias" value="${allContent.medias}"/>
 <c:set var="allTags" value="${allContent.allTags}"/>
+<c:set var="gamification" value="${allContent.gamification}"/>
+
+<style>
+    .nav-filter {
+        background-color:#444;
+    }
+
+    .nav-pills>li>a:hover {
+        background-color: orange;
+    }
+    .nav-pills .open>a, .nav-pills .open>a:active, .nav-pills .open>a:focus{
+        background-color: orange;
+    }
+
+</style>
 
 <script>
     var tags = [];
@@ -173,112 +188,247 @@
         </c:if>
     </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">Subscribed Heritages</div>
-        <div class="panel-body">
-            <p> ${member.username} follows these heritages </p>
-        </div>
-
-        <c:forEach items="${member.followedHeritages}" var="heritage">
-            <div class="row">
-                <div class="col-xs-12" style="height:20px;"></div>
+    <ul class="nav nav-pills">
+        <li class="active"><a data-toggle="tab" href="#heritagePanel">Following Heritages</a></li>
+        <li><a data-toggle="tab" href="#achievementPanel">Earned Badges</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="panel panel-info tab-pane fade in active" id="heritagePanel">
+            <div class="panel-heading">Subscribed Heritages</div>
+            <div class="panel-body">
+                <p> ${member.username} follows these heritages </p>
             </div>
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <div class="row">
-                        <b>
-                            <h class="panel-title" style="margin-left:0.5% " name="name" id="name">${heritage.name}</h>
-                            <c:if test="${principal.username != member.username}">
-                            <button style="float:right; margin-right:1%" type="button" class="btn btn-success followbutton"
-                                    onclick="followHeritage(${heritage.id})" id="followbutton_${heritage.id}">Follow</button>
-                            </c:if>
-                        </b>
-                    </div>
+
+            <c:forEach items="${member.followedHeritages}" var="heritage">
+                <div class="row">
+                    <div class="col-xs-12" style="height:20px;"></div>
                 </div>
-
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="row">
-                                <label for="place" class="col-sm-2 control-label">Place</label>
-
-                                <div class="col-sm-10">
-                                    <p name="place" id="place">
-                                            ${heritage.place}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="description" class="col-sm-2 control-label">Description</label>
-
-                                <div class="col-sm-10">
-                                    <p name="description" id="description">
-                                            ${heritage.description}
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label for="postDate" class="col-sm-2 control-label">Date</label>
-
-                                <div class="col-sm-10">
-                                    <p name="postDate" id="postDate">
-                                            ${heritage.postDate}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <c:forEach var="media" items="${medias}">
-                                <c:if test="${media.postOrHeritageId == heritage.id && media.postOrHeritage==true}">
-                                    <c:if test="${media.mediaType == 0}">
-                                        <img src="${media.mediaLink}" height="240px;" width="360px;">
-                                    </c:if>
-                                    <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
-                                        <div id="container"></div>
-                                        <script type="text/javascript">
-                                            jwplayer("container").setup({
-                                                file: "${media.mediaLink}",
-                                                height: 300,
-                                                width: 520,
-                                                autostart: false
-                                            });
-                                        </script>
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <b>
+                                <h class="panel-title" style="margin-left:0.5% " name="name" id="name">${heritage.name}</h>
+                                <c:if test="${isAuthorized}">
+                                    <c:if test="${principal.username != member.username}">
+                                        <button style="float:right; margin-right:1%" type="button" class="btn btn-success followbutton"
+                                                onclick="followHeritage(${heritage.id})" id="followbutton_${heritage.id}">Follow</button>
                                     </c:if>
                                 </c:if>
-                            </c:forEach>
+                            </b>
                         </div>
                     </div>
-                    <div class="row">
-                        <label for="tags_${heritage.id}" class="col-sm-2 control-label">Tags</label>
 
-                        <div class="col-sm-4" role="group">
-                            <p id="tags_${heritage.id}">
-                                <c:forEach items="${heritage.tags}" var="tag">
-                                    <a href="${contextPath}/searchHeritageByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
-                                        &lt;${tag.tagText}<c:if
-                                            test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;
-                                    </a>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <label for="place" class="col-sm-2 control-label">Place</label>
+
+                                    <div class="col-sm-10">
+                                        <p name="place" id="place">
+                                                ${heritage.place}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="description" class="col-sm-2 control-label">Description</label>
+
+                                    <div class="col-sm-10">
+                                        <p name="description" id="description">
+                                                ${heritage.description}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="postDate" class="col-sm-2 control-label">Date</label>
+
+                                    <div class="col-sm-10">
+                                        <p name="postDate" id="postDate">
+                                                ${heritage.postDate}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <c:forEach var="media" items="${medias}">
+                                    <c:if test="${media.postOrHeritageId == heritage.id && media.postOrHeritage==true}">
+                                        <c:if test="${media.mediaType == 0}">
+                                            <img src="${media.mediaLink}" height="240px;" width="360px;">
+                                        </c:if>
+                                        <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
+                                            <div id="container"></div>
+                                            <script type="text/javascript">
+                                                jwplayer("container").setup({
+                                                    file: "${media.mediaLink}",
+                                                    height: 300,
+                                                    width: 520,
+                                                    autostart: false
+                                                });
+                                            </script>
+                                        </c:if>
+                                    </c:if>
                                 </c:forEach>
-                            </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="tags_${heritage.id}" class="col-sm-2 control-label">Tags</label>
+
+                            <div class="col-sm-4" role="group">
+                                <p id="tags_${heritage.id}">
+                                    <c:forEach items="${heritage.tags}" var="tag">
+                                        <a href="${contextPath}/searchHeritageByTag/${tag.tagText}<c:if test="${tag.tagContext != null}">(${tag.tagContext})</c:if>">
+                                            &lt;${tag.tagText}<c:if
+                                                test="${tag.tagContext != null}">(${tag.tagContext})</c:if>&gt;
+                                        </a>
+                                    </c:forEach>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="panel-footer">
+                        <div class="row">
+
+                            <button type="button" style="float:right; margin-right: 0.5%;"
+                                    class="btn btn-default"
+                                    onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
+                                See Posts
+                            </button>
                         </div>
                     </div>
                 </div>
+            </c:forEach>
 
+        </div>
 
-                <div class="panel-footer">
-                    <div class="row">
-
-                        <button type="button" style="float:right; margin-right: 0.5%;"
-                                class="btn btn-default"
-                                onclick="window.location.href='${contextPath}/show_posts/${heritage.id}'">
-                            See Posts
-                        </button>
+        <div class="panel panel-success tab-pane fade" id="achievementPanel">
+            <div class="panel-heading">Achievements</div>
+            <div class="panel-body">
+                <div class="row" style="margin-top:1%;">
+                    <div class="col-md-1" style="margin-top:5%;">
+                        <b>POST: </b>
                     </div>
+                    <c:forEach begin="1" end="5" varStatus="loop">
+                        <div class="col-md-offset-1 col-md-1">
+                            <c:if test="${gamification.postLevel >= loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/post${loop.index}.png" />
+                            </c:if>
+                            <c:if test="${gamification.postLevel < loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/post_locked.png" />
+                            </c:if>
+                        </div>
+                    </c:forEach>
+                </div>
+                <%--
+                <div class="row" style="margin-top:1%;">
+                    <div class="col-md-1" style="margin-top:5%;">
+                        <b>HERITAGE: </b>
+                    </div>
+                    <c:forEach begin="1" end="5" varStatus="loop">
+                        <div class="col-md-offset-1 col-md-1">
+                            <c:if test="${gamification.heritageLevel >= loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/heritage${loop.index}.png" />
+                            </c:if>
+                            <c:if test="${gamification.heritageLevel < loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/heritage_locked.png" />
+                            </c:if>
+                        </div>
+                    </c:forEach>
+                </div>
+                --%>
+                <div class="row" style="margin-top:1%;">
+                    <div class="col-md-1" style="margin-top:5%;">
+                        <b>UPVOTE: </b>
+                    </div>
+                    <c:forEach begin="1" end="5" varStatus="loop">
+                        <div class="col-md-offset-1 col-md-1">
+                            <c:if test="${gamification.upvoteLevel >= loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/upvote${loop.index}.png" />
+                            </c:if>
+                            <c:if test="${gamification.upvoteLevel < loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/upvote_locked.png" />
+                            </c:if>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div class="row" style="margin-top:1%;">
+                    <div class="col-md-1" style="margin-top:5%;">
+                        <b>DOWNVOTE: </b>
+                    </div>
+                    <c:forEach begin="1" end="5" varStatus="loop">
+                        <div class="col-md-offset-1 col-md-1">
+                            <c:if test="${gamification.downvoteLevel >= loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/downvote${loop.index}.png" />
+                            </c:if>
+                            <c:if test="${gamification.downvoteLevel < loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/downvote_locked.png" />
+                            </c:if>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div class="row" style="margin-top:1%;">
+                    <div class="col-md-1" style="margin-top:5%;">
+                        <b>FOLLOWER: </b>
+                    </div>
+                    <c:forEach begin="1" end="5" varStatus="loop">
+                        <div class="col-md-offset-1 col-md-1">
+                            <c:if test="${gamification.followerLevel >= loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/follower${loop.index}.png" />
+                            </c:if>
+                            <c:if test="${gamification.followerLevel < loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/follower_locked.png" />
+                            </c:if>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div class="row" style="margin-top:1%;">
+                    <div class="col-md-1" style="margin-top:5%;">
+                        <b>FOLLOWEE: </b>
+                    </div>
+                    <c:forEach begin="1" end="5" varStatus="loop">
+                        <div class="col-md-offset-1 col-md-1">
+                            <c:if test="${gamification.followeeLevel >= loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/followee${loop.index}.png" />
+                            </c:if>
+                            <c:if test="${gamification.followeeLevel < loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/followee_locked.png" />
+                            </c:if>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div class="row" style="margin-top:1%;">
+                    <div class="col-md-1" style="margin-top:5%;">
+                        <b>COMMENT: </b>
+                    </div>
+                    <c:forEach begin="1" end="5" varStatus="loop">
+                        <div class="col-md-offset-1 col-md-1">
+                            <c:if test="${gamification.commentLevel >= loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/comment${loop.index}.png" />
+                            </c:if>
+                            <c:if test="${gamification.commentLevel < loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/comment_locked.png" />
+                            </c:if>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div class="row" style="margin-top:1%;">
+                    <div class="col-md-1" style="margin-top:5%;">
+                        <b>OVERALL: </b>
+                    </div>
+                    <c:forEach begin="1" end="5" varStatus="loop">
+                        <div class="col-md-offset-1 col-md-1">
+                            <c:if test="${gamification.overallLevel >= loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/overall${loop.index}.png" />
+                            </c:if>
+                            <c:if test="${gamification.overallLevel < loop.index}">
+                                <img style="width:150px; height:150px;" src="${contextPath}/static/img/badges/overall_locked.png" />
+                            </c:if>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
-        </c:forEach>
-
+        </div>
     </div>
-
     <div class="row">
         <div class="col-xs-12" style="height:40px;"></div>
     </div>

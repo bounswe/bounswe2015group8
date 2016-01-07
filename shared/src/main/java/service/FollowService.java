@@ -43,5 +43,13 @@ public class FollowService {
         Follow follow = new Follow(followerId, followeeId);
         return followDao.saveFollow(follow);
     }
+
+    public long getFollowerNum(Member member){
+        return getFollowersById(member.getId()).size();
+    }
+
+    public long getFolloweeNum(Member member){
+        return getFollowingById(member.getId()).size();
+    }
 }
 

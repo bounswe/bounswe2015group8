@@ -29,7 +29,7 @@ public class Follow {
             }
         }
 
-        follower.follow(followee);
+        //follower.follow(followee);
     }
 
     public long getFollowerId() {

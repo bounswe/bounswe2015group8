@@ -126,9 +126,7 @@
                         <label for="description" class="col-sm-2 control-label">Description</label>
 
                         <div class="col-sm-10">
-                            <p name="description" id="description">
-                                    ${heritage.description}
-                            </p>
+                            <p style="white-space: pre-wrap;" name="description" id="description">${heritage.description}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -147,9 +145,9 @@
                                 <img src="${media.mediaLink}" height="240px;" width="360px;">
                             </c:if>
                             <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
-                                <div id="container"></div>
+                                <div id="container_${media.id}"></div>
                                 <script type="text/javascript">
-                                    jwplayer("container").setup({
+                                    jwplayer("container_${media.id}").setup({
                                         file: "${media.mediaLink}",
                                         height: 300,
                                         width: 520,

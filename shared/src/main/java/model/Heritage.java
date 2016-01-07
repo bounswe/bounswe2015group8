@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +14,7 @@ public class Heritage {
     private String name;
     private String place;
     private Timestamp postDate;
+    private Timestamp eventDate;
     private String description;
     private Collection<Post> posts;
     private Collection<Tag> tags;
@@ -28,6 +30,17 @@ public class Heritage {
         this.place = place;
         this.description = description;
         this.postDate = postDate;
+        this.posts = new HashSet<Post>();
+        this.tags = new HashSet<Tag>();
+        this.followers = new HashSet<Member>();
+    }
+
+    public Heritage(String name, String place, String description, Timestamp postDate, Timestamp eventDate) {
+        this.name = name;
+        this.place = place;
+        this.description = description;
+        this.postDate = postDate;
+        this.eventDate = eventDate;
         this.posts = new HashSet<Post>();
         this.tags = new HashSet<Tag>();
         this.followers = new HashSet<Member>();
@@ -56,6 +69,10 @@ public class Heritage {
     public void setPlace(String place) {
         this.place = place;
     }
+
+    public Timestamp getEventDate() { return eventDate; }
+
+    public void setEventDate(Timestamp eventDate) { this.eventDate = eventDate; }
 
     public Timestamp getPostDate() {
         return postDate;

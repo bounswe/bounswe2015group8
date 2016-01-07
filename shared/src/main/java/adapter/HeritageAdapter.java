@@ -43,6 +43,7 @@ public class HeritageAdapter implements JsonSerializer<Heritage> {
             jsonObjectPost.addProperty("lastEditedDate", post.getLastEditedDate().toString());
             jsonObjectPost.addProperty("title", post.getTitle());
             jsonObjectPost.addProperty("content", post.getContent());
+            jsonObjectPost.addProperty("place", post.getPlace() != null ? post.getPlace() : "");
             JsonArray postMediasJsonArray = new JsonArray();
             ArrayList<Media> postMedias = MediaUtility.getMedias(post.getId(), false);
             for (Media media : postMedias) {

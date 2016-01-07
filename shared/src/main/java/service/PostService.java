@@ -155,4 +155,10 @@ public class PostService {
         List<Post> posts = postDao.getPostsEditedBefore(date);
         return sortByPopularity(posts);
     }
+
+    public long getPostNumber(Member member){
+        return getPostsByMember(member).size();
+    }
+
+    public List<Post> unproxyPostList(List<Post> posts) { return postDao.unproxyPostList(posts); }
 }

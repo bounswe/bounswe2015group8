@@ -9,10 +9,7 @@ import model.Post;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
@@ -140,6 +137,21 @@ public class HeritageApi implements ErrorCodes {
             method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String searchByHeritageName(@RequestBody String name) {
         ArrayList<Heritage> heritagesWithName = HeritageUtility.searchHeritageByName(name);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.registerTypeAdapter(Heritage.class, new HeritageAdapter()).create();
+        String json = gson.toJson(heritagesWithName);
+        return json;
+    }
+
+    /**
+     * Gets the JSON representation of the recommended heritages based on the member id
+     * @param memberId: the id of the requesting user (long)
+     * @return the list of the recommended heritages
+     */
+    @RequestMapping(value = "/api/recommendHeritages/{memberId}",
+            method = RequestMethod.GET,  produces = MediaType.APPLICATION_JSON_VALUE)
+    public String recommendHeritages(@PathVariable long memberId) {
+        ArrayList<Heritage> heritagesWithName = HeritageUtility.getRecommendedHeritages(memberId);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.registerTypeAdapter(Heritage.class, new HeritageAdapter()).create();
         String json = gson.toJson(heritagesWithName);

@@ -42,6 +42,10 @@
 <script type="text/javascript">
     function searchByTag(){
         var tag = document.getElementById("search").value;
+        if(tag == ""){
+            $.notify("Please type something before searching it!", "danger");
+            return false;
+        }
         window.location.href = "${contextPath}/searchByTag/" + tag;
     }
 
@@ -80,11 +84,46 @@
 
 
                     });
-                    $.notify(html, {style: 'recommend'});
+                    $.notify(html, {style: 'recommend', autoHide:false});
                 }
             }
         });
     }
+
+    function checkAchievements(){
+        $.ajax({
+            url: "${contextPath}/checkAchievements",
+            type: "POST",
+            success: function(response){
+                if(Object.keys(response).length != 0) {
+                    var isFirst = true;
+                    var html = "<div class='panel panel-info'>" +
+                            "<div class='panel-heading'>" +
+                            "<b><h class='panel-title' style='margin-left:0.5%'>New Badges Earned!</h></b></div>";
+                    for(var unlocked in response){
+                        if(!isFirst){
+                            html += "<hr>";
+                        }
+                        isFirst = false;
+                        html += "<div class='row'> <div class='col-md-2'>";
+                        html += "<img style='width: 150px; height: 150px;' src='${contextPath}/static/img/badges/"+ unlocked+response[unlocked] +".png'/>";
+                        html += "</div> <div class='col-md-offset-3 col-md-7' style='margin-top:10%;'>";
+                        html += "<p style='color:green; font-weight: bold;'> Achievement Unlocked! </p><p style='font-weight:bold;'>" + unlocked.toUpperCase() + " LEVEL: " + response[unlocked] + "</p>";
+                        html += "</div></div>";
+                    }
+                    $.notify.addStyle('achievement', {
+                        html: "<div><span data-notify-html/></div>"
+                    });
+                    $.notify(html, {style: 'achievement', autoHide:false});
+                }
+                setTimeout(checkAchievements, 10000);
+            }
+        });
+    }
+
+    $(document).ready(function(){
+       checkAchievements();
+    });
 </script>
 
 <body>

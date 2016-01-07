@@ -22,7 +22,13 @@ public interface HeritageDao {
 
     List<Heritage> getHeritagesByTag(Tag tag);
 
+    List<Heritage> getHeritagesContainName(String name);
+
+    List<Heritage> getHeritagesContainDescription(String description);
+
     List<Heritage> getHeritagesCreatedAfter(Timestamp date);
+
+    List<Heritage> getHeritagesCreatedBefore(Timestamp date);
 
     int countPostsInHeritage(Heritage heritage);
 
@@ -33,5 +39,7 @@ public interface HeritageDao {
     SessionFactory getSessionFactory();
 
     void setSessionFactory(SessionFactory sessionFactory);
+
+    List<Heritage> unproxyHeritageList(List<Heritage> heritages);
 
 }

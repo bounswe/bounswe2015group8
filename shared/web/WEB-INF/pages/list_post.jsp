@@ -205,9 +205,7 @@
                                 <label for="content_${post.id}" class="col-sm-2 control-label">Content</label>
 
                                 <div class="col-sm-10">
-                                    <p name="content_${post.id}" id="content_${post.id}">
-                                            ${post.content}
-                                    </p>
+                                    <p style="white-space: pre-wrap;" name="content_${post.id}" id="content_${post.id}">${post.content}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -215,7 +213,7 @@
 
                                 <div class="col-sm-4">
                                     <span name="owner_${post.id}" id="owner_${post.id}">
-                                            ${post.owner.username}
+                                            <a href="${contextPath}/profile/${post.owner.username}">${post.owner.username}</a>
                                     </span>
                                 </div>
                                 <c:if test="${isAuthorized}">
@@ -270,20 +268,12 @@
                         <c:forEach var="media" items="${medias}">
                             <c:if test="${media.postOrHeritageId == post.id && media.postOrHeritage!=true}">
                                 <c:if test="${media.mediaType == 0}">
-                                    <div class="row">
-                                        <label class="col-sm-2 control-label"></label>
-
-                                        <div class="media col-sm-10">
-                                            <div class="media-left">
-                                                <img src="${media.mediaLink}" height="240px;" width="360px;">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <img src="${media.mediaLink}" height="240px;" width="360px;">
                                 </c:if>
                                 <c:if test="${media.mediaType == 1 || media.mediaType == 2}">
-                                    <div id="container"></div>
+                                    <div id="container_${media.id}"></div>
                                     <script type="text/javascript">
-                                        jwplayer("container").setup({
+                                        jwplayer("container_${media.id}").setup({
                                             file: "${media.mediaLink}",
                                             height: 300,
                                             width: 520,
@@ -316,7 +306,7 @@
                                 </div>
                                 <div class="col-sm-10">
                                     <blockquote>
-                                        <p><strong>by ${comment.owner.username}</strong>
+                                        <p><strong>by <a href="${contextPath}/profile/${comment.owner.username}">${comment.owner.username}</a></strong>
                                             <c:if test="${isAuthorized}">
                                                 <c:if test="${principal.username != comment.owner.username}">
                                                     <button class="btn btn-success followUserButton" style="margin-left: 1.2%" onclick="follow('${comment.owner.id}', '${comment.owner.username}');"
