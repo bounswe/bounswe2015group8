@@ -25,6 +25,8 @@ import java.util.*;
 
 /**
  * Created by gokcan on 06.12.2015.
+ *
+ * The controller class which handles the url mappings related to the news feed of the system
  */
 @Controller
 public class FeedController {
@@ -55,6 +57,10 @@ public class FeedController {
     }
 
 
+    /** The function which handles the url mapping for getting the recently most populer posts.
+     *
+     * @return the page for post feed filled with recently most popular posts.
+     */
     @RequestMapping(value = "/getRecentlyMostPopular")
     public ModelAndView recentPosts(){
         /* Gets the posts that are created within the last week and sorts them in terms of vote count */
@@ -71,6 +77,13 @@ public class FeedController {
         return new ModelAndView("list_post", "allContent", allContent);
     }
 
+    /** The function which handles the url mapping for getting the recently most populer posts based on a heritage.
+     *  It works similar to the recentPosts() function which handles the url "/getRecentlyMostPopular", but this one
+     *  only returns the posts associated with the heritage which has the provided id
+     *
+     * @param heritageId: the id of the heritage whose posts we want to see. (long)
+     * @return the page for post feed filled with recently most popular posts under the heritage with the given id.
+     */
     @RequestMapping(value = "/getRecentlyMostPopular/{heritageId}")
     public ModelAndView recentPosts(@PathVariable long heritageId){
         /* Gets the posts that are created within the last week and sorts them in terms of vote count */
@@ -90,6 +103,12 @@ public class FeedController {
         return new ModelAndView("list_post", "allContent", allContent);
     }
 
+    /** The url mapping handler function for heritage based feed. If the user is anonymous, only the recently added
+     *  heritages will appear sorted by popularity. But if the user is logged in, then the system will take his/her
+     *  followed heritages, following members and interested areas into account.
+     *
+     * @return the heritage based feed page.
+     */
     @RequestMapping(value = "/feed")
     public ModelAndView feed(){
         final Session session = Main.getSession();
@@ -121,6 +140,12 @@ public class FeedController {
         return new ModelAndView("list_heritage", "allContent", allContent);
     }
 
+    /** The url mapping handler function for post based feed. It works really similar to the function 'feed()' but this one
+     *  returns posts instaad of heritages. The logic of which posts would appear on the feed is identical to heritage based
+     *  feed.
+     *
+     * @return the post based feed page.
+     */
     @RequestMapping(value = "/feedPosts")
     public ModelAndView feedPosts(){
         final Session session = Main.getSession();
@@ -153,6 +178,13 @@ public class FeedController {
         return new ModelAndView("list_post", "allContent", allContent);
     }
 
+    /** The function which handles the recommendation system. This url is called by an AJAX request and the function
+     *  returns some heritages which the user might want to follow. The function takes the user's following members into account
+     *  by browsing through their followed heritages and exclude the ones which the user is already following. Also, considering
+     *  the user's interested areas, they are sorted and recommended to the user.
+     *
+     * @return a string in JSON format which contains the name and shortened version of the recommended heritages.
+     */
     @RequestMapping(value = "/recommendHeritage", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getRecommendedHeritage(){
