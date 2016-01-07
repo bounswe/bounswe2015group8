@@ -1,4 +1,26 @@
 <%@ include file="/WEB-INF/pages/header.jsp" %>
+<script>
+    function isASCII(str) {
+        if(typeof(str)!=='string'){
+            return false;
+        }
+        for(var i=0;i<str.length;i++){
+            if(str.charCodeAt(i)>127){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    $(document).ready(function(){
+        $("#commentForm").submit(function(e){
+            if(!isASCII($("textarea#content").val())){
+                $.notify("Please do not enter non-ASCII characters for content", "error");
+                e.preventDefault();
+            }
+        });
+    })
+</script>
 <div class="page-content container">
     <div class="panel panel-success">
         <div class="panel-heading">
@@ -7,7 +29,7 @@
         <div class="panel-body">
 
 <form class="form-horizontal"
-      id="postForm"
+      id="commentForm"
       action="${contextPath}/post_comment"
       method="post"
       enctype="multipart/form-data">
