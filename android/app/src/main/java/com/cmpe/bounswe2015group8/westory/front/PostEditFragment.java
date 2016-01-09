@@ -25,7 +25,7 @@ import com.cmpe.bounswe2015group8.westory.model.Post;
 public class PostEditFragment extends NamedFragment implements View.OnClickListener {
     public static final String NAME = "POST_EDIT";
     private Button btnSubmit;
-    private EditText etTitle, etContent;
+    private EditText etTitle, etPlace, etContent;
     private boolean isNew = true;
     private Post post;
     private MemberLocalStore memberLocalStore;
@@ -38,6 +38,7 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
         View v = inflater.inflate(R.layout.fragment_post_edit,container,false);
         etTitle = (EditText) v.findViewById(R.id.etPostEditTitle);
         etContent = (EditText) v.findViewById(R.id.etPostEditContent);
+        etPlace = (EditText) v.findViewById(R.id.etPostEditPlace);
         btnSubmit = (Button) v.findViewById(R.id.btnPostEditSubmit);
         btnSubmit.setOnClickListener(this);
         initViews(getArguments());
@@ -48,6 +49,7 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
         if(!isNew) {
             post = args.getParcelable("post");
             etTitle.setText(post.getTitle());
+            etPlace.setText(post.getPlace());
             etContent.setText(post.getContent());
 
         } else {
@@ -60,32 +62,39 @@ public class PostEditFragment extends NamedFragment implements View.OnClickListe
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.btnPostEditSubmit:
+                if(hasAsciiError(getContext(),etTitle,etPlace,etContent)) return;
                 post.setTitle(etTitle.getText().toString());
+                post.setPlace(etPlace.getText().toString());
                 post.setContent(etContent.getText().toString());
-                ServerRequests sr = new ServerRequests(getActivity());
+                final ServerRequests sr = new ServerRequests(getActivity());
                 if(isNew) {
-
                     sr.createPost(post, heritageId, new Consumer<Long>() {
                         @Override
                         public void accept(Long id) {
-                            post.setId(id);
-                            NamedFragment nf = new PostViewFragment();
-                            Bundle b = new Bundle();
-                            b.putParcelable("post", post);
-                            nf.setArguments(b);
-                            MainActivity.beginFragment(getActivity(), nf);
+                            if(id == null) ServerRequests.handleErrors(getContext(), sr);
+                            else {
+                                post.setId(id);
+                                NamedFragment nf = new PostViewFragment();
+                                Bundle b = new Bundle();
+                                b.putParcelable("post", post);
+                                nf.setArguments(b);
+                                MainActivity.beginFragment(getActivity(), nf);
+                            }
                         }
                     });
                 } else {
                     sr.createPost(post, heritageId, new Consumer<Long>() {
                         @Override
                         public void accept(Long id) {
-                            post.setId(id);
-                            NamedFragment nf = new PostViewFragment();
-                            Bundle b = new Bundle();
-                            b.putParcelable("post", post);
-                            nf.setArguments(b);
-                            MainActivity.beginFragment(getActivity(), nf);
+                            if(id == null) ServerRequests.handleErrors(getContext(), sr);
+                            else {
+                                post.setId(id);
+                                NamedFragment nf = new PostViewFragment();
+                                Bundle b = new Bundle();
+                                b.putParcelable("post", post);
+                                nf.setArguments(b);
+                                MainActivity.beginFragment(getActivity(), nf);
+                            }
                         }
                     });
                 }

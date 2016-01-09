@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         if(savedInstanceState == null || !savedInstanceState.containsKey("curFragment")) {
-            MainActivity.beginFragment(this, new HeritagesFeed());
+            MainActivity.beginFragment(this, authenticated() ? new HeritageFeedFragment() : new HeritagesFragment());
         } else {
             MainActivity.beginFragment(this,
                     (NamedFragment)getSupportFragmentManager().getFragment(savedInstanceState, "curFragment"));
@@ -92,9 +92,15 @@ public class MainActivity extends AppCompatActivity {
         else item.setTitle(getResources().getString(R.string.nav_login));
         for(int i=0;i<menu.size();i++) {
             MenuItem cur = menu.getItem(i);
-            if(cur.getItemId() == R.id.navAddHeritage) {
-                cur.setVisible(authenticated);
-                break;
+            switch (cur.getItemId()) {
+                case R.id.navFeed:
+                case R.id.navPostFeed:
+                case R.id.navProfile:
+                case R.id.navRecommendations:
+                    cur.setVisible(authenticated);
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -110,16 +116,21 @@ public class MainActivity extends AppCompatActivity {
                 Fragment f = null;
                 NamedFragment nf = null;
                 switch (item.getItemId()) {
-                    case R.id.navHome:
-                        f = getSupportFragmentManager().findFragmentByTag(HeritagesFeed.NAME);
-                        nf = (f == null) ? new HeritagesFeed(): (NamedFragment)f;
+                    case R.id.navFeed:
+                        f = getSupportFragmentManager().findFragmentByTag(HeritageFeedFragment.NAME);
+                        nf = (f == null) ? new HeritageFeedFragment(): (NamedFragment)f;
+                        break;
+                    case R.id.navPostFeed:
+                        f = getSupportFragmentManager().findFragmentByTag(PostFeedFragment.NAME);
+                        nf = (f == null) ? new PostFeedFragment(): (NamedFragment)f;
+                        break;
+                    case R.id.navRecommendations:
+                        f = getSupportFragmentManager().findFragmentByTag(RecommendationFragment.NAME);
+                        nf = (f == null) ? new RecommendationFragment(): (NamedFragment)f;
                         break;
                     case R.id.navHeritages:
                         f = getSupportFragmentManager().findFragmentByTag(HeritagesFragment.NAME);
                         nf = (f == null) ? new HeritagesFragment(): (NamedFragment)f;
-                        break;
-                    case R.id.navAddHeritage:
-                        nf = new HeritageEditFragment();
                         break;
                     case R.id.navPosts:
                         f = getSupportFragmentManager().findFragmentByTag(PostsFragment.NAME);
@@ -127,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.navLogin:
                         if (authenticated()) {
-                             memberLocalStore.clearMemberData();
-                            nf = new HeritagesFeed();
+                            memberLocalStore.clearMemberData();
+                            nf = new HeritagesFragment();
                         } else {
                             nf = new LoginFragment();
                         }
@@ -144,6 +155,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navComments:
                         f = getSupportFragmentManager().findFragmentByTag(CommentsFragment.NAME);
                         nf = (f == null) ? new CommentsFragment(): (NamedFragment)f;
+                        break;
+                    case R.id.navSearch:
+                        f = getSupportFragmentManager().findFragmentByTag(SearchFragment.NAME);
+                        nf = (f == null) ? new SearchFragment() : (NamedFragment)f;
                         break;
                     default:
                         break;

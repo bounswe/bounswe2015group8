@@ -1,12 +1,17 @@
 package com.cmpe.bounswe2015group8.westory.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Collection;
 import java.util.HashSet;
 
 /**
- * Created by xyllan on 07.11.2015.
+ * Base object for a semantic tag.
+ * @author xyllan
+ * Date: 07.11.2015
  */
-public class Tag {
+public class Tag implements Parcelable {
     private long id;
     private String tagText;
     private String tagContext;
@@ -27,7 +32,13 @@ public class Tag {
         this.posts = new HashSet<Post>();
         this.followers = new HashSet<Member>();
     }
-
+    public Tag(Parcel in) {
+        tagText = in.readString();
+        tagContext = in.readString();
+        this.heritages = new HashSet<Heritage>();
+        this.posts = new HashSet<Post>();
+        this.followers = new HashSet<Member>();
+    }
     public long getId() {
         return id;
     }
@@ -50,6 +61,10 @@ public class Tag {
 
     public void setTagContext(String tagContext) {
         this.tagContext = tagContext;
+    }
+
+    public String getWholeTag() {
+        return tagText + "(" + tagContext + ")";
     }
 
     @Override
@@ -91,5 +106,24 @@ public class Tag {
     public Collection<Member> getFollowers() { return followers; }
 
     public void setFollowers(Collection<Member> followers) { this.followers = followers; }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(tagText);
+        dest.writeString(tagContext);
+    }
+    public static final Parcelable.Creator<Tag> CREATOR
+            = new Parcelable.Creator<Tag>() {
+        public Tag createFromParcel(Parcel in) {
+            return new Tag(in);
+        }
+
+        public Tag[] newArray(int size) {
+            return new Tag[size];
+        }
+    };
 }
 

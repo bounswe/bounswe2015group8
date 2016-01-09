@@ -8,7 +8,7 @@
         android:id="@+id/tvPostSmallOwner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/generic_by_username"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -34,7 +34,7 @@
         android:id="@+id/tvPostSmallCreationDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/heritage_creationDate"
         android:layout_below="@id/tvPostSmallTitle"
         android:layout_alignParentLeft="true"
@@ -44,7 +44,7 @@
         android:id="@+id/tvPostSmallCreationDateValue"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/placeholder_mid"
         android:layout_below="@id/tvPostSmallTitle"
         android:layout_toRightOf="@id/tvPostSmallCreationDate"
@@ -59,8 +59,10 @@
         android:layout_below="@+id/tvPostSmallCreationDateValue"
         android:layout_centerHorizontal="true"
         android:layout_margin="@dimen/relative_layout_margin_between"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/hint_heritage_description"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/hint_heritage_description"
+        android:maxLines="5"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/tvPostSmallSeeMore"
@@ -69,7 +71,7 @@
         android:layout_below="@id/tvPostSmallContent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/generic_see_more"
         android:layout_marginStart="@dimen/relative_layout_margin"
         android:layout_marginLeft="@dimen/relative_layout_margin"
@@ -79,7 +81,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="voteCount"
         android:id="@+id/tvPostVoteCount"
         android:layout_alignTop="@+id/tvPostSmallSeeMore"

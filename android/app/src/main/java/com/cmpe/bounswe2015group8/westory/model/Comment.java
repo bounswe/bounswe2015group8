@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.Map;
 
 /**
- * Created by xyllan on 07.11.2015.
+ * Base object for our comments.
+ * @author xyllan
+ * Date: 07.11.2015
  */
 public class Comment {
     private long id;

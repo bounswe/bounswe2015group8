@@ -21,18 +21,23 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by xyllan on 17.11.2015.
+ * Base fragment for displaying heritages in a refreshable list. The list is kept
+ * in memory until it is destroyed. Contains a floating action button for adding
+ * new heritages.
+ * @see Heritage
+ * @author xyllan
+ * Date: 17.11.2015
  */
 public class HeritagesFragment extends NamedFragment implements AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String NAME = "All Heritages";
     public static final String BUNDLE_INDEX = "index";
     public static final String BUNDLE_TOP = "top";
     public static final String BUNDLE_HERITAGES = "heritages";
-    private SwipeRefreshLayout swipeRefreshLayout;
+    protected SwipeRefreshLayout swipeRefreshLayout;
     private ListView listView;
-    private FloatingActionButton fab;
-    private MemberLocalStore memberLocalStore;
-    private Heritage[] heritages;
+    protected FloatingActionButton fab;
+    protected MemberLocalStore memberLocalStore;
+    private Heritage[] heritages = new Heritage[0];
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,7 +57,7 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
                 else MainActivity.beginFragment(getActivity(), new LoginFragment());
             }
         });
-        if(heritages != null) {
+        if(heritages != null && heritages.length > 0) {
             setAdapter(heritages);
             return v;
         }
@@ -81,7 +86,7 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
         setRetainInstance(true);
     }
 
-    private void setAdapter(Heritage[] heritages) {
+    protected void setAdapter(Heritage[] heritages) {
         this.heritages = heritages;
         listView.setAdapter(new HeritageAdapter(getActivity(),R.layout.heritage_small, heritages));
         swipeRefreshLayout.setRefreshing(false);
@@ -119,11 +124,15 @@ public class HeritagesFragment extends NamedFragment implements AdapterView.OnIt
     }
     @Override
     public void onRefresh() {
-        ServerRequests sr = new ServerRequests(getActivity(),false);
+        final ServerRequests sr = new ServerRequests(getActivity(),false);
         sr.getAllHeritages(new Consumer<Heritage[]>() {
             @Override
             public void accept(Heritage[] heritages) {
-                setAdapter(heritages);
+                if(heritages == null) {
+                    ServerRequests.handleErrors(getContext(),sr);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+                else setAdapter(heritages);
             }
         });
     }

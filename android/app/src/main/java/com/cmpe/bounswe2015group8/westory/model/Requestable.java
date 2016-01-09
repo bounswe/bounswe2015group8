@@ -1,7 +1,9 @@
 package com.cmpe.bounswe2015group8.westory.model;
 
 /**
- * Created by xyllan on 07.11.2015.
+ * Base object for a REST request.
+ * @author xyllan
+ * Date: 07.11.2015
  */
 public class Requestable<T>{
     private String endpoint;

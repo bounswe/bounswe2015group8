@@ -1,6 +1,5 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -73,24 +72,20 @@ public class LoginFragment extends NamedFragment implements View.OnClickListener
     }
     private void authenticate(final Member member){
         final MainActivity a = (MainActivity) getActivity();
-        ServerRequests serverRequests = new ServerRequests(a);
+        final ServerRequests serverRequests = new ServerRequests(a);
         serverRequests.login(member, new Consumer<Member>() {
             @Override
             public void accept(Member m) {
-                m.setUsername(member.getUsername());
-                memberLocalStore.storeUserData(m);
-                a.resetNavbar();
-                Toast.makeText(getActivity(), "Congratulations " + m.getUsername() + ", you are logged in!", Toast.LENGTH_LONG).show();
-                MainActivity.beginFragment(a, new HeritagesFeed());
+                if(m == null) ServerRequests.handleErrors(getContext(), serverRequests);
+                else {
+                    m.setUsername(member.getUsername());
+                    memberLocalStore.storeUserData(m);
+                    a.resetNavbar();
+                    Toast.makeText(getActivity(), getString(R.string.login_success,m.getUsername()), Toast.LENGTH_LONG).show();
+                    MainActivity.beginFragment(a, new HeritageFeedFragment());
+                }
             }
         });
-    }
-
-    private void showErrorMessage() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        dialogBuilder.setMessage("Incorrect user details.");
-        dialogBuilder.setPositiveButton("OK", null);
-        dialogBuilder.show();
     }
     @Override
     public String getName() {

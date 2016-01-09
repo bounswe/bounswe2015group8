@@ -9,7 +9,9 @@ import java.util.HashSet;
 import java.util.Map;
 
 /**
- * Created by xyllan on 07.11.2015.
+ * Base object for storing the stories our users are publishing.
+ * @author xyllan
+ * Date: 07.11.2015
  */
 public class Post implements Parcelable{
     private long id;

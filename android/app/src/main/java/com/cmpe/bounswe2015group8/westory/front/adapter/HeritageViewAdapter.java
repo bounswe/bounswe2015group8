@@ -30,8 +30,13 @@ import com.cmpe.bounswe2015group8.westory.model.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by xyllan on 26.11.2015.
+/** Adapter handling the multi-part Heritage view.
+ * Shows posts, tags, and media related to that heritage.
+ * @see Post
+ * @see Tag
+ * @see Media
+ * @author xyllan
+ * Date: 26.11.2015
  */
 public class HeritageViewAdapter extends BaseExpandableListAdapter {
     public static final int POSTS_VIEW_INDEX = 0;
@@ -146,7 +151,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 TextView tvTitle = (TextView) v.findViewById(R.id.tvPostSmallTitle);
                 tvTitle.setText(p.getTitle());
                 TextView tvOwner = (TextView) v.findViewById(R.id.tvPostSmallOwner);
-                tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, (Long.toString(p.getOwnerId()))));
+                tvOwner.setText(activity.getResources().getString(R.string.generic_by_username, p.getUsername()));
                 TextView tvCreationDate = (TextView) v.findViewById(R.id.tvPostSmallCreationDateValue);
                 tvCreationDate.setText(p.getPostDate());
                 TextView tvContent = (TextView) v.findViewById(R.id.tvPostSmallContent);
@@ -173,20 +178,20 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                     }
                 });
                 final TextView tvVote= (TextView) v.findViewById(R.id.tvPostVoteCount);
-                System.out.println("mumu: "+ p.getId()+" - " +p.getVoteCount());
                 tvVote.setText(Integer.toString(p.getVoteCount()));
                 ImageButton btnDownVote = (ImageButton) v.findViewById(R.id.btnPostDownVote);
                 ImageButton btnUpVote = (ImageButton) v.findViewById(R.id.btnPostUpVote);
                 btnUpVote.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ServerRequests sr = new ServerRequests(activity);
+                        final ServerRequests sr = new ServerRequests(activity);
                         MemberLocalStore memberLocalStore = new MemberLocalStore(activity);
                         Member m = memberLocalStore.getLoggedInMember();
                         sr.votePost(p, true, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                tvVote.setText("" + vote);
+                                if(vote == null) ServerRequests.handleErrors(activity,sr);
+                                else tvVote.setText(vote);
                             }
                         });
                     }
@@ -195,13 +200,14 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 btnDownVote.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ServerRequests sr = new ServerRequests(activity);
+                        final ServerRequests sr = new ServerRequests(activity);
                         MemberLocalStore memberLocalStore = new MemberLocalStore(activity);
                         Member m = memberLocalStore.getLoggedInMember();
                         sr.votePost(p, false, m.getId(), new Consumer<String>() {
                             @Override
                             public void accept(String vote) {
-                                tvVote.setText("" + vote);
+                                if(vote == null) ServerRequests.handleErrors(activity,sr);
+                                else tvVote.setText(vote);
                             }
                         });
                     }
@@ -222,7 +228,7 @@ public class HeritageViewAdapter extends BaseExpandableListAdapter {
                 final TextView tvContext = (TextView) v.findViewById(R.id.tvTagSmallViewContext);
                 tvContext.setText(activity.getResources().getString(R.string.generic_parenthesized, t.getTagContext()));
                 final ImageView ivTagSmallEdit = (ImageView) v.findViewById(R.id.ivTagSmallViewEdit);
-                if(!new MemberLocalStore(activity).getUserLoggedIn()) ivTagSmallEdit.setVisibility(View.GONE);
+                ivTagSmallEdit.setVisibility(View.GONE);
                 ivTagSmallEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

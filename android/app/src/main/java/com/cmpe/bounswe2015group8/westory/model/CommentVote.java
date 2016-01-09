@@ -2,7 +2,11 @@ package com.cmpe.bounswe2015group8.westory.model;
 
 
 /**
- * Created by xyllan on 07.11.2015.
+ * Base object for storing a member's vote on a comment.
+ * @see Member
+ * @see Comment
+ * @author xyllan
+ * Date: 07.11.2015
  */
 public class CommentVote {
     private long ownerId;

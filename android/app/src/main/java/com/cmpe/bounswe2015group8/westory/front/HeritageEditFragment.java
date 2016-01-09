@@ -1,7 +1,6 @@
 package com.cmpe.bounswe2015group8.westory.front;
 
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.EditText;
 
 import com.cmpe.bounswe2015group8.westory.R;
 import com.cmpe.bounswe2015group8.westory.back.Consumer;
-import com.cmpe.bounswe2015group8.westory.back.MemberLocalStore;
 import com.cmpe.bounswe2015group8.westory.back.ServerRequests;
 import com.cmpe.bounswe2015group8.westory.model.Heritage;
 
@@ -61,16 +59,20 @@ public class HeritageEditFragment extends NamedFragment implements View.OnClickL
                 heritage.setName(etName.getText().toString());
                 heritage.setPlace(etPlace.getText().toString());
                 heritage.setDescription(etDescription.getText().toString());
-                ServerRequests sr = new ServerRequests(getActivity());
+                if(hasAsciiError(getContext(),etName,etPlace,etDescription)) return;
+                final ServerRequests sr = new ServerRequests(getActivity());
                 sr.createHeritage(heritage, new Consumer<Long>() {
                     @Override
                     public void accept(Long id) {
-                        heritage.setId(id);
-                        NamedFragment nf = new HeritageViewFragment();
-                        Bundle b = new Bundle();
-                        b.putParcelable("heritage",heritage);
-                        nf.setArguments(b);
-                        MainActivity.beginFragment(getActivity(),nf);
+                        if(id == null) ServerRequests.handleErrors(getContext(), sr);
+                        else {
+                            heritage.setId(id);
+                            NamedFragment nf = new HeritageViewFragment();
+                            Bundle b = new Bundle();
+                            b.putParcelable("heritage", heritage);
+                            nf.setArguments(b);
+                            MainActivity.beginFragment(getActivity(), nf);
+                        }
                     }
                 });
                 break;

@@ -1,7 +1,9 @@
 package com.cmpe.bounswe2015group8.westory.model;
 
 /**
- * Created by xyllan on 23.10.2015.
+ * Base object for our media.
+ * @author xyllan
+ * Date: 23.10.2015
  */
 public class Media {
     public static final int IMAGE = 0;

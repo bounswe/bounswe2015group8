@@ -36,14 +36,36 @@
             android:inputType="text"
             android:padding="@dimen/relative_layout_margin_between"
             android:singleLine="true" />
-
         <TextView
-            android:id="@+id/tvPostEditContent"
+            android:id="@+id/tvPostEditPlace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@id/tvPostEditTitle"
             android:layout_alignLeft="@id/tvPostEditTitle"
             android:layout_below="@id/etPostEditTitle"
+            android:text="@string/heritage_place"
+            android:textSize="20sp"
+            android:paddingTop="8dp"/>
+        <EditText
+            android:id="@+id/etPostEditPlace"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/tvPostEditPlace"
+            android:layout_toRightOf="@id/tvPostEditPlace"
+            android:layout_toEndOf="@id/tvPostEditPlace"
+            android:textColor="@color/primary_text"
+            android:hint="@string/hint_heritage_place"
+            android:textColorHint="@color/secondary_text"
+            android:inputType="text"
+            android:padding="@dimen/relative_layout_margin_between"
+            android:singleLine="true" />
+        <TextView
+            android:id="@+id/tvPostEditContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/tvPostEditPlace"
+            android:layout_alignLeft="@id/tvPostEditPlace"
+            android:layout_below="@id/etPostEditPlace"
             android:text="@string/generic_content"
             android:textSize="20sp"/>
         <Button

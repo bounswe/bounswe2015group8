@@ -19,8 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Created by xyllan on 04.12.2015.
+/** Adapter for showing various types of media.
+ * @see Media
+ * @author xyllan
+ * Date: 04.12.2015
  */
 
 public class MediaRecyclerAdapter extends RecyclerView.Adapter<MediaRecyclerAdapter.ViewHolder>
